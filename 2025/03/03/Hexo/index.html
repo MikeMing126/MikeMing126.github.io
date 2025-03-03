@@ -7,21 +7,21 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="缓存问题Hexo开发去除缓存-重新刷新生成表现在开发一个 Hexo 插件，在开发的过程中，遇到了一些小的问题：插件的代码发生了修改，但运行hexo 的时候却没有实时刷新出来。 原因在对代码进行分析后发现，hexo 的 tag filter 的结果会缓存在数据库中，由于缓存了，所以我使用的 generator ，所以也会被缓存。 解决方案在预览前，删除 db.json 即可让 hexo 重新开始生成">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo Info">
-<meta property="og:url" content="https://mikeming126.github.io/2025/03/03/hello-world/index.html">
+<meta property="og:title" content="Hexo开发">
+<meta property="og:url" content="https://mikeming126.github.io/2025/03/03/Hexo/index.html">
 <meta property="og:site_name" content="Ming Blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="缓存问题Hexo开发去除缓存-重新刷新生成表现在开发一个 Hexo 插件，在开发的过程中，遇到了一些小的问题：插件的代码发生了修改，但运行hexo 的时候却没有实时刷新出来。 原因在对代码进行分析后发现，hexo 的 tag filter 的结果会缓存在数据库中，由于缓存了，所以我使用的 generator ，所以也会被缓存。 解决方案在预览前，删除 db.json 即可让 hexo 重新开始生成">
 <meta property="og:locale">
 <meta property="article:published_time" content="2025-03-03T15:02:30.972Z">
-<meta property="article:modified_time" content="2025-03-03T14:33:56.186Z">
+<meta property="article:modified_time" content="2025-03-03T17:25:45.890Z">
 <meta property="article:author" content="Ming">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary">
 
 
-<title >Hexo Info</title>
+<title >Hexo开发</title>
 
 <!-- Favicon -->
 
@@ -59,8 +59,8 @@
 
 
 <!-- Variable -->
-<script>window.ASYNC_CONFIG = {"hostname":"mikeming126.github.io","author":"Ming","root":"/","typed_text":null,"theme_version":"2.2.4","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/favicon.svg","icon16":"/img/favicon.svg","icon32":"/img/favicon.svg","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"/failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":true},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-03-03 22:33:56"};</script>
+<script>window.ASYNC_CONFIG = {"hostname":"mikeming126.github.io","author":"Ming","root":"/","typed_text":null,"theme_version":"2.2.4","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/favicon.svg","icon16":"/img/favicon.svg","icon32":"/img/favicon.svg","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"/failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-03-04 01:25:45"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.4" id="trm-switch-style">
@@ -219,7 +219,7 @@
                             NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            Hexo Info
+                            Hexo开发
                         </h1>
 
                         
@@ -327,19 +327,10 @@
 </div>
 <div class="trm-card ">
     <article id="article-container" class="trm-publication">
-    <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <h1 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h1><h2 id="Hexo开发去除缓存-重新刷新生成"><a href="#Hexo开发去除缓存-重新刷新生成" class="headerlink" title="Hexo开发去除缓存-重新刷新生成"></a>Hexo开发去除缓存-重新刷新生成</h2><h3 id="表现"><a href="#表现" class="headerlink" title="表现"></a>表现</h3><p>在开发一个 Hexo 插件，在开发的过程中，遇到了一些小的问题：插件的代码发生了修改，但运行hexo 的时候却没有实时刷新出来。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>在对代码进行分析后发现，hexo 的 tag filter 的结果会缓存在数据库中，由于缓存了，所以我使用的 generator ，所以也会被缓存。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>在预览前，删除 db.json 即可让 hexo 重新开始生成</p>
+<h2 id="网页缓存问题"><a href="#网页缓存问题" class="headerlink" title="网页缓存问题"></a>网页缓存问题</h2><p>F12打开开发者工具，网络部分，选择禁用缓存即可。</p>
 
 </article>
     
@@ -431,8 +422,24 @@
 
             
 
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="缓存问题"><a rel="nofollow" class="trm-toc-link" href="#缓存问题"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">缓存问题</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="Hexo开发去除缓存-重新刷新生成"><a rel="nofollow" class="trm-toc-link" href="#Hexo开发去除缓存-重新刷新生成"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">Hexo开发去除缓存-重新刷新生成</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="表现"><a rel="nofollow" class="trm-toc-link" href="#表现"><span class="trm-toc-number">1.1.1.</span> <span class="trm-toc-text">表现</span></a></li><li class="trm-toc-item trm-toc-level-3" title="原因"><a rel="nofollow" class="trm-toc-link" href="#原因"><span class="trm-toc-number">1.1.2.</span> <span class="trm-toc-text">原因</span></a></li><li class="trm-toc-item trm-toc-level-3" title="解决方案"><a rel="nofollow" class="trm-toc-link" href="#解决方案"><span class="trm-toc-number">1.1.3.</span> <span class="trm-toc-text">解决方案</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="网页缓存问题"><a rel="nofollow" class="trm-toc-link" href="#网页缓存问题"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">网页缓存问题</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
             
 <div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
     
     
         <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">

@@ -1,334 +1,168 @@
-<!DOCTYPE html>
-<html lang="zh-Hans">
-
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="x5-fullscreen" content="true">
-<meta name="full-screen" content="yes">
-<meta name="theme-color" content="#317EFB" />
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="GASPurpose of this DocumentationThis documentation is meant to support and enhance the official Gameplay Ability System Unreal Developer Community documentation.  In particular, this document lives in">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>UE5.5-GAS-ReadMe | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="GASPurpose of this DocumentationThis documentation is meant to support and enhance the official Gameplay Ability System Unreal Developer Community documentation.  In particular, this document lives">
 <meta property="og:type" content="article">
 <meta property="og:title" content="UE5.5-GAS-ReadMe">
 <meta property="og:url" content="https://mikeming126.github.io/2025/03/04/UE55GAS/index.html">
 <meta property="og:site_name" content="Ming Blog">
-<meta property="og:description" content="GASPurpose of this DocumentationThis documentation is meant to support and enhance the official Gameplay Ability System Unreal Developer Community documentation.  In particular, this document lives in">
-<meta property="og:locale">
+<meta property="og:description" content="GASPurpose of this DocumentationThis documentation is meant to support and enhance the official Gameplay Ability System Unreal Developer Community documentation.  In particular, this document lives">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/butterfly-icon.png">
 <meta property="article:published_time" content="2025-03-03T16:11:11.292Z">
-<meta property="article:modified_time" content="2025-03-03T16:13:04.202Z">
+<meta property="article:modified_time" content="2025-03-04T15:50:42.116Z">
 <meta property="article:author" content="Ming">
 <meta property="article:tag" content="UE">
 <meta property="article:tag" content="GAS">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UE5.5-GAS-ReadMe",
+  "url": "https://mikeming126.github.io/2025/03/04/UE55GAS/",
+  "image": "https://mikeming126.github.io/img/butterfly-icon.png",
+  "datePublished": "2025-03-03T16:11:11.292Z",
+  "dateModified": "2025-03-04T15:50:42.116Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/2025/03/04/UE55GAS/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
 
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
 
-<title >UE5.5-GAS-ReadMe</title>
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
 
-<!-- Favicon -->
-
-    <link href='/img/favicon.svg?v=2.2.4' rel='icon' type='image/png' sizes='16x16' ></link>
-
-
-    <link href='/img/favicon.svg?v=2.2.4' rel='icon' type='image/png' sizes='32x32' ></link>
-
-
-
-
-<!-- Plugin -->
-
-
-
-
+      const theme = saveToLocal.get('theme')
     
-<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
-
-    
-<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
-
-    
-    
-
-
-
-
-<!-- Icon -->
-
-    
-<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
-
-
-
-
-<!-- Variable -->
-<script>window.ASYNC_CONFIG = {"hostname":"mikeming126.github.io","author":"Ming","root":"/","typed_text":null,"theme_version":"2.2.4","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/favicon.svg","icon16":"/img/favicon.svg","icon32":"/img/favicon.svg","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"/failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-03-04 00:13:04"};</script>
-
-<!-- Theme mode css -->
-<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.4" id="trm-switch-style">
-<script>
-    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
-    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
-    let type = catchMode === 'style-dark' ? 'add' : 'remove';
-    document.documentElement.classList[type]('dark')
-</script>
-
-<!-- CDN -->
-
-
-    
-    
-
-
-
-<!-- Site Analytics -->
-
- 
-<meta name="generator" content="Hexo 7.3.0"></head>
-
-<body>
-
-  <!-- app wrapper -->
-  <div class="trm-app-frame">
-
-    <!-- page preloader -->
-    <div class="trm-preloader">
-    <div class="trm-holder">
-        <div class="preloader">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
-</div>
-    <!-- page preloader end -->
-
-    <!-- change mode preloader -->
-    <div class="trm-mode-swich-animation-frame">
-    <div class="trm-mode-swich-animation">
-        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
-        <div class="trm-horizon"></div>
-        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
-    </div>
-</div>
-    <!-- change mode preloader end -->
-
-      <!-- scroll container -->
-      <div id="trm-dynamic-content" class="trm-swup-animation">
-        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
-            <!-- top bar -->
-            <header class="trm-top-bar">
-	<div class="container">
-		<div class="trm-left-side">
-			<!-- logo -->
-<a href="/" class="trm-logo-frame trm-anima-link">
-    
-        <img alt="logo" src="/img/favicon.svg">
-    
-    
-</a>
-<!-- logo end -->
-		</div>
-		<div class="trm-right-side">
-			<!-- menu -->
-<div class="trm-menu">
-    <nav>
-        <ul>
-            
-            <li class="menu-item-has-children ">
-                <a  href="/" target="">
-                    首页
-                </a>
-                
-            </li>
-            
-            <li class="menu-item-has-children ">
-                <a  href="/categories/" target="">
-                    分类
-                </a>
-                
-            </li>
-            
-            <li class="menu-item-has-children ">
-                <a  href="/tags/" target="">
-                    标签
-                </a>
-                
-            </li>
-            
-            <li class="menu-item-has-children ">
-                <a  href="/links/" target="">
-                    友链
-                </a>
-                
-            </li>
-            
-        </ul>
-    </nav>
-</div>
-<!-- menu end -->
-			
-    <!-- mode switcher place -->
-    <div class="trm-mode-switcher-place">
-        <div class="trm-mode-switcher">
-            <i class="iconfont far fa-sun"></i>
-            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
-            <label class="trm-swich" for="trm-swich"></label>
-            <i class="iconfont far fa-moon"></i>
-        </div>
-    </div>
-    <!-- mode switcher place end -->
-
-			
-		</div>
-		<div class="trm-menu-btn">
-			<span></span>
-		</div>
-	</div>
-</header>
-            <!-- top bar end -->
-
-            <!-- body -->
-            
-<div class="trm-content-start">
-    <!-- banner -->
-    <div class="trm-banner">
-    
-    <!-- banner cover -->
-    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
-    <!-- banner cover end -->
-    
-
-    <!-- banner content -->
-    <div class="trm-banner-content trm-overlay">
-        <div class="container">
-            <div class="row">
-                
-                <div class="col-lg-4"></div>
-                
-                <div class="col-lg-8">
-
-                    <!-- banner title -->
-                    <div class="trm-banner-text ">
-                        <div class="trm-label trm-mb-20">
-                            NEWS LETTER
-                        </div>
-                        <h1 class="trm-mb-30 trm-hsmb-font">
-                            UE5.5-GAS-ReadMe
-                        </h1>
-
-                        
-                            <ul class="trm-breadcrumbs trm-label">
-                                <li>
-                                    <a href="/" class="trm-anima-link">Home</a>
-                                </li>
-                                <li>
-                                    <span>
-                                        2025
-                                    </span>
-                                </li>
-                            </ul>
-                        
-                    </div>
-                    <!-- banner title end -->
-
-                    <!-- scroll hint -->
-                    <span id="scroll-triger" class="trm-scroll-hint-frame">
-                        <div class="trm-scroll-hint"></div>
-                        <span class="trm-label">Scroll down</span>
-                    </span>
-                    <!-- scroll hint end -->
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- banner content end -->
-</div>
-    <!-- banner end -->
-    <div class="container">
-        <div class="row">
-            
-                <div class="trm-page-sidebar col-lg-4 hidden-sm">
-                    <!-- main card -->
-                    <div class="trm-main-card-frame trm-sidebar">
-    <div class="trm-main-card"> 
-        <!-- card header -->
-<div class="trm-mc-header">
-    <div class="trm-avatar-frame trm-mb-20">
-        <img alt="Avatar" class="trm-avatar" src="/img/avatar.jpg">
-    </div>
-    <h5 class="trm-name trm-mb-15">
-        Ming
-    </h5>
-    
-</div>
-<!-- card header end -->
-        <!-- sidebar social -->
-
-<div class="trm-divider trm-mb-40 trm-mt-40"></div>
-<div class="trm-social">
-    
-        <a href="https://github.com" title="Github" rel="nofollow" target="_blank">
-            <i class="iconfont fab fa-github"></i>
-        </a>
-    
-</div>
-
-<!-- sidebar social end -->
-        <!-- info -->
-<div class="trm-divider trm-mb-40 trm-mt-40"></div>
-<ul class="trm-table trm-mb-20">
-    
-        <li>
-            <div class="trm-label">
-                Residence:
-            </div>
-            <div class="trm-label trm-label-light">
-                Mars
-            </div>
-        </li>
-    
-</ul>
-<!-- info end -->
-
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
         
-    </div>
-</div>
-                    <!-- main card end -->
-                </div>
-            
-            <div class="trm-page-content col-lg-8">
-                <div id="trm-content" class="trm-content">
-                    <div class="trm-post-info row hidden-sm">
-    <div class="col-sm-4">
-        <div class="trm-card trm-label trm-label-light text-center">
-            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
-            03/04
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="trm-card trm-label trm-label-light text-center">
-            <i class="iconfont far fa-clock trm-icon"></i><br>
-            00:11
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
-            <i class="iconfont far fa-user trm-icon"></i><br>
-            Ming
-        </div>
-    </div>
-</div>
-<div class="trm-card ">
-    <article id="article-container" class="trm-publication">
-    <h3 id="GAS"><a href="#GAS" class="headerlink" title="GAS"></a>GAS</h3><h1 id="Purpose-of-this-Documentation"><a href="#Purpose-of-this-Documentation" class="headerlink" title="Purpose of this Documentation"></a>Purpose of this Documentation</h1><p>This documentation is meant to support and enhance the <a target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/en-us/unreal-engine/gameplay-ability-system-for-unreal-engine">official Gameplay Ability System Unreal Developer Community documentation</a>.  In particular, this document lives in the code repository under <a href="./">Gameplay Ability System plug-in folder</a> and thus any user reading this documentation can submit a pull request to clarify functionality, update inaccurate information, or work with the community to flesh out areas that are missing.</p>
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'UE5.5-GAS-ReadMe',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">UE5.5-GAS-ReadMe</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">UE5.5-GAS-ReadMe</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-03T16:11:11.292Z" title="发表于 2025-03-04 00:11:11">2025-03-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-04T15:50:42.116Z" title="更新于 2025-03-04 23:50:42">2025-03-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><!-- - <meting-js id="13344900252" server="netease" type="playlist" type="playlist" mutex="true" preload="auto" theme="var(--anzhiyu-main)" order="list"></meting-js>   -->
+
+<h3 id="GAS"><a href="#GAS" class="headerlink" title="GAS"></a>GAS</h3><h1 id="Purpose-of-this-Documentation"><a href="#Purpose-of-this-Documentation" class="headerlink" title="Purpose of this Documentation"></a>Purpose of this Documentation</h1><p>This documentation is meant to support and enhance the <a target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/en-us/unreal-engine/gameplay-ability-system-for-unreal-engine">official Gameplay Ability System Unreal Developer Community documentation</a>.  In particular, this document lives in the code repository under <a href="./">Gameplay Ability System plug-in folder</a> and thus any user reading this documentation can submit a pull request to clarify functionality, update inaccurate information, or work with the community to flesh out areas that are missing.</p>
 <p>It is worth noting there are extensive resources that the wider end-user developer community has written.  One such source of knowledge is the <a target="_blank" rel="noopener" href="https://github.com/tranek/GASDocumentation">tranek GAS documentation</a> which is highly detailed and an excellent resource for implementation details, but risks falling out of date with new feature additions or changes.</p>
 <h1 id="Overview-of-the-Gameplay-Ability-System"><a href="#Overview-of-the-Gameplay-Ability-System" class="headerlink" title="Overview of the Gameplay Ability System"></a>Overview of the Gameplay Ability System</h1><p>The Gameplay Ability System is a framework for building abilities and interactions that Actors can own and trigger. This system is designed mainly for RPGs, action-adventure games, MOBAs, and other types of games where characters have abilities that need to coordinate mechanics, visual effects, animations, sounds, and data-driven elements, although it can be adapted to a wide variety of projects. The Gameplay Ability System also supports replication for multiplayer games, and can save developers a lot of time scaling up their designs to support multiplayer.</p>
 <p>The concepts that the Gameplay Ability System uses are:</p>
@@ -464,182 +298,4 @@
 <p><code>AbilitySystem.LogGameplayCueActorSpawning</code> Log when we create GameplayCueNotify_Actors.<br><code>AbilitySystem.DisplayGameplayCues</code> Display GameplayCue events in world as text.<br><code>AbilitySystem.GameplayCue.DisplayDuration</code> Configure the amount of time Gameplay Cues are drawn when <code>DisplayGameplayCues</code> is enabled.<br><code>AbilitySystem.DisableGameplayCues</code> Disables all GameplayCue events in the world.<br><code>AbilitySystem.GameplayCue.RunOnDedicatedServer</code> Run gameplay cue events on dedicated server.<br><code>AbilitySystem.GameplayCueActorRecycle</code> Allow recycling of GameplayCue Actors.<br><code>AbilitySystem.GameplayCueActorRecycleDebug</code> Prints logs for GC actor recycling debugging.<br><code>AbilitySystem.GameplayCueCheckForTooManyRPCs</code> Warns if gameplay cues are being throttled by network code.</p>
 <h2 id="Visual-Logger"><a href="#Visual-Logger" class="headerlink" title="Visual Logger"></a>Visual Logger</h2><p>New in UE5.4, there has been extra care put into the <a target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/en-us/unreal-engine/visual-logger-in-unreal-engine">Visual Logger</a> facilities for the Gameplay Ability System.  The <a target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/en-us/unreal-engine/visual-logger-in-unreal-engine">Visual Logger</a> is useful to see the complex interactions of Gameplay Abilities and Gameplay Effects over time.  The Visual Logger always captures the verbose logs and saves a snapshot of the state of the Ability System Component on every frame there is a log entry.</p>
 <p>In UE5.4, the <a target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/en-us/unreal-engine/visual-logger-in-unreal-engine">Visual Logger</a> now correctly orders the events between clients and servers when using Play In Editor.  This makes the Visual Logger especially useful for debugging how the client and server interact when activating abilities, gameplay effects, and modifying attributes.</p>
-
-</article>
-    
-    
-
-</div>
-<div class="trm-post-next-prev row">
-    <div class="col-lg-12">
-        <!-- title -->
-        <h5 class="trm-title-with-divider">
-            其他文章
-            <span data-number="02"></span>
-        </h5>
-    </div>
-    
-    
-        <div class="col-lg-6">
-    <div class="trm-blog-card trm-scroll-animation">
-        <a href="/2025/03/04/windows-change-git/" class="trm-cover-frame trm-anima-link">
-            
-            
-                <img alt="cover" class="no-fancybox" src="/img/block.jpg">
-            
-        </a>
-        
-        <div class="trm-card-descr">
-            <div class="trm-label trm-category trm-mb-20">
-                <a href=" /categories/%E5%85%B6%E4%BB%96/">
-                    其他
-                </a>
-            </div>
-            <h5>
-                <a href="/2025/03/04/windows-change-git/" class="trm-anima-link">
-                    Windows下的Git账号更换
-                </a>
-            </h5>
-            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
-            <ul class="trm-card-data trm-label">
-                <li>25/03/04</li>
-                <li>00:00</li>
-                
-                
-            </ul>
-        </div>
-    </div>
-</div>
-    
-</div>
-
-    
-
-
-
-                    <div class="trm-divider footer-divider"></div>
-
-                    <!-- footer -->
-                    <footer class="trm-footer-card trm-scroll-animation">
-
-    
-
-    
-
-    
-        <div class="trm-footer-item">
-            <span>
-                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v7.3.0
-            </span>
-            <span class="footer-separator" data-separator=" | "></span>
-            <span> 
-                主题 - 
-                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
-                v2.2.4
-            </span>
-        </div>
-      
-
-     
-
-     
-</footer>
-                    <!-- footer end -->
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-            <!-- body end -->
-
-            
-
-    <div id="post-toc" class="trm-post-toc">
-      <div class="trm-post-toc-header">
-        目录导航
-				<span id="post-toc-top">
-					置顶
-				</span>
-      </div>
-      <div class="trm-post-toc-content">
-        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-3" title="GAS"><a rel="nofollow" class="trm-toc-link" href="#GAS"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">GAS</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="Purpose of this Documentation"><a rel="nofollow" class="trm-toc-link" href="#Purpose-of-this-Documentation"><span class="trm-toc-number"></span> <span class="trm-toc-text">Purpose of this Documentation</span></a></li><li class="trm-toc-item trm-toc-level-1" title="Overview of the Gameplay Ability System"><a rel="nofollow" class="trm-toc-link" href="#Overview-of-the-Gameplay-Ability-System"><span class="trm-toc-number"></span> <span class="trm-toc-text">Overview of the Gameplay Ability System</span></a></li><li class="trm-toc-item trm-toc-level-1" title="Ability System Component {#asc}"><a rel="nofollow" class="trm-toc-link" href="#Ability-System-Component-asc"><span class="trm-toc-number"></span> <span class="trm-toc-text">Ability System Component {#asc}</span></a></li><li class="trm-toc-item trm-toc-level-1" title="Gameplay Attributes {#gameplay-attributes}"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Attributes-gameplay-attributes"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Attributes {#gameplay-attributes}</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="AttributeSets {#attribute-sets}"><a rel="nofollow" class="trm-toc-link" href="#AttributeSets-attribute-sets"><span class="trm-toc-number"></span> <span class="trm-toc-text">AttributeSets {#attribute-sets}</span></a></li><li class="trm-toc-item trm-toc-level-2" title="Attribute Modifiers {#attribute-modifiers}"><a rel="nofollow" class="trm-toc-link" href="#Attribute-Modifiers-attribute-modifiers"><span class="trm-toc-number"></span> <span class="trm-toc-text">Attribute Modifiers {#attribute-modifiers}</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="Gameplay Abilities {#gameplay-abilities}"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Abilities-gameplay-abilities"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Abilities {#gameplay-abilities}</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="Gameplay Ability Tasks {#gameplay-ability-tasks}"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Ability-Tasks-gameplay-ability-tasks"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Ability Tasks {#gameplay-ability-tasks}</span></a></li><li class="trm-toc-item trm-toc-level-2" title="Gameplay Ability Specs"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Ability-Specs"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Ability Specs</span></a></li><li class="trm-toc-item trm-toc-level-2" title="Gameplay Ability Instancing Policy"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Ability-Instancing-Policy"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Ability Instancing Policy</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="InstancedPerActor"><a rel="nofollow" class="trm-toc-link" href="#InstancedPerActor"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">InstancedPerActor</span></a></li><li class="trm-toc-item trm-toc-level-3" title="InstancedPerExecution"><a rel="nofollow" class="trm-toc-link" href="#InstancedPerExecution"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">InstancedPerExecution</span></a></li><li class="trm-toc-item trm-toc-level-3" title="NonInstanced (Deprecated)"><a rel="nofollow" class="trm-toc-link" href="#NonInstanced-Deprecated"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">NonInstanced (Deprecated)</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="Replication"><a rel="nofollow" class="trm-toc-link" href="#Replication"><span class="trm-toc-number"></span> <span class="trm-toc-text">Replication</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="Replicated Variables in Gameplay Abilities"><a rel="nofollow" class="trm-toc-link" href="#Replicated-Variables-in-Gameplay-Abilities"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">Replicated Variables in Gameplay Abilities</span></a></li><li class="trm-toc-item trm-toc-level-3" title="Remote Procedure Calls in Gameplay Abilities"><a rel="nofollow" class="trm-toc-link" href="#Remote-Procedure-Calls-in-Gameplay-Abilities"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">Remote Procedure Calls in Gameplay Abilities</span></a></li><li class="trm-toc-item trm-toc-level-3" title="RPC Batching to Ensure Proper Activation and ReplicatedTargetData Order"><a rel="nofollow" class="trm-toc-link" href="#RPC-Batching-to-Ensure-Proper-Activation-and-ReplicatedTargetData-Order"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">RPC Batching to Ensure Proper Activation and ReplicatedTargetData Order</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="Gameplay Effects {#gameplay-effects}"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Effects-gameplay-effects"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Effects {#gameplay-effects}</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="Gameplay Effect Components {#gameplay-effect-components}"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Effect-Components-gameplay-effect-components"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Effect Components {#gameplay-effect-components}</span></a></li><li class="trm-toc-item trm-toc-level-2" title="Gameplay Effect Specs {#gameplay-effect-specs}"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Effect-Specs-gameplay-effect-specs"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Effect Specs {#gameplay-effect-specs}</span></a></li><li class="trm-toc-item trm-toc-level-2" title="Gameplay Effect Executions {#gameplay-effect-executions}"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Effect-Executions-gameplay-effect-executions"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Effect Executions {#gameplay-effect-executions}</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="Gameplay Tags {#gameplay-tags}"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Tags-gameplay-tags"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Tags {#gameplay-tags}</span></a></li><li class="trm-toc-item trm-toc-level-1" title="Gameplay Cues {#gameplay-cues}"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Cues-gameplay-cues"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Cues {#gameplay-cues}</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="Gameplay Cue replication"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Cue-replication"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Cue replication</span></a></li><li class="trm-toc-item trm-toc-level-2" title="Gameplay Cue Events {#gc-events}"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Cue-Events-gc-events"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Cue Events {#gc-events}</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="OnExecute"><a rel="nofollow" class="trm-toc-link" href="#OnExecute"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">OnExecute</span></a></li><li class="trm-toc-item trm-toc-level-3" title="OnBurst (native: OnActive)"><a rel="nofollow" class="trm-toc-link" href="#OnBurst-native-OnActive"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">OnBurst (native: OnActive)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="OnBecomeRelevant (native: WhileActive)"><a rel="nofollow" class="trm-toc-link" href="#OnBecomeRelevant-native-WhileActive"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">OnBecomeRelevant (native: WhileActive)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="OnCeaseRelevant (native: OnRemove)"><a rel="nofollow" class="trm-toc-link" href="#OnCeaseRelevant-native-OnRemove"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">OnCeaseRelevant (native: OnRemove)</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="How Gameplay Prediction Works"><a rel="nofollow" class="trm-toc-link" href="#How-Gameplay-Prediction-Works"><span class="trm-toc-number"></span> <span class="trm-toc-text">How Gameplay Prediction Works</span></a></li><li class="trm-toc-item trm-toc-level-1" title="Ability System Globals"><a rel="nofollow" class="trm-toc-link" href="#Ability-System-Globals"><span class="trm-toc-number"></span> <span class="trm-toc-text">Ability System Globals</span></a></li><li class="trm-toc-item trm-toc-level-1" title="Debugging the Gameplay Ability System"><a rel="nofollow" class="trm-toc-link" href="#Debugging-the-Gameplay-Ability-System"><span class="trm-toc-number"></span> <span class="trm-toc-text">Debugging the Gameplay Ability System</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="Legacy ShowDebug Functionality"><a rel="nofollow" class="trm-toc-link" href="#Legacy-ShowDebug-Functionality"><span class="trm-toc-number"></span> <span class="trm-toc-text">Legacy ShowDebug Functionality</span></a></li><li class="trm-toc-item trm-toc-level-2" title="Gameplay Debugger {#gameplay-debugger}"><a rel="nofollow" class="trm-toc-link" href="#Gameplay-Debugger-gameplay-debugger"><span class="trm-toc-number"></span> <span class="trm-toc-text">Gameplay Debugger {#gameplay-debugger}</span></a></li><li class="trm-toc-item trm-toc-level-2" title="Console Commands"><a rel="nofollow" class="trm-toc-link" href="#Console-Commands"><span class="trm-toc-number"></span> <span class="trm-toc-text">Console Commands</span></a></li><li class="trm-toc-item trm-toc-level-2" title="Visual Logger"><a rel="nofollow" class="trm-toc-link" href="#Visual-Logger"><span class="trm-toc-number"></span> <span class="trm-toc-text">Visual Logger</span></a>
-      </div>
-    </div>
-
-            
-<div class="trm-fixed-container">
-    
-        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
-            <i class="iconfont fas fa-th-list"></i>
-        </div>
-    
-    
-        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
-            <i class="iconfont fas fa-book-reader"></i>
-        </div>
-    
-    
-    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
-        <i class="iconfont fas fa-arrow-up"></i>
-    </div>
-</div>
-        </div>
-      </div>
-      <!-- scroll container end -->
-  </div>
-  <!-- app wrapper end -->
-
-  
-  <!-- Plugin -->
-
-
-
-
-    
-    
-<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
-
-    
-
-    
-
-    
-
-    <!-- 数学公式 -->
-    
-
-    <!-- 评论插件 -->
-    
-        
-
-        
-    
-
-		
-
-
-
-
-    <!-- Service Worker -->
-    
-    <!-- baidu push -->
-    
-
-
-<script id="async-script" src="/js/main.js?v=2.2.4"></script>
-
-<!-- CDN -->
-
-
-    
-
-    
-
-    
-
-
-
-</body>
-
-</html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/2025/03/04/UE55GAS/">https://mikeming126.github.io/2025/03/04/UE55GAS/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/GAS/">GAS</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/03/04/windows-change-git/" title="Windows下的Git账号更换"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Windows下的Git账号更换</div></div><div class="info-2"><div class="info-item-1">Hexo更换指定Git账号问题 Git内设置对应的账号和密码  控制面板 - 用户 - 凭据管理器 - Windows凭据删除对应git的凭据 在使用时重新通过网页处理凭据   使用新账号登陆即可   </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#GAS"><span class="toc-number">1.</span> <span class="toc-text">GAS</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Purpose-of-this-Documentation"><span class="toc-number"></span> <span class="toc-text">Purpose of this Documentation</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Overview-of-the-Gameplay-Ability-System"><span class="toc-number"></span> <span class="toc-text">Overview of the Gameplay Ability System</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ability-System-Component-asc"><span class="toc-number"></span> <span class="toc-text">Ability System Component {#asc}</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Gameplay-Attributes-gameplay-attributes"><span class="toc-number"></span> <span class="toc-text">Gameplay Attributes {#gameplay-attributes}</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#AttributeSets-attribute-sets"><span class="toc-number"></span> <span class="toc-text">AttributeSets {#attribute-sets}</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Attribute-Modifiers-attribute-modifiers"><span class="toc-number"></span> <span class="toc-text">Attribute Modifiers {#attribute-modifiers}</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Gameplay-Abilities-gameplay-abilities"><span class="toc-number"></span> <span class="toc-text">Gameplay Abilities {#gameplay-abilities}</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Gameplay-Ability-Tasks-gameplay-ability-tasks"><span class="toc-number"></span> <span class="toc-text">Gameplay Ability Tasks {#gameplay-ability-tasks}</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gameplay-Ability-Specs"><span class="toc-number"></span> <span class="toc-text">Gameplay Ability Specs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gameplay-Ability-Instancing-Policy"><span class="toc-number"></span> <span class="toc-text">Gameplay Ability Instancing Policy</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#InstancedPerActor"><span class="toc-number">1.</span> <span class="toc-text">InstancedPerActor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#InstancedPerExecution"><span class="toc-number">2.</span> <span class="toc-text">InstancedPerExecution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NonInstanced-Deprecated"><span class="toc-number">3.</span> <span class="toc-text">NonInstanced (Deprecated)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Replication"><span class="toc-number"></span> <span class="toc-text">Replication</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Replicated-Variables-in-Gameplay-Abilities"><span class="toc-number">1.</span> <span class="toc-text">Replicated Variables in Gameplay Abilities</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Remote-Procedure-Calls-in-Gameplay-Abilities"><span class="toc-number">2.</span> <span class="toc-text">Remote Procedure Calls in Gameplay Abilities</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RPC-Batching-to-Ensure-Proper-Activation-and-ReplicatedTargetData-Order"><span class="toc-number">3.</span> <span class="toc-text">RPC Batching to Ensure Proper Activation and ReplicatedTargetData Order</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Gameplay-Effects-gameplay-effects"><span class="toc-number"></span> <span class="toc-text">Gameplay Effects {#gameplay-effects}</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Gameplay-Effect-Components-gameplay-effect-components"><span class="toc-number"></span> <span class="toc-text">Gameplay Effect Components {#gameplay-effect-components}</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gameplay-Effect-Specs-gameplay-effect-specs"><span class="toc-number"></span> <span class="toc-text">Gameplay Effect Specs {#gameplay-effect-specs}</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gameplay-Effect-Executions-gameplay-effect-executions"><span class="toc-number"></span> <span class="toc-text">Gameplay Effect Executions {#gameplay-effect-executions}</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Gameplay-Tags-gameplay-tags"><span class="toc-number"></span> <span class="toc-text">Gameplay Tags {#gameplay-tags}</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Gameplay-Cues-gameplay-cues"><span class="toc-number"></span> <span class="toc-text">Gameplay Cues {#gameplay-cues}</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Gameplay-Cue-replication"><span class="toc-number"></span> <span class="toc-text">Gameplay Cue replication</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gameplay-Cue-Events-gc-events"><span class="toc-number"></span> <span class="toc-text">Gameplay Cue Events {#gc-events}</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OnExecute"><span class="toc-number">1.</span> <span class="toc-text">OnExecute</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OnBurst-native-OnActive"><span class="toc-number">2.</span> <span class="toc-text">OnBurst (native: OnActive)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OnBecomeRelevant-native-WhileActive"><span class="toc-number">3.</span> <span class="toc-text">OnBecomeRelevant (native: WhileActive)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OnCeaseRelevant-native-OnRemove"><span class="toc-number">4.</span> <span class="toc-text">OnCeaseRelevant (native: OnRemove)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#How-Gameplay-Prediction-Works"><span class="toc-number"></span> <span class="toc-text">How Gameplay Prediction Works</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ability-System-Globals"><span class="toc-number"></span> <span class="toc-text">Ability System Globals</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Debugging-the-Gameplay-Ability-System"><span class="toc-number"></span> <span class="toc-text">Debugging the Gameplay Ability System</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Legacy-ShowDebug-Functionality"><span class="toc-number"></span> <span class="toc-text">Legacy ShowDebug Functionality</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gameplay-Debugger-gameplay-debugger"><span class="toc-number"></span> <span class="toc-text">Gameplay Debugger {#gameplay-debugger}</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Console-Commands"><span class="toc-number"></span> <span class="toc-text">Console Commands</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Visual-Logger"><span class="toc-number"></span> <span class="toc-text">Visual Logger</span></a></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/UE55GAS/" title="UE5.5-GAS-ReadMe">UE5.5-GAS-ReadMe</a><time datetime="2025-03-03T16:11:11.292Z" title="发表于 2025-03-04 00:11:11">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/windows-change-git/" title="Windows下的Git账号更换">Windows下的Git账号更换</a><time datetime="2025-03-03T16:00:45.694Z" title="发表于 2025-03-04 00:00:45">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/03/theme/" title="About Theme">About Theme</a><time datetime="2025-03-03T15:04:27.455Z" title="发表于 2025-03-03 23:04:27">2025-03-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/03/Hexo/" title="Hexo开发">Hexo开发</a><time datetime="2025-03-03T15:02:30.972Z" title="发表于 2025-03-03 23:02:30">2025-03-03</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><div class="aplayer" data-id="13344900252" data-server="netease" data-type="playlist"  data-fixed="true" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

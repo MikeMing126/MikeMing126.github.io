@@ -191,12 +191,12 @@
 <p>In UE5.4, the <a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/visual-logger-in-unreal-engine">Visual Logger</a> now correctly orders the events between clients and servers when using Play In Editor.  This makes the Visual Logger especially useful for debugging how the client and server interact when activating abilities, gameplay effects, and modifying attributes.</p>
 ]]></content>
       <categories>
-        <category>UE-Source</category>
+        <category>UE Source</category>
       </categories>
       <tags>
         <tag>UE</tag>
         <tag>GAS</tag>
-        <tag>UE-Source</tag>
+        <tag>UE Source</tag>
       </tags>
   </entry>
   <entry>
@@ -337,12 +337,12 @@
 </ul>
 ]]></content>
       <categories>
-        <category>UE-Source</category>
+        <category>UE Source</category>
       </categories>
       <tags>
         <tag>UE</tag>
         <tag>GAS</tag>
-        <tag>UE-Source</tag>
+        <tag>UE Source</tag>
       </tags>
   </entry>
 </search>

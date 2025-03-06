@@ -1,45 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hexo开发</title>
-    <url>/2025/03/03/Hexo/</url>
-    <content><![CDATA[<h1 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h1><h2 id="Hexo开发去除缓存-重新刷新生成"><a href="#Hexo开发去除缓存-重新刷新生成" class="headerlink" title="Hexo开发去除缓存-重新刷新生成"></a>Hexo开发去除缓存-重新刷新生成</h2><h3 id="表现"><a href="#表现" class="headerlink" title="表现"></a>表现</h3><p>在开发一个 Hexo 插件，在开发的过程中，遇到了一些小的问题：插件的代码发生了修改，但运行hexo 的时候却没有实时刷新出来。</p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>在对代码进行分析后发现，hexo 的 tag filter 的结果会缓存在数据库中，由于缓存了，所以我使用的 generator ，所以也会被缓存。</p>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>在预览前，删除 db.json 即可让 hexo 重新开始生成</p>
-<h2 id="网页缓存问题"><a href="#网页缓存问题" class="headerlink" title="网页缓存问题"></a>网页缓存问题</h2><p>F12打开开发者工具，网络部分，选择禁用缓存即可。</p>
+    <title>Git相关内容学习</title>
+    <url>/2025/03/06/GitLearning/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Git在版本维护上面还是能发挥很好的作用的。当然也可以考虑用TortoiseSVN。<br>主要目的还是维护好代码吧。这样有什么临时改动想回滚到之前版本也比较好处理。避免某些操作无法撤销而花很多精力去重新编写内容。</p>
+<h1 id="基础Git指令"><a href="#基础Git指令" class="headerlink" title="基础Git指令"></a>基础Git指令</h1><p>有需要再补充。</p>
+<h1 id="配置GitIgnore相关内容"><a href="#配置GitIgnore相关内容" class="headerlink" title="配置GitIgnore相关内容"></a>配置GitIgnore相关内容</h1><h2 id="基础说明"><a href="#基础说明" class="headerlink" title="基础说明"></a>基础说明</h2><p>在Git中，.gitignore文件用于指定项目中要忽略的文件和目录，这些文件和目录不会被跟踪和提交到远程仓库。编写.gitignore文件时，你可以使用一系列规则来匹配要忽略的文件和目录。</p>
+<h2 id="基本规则"><a href="#基本规则" class="headerlink" title="基本规则"></a>基本规则</h2><h3 id="忽略特定文件："><a href="#忽略特定文件：" class="headerlink" title="忽略特定文件："></a>忽略特定文件：</h3><p>  filename.ext</p>
+<h3 id="忽略特定目录："><a href="#忽略特定目录：" class="headerlink" title="忽略特定目录："></a>忽略特定目录：</h3><p>  directory&#x2F;</p>
+<h3 id="忽略特定扩展名的所有文件："><a href="#忽略特定扩展名的所有文件：" class="headerlink" title="忽略特定扩展名的所有文件："></a>忽略特定扩展名的所有文件：</h3><p>  *.log</p>
+<h3 id="忽略特定目录下的所有文件："><a href="#忽略特定目录下的所有文件：" class="headerlink" title="忽略特定目录下的所有文件："></a>忽略特定目录下的所有文件：</h3><p>  directory&#x2F;*</p>
+<h3 id="忽略特定目录及其所有子目录："><a href="#忽略特定目录及其所有子目录：" class="headerlink" title="忽略特定目录及其所有子目录："></a>忽略特定目录及其所有子目录：</h3><p>  directory&#x2F;**</p>
+<h2 id="高级规则"><a href="#高级规则" class="headerlink" title="高级规则"></a>高级规则</h2><h3 id="忽略特定模式的文件："><a href="#忽略特定模式的文件：" class="headerlink" title="忽略特定模式的文件："></a>忽略特定模式的文件：</h3><p>  file[0-9].txt</p>
+<h3 id="忽略特定模式的目录："><a href="#忽略特定模式的目录：" class="headerlink" title="忽略特定模式的目录："></a>忽略特定模式的目录：</h3><p>  dir*&#x2F;subdir&#x2F;</p>
+<h3 id="忽略特定目录下的特定文件："><a href="#忽略特定目录下的特定文件：" class="headerlink" title="忽略特定目录下的特定文件："></a>忽略特定目录下的特定文件：</h3><p>  directory&#x2F;filename.ext</p>
+<h3 id="忽略特定目录下的所有文件，但不包括子目录："><a href="#忽略特定目录下的所有文件，但不包括子目录：" class="headerlink" title="忽略特定目录下的所有文件，但不包括子目录："></a>忽略特定目录下的所有文件，但不包括子目录：</h3><p>  directory&#x2F;<em>.</em></p>
+<h3 id="忽略特定目录下的所有文件，但包括子目录中的某些文件："><a href="#忽略特定目录下的所有文件，但包括子目录中的某些文件：" class="headerlink" title="忽略特定目录下的所有文件，但包括子目录中的某些文件："></a>忽略特定目录下的所有文件，但包括子目录中的某些文件：</h3><p>  directory&#x2F;*<br>  !directory&#x2F;subdir&#x2F;important.file</p>
+<h2 id="特殊规则"><a href="#特殊规则" class="headerlink" title="特殊规则"></a>特殊规则</h2><h3 id="忽略隐藏文件"><a href="#忽略隐藏文件" class="headerlink" title="忽略隐藏文件"></a>忽略隐藏文件</h3><p>  以.开头的文件：.*</p>
+<h3 id="忽略空目录"><a href="#忽略空目录" class="headerlink" title="忽略空目录"></a>忽略空目录</h3><p>  Git默认不跟踪空目录，但可以通过创建一个空的.gitkeep文件来跟踪：<br>  忽略所有空目录<br>  *&#x2F;<br>  但跟踪特定空目录<br>  !important_dir&#x2F;</p>
+<h3 id="全局忽略文件"><a href="#全局忽略文件" class="headerlink" title="全局忽略文件"></a>全局忽略文件</h3><p>  在全局配置中设置，适用于所有项目：<br>  git config –global core.excludesfile ~&#x2F;.gitignore_global</p>
+<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><h3 id="顺序"><a href="#顺序" class="headerlink" title="顺序"></a>顺序</h3><p>  Git会按照.gitignore文件中的顺序匹配规则，后面的规则可能会覆盖前面的规则。</p>
+<h3 id="相对路径"><a href="#相对路径" class="headerlink" title="相对路径"></a>相对路径</h3><p>  规则是相对于.gitignore文件所在目录的。</p>
+<h3 id="全局忽略文件-1"><a href="#全局忽略文件-1" class="headerlink" title="全局忽略文件"></a>全局忽略文件</h3><p>  如果你有一些文件或目录在所有项目中都需要忽略，可以考虑使用全局忽略文件。</p>
+<p>通过合理编写.gitignore文件，可以有效地管理项目中的不必要文件，保持仓库的整洁。</p>
 ]]></content>
       <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Windows下的Git账号更换</title>
-    <url>/2025/03/04/windows-change-git/</url>
-    <content><![CDATA[<h3 id="Hexo更换指定Git账号问题"><a href="#Hexo更换指定Git账号问题" class="headerlink" title="Hexo更换指定Git账号问题"></a>Hexo更换指定Git账号问题</h3><ul>
-<li><p>Git内设置对应的账号和密码</p>
-</li>
-<li><p>控制面板 - 用户 - 凭据管理器 - Windows凭据删除对应git的凭据 在使用时重新通过网页处理凭据 </p>
-</li>
-<li><p>使用新账号登陆即可</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>其他</category>
+        <category>Git</category>
       </categories>
       <tags>
         <tag>Git</tag>
       </tags>
   </entry>
   <entry>
-    <title>About Theme</title>
-    <url>/2025/03/03/theme/</url>
-    <content><![CDATA[<h1 id="Theme"><a href="#Theme" class="headerlink" title="Theme"></a>Theme</h1><h2 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h2><p><a href="https://github.com/MaLuns/hexo-theme-async">GitHub</a>  </p>
-<p><a href="https://hexo-theme-async.imalun.com/guide/">Introduction</a>  </p>
-<h2 id="Butterfly"><a href="#Butterfly" class="headerlink" title="Butterfly"></a>Butterfly</h2><p><a href="https://butterfly.js.org/">Introduction</a>  </p>
+    <title>Hexo开发</title>
+    <url>/2025/03/03/Hexo/</url>
+    <content><![CDATA[<h1 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h1><h2 id="Hexo开发去除缓存-重新刷新生成"><a href="#Hexo开发去除缓存-重新刷新生成" class="headerlink" title="Hexo开发去除缓存-重新刷新生成"></a>Hexo开发去除缓存-重新刷新生成</h2><h3 id="表现"><a href="#表现" class="headerlink" title="表现"></a>表现</h3><p>在开发一个 Hexo 插件，在开发的过程中，遇到了一些小的问题：插件的代码发生了修改，但运行hexo 的时候却没有实时刷新出来。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>在对代码进行分析后发现，hexo 的 tag filter 的结果会缓存在数据库中，由于缓存了，所以我使用的 generator ，所以也会被缓存。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>在预览前，删除 db.json 即可让 hexo 重新开始生成</p>
+<h2 id="网页缓存问题"><a href="#网页缓存问题" class="headerlink" title="网页缓存问题"></a>网页缓存问题</h2><p>F12打开开发者工具，网络部分，选择禁用缓存即可。</p>
 ]]></content>
       <categories>
         <category>其他</category>
@@ -343,6 +341,61 @@
         <tag>UE</tag>
         <tag>GAS</tag>
         <tag>UE Source</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>About Theme</title>
+    <url>/2025/03/03/theme/</url>
+    <content><![CDATA[<h1 id="Theme"><a href="#Theme" class="headerlink" title="Theme"></a>Theme</h1><h2 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h2><p><a href="https://github.com/MaLuns/hexo-theme-async">GitHub</a>  </p>
+<p><a href="https://hexo-theme-async.imalun.com/guide/">Introduction</a>  </p>
+<h2 id="Butterfly"><a href="#Butterfly" class="headerlink" title="Butterfly"></a>Butterfly</h2><p><a href="https://butterfly.js.org/">Introduction</a>  </p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GASPredictionKey自学简记</title>
+    <url>/2025/03/06/UEGamplayPrediction%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h1 id="关键点：PredictionKey"><a href="#关键点：PredictionKey" class="headerlink" title="关键点：PredictionKey"></a>关键点：PredictionKey</h1><p>由GA激活生成的PKey，并由此去影响GAS系统中的各个其他部分。</p>
+<p>客户端预测先行，在收到服务器校验结果后，执行对应的回滚操作。</p>
+<h2 id="概念：预测窗口-Prediction-Window"><a href="#概念：预测窗口-Prediction-Window" class="headerlink" title="概念：预测窗口 Prediction Window"></a>概念：预测窗口 Prediction Window</h2><blockquote>
+<p>“We do not predict over multiple frames”</p>
+</blockquote>
+<p>在多个行为激活形成链条时，每个行为有自己的PKey，但又和之前的PKey相关联。<br>服务端并不确定Reject某个PKey对应的行为，是否会导致后续的行为也被拒绝。这里在实现的时候可能需要额外注意下。</p>
+<h2 id="关于预测窗口"><a href="#关于预测窗口" class="headerlink" title="关于预测窗口"></a>关于预测窗口</h2><p>GA如果依赖于外部事件，或者定时器，在异步等待过程中，可能会收到服务器的confirm&#x2F;reject回调。而PKey在ActivateAbility返回时就结束了。因此后面激活的内容是无法绑定到这个PKey上的。</p>
+<p>【这里可以验证一下 PKey在下发回客户端执行的事情（比如说广播），如果是广播形式，那么确实后面的内容就有问题了。】</p>
+<p>预测窗口和预测键不会跨帧。但是预测本身是可以支持跨帧的。这里主要处理的是异步的GATask等逻辑。为了实现跨多帧的预测逻辑，就需要多个预测窗口。每个帧内的操作都是独立的预测窗口，每个异步操作需要自己的同步执行块。</p>
+<p>这里异步操作对应的预测窗口创建：<br>• Ability中去创建新的PredictionWindow - 见<code>FScopedPredictionWindow</code></p>
+<h2 id="结合官方文档，给出一个Deepseek回答的样例【待考证】"><a href="#结合官方文档，给出一个Deepseek回答的样例【待考证】" class="headerlink" title="结合官方文档，给出一个Deepseek回答的样例【待考证】"></a>结合官方文档，给出一个Deepseek回答的样例【待考证】</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#region Deepseek样例和回答</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UAbilityTask_WaitInputRelease::OnReleaseCallback</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//创建新的预测窗口</span></span><br><span class="line">    <span class="function">FScopedPredictionWindow <span class="title">ScopedPrediction</span><span class="params">(AbilitySystemComponent)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    <span class="comment">//发送RPC时带上预测键</span></span></span><br><span class="line"><span class="function">    AbilitySystemComponent-&gt;<span class="title">ServerInputRelease</span><span class="params">(ScopedPrediction.ScopedPreditionKey)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//[在此作用域内所有副作用自动关联预测键]</span></span><br><span class="line">    <span class="built_in">ApplayGameplayEffect</span>(ChargeEffect)</span><br><span class="line">    <span class="built_in">PlayMontage</span>(ReleaseAnim)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">需要注意新键的创建可能以来于FScopedPredictionWindow。</span><br><span class="line">且依赖链条，可能需要显示创建。</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UGA_Chain::ActivateAbility</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">FCopedPredictionWindow <span class="title">Window1</span><span class="params">(ASC)</span></span>; <span class="comment">//PKey1</span></span><br><span class="line">    <span class="built_in">ServerAction1</span>(PKey1);</span><br><span class="line">    <span class="comment">//显示创建依赖关系</span></span><br><span class="line">    FPredictionKey PKey2 = FPredictionKey::<span class="built_in">CreateDependentKey</span>(PKey1);</span><br><span class="line"></span><br><span class="line">    UAbilityTask_WaitGameplayEvent * Task = UAbilityTask_WaitGameplayEvent::<span class="built_in">WaitGameplayEvent</span>(<span class="keyword">this</span>);</span><br><span class="line">    Task-&gt;EventReceived.<span class="built_in">AddLambda</span>([<span class="keyword">this</span>,PKey2]()&#123;</span><br><span class="line">        FScopedPredictionWindow <span class="built_in">Window2</span>(ASC);<span class="comment">//实际生成Key3</span></span><br><span class="line">        PKey<span class="number">3.</span><span class="built_in">AddDependency</span>(PKey2);    <span class="comment">//建立依赖链</span></span><br><span class="line">        <span class="built_in">ServerAction2</span>(PKey3);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;依赖关系是基于键的当前状态而不是键本身的存在。&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//#endregion Deepseek样例回答</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>GAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows下的Git账号更换</title>
+    <url>/2025/03/04/windows-change-git/</url>
+    <content><![CDATA[<h3 id="Hexo更换指定Git账号问题"><a href="#Hexo更换指定Git账号问题" class="headerlink" title="Hexo更换指定Git账号问题"></a>Hexo更换指定Git账号问题</h3><ul>
+<li><p>Git内设置对应的账号和密码</p>
+</li>
+<li><p>控制面板 - 用户 - 凭据管理器 - Windows凭据删除对应git的凭据 在使用时重新通过网页处理凭据 </p>
+</li>
+<li><p>使用新账号登陆即可</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
       </tags>
   </entry>
 </search>

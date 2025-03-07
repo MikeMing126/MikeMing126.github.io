@@ -198,6 +198,25 @@
       </tags>
   </entry>
   <entry>
+    <title>Windows下的Git账号更换</title>
+    <url>/2025/03/04/windows-change-git/</url>
+    <content><![CDATA[<h3 id="Hexo更换指定Git账号问题"><a href="#Hexo更换指定Git账号问题" class="headerlink" title="Hexo更换指定Git账号问题"></a>Hexo更换指定Git账号问题</h3><ul>
+<li><p>Git内设置对应的账号和密码</p>
+</li>
+<li><p>控制面板 - 用户 - 凭据管理器 - Windows凭据删除对应git的凭据 在使用时重新通过网页处理凭据 </p>
+</li>
+<li><p>使用新账号登陆即可</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>UE5.5-GameplayPrediction</title>
     <url>/2025/03/05/UE55GamplayPrediction/</url>
     <content><![CDATA[<h1 id="SourceCode源码"><a href="#SourceCode源码" class="headerlink" title="SourceCode源码"></a><a href="https://github.com/MikeMing126/UESourceCode/blob/main/UE55_GAS_GameplayPrediction.h">SourceCode源码</a></h1><h1 id="Overview-of-Gameplay-Ability-Prediction"><a href="#Overview-of-Gameplay-Ability-Prediction" class="headerlink" title="Overview of Gameplay Ability Prediction"></a>Overview of Gameplay Ability Prediction</h1><h2 id="High-Level-Goals"><a href="#High-Level-Goals" class="headerlink" title="High Level Goals"></a>High Level Goals</h2><ul>
@@ -344,20 +363,6 @@
       </tags>
   </entry>
   <entry>
-    <title>About Theme</title>
-    <url>/2025/03/03/theme/</url>
-    <content><![CDATA[<h1 id="Theme"><a href="#Theme" class="headerlink" title="Theme"></a>Theme</h1><h2 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h2><p><a href="https://github.com/MaLuns/hexo-theme-async">GitHub</a>  </p>
-<p><a href="https://hexo-theme-async.imalun.com/guide/">Introduction</a>  </p>
-<h2 id="Butterfly"><a href="#Butterfly" class="headerlink" title="Butterfly"></a>Butterfly</h2><p><a href="https://butterfly.js.org/">Introduction</a>  </p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>GASPredictionKey自学简记</title>
     <url>/2025/03/06/UEGamplayPrediction%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h1 id="关键点：PredictionKey"><a href="#关键点：PredictionKey" class="headerlink" title="关键点：PredictionKey"></a>关键点：PredictionKey</h1><p>由GA激活生成的PKey，并由此去影响GAS系统中的各个其他部分。</p>
@@ -380,22 +385,31 @@
       </tags>
   </entry>
   <entry>
-    <title>Windows下的Git账号更换</title>
-    <url>/2025/03/04/windows-change-git/</url>
-    <content><![CDATA[<h3 id="Hexo更换指定Git账号问题"><a href="#Hexo更换指定Git账号问题" class="headerlink" title="Hexo更换指定Git账号问题"></a>Hexo更换指定Git账号问题</h3><ul>
-<li><p>Git内设置对应的账号和密码</p>
-</li>
-<li><p>控制面板 - 用户 - 凭据管理器 - Windows凭据删除对应git的凭据 在使用时重新通过网页处理凭据 </p>
-</li>
-<li><p>使用新账号登陆即可</p>
-</li>
-</ul>
-]]></content>
+    <title>Hexo</title>
+    <url>/2025/03/03/theme/</url>
+    <content><![CDATA[<h1 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h1><h2 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h2><p><a href="https://github.com/MaLuns/hexo-theme-async">GitHub</a>  </p>
+<p><a href="https://hexo-theme-async.imalun.com/guide/">Introduction</a>  </p>
+<h2 id="Butterfly"><a href="#Butterfly" class="headerlink" title="Butterfly"></a>Butterfly</h2><p><a href="https://butterfly.js.org/">Introduction</a>  </p>
+<h1 id="音乐播放"><a href="#音乐播放" class="headerlink" title="音乐播放"></a>音乐播放</h1><p>主要用于实现网页在线音乐播放</p>
+<h2 id="基于Butterfly主题的音乐播放器"><a href="#基于Butterfly主题的音乐播放器" class="headerlink" title="基于Butterfly主题的音乐播放器"></a>基于Butterfly主题的音乐播放器</h2><p>参考文章 <a href="https://polar-bear.eu.org/2023/07/21/hexo-tag-aplayer-cha-jian/">博客</a></p>
+<p>插件：hexo-tag-aplayer</p>
+<p>启用MeingJS来使用在线网站歌单。</p>
+<h3 id="底部播放器切换网站问题"><a href="#底部播放器切换网站问题" class="headerlink" title="底部播放器切换网站问题"></a>底部播放器切换网站问题</h3><h4 id="基于Hexo-Tag-APlayer的PJAX-兼容："><a href="#基于Hexo-Tag-APlayer的PJAX-兼容：" class="headerlink" title="基于Hexo-Tag-APlayer的PJAX 兼容："></a>基于Hexo-Tag-APlayer的PJAX 兼容：</h4><p>在主题配置文件中设置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pjax:</span><br><span class="line">  enable: ture</span><br><span class="line">  exclude:</span><br></pre></td></tr></table></figure>
+
+<p><strong>！！！PJAX问题！！！</strong><br>基于这种配置，虽然网页在切换时，音频播放器的进度不会重置，但是很多网页的动画也因此而丢失了。</p>
+<h4 id="不使用PJAX的实现方案"><a href="#不使用PJAX的实现方案" class="headerlink" title="不使用PJAX的实现方案:"></a>不使用PJAX的实现方案:</h4><p>参考文章 <a href="https://zsyyblog.com/90153be9.html">博客</a></p>
+<ol>
+<li>在博客对应的source文件夹中 创建script文件夹。</li>
+<li>编写对应的代码文件，并放于script文件夹中。如APlayerHolder.js</li>
+<li>在主题yml配置对应的代码</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inject:</span><br><span class="line">  head:</span><br><span class="line">  bottom:</span><br><span class="line">    - &lt;script src=&quot;/script/APlayerHolder.js&quot;&gt;&lt;/script&gt; //新增代码使用。</span><br><span class="line">    - &lt;class=&quot;aplayer&quot;&gt; //这里是你的音乐播放器配置，不用改。</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>Git</category>
+        <category>其他</category>
       </categories>
       <tags>
-        <tag>Git</tag>
+        <tag>Hexo</tag>
       </tags>
   </entry>
 </search>

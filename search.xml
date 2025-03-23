@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Git相关内容学习</title>
+    <url>/2025/03/06/GitLearning/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Git在版本维护上面还是能发挥很好的作用的。当然也可以考虑用TortoiseSVN。<br>主要目的还是维护好代码吧。这样有什么临时改动想回滚到之前版本也比较好处理。避免某些操作无法撤销而花很多精力去重新编写内容。</p>
+<h1 id="基础Git指令"><a href="#基础Git指令" class="headerlink" title="基础Git指令"></a>基础Git指令</h1><p>有需要再补充。</p>
+<h1 id="配置GitIgnore相关内容"><a href="#配置GitIgnore相关内容" class="headerlink" title="配置GitIgnore相关内容"></a>配置GitIgnore相关内容</h1><h2 id="基础说明"><a href="#基础说明" class="headerlink" title="基础说明"></a>基础说明</h2><p>在Git中，.gitignore文件用于指定项目中要忽略的文件和目录，这些文件和目录不会被跟踪和提交到远程仓库。编写.gitignore文件时，你可以使用一系列规则来匹配要忽略的文件和目录。</p>
+<h2 id="基本规则"><a href="#基本规则" class="headerlink" title="基本规则"></a>基本规则</h2><h3 id="忽略特定文件："><a href="#忽略特定文件：" class="headerlink" title="忽略特定文件："></a>忽略特定文件：</h3><p>  filename.ext</p>
+<h3 id="忽略特定目录："><a href="#忽略特定目录：" class="headerlink" title="忽略特定目录："></a>忽略特定目录：</h3><p>  directory&#x2F;</p>
+<h3 id="忽略特定扩展名的所有文件："><a href="#忽略特定扩展名的所有文件：" class="headerlink" title="忽略特定扩展名的所有文件："></a>忽略特定扩展名的所有文件：</h3><p>  *.log</p>
+<h3 id="忽略特定目录下的所有文件："><a href="#忽略特定目录下的所有文件：" class="headerlink" title="忽略特定目录下的所有文件："></a>忽略特定目录下的所有文件：</h3><p>  directory&#x2F;*</p>
+<h3 id="忽略特定目录及其所有子目录："><a href="#忽略特定目录及其所有子目录：" class="headerlink" title="忽略特定目录及其所有子目录："></a>忽略特定目录及其所有子目录：</h3><p>  directory&#x2F;**</p>
+<h2 id="高级规则"><a href="#高级规则" class="headerlink" title="高级规则"></a>高级规则</h2><h3 id="忽略特定模式的文件："><a href="#忽略特定模式的文件：" class="headerlink" title="忽略特定模式的文件："></a>忽略特定模式的文件：</h3><p>  file[0-9].txt</p>
+<h3 id="忽略特定模式的目录："><a href="#忽略特定模式的目录：" class="headerlink" title="忽略特定模式的目录："></a>忽略特定模式的目录：</h3><p>  dir*&#x2F;subdir&#x2F;</p>
+<h3 id="忽略特定目录下的特定文件："><a href="#忽略特定目录下的特定文件：" class="headerlink" title="忽略特定目录下的特定文件："></a>忽略特定目录下的特定文件：</h3><p>  directory&#x2F;filename.ext</p>
+<h3 id="忽略特定目录下的所有文件，但不包括子目录："><a href="#忽略特定目录下的所有文件，但不包括子目录：" class="headerlink" title="忽略特定目录下的所有文件，但不包括子目录："></a>忽略特定目录下的所有文件，但不包括子目录：</h3><p>  directory&#x2F;<em>.</em></p>
+<h3 id="忽略特定目录下的所有文件，但包括子目录中的某些文件："><a href="#忽略特定目录下的所有文件，但包括子目录中的某些文件：" class="headerlink" title="忽略特定目录下的所有文件，但包括子目录中的某些文件："></a>忽略特定目录下的所有文件，但包括子目录中的某些文件：</h3><p>  directory&#x2F;*<br>  !directory&#x2F;subdir&#x2F;important.file</p>
+<h2 id="特殊规则"><a href="#特殊规则" class="headerlink" title="特殊规则"></a>特殊规则</h2><h3 id="忽略隐藏文件"><a href="#忽略隐藏文件" class="headerlink" title="忽略隐藏文件"></a>忽略隐藏文件</h3><p>  以.开头的文件：.*</p>
+<h3 id="忽略空目录"><a href="#忽略空目录" class="headerlink" title="忽略空目录"></a>忽略空目录</h3><p>  Git默认不跟踪空目录，但可以通过创建一个空的.gitkeep文件来跟踪：<br>  忽略所有空目录<br>  *&#x2F;<br>  但跟踪特定空目录<br>  !important_dir&#x2F;</p>
+<h3 id="全局忽略文件"><a href="#全局忽略文件" class="headerlink" title="全局忽略文件"></a>全局忽略文件</h3><p>  在全局配置中设置，适用于所有项目：<br>  git config –global core.excludesfile ~&#x2F;.gitignore_global</p>
+<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><h3 id="顺序"><a href="#顺序" class="headerlink" title="顺序"></a>顺序</h3><p>  Git会按照.gitignore文件中的顺序匹配规则，后面的规则可能会覆盖前面的规则。</p>
+<h3 id="相对路径"><a href="#相对路径" class="headerlink" title="相对路径"></a>相对路径</h3><p>  规则是相对于.gitignore文件所在目录的。</p>
+<h3 id="全局忽略文件-1"><a href="#全局忽略文件-1" class="headerlink" title="全局忽略文件"></a>全局忽略文件</h3><p>  如果你有一些文件或目录在所有项目中都需要忽略，可以考虑使用全局忽略文件。</p>
+<p>通过合理编写.gitignore文件，可以有效地管理项目中的不必要文件，保持仓库的整洁。</p>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hexo APlayer 音频播放及切换网页时保存音频进度</title>
     <url>/2025/03/08/HexoAPlayer/</url>
     <content><![CDATA[<h1 id="音乐播放"><a href="#音乐播放" class="headerlink" title="音乐播放"></a>音乐播放</h1><p>主要用于实现网页在线音乐播放</p>
@@ -22,6 +53,21 @@
 <li>对应代码文件APlayerHolder.js示例</li>
 </ol>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">InitAPlayerHolder</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">//获取全局对象aplayer。</span></span><br><span class="line">    <span class="comment">//注意判空</span></span><br><span class="line">    <span class="keyword">var</span> ap = <span class="variable language_">window</span>.<span class="property">aplayers</span> &amp;&amp; <span class="variable language_">window</span>.<span class="property">aplayers</span>[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(ap == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//等待aplayer对象被创建</span></span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="title class_">InitAPlayerHolder</span>, <span class="number">50</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//#region 状态保存函数</span></span><br><span class="line">    <span class="comment">//原基础上加了个检测暂停免得切换页面后爆零(bushi)（指社死）</span></span><br><span class="line">    ap.<span class="title function_">on</span>(<span class="string">&quot;pause&quot;</span>,<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">sessionStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;aPlayerMusicPaused&quot;</span>,<span class="number">1</span>);</span><br><span class="line">        <span class="comment">//ap.lrc.hide()</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">//自带播放暂停时显隐歌词，后面那句可以删，上同</span></span><br><span class="line">    ap.<span class="title function_">on</span>(<span class="string">&quot;play&quot;</span>,<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">sessionStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;aPlayerMusicPaused&quot;</span>,<span class="number">0</span>);</span><br><span class="line">        <span class="comment">//ap.lrc.show()</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//保存音量</span></span><br><span class="line">    ap.<span class="property">audio</span>.<span class="property">onvolumechange</span>=<span class="keyword">function</span>(<span class="params"></span>)&#123;<span class="variable language_">sessionStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;aPlayerMusicVolume&quot;</span>,ap.<span class="property">audio</span>.<span class="property">volume</span>);&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//Index/Time/Mode 定时保存</span></span><br><span class="line">    <span class="keyword">var</span> saveTimeInterval = <span class="number">150</span>;</span><br><span class="line">    <span class="built_in">setInterval</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;aPlayerMusicIndex&quot;</span>,ap.<span class="property">list</span>.<span class="property">index</span>);</span><br><span class="line">        <span class="variable language_">sessionStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;aPlayerMusicTime&quot;</span>,ap.<span class="property">audio</span>.<span class="property">currentTime</span>);</span><br><span class="line">        <span class="variable language_">sessionStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;aPlayerMusicMode&quot;</span>,ap.<span class="property">mode</span>);</span><br><span class="line">    &#125;,saveTimeInterval);</span><br><span class="line">    <span class="comment">//#endregion 状态保存函数</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//#region 加载保存进度</span></span><br><span class="line">    <span class="comment">//自带播放暂停时显隐歌词，可以删</span></span><br><span class="line">    ap.<span class="property">lrc</span>.<span class="title function_">hide</span>();</span><br><span class="line">    <span class="variable language_">document</span>.<span class="title function_">getElementsByClassName</span>(<span class="string">&quot;aplayer-icon-menu&quot;</span>)[<span class="number">0</span>].<span class="title function_">click</span>()</span><br><span class="line">    <span class="comment">//Index</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;aPlayerMusicIndex&quot;</span>)!=<span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        aPlayerMusicIndex = <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;aPlayerMusicIndex&quot;</span>);</span><br><span class="line">        ap.<span class="property">list</span>.<span class="title function_">switch</span>(aPlayerMusicIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//Time</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="variable language_">sessionStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;aPlayerMusicTime&quot;</span>) != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable language_">window</span>.<span class="property">musict</span> = <span class="variable language_">sessionStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;aPlayerMusicTime&quot;</span>);</span><br><span class="line">        ap.<span class="title function_">setMode</span>(<span class="variable language_">sessionStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;aPlayerMusicMode&quot;</span>));</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">sessionStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;aPlayerMusicPaused&quot;</span>)==<span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ap.<span class="title function_">pause</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            ap.<span class="title function_">play</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// setTimeout(function()&#123;</span></span><br><span class="line">        <span class="comment">//     ap.seek(window.musict); //seek炸了我很久，最后决定加个延时（本来要用canplay但是莫名鬼畜了）</span></span><br><span class="line">        <span class="comment">// &#125;,500);</span></span><br><span class="line">        <span class="keyword">var</span> g=<span class="literal">true</span>; <span class="comment">//加个变量以防鬼畜但是不知道怎么节流qwq</span></span><br><span class="line">        ap.<span class="title function_">on</span>(<span class="string">&quot;canplay&quot;</span>,<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(g)&#123;</span><br><span class="line">                ap.<span class="title function_">seek</span>(<span class="variable language_">window</span>.<span class="property">musict</span>);</span><br><span class="line">                g=<span class="literal">false</span>;<span class="comment">//如果不加oncanplay的话会seek失败就这原因炸很久</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable language_">sessionStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;aPlayerMusicPaused&quot;</span>,<span class="number">1</span>);</span><br><span class="line">        ap.<span class="title function_">setMode</span>(<span class="string">&quot;mini&quot;</span>); <span class="comment">//新版添加了保存展开状态功能</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//Volume</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="variable language_">sessionStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;aPlayerMusicVolume&quot;</span>) != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        ap.<span class="property">audio</span>.<span class="property">volume</span>=<span class="title class_">Number</span>(<span class="variable language_">sessionStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;aPlayerMusicVolume&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//#endregion 加载保存进度</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//执行逻辑</span></span><br><span class="line"><span class="title class_">InitAPlayerHolder</span>();</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo开发</title>
+    <url>/2025/03/03/HexoDev/</url>
+    <content><![CDATA[<h1 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h1><h2 id="Hexo开发去除缓存-重新刷新生成"><a href="#Hexo开发去除缓存-重新刷新生成" class="headerlink" title="Hexo开发去除缓存-重新刷新生成"></a>Hexo开发去除缓存-重新刷新生成</h2><h3 id="表现"><a href="#表现" class="headerlink" title="表现"></a>表现</h3><p>在开发一个 Hexo 插件，在开发的过程中，遇到了一些小的问题：插件的代码发生了修改，但运行hexo 的时候却没有实时刷新出来。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>在对代码进行分析后发现，hexo 的 tag filter 的结果会缓存在数据库中，由于缓存了，所以我使用的 generator ，所以也会被缓存。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>在预览前，删除 db.json 即可让 hexo 重新开始生成</p>
+<h2 id="网页缓存问题"><a href="#网页缓存问题" class="headerlink" title="网页缓存问题"></a>网页缓存问题</h2><p>F12打开开发者工具，网络部分，选择禁用缓存即可。</p>
+]]></content>
       <categories>
         <category>其他</category>
       </categories>
@@ -148,198 +194,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hexo开发</title>
-    <url>/2025/03/03/HexoDev/</url>
-    <content><![CDATA[<h1 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h1><h2 id="Hexo开发去除缓存-重新刷新生成"><a href="#Hexo开发去除缓存-重新刷新生成" class="headerlink" title="Hexo开发去除缓存-重新刷新生成"></a>Hexo开发去除缓存-重新刷新生成</h2><h3 id="表现"><a href="#表现" class="headerlink" title="表现"></a>表现</h3><p>在开发一个 Hexo 插件，在开发的过程中，遇到了一些小的问题：插件的代码发生了修改，但运行hexo 的时候却没有实时刷新出来。</p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>在对代码进行分析后发现，hexo 的 tag filter 的结果会缓存在数据库中，由于缓存了，所以我使用的 generator ，所以也会被缓存。</p>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>在预览前，删除 db.json 即可让 hexo 重新开始生成</p>
-<h2 id="网页缓存问题"><a href="#网页缓存问题" class="headerlink" title="网页缓存问题"></a>网页缓存问题</h2><p>F12打开开发者工具，网络部分，选择禁用缓存即可。</p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git相关内容学习</title>
-    <url>/2025/03/06/GitLearning/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Git在版本维护上面还是能发挥很好的作用的。当然也可以考虑用TortoiseSVN。<br>主要目的还是维护好代码吧。这样有什么临时改动想回滚到之前版本也比较好处理。避免某些操作无法撤销而花很多精力去重新编写内容。</p>
-<h1 id="基础Git指令"><a href="#基础Git指令" class="headerlink" title="基础Git指令"></a>基础Git指令</h1><p>有需要再补充。</p>
-<h1 id="配置GitIgnore相关内容"><a href="#配置GitIgnore相关内容" class="headerlink" title="配置GitIgnore相关内容"></a>配置GitIgnore相关内容</h1><h2 id="基础说明"><a href="#基础说明" class="headerlink" title="基础说明"></a>基础说明</h2><p>在Git中，.gitignore文件用于指定项目中要忽略的文件和目录，这些文件和目录不会被跟踪和提交到远程仓库。编写.gitignore文件时，你可以使用一系列规则来匹配要忽略的文件和目录。</p>
-<h2 id="基本规则"><a href="#基本规则" class="headerlink" title="基本规则"></a>基本规则</h2><h3 id="忽略特定文件："><a href="#忽略特定文件：" class="headerlink" title="忽略特定文件："></a>忽略特定文件：</h3><p>  filename.ext</p>
-<h3 id="忽略特定目录："><a href="#忽略特定目录：" class="headerlink" title="忽略特定目录："></a>忽略特定目录：</h3><p>  directory&#x2F;</p>
-<h3 id="忽略特定扩展名的所有文件："><a href="#忽略特定扩展名的所有文件：" class="headerlink" title="忽略特定扩展名的所有文件："></a>忽略特定扩展名的所有文件：</h3><p>  *.log</p>
-<h3 id="忽略特定目录下的所有文件："><a href="#忽略特定目录下的所有文件：" class="headerlink" title="忽略特定目录下的所有文件："></a>忽略特定目录下的所有文件：</h3><p>  directory&#x2F;*</p>
-<h3 id="忽略特定目录及其所有子目录："><a href="#忽略特定目录及其所有子目录：" class="headerlink" title="忽略特定目录及其所有子目录："></a>忽略特定目录及其所有子目录：</h3><p>  directory&#x2F;**</p>
-<h2 id="高级规则"><a href="#高级规则" class="headerlink" title="高级规则"></a>高级规则</h2><h3 id="忽略特定模式的文件："><a href="#忽略特定模式的文件：" class="headerlink" title="忽略特定模式的文件："></a>忽略特定模式的文件：</h3><p>  file[0-9].txt</p>
-<h3 id="忽略特定模式的目录："><a href="#忽略特定模式的目录：" class="headerlink" title="忽略特定模式的目录："></a>忽略特定模式的目录：</h3><p>  dir*&#x2F;subdir&#x2F;</p>
-<h3 id="忽略特定目录下的特定文件："><a href="#忽略特定目录下的特定文件：" class="headerlink" title="忽略特定目录下的特定文件："></a>忽略特定目录下的特定文件：</h3><p>  directory&#x2F;filename.ext</p>
-<h3 id="忽略特定目录下的所有文件，但不包括子目录："><a href="#忽略特定目录下的所有文件，但不包括子目录：" class="headerlink" title="忽略特定目录下的所有文件，但不包括子目录："></a>忽略特定目录下的所有文件，但不包括子目录：</h3><p>  directory&#x2F;<em>.</em></p>
-<h3 id="忽略特定目录下的所有文件，但包括子目录中的某些文件："><a href="#忽略特定目录下的所有文件，但包括子目录中的某些文件：" class="headerlink" title="忽略特定目录下的所有文件，但包括子目录中的某些文件："></a>忽略特定目录下的所有文件，但包括子目录中的某些文件：</h3><p>  directory&#x2F;*<br>  !directory&#x2F;subdir&#x2F;important.file</p>
-<h2 id="特殊规则"><a href="#特殊规则" class="headerlink" title="特殊规则"></a>特殊规则</h2><h3 id="忽略隐藏文件"><a href="#忽略隐藏文件" class="headerlink" title="忽略隐藏文件"></a>忽略隐藏文件</h3><p>  以.开头的文件：.*</p>
-<h3 id="忽略空目录"><a href="#忽略空目录" class="headerlink" title="忽略空目录"></a>忽略空目录</h3><p>  Git默认不跟踪空目录，但可以通过创建一个空的.gitkeep文件来跟踪：<br>  忽略所有空目录<br>  *&#x2F;<br>  但跟踪特定空目录<br>  !important_dir&#x2F;</p>
-<h3 id="全局忽略文件"><a href="#全局忽略文件" class="headerlink" title="全局忽略文件"></a>全局忽略文件</h3><p>  在全局配置中设置，适用于所有项目：<br>  git config –global core.excludesfile ~&#x2F;.gitignore_global</p>
-<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><h3 id="顺序"><a href="#顺序" class="headerlink" title="顺序"></a>顺序</h3><p>  Git会按照.gitignore文件中的顺序匹配规则，后面的规则可能会覆盖前面的规则。</p>
-<h3 id="相对路径"><a href="#相对路径" class="headerlink" title="相对路径"></a>相对路径</h3><p>  规则是相对于.gitignore文件所在目录的。</p>
-<h3 id="全局忽略文件-1"><a href="#全局忽略文件-1" class="headerlink" title="全局忽略文件"></a>全局忽略文件</h3><p>  如果你有一些文件或目录在所有项目中都需要忽略，可以考虑使用全局忽略文件。</p>
-<p>通过合理编写.gitignore文件，可以有效地管理项目中的不必要文件，保持仓库的整洁。</p>
-]]></content>
-      <categories>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE5.5-GameplayPrediction</title>
-    <url>/2025/03/05/UE55GamplayPrediction/</url>
-    <content><![CDATA[<h1 id="SourceCode源码"><a href="#SourceCode源码" class="headerlink" title="SourceCode源码"></a><a href="https://github.com/MikeMing126/UESourceCode/blob/main/UE55_GAS_GameplayPrediction.h">SourceCode源码</a></h1><h1 id="Overview-of-Gameplay-Ability-Prediction"><a href="#Overview-of-Gameplay-Ability-Prediction" class="headerlink" title="Overview of Gameplay Ability Prediction"></a>Overview of Gameplay Ability Prediction</h1><h2 id="High-Level-Goals"><a href="#High-Level-Goals" class="headerlink" title="High Level Goals"></a>High Level Goals</h2><ul>
-<li>At the GameplayAbility level (implementing an ability) prediction is transparent. An ability says “Do X-&gt;Y-&gt;Z”, and we will automatically predict the parts of that that we can.</li>
-<li>We wish to avoid having logic such as “If Authority: Do X. Else: Do predictive version of X” in the ability itself.</li>
-</ul>
-<p>At this point, not all cases are solved, but we have a very solid framework for working with client side prediction.</p>
-<p>When we say “client side prediction” we really mean client predicting game simulation state. Things can still be ‘completely client side’ without having to work within a prediction system.<br>For example, footsteps are completely client side and never interact with this system. But clients predicting their mana going from 100 to 90 when they cast a spell is ‘client side prediction’.</p>
-<h2 id="What-do-we-currently-predict"><a href="#What-do-we-currently-predict" class="headerlink" title="What do we currently predict?"></a>What do we currently predict?</h2><ul>
-<li>Initial GameplayAbility activation (and chained activation with caveats)</li>
-<li>Triggered Events</li>
-<li>GameplayEffect application:<ul>
-<li>Attribute modification (EXCEPTIONS: Executions do not currently predict, only attribute modifiers)</li>
-<li>GameplayTag modification</li>
-</ul>
-</li>
-<li>Gameplay Cue events (both from within predictive gameplay effect and on their own)</li>
-<li>Montages</li>
-<li>Movement (built into UE UCharacterMovement)</li>
-</ul>
-<h2 id="Some-things-we-don’t-predict-most-of-these-we-potentially-could-but-currently-dont"><a href="#Some-things-we-don’t-predict-most-of-these-we-potentially-could-but-currently-dont" class="headerlink" title="Some things we don’t predict (most of these we potentially could, but currently dont):"></a>Some things we don’t predict (most of these we potentially could, but currently dont):</h2><ul>
-<li>GameplayEffect removal</li>
-<li>GameplayEffect periodic effects (dots ticking)</li>
-</ul>
-<h2 id="Problems-we-attempt-to-solve"><a href="#Problems-we-attempt-to-solve" class="headerlink" title="Problems we attempt to solve"></a>Problems we attempt to solve</h2><ol>
-<li>“Can I do this?” Basic protocol for prediction.</li>
-<li>“Undo” How to undo side effects when a prediction fails.</li>
-<li>“Redo” How to avoid replaying side effects that we predicted locally but that also get replicated from the server.</li>
-<li>“Completeness” How to be sure we &#x2F;really&#x2F; predicted all side effects.</li>
-<li>“Dependencies” How to manage dependent prediction and chains of predicted events.</li>
-<li>“Override” How to override state predictively that is otherwise replicated&#x2F;owned by the server.</li>
-</ol>
-<hr>
-<h2 id="Implementation-Details"><a href="#Implementation-Details" class="headerlink" title="Implementation Details"></a>Implementation Details</h2><h3 id="​​-PredictionKey-​"><a href="#​​-PredictionKey-​" class="headerlink" title="​​ PredictionKey ​"></a>​<em><strong>​ PredictionKey ​</strong></em></h3><p>A fundamental concept in this system is the <code>FPredictionKey</code>. A prediction key on its own is simply a unique ID that is generated in a central place on the client. The client will send its prediction key to the server,<br>and associate predictive actions and side effects with this key. The server may respond with an accept&#x2F;reject for the prediction key, and will also associate the server-side created side effects with this prediction key.</p>
-<p>(IMPORTANT) <code>FPredictionKey</code> always replicates client -&gt; server, but when replicating server -&gt; clients they <em>only</em> replicate to the client that sent the prediction key to the server in the first place.<br>This happens in <code>FPredictionKey::NetSerialize</code>. All other clients will receive an invalid (0) prediction key when a prediction key sent from a client is replicated back down through a replicated property.</p>
-<hr>
-<h3 id="​​-Ability-Activation-​"><a href="#​​-Ability-Activation-​" class="headerlink" title="​​ Ability Activation ​"></a>​<em><strong>​ Ability Activation ​</strong></em></h3><p>Ability Activation is a first class predictive action – it generates an initial prediction key. Whenever a client predictively activates an ability, it explicitly asks the server and the server explicitly responds. Once an ability has been<br>predictively activated (but the request has not yet been sent), the client has a valid ‘prediction window’ where predictive side effects can happen which are not explicitly ‘asked about’. (E.g., we do not explicitly ask ‘Can I decrement mana, Can I put this ability on cooldown. Those actions are considered logically atomic with activating an ability). You can think of this prediction window as being the initial callstack of <code>ActivateAbility</code>. Once <code>ActivateAbility</code> ends, your<br>prediction window (and therefore your prediction key) is no longer valid. This is important, because many things can invalidate your prediction window such as any timers or latent nodes in your Blueprint; we do not predict over multiple frames.</p>
-<p><strong>AbilitySystemComponent</strong>​ provides a set of functions for communicating ability activation between clients and server: <code>TryActivateAbility</code> -&gt; <code>ServerTryActivateAbility</code> -&gt; <code>ClientActivateAbility(Failed/Succeed)</code>.</p>
-<ol>
-<li>Client calls <code>TryActivateAbility</code> which generates a new <code>FPredictionKey</code> and calls <code>ServerTryActivateAbility</code>.</li>
-<li>Client continues (before hearing back from server) and calls <code>ActivateAbility</code> with the generated <code>PredictionKey</code> associated with the Ability’s <code>ActivationInfo</code>.</li>
-<li>Any side effects that happen &#x2F;before the call to <code>ActivateAbility</code> finish&#x2F; have the generated <code>FPredictionKey</code> associated with them.</li>
-<li>Server decides if the ability really happened in <code>ServerTryActivateAbility</code>, calls <code>ClientActivateAbility(Failed/Succeed)</code> and sets <code>UAbilitySystemComponent::ReplicatedPredictionKey</code> to the generated key that was sent with the request by the client.</li>
-<li>If client receives <code>ClientAbilityFailed</code>, it immediately kills the ability and rolls back side effects that were associated with the prediction key.<ul>
-<li>‘Rolling back’ logic is registered via <code>FPredictionKeyDelegates</code> and <code>FPredictionKey::NewRejectedDelegate/NewCaughtUpDelegate/NewRejectOrCaughtUpDelegate</code>.</li>
-<li><code>ClientAbilityFailed</code> is really the only case where we ‘reject’ prediction keys and thus all of our current predictions rely on if an ability activates or not.</li>
-</ul>
-</li>
-<li>If <code>ServerTryActivateAbility</code> succeeds, client must wait until property replication catches up (the Succeed RPC will be sent immediately, property replication will happen on its own). Once the <code>ReplicatedPredictionKey</code> catches up to the<br>key used previous steps, the client can undo its predictive side effects.<ul>
-<li>See <code>FReplicatedPredictionKeyItem::OnRep</code> for the CatchUpTo logic. See <code>UAbilitySystemComponent::ReplicatedPredictionKeyMap</code> for how the keys actually get replicated. See ~&#96;FScopedPredictionWindow&#96; where the server acknowledges keys.</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h3 id="​​-GameplayEffect-Prediction-​"><a href="#​​-GameplayEffect-Prediction-​" class="headerlink" title="​​ GameplayEffect Prediction ​"></a>​<em><strong>​ GameplayEffect Prediction ​</strong></em></h3><p>GameplayEffects are considered side effects of ability activation and are not separately accepted&#x2F;rejected.</p>
-<ol>
-<li>GameplayEffects are only applied on clients if there is a valid prediction key. (If no prediction key, it simply skips the application on client).</li>
-<li>Attributes, GameplayCues, and GameplayTags are all predicted if the GameplayEffect is predicted.</li>
-<li>When the <code>FActiveGameplayEffect</code> is created, it stores the prediction key (<code>FActiveGameplayEffect::PredictionKey</code>)<ul>
-<li>Instant effects are explained below in “Attribute Prediction”.</li>
-</ul>
-</li>
-<li>On the server, the same prediction key is also set on the server’s <code>FActiveGameplayEffect</code> that will be replicated down.</li>
-<li>As a client, if you get a replicated <code>FActiveGameplayEffect</code> with a valid prediction key on it, you check to see if you have an <code>ActiveGameplayEffect</code> with that same key, if there is match, we do not apply<br>the ‘on applied’ type of logic, e.g., GameplayCues. The solves the “Redo” problem. However we will have 2 of the ‘same’ GameplayEffects in our ActiveGameplayEffects container, temporarily:</li>
-<li>At the same time, <code>FReplicatedPredictionKeyItem::OnRep</code> will catch up and the predictive effects will be removed. When they are removed in this case, we again check <code>PredictionKey</code> and decide<br>if we should not do the ‘On Remove’ logic &#x2F; GameplayCue.</li>
-</ol>
-<p>See <code>FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec</code> where it registers what to do when caught-up (RemoveActiveGameplayEffect_NoReturn).<br>See <code>FActiveGameplayEffect::PostReplicatedAdd</code>, <code>FActiveGameplayEffect::PreReplicatedRemove</code>, and <code>FActiveGameplayCue::PostReplicatedAdd</code> for examples of how <code>FPredictionKey</code> is associated with the GE’s and GC’s.</p>
-<hr>
-<h3 id="​​-Attribute-Prediction-​"><a href="#​​-Attribute-Prediction-​" class="headerlink" title="​​ Attribute Prediction ​"></a>​<em><strong>​ Attribute Prediction ​</strong></em></h3><p>Since attributes are replicated as standard uproperties, predicting modification to them can be tricky (“Override” problem). Instantaneous modification can be even harder since these are non stateful by nature.<br>(E.g., rolling back an attribute mod is difficult if there is no book keeping past the modification). This makes the “Undo” and “Redo” problem also hard in this case.</p>
-<p>The basic plan of attack is to treat attribute prediction as delta prediction rather than absolute value prediction. We do not predict that we have 90 mana, we predict that we have -10 mana from the server value, until<br>the server confirms our prediction key. Basically, treat instant modifications as &#x2F;infinite duration modifications&#x2F; to attributes while they are done predictively. The solves “Undo” and “Redo”.</p>
-<p>For the “override” problem, we can handle this in the properties <code>OnRep</code> by treating the replicated (server) value as the ‘base value’ instead of ‘final value’ of the attribute, and to<br>reaggregate our ‘final value’ after a replication happens.</p>
-<h4 id="Example"><a href="#Example" class="headerlink" title="Example:"></a>Example:</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UMyHealthSet::GetLifetimeReplicatedProps</span><span class="params">(TArray&lt; FLifetimeProperty &gt; &amp; OutLifetimeProps)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Super::<span class="built_in">GetLifetimeReplicatedProps</span>(OutLifetimeProps);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">DOREPLIFETIME_CONDITION_NOTIFY</span>(UMyHealthSet, Health, COND_None, REPNOTIFY_Always);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h1 id="Gameplay-Cue-Events"><a href="#Gameplay-Cue-Events" class="headerlink" title="Gameplay Cue Events"></a>Gameplay Cue Events</h1><p>Outside of GameplayEffects which are already explained, Gameplay Cues can be activated on their own. These functions (<code>UAbilitySystemComponent::ExecuteGameplayCue</code> etc) take network role and prediction keys into account.</p>
-<p>In <code>UAbilitySystemComponent::ExecuteGameplayCue</code>, if authority then do the multicast event (with replication key). If non authority but w&#x2F; a valid prediction key, predict the GameplayCue.<br>On the receiving end (<code>NetMulticast_InvokeGameplayCueExecuted</code> etc), if there is a replication key, then don’t do the event (assume you predicted it).<br>Remember that <code>FPredictionKeys</code> only replicate to the originating owner. This is an intrinsic property of <code>FReplicationKey</code>.</p>
-<hr>
-<h1 id="Triggered-Data-Prediction"><a href="#Triggered-Data-Prediction" class="headerlink" title="Triggered Data Prediction"></a>Triggered Data Prediction</h1><p>Triggered Data is currently used to activate abilities. Essentially this all goes through the same code path as ActivateAbility. Rather than the ability being activated from input press, it is activated from<br>another game code driven event. Clients are able to predictively execute these events which predictively activate abilities.</p>
-<p>There are some nuances to how, since the server will also run the code that triggers events. The server won’t just wait to hear from the client. The server will keep a list of triggered abilities that have been<br>activated from a predictive ability. When receiving a <code>TryActivate</code> from a triggered ability, the server will look to see if &#x2F;it&#x2F; has already run this ability, and respond with that information.</p>
-<p>The issue is we do not properly rollback these operations. There is work left to do on Triggered Events and replication. (explained at the end).</p>
-<hr>
-<h2 id="Advanced-topic-Dependencies"><a href="#Advanced-topic-Dependencies" class="headerlink" title="Advanced topic! Dependencies"></a>Advanced topic! Dependencies</h2><p>We can have situations such as “Ability X activates and immediately triggers an event which activates Ability Y which triggers another Ability Z”. The dependency chain is X-&gt;Y-&gt;Z.<br>Each of those abilities could be rejected by the server. If Y is rejected, then Z also never happened, but the server does not explicitly decide ‘no Z can’t run’.<br>To handle this, we have a concept of a Base PredictionKey, which is a member of <code>FPredictionKey</code>. When calling <code>TryActivateAbility</code>, we pass in the current PredictionKey (if applicable). That prediction key<br>is used as the base for any new prediction keys generated. We build a chain of keys this way, and can then invalidate Z if Y is rejected.</p>
-<p>This is slightly more nuanced though. In the X-&gt;Y-&gt;Z case, the server will only receive the PredictionKey for X before trying to run the chain itself. E.g., it will TryActivate Y and Z with the original prediction key<br>sent to it from the client, whereas the client will generate a new PredictionKey each time it calls <code>TryActivateAbility</code>. The client has to generate a new PredictionKey for each ability activate, since each activate<br>is not logically atomic. Each side effect produced in the chain of events has to have a unique PredictionKey. We cannot have GameplayEffects produced in X have the same PredictionKey produced in Z.</p>
-<p>To get around this, The prediction key of X is considered the Base key for Y and Z. The dependency from Y to Z is kept completely client side, which is done in by <code>FPredictionKeyDelegates::AddDependency</code>. We add delegates<br>to reject&#x2F;catchup Z if Y rejected&#x2F;confirmed.</p>
-<p>This dependency system allows us to have multiple predictive actions that are not logically atomic within a single prediction window&#x2F;scope.</p>
-<p>There is a problem though: because the dependencies are kept client side, the server does not actually know if it had previously rejected a dependent action. You can design around this issue by using activation tags<br>in your gameplay abilities. For instance, when predicting dependents GA_Combo1 -&gt; GA_Combo2, you could make GA_Combo2 only activate if it has a GameplayTag given by GA_Combo1. Thus a rejection of GA_Combo1 would also<br>cause the server to reject the activation of GA_Combo2.</p>
-<hr>
-<h1 id="Additional-Prediction-Windows-within-an-Ability"><a href="#Additional-Prediction-Windows-within-an-Ability" class="headerlink" title="Additional Prediction Windows (within an Ability)"></a>Additional Prediction Windows (within an Ability)</h1><p>As stated, A prediction key is only usable during a single logical scope. Once <code>ActivateAbility</code> returns, we are essentially done with that key. If the ability is waiting on an external event or timer, it’s possible<br>we will have already received a confirm&#x2F;reject from the server by the time we’re ready to continue execution. Thus any additional side effects produced after the initial activation can no longer be tied to the lifespan of the original key.</p>
-<p>This isn’t that bad, except that abilities will sometimes want to react to player input. For example, ‘a hold down and charge’ ability wants to instantly predict some stuff when the button is released. It is possible<br>to create a new prediction window within an ability with <code>FScopedPredictionWindow</code>.</p>
-<p><strong>FScopedPredictionWindows</strong>​ provides a way to send the server a new prediction key and have the server pick up and use that key within the same logical scope.</p>
-<p><code>UAbilityTask_WaitInputRelease::OnReleaseCallback</code> is a good example. The flow of events is as followed:</p>
-<ol>
-<li>Client enters <code>UAbilityTask_WaitInputRelease::OnReleaseCallback</code> and starts a new <code>FScopedPredictionWindow</code>. This creates a new prediction key for this scope (<code>FScopedPredictionWindow::ScopedPredictionKey</code>).</li>
-<li>Client calls <code>AbilitySystemComponent-&gt;ServerInputRelease</code> which passes <code>ScopedPrediction.ScopedPredictionKey</code> as a parameter.</li>
-<li>Server runs <code>ServerInputRelease_Implementation</code> which takes the passed in PredictionKey and sets it as <code>UAbilitySystemComponent::ScopedPredictionKey</code> with an <code>FScopedPredictionWindow</code>.</li>
-<li>Server runs <code>UAbilityTask_WaitInputRelease::OnReleaseCallback</code> &#x2F;within the same scope&#x2F;</li>
-<li>When the server hits the <code>FScopedPredictionWindow</code> in ::OnReleaseCallback, it gets the prediction key from <code>UAbilitySystemComponent::ScopedPredictionKey</code>. That is now used for all side effects within this logical scope.</li>
-<li>Once the server ends this scoped prediction window, the prediction key used is finished and set to <code>ReplicatedPredictionKey</code>.</li>
-<li>All side effects created in this scope now share a key between client and server.</li>
-</ol>
-<p>The key to this working is that ::OnReleaseCallback calls ::ServerInputRelease which calls ::OnReleaseCallback on the server. There is no room for anything else to happen and use the given prediction key.</p>
-<p>While there is no “Try&#x2F;Failed&#x2F;Succeed” calls in this example, all side effects are procedurally grouped&#x2F;atomic. This solves the “Undo” and “Redo” problems for any arbitrary function calls that run on the server and client.</p>
-<hr>
-<h1 id="Unsupported-Issues-Todo"><a href="#Unsupported-Issues-Todo" class="headerlink" title="Unsupported &#x2F; Issues&#x2F; Todo"></a>Unsupported &#x2F; Issues&#x2F; Todo</h1><h3 id="Triggered-events-do-not-explicitly-replicate"><a href="#Triggered-events-do-not-explicitly-replicate" class="headerlink" title="Triggered events do not explicitly replicate"></a>Triggered events do not explicitly replicate</h3><ul>
-<li>E.g., if a triggered event only runs on the server, the client will never hear about it. This also prevents us from doing cross player&#x2F;AI etc events. Support<br>for this should eventually be added and it should follow the same pattern that GameplayEffect and GameplayCues follow (predict triggered event with a prediction key, ignore the RPC event if it has a prediction key).</li>
-</ul>
-<p>Big caveat with this whole system: Rollback of any chained activations (including triggered events) is currently not possible out of the box. The reason for this is because each ServerTryActivateAbility is going to be responded to in order.<br>Let’s chain dependent GA’s as an example: GA_Mispredict -&gt; GA_Predict1. In this example, when GA_Mispredict is activated and predicted locally it will immediately also activate GA_Predict1. The client sends ServerTryActivateAbility for GA_Mispredict,<br>and the server rejects it (sending back a ClientActivateAbilityFailed). As it stands, we don’t have any delegates that reject dependent abilities on the client (and the server isn’t even aware there are dependencies). On the server, it also<br>receives a ServerTryActivateAbility for GA_Predict1. Assuming that succeeds, the Client and Server are now both executing GA_Predict1 even though GA_Mispredict never happened. You can design around this by using the tag system to ensure GA_Mispredict succeeded.</p>
-<hr>
-<h3 id="Predicting-“Meta”-Attributes-such-as-Damage-Healing-vs-“real”-attributes-such-as-Health"><a href="#Predicting-“Meta”-Attributes-such-as-Damage-Healing-vs-“real”-attributes-such-as-Health" class="headerlink" title="Predicting “Meta” Attributes such as Damage&#x2F;Healing vs “real” attributes such as Health"></a>Predicting “Meta” Attributes such as Damage&#x2F;Healing vs “real” attributes such as Health</h3><p>We are unable to apply meta attributes predictively. Meta attributes only work on instant effects, in the back end of GameplayEffect (Pre&#x2F;Post Modify Attribute on the UAttributeSet). These events are not called when<br>applying duration-based gameplay effects. E.g., a GameplayEffect that modifies damage for 5 seconds doesn’t make sense.</p>
-<p>In order to support this, we would probably add some limited support for duration based meta attributes, and move the transform of the instant gameplay effect from the front end (<code>UAbilitySystemComponent::ApplyGameplayEffectSpecToSelf</code>)<br>to the backend (<code>UAttributeSet::PostModifyAttribute</code>).</p>
-<hr>
-<h3 id="Predicting-ongoing-multiplicative-GameplayEffects"><a href="#Predicting-ongoing-multiplicative-GameplayEffects" class="headerlink" title="Predicting ongoing multiplicative GameplayEffects"></a>Predicting ongoing multiplicative GameplayEffects</h3><p>There are also limitations when predicting % based gameplay effects. Since the server replicates down the ‘final value’ of an attribute, but not the entire aggregator chain of what is modifying it, we may run into cases where<br>the client cannot accurately predict new gameplay effects.</p>
-<p>For example:</p>
-<ul>
-<li>Client has a perm +10% movement speed buff with base movement speed of 500 -&gt; 550 is the final movement speed for this client.</li>
-<li>Client has an ability which grants an additional 10% movement speed buff. It is expected to <em>sum</em> the % based multipliers for a final 20% bonus to 500 -&gt; 600 movement speed.</li>
-<li>However on the client, we just apply a 10% buff to 550 -&gt; 605.</li>
-</ul>
-<p>This will need to be fixed by replicating down the aggregator chain for attributes. We already replicate some of this data, but not the full modifier list. We will need to look into supporting this eventually.</p>
-<hr>
-<h3 id="“Weak-Prediction”"><a href="#“Weak-Prediction”" class="headerlink" title="“Weak Prediction”"></a>“Weak Prediction”</h3><p>We will probably still have cases that do not fit well into this system. Some situations will exist where a prediction key exchange is not feasible. For example, an ability where any one that player collides with&#x2F;touches<br>receives a GameplayEffect that slows them and their material blue. Since we can’t send Server RPCs every time this happens (and the server couldn’t necessarily handle the message at its point in the simulation), there is no<br>way to correlate the gameplay effect side effects between client and server.</p>
-<p>One approach here may be to think about a weaker form of prediction. One where there is not a fresh prediction key used and instead the server assumes the client will predict all side effects from an entire ability. This would<br>at least solve the “redo” problem but would not solve the “completeness” problem. If the client side prediction could be made as minimal as possible - for example only predicting an initial particle effect rather than<br>predicting the state and attribute change - then the problems get less severe.</p>
-<hr>
-<h1 id="FPredictionKey-Implementation-Notes"><a href="#FPredictionKey-Implementation-Notes" class="headerlink" title="FPredictionKey Implementation Notes"></a>FPredictionKey Implementation Notes</h1><p><code>FPredictionKey</code> is a generic way of supporting Clientside Prediction in the GameplayAbility system.<br>A <code>FPredictionKey</code> is essentially an ID for identifying predictive actions and side effects that are<br>done on a client. <code>UAbilitySystemComponent</code> supports synchronization of the prediction key and its side effects<br>between client and server.</p>
-<p>Essentially, anything can be associated with a <code>PredictionKey</code>, for example activating an Ability.<br>The client can generate a fresh <code>PredictionKey</code> and sends it to the server in its <code>ServerTryActivateAbility</code> call.<br>The server can confirm or reject this call (<code>ClientActivateAbilitySucceed/Failed</code>).</p>
-<p>While the client is predicting its ability, it is creating side effects (GameplayEffects, TriggeredEvents, Animations, etc).<br>As the client predicts these side effects, it associates each one with the prediction key generated at the start of the ability<br>activation.</p>
-<p>If the ability activation is rejected, the client can immediately revert these side effects.<br>If the ability activation is accepted, the client must wait until the replicated side effects are sent to the server.<br>(The <code>ClientActivatbleAbilitySucceed</code> RPC will be immediately sent. Property replication may happen a few frames later).<br>Once replication of the server created side effects is finished, the client can undo its locally predictive side effects.</p>
-<p>The main things <code>FPredictionKey</code> itself provides are:</p>
-<ul>
-<li>Unique ID and a system for having dependant chains of <code>Prediction Keys</code> (“Current” and “Base” integers)</li>
-<li>A special implementation of <code>::NetSerialize</code> which only serializes the prediction key to the predicting client<ul>
-<li>This is important as it allows us to serialize prediction keys in replicated state, knowing that only clients that gave the server the prediction key will actually see them!</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>UE Source</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>GAS</tag>
-        <tag>UE Source</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hexo Theme</title>
     <url>/2025/03/03/HexoTheme/</url>
     <content><![CDATA[<h1 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h1><h2 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h2><p><a href="https://github.com/MaLuns/hexo-theme-async">GitHub</a>  </p>
@@ -351,48 +205,6 @@
       </categories>
       <tags>
         <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GASPredictionKey自学简记</title>
-    <url>/2025/03/06/UEGamplayPrediction%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h1 id="关键点：PredictionKey"><a href="#关键点：PredictionKey" class="headerlink" title="关键点：PredictionKey"></a>关键点：PredictionKey</h1><p>由GA激活生成的PKey，并由此去影响GAS系统中的各个其他部分。</p>
-<p>客户端预测先行，在收到服务器校验结果后，执行对应的回滚操作。</p>
-<h2 id="概念：预测窗口-Prediction-Window"><a href="#概念：预测窗口-Prediction-Window" class="headerlink" title="概念：预测窗口 Prediction Window"></a>概念：预测窗口 Prediction Window</h2><blockquote>
-<p>“We do not predict over multiple frames”</p>
-</blockquote>
-<p>在多个行为激活形成链条时，每个行为有自己的PKey，但又和之前的PKey相关联。<br>服务端并不确定Reject某个PKey对应的行为，是否会导致后续的行为也被拒绝。这里在实现的时候可能需要额外注意下。</p>
-<h2 id="关于预测窗口"><a href="#关于预测窗口" class="headerlink" title="关于预测窗口"></a>关于预测窗口</h2><p>GA如果依赖于外部事件，或者定时器，在异步等待过程中，可能会收到服务器的confirm&#x2F;reject回调。而PKey在ActivateAbility返回时就结束了。因此后面激活的内容是无法绑定到这个PKey上的。</p>
-<p>【这里可以验证一下 PKey在下发回客户端执行的事情（比如说广播），如果是广播形式，那么确实后面的内容就有问题了。】</p>
-<p>预测窗口和预测键不会跨帧。但是预测本身是可以支持跨帧的。这里主要处理的是异步的GATask等逻辑。为了实现跨多帧的预测逻辑，就需要多个预测窗口。每个帧内的操作都是独立的预测窗口，每个异步操作需要自己的同步执行块。</p>
-<p>这里异步操作对应的预测窗口创建：<br>• Ability中去创建新的PredictionWindow - 见<code>FScopedPredictionWindow</code></p>
-<h2 id="结合官方文档，给出一个Deepseek回答的样例【待考证】"><a href="#结合官方文档，给出一个Deepseek回答的样例【待考证】" class="headerlink" title="结合官方文档，给出一个Deepseek回答的样例【待考证】"></a>结合官方文档，给出一个Deepseek回答的样例【待考证】</h2><p>目前来看 CreateDependentKey 应该是由内部去维护的。<br>参考的样例还是看官方文档的AbilityTask_WaitInputRelease更为合适。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#region Deepseek样例和回答</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UAbilityTask_WaitInputRelease::OnReleaseCallback</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//创建新的预测窗口</span></span><br><span class="line">    <span class="function">FScopedPredictionWindow <span class="title">ScopedPrediction</span><span class="params">(AbilitySystemComponent)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    <span class="comment">//发送RPC时带上预测键</span></span></span><br><span class="line"><span class="function">    AbilitySystemComponent-&gt;<span class="title">ServerInputRelease</span><span class="params">(ScopedPrediction.ScopedPreditionKey)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//[在此作用域内所有副作用自动关联预测键]</span></span><br><span class="line">    <span class="built_in">ApplayGameplayEffect</span>(ChargeEffect)</span><br><span class="line">    <span class="built_in">PlayMontage</span>(ReleaseAnim)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">需要注意新键的创建可能以来于FScopedPredictionWindow。</span><br><span class="line">且依赖链条，可能需要显示创建。</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UGA_Chain::ActivateAbility</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">FCopedPredictionWindow <span class="title">Window1</span><span class="params">(ASC)</span></span>; <span class="comment">//PKey1</span></span><br><span class="line">    <span class="built_in">ServerAction1</span>(PKey1);</span><br><span class="line">    <span class="comment">//显示创建依赖关系</span></span><br><span class="line">    FPredictionKey PKey2 = FPredictionKey::<span class="built_in">CreateDependentKey</span>(PKey1);</span><br><span class="line"></span><br><span class="line">    UAbilityTask_WaitGameplayEvent * Task = UAbilityTask_WaitGameplayEvent::<span class="built_in">WaitGameplayEvent</span>(<span class="keyword">this</span>);</span><br><span class="line">    Task-&gt;EventReceived.<span class="built_in">AddLambda</span>([<span class="keyword">this</span>,PKey2]()&#123;</span><br><span class="line">        FScopedPredictionWindow <span class="built_in">Window2</span>(ASC);<span class="comment">//实际生成Key3</span></span><br><span class="line">        PKey<span class="number">3.</span><span class="built_in">AddDependency</span>(PKey2);    <span class="comment">//建立依赖链</span></span><br><span class="line">        <span class="built_in">ServerAction2</span>(PKey3);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;依赖关系是基于键的当前状态而不是键本身的存在。&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//#endregion Deepseek样例回答</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>GAS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Windows下的Git账号更换</title>
-    <url>/2025/03/04/windows-change-git/</url>
-    <content><![CDATA[<h3 id="Hexo更换指定Git账号问题"><a href="#Hexo更换指定Git账号问题" class="headerlink" title="Hexo更换指定Git账号问题"></a>Hexo更换指定Git账号问题</h3><ul>
-<li><p>Git内设置对应的账号和密码</p>
-</li>
-<li><p>控制面板 - 用户 - 凭据管理器 - Windows凭据删除对应git的凭据 在使用时重新通过网页处理凭据 </p>
-</li>
-<li><p>使用新账号登陆即可</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
@@ -547,6 +359,270 @@
       </tags>
   </entry>
   <entry>
+    <title>UE5.5-Lyra-1-Attribute</title>
+    <url>/2025/03/16/UE55Lyra1/</url>
+    <content><![CDATA[<p>基于官方Lyra的GAS学习。</p>
+<h1 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h1><p>首先就是ASC的位置。<br>Lyra项目将ASC放置于了LyraPlayerState中。<br>将ASC与PlayerState绑定。</p>
+<p>此外 可以看到LyraCharacter。其也有获取ASC的接口。</p>
+<p>从LyraCharacter获取ASC组件，依赖于其PawnExtComponent。<br>这里可以看到ULyraPawnExtensionComponent这个类。<br>该类会存放一个ASC指针。在函数InitializeAbilitySystem中进行设置。</p>
+<p>LyraHeroComponent是唯一调用该方法的组件。<br>见ULyraHeroComponent::HandleChangeInitState。<br>这里的逻辑也是从PlayerState中拿到ASC，然后赋值给PawnExtComponent。</p>
+<p>总而言之，该项目的ASC位于PlayerState。<br>整体的链条大概如下：<br>PlayerState -&gt; LyraHeroComp -&gt; PawnExtComponent -&gt; LyraCharacter。</p>
+<p>再整理一下：</p>
+<p>LyraCharacter - 包含PawnExtComp<br> ↓ 子类<br>Character_Default<br> ↓ 子类<br>B_Hero_Default - 新增组件 LyraHeroComp</p>
+<p>因此 只需要在子类去调用InitializeAbilitySystem来设置PawnExtComp中的ASC指针即可。</p>
+<p>实际上，Pawn本身就有GetPlayerState的方法。<br>LyraHeroComp只是调用该方法（转为Lyra的PlayerState）并由LyraPlayerState获取ASC而已。</p>
+<p>这部分的一些设置可以看到B_LyraGameMode。</p>
+<h1 id="LyraPlayerState"><a href="#LyraPlayerState" class="headerlink" title="LyraPlayerState"></a>LyraPlayerState</h1><p>先看到 PlayerState部分<br>LyraPlayerState - 继承自AModularPlayerState IAbilitySystemInterface ILyraTeamAgentInterface</p>
+<h1 id="关于ASC的初始化"><a href="#关于ASC的初始化" class="headerlink" title="关于ASC的初始化"></a>关于ASC的初始化</h1><p>LyraPlayerState，后续简称为 LPS<br>LPS继承自PlayerState，继承自AInfo。构造函数有:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AInfo(const FObjectInitializer&amp; ObjectInitializer = FObjectInitializer::Get());</span><br></pre></td></tr></table></figure>
+<p>在LPS中，使用ObjectInitializer来创建ASC:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AbilitySystemComponent = ObjectInitializer.CreateDefaultSubobject&lt;ULyraAbilitySystemComponent&gt;(this, TEXT(&quot;AbilitySystemComponent&quot;));</span><br><span class="line"></span><br><span class="line">//另外一种创建ASC</span><br><span class="line">//直接调用[感兴趣也可以看看底层实现。其实还是拿了FObjectInitializer]</span><br><span class="line">AbilitySystemComponent = CreateDefaultSubobject&lt;ULyraAbilitySystemComponent&gt;(TEXT(&quot;AbilitySystemComponent2&quot;));</span><br></pre></td></tr></table></figure>
+<p>之后 设置ASC的复制模式,并创建所需要的AttributeSet</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AbilitySystemComponent-&gt;SetIsReplicated(true);</span><br><span class="line">AbilitySystemComponent-&gt;SetReplicationMode(EGameplayEffectReplicationMode::Mixed);</span><br><span class="line"></span><br><span class="line">// These attribute sets will be detected by AbilitySystemComponent::InitializeComponent. Keeping a reference so that the sets don&#x27;t get garbage collected before that.</span><br><span class="line">HealthSet = CreateDefaultSubobject&lt;ULyraHealthSet&gt;(TEXT(&quot;HealthSet&quot;));</span><br><span class="line">CombatSet = CreateDefaultSubobject&lt;ULyraCombatSet&gt;(TEXT(&quot;CombatSet&quot;));</span><br></pre></td></tr></table></figure>
+
+<h1 id="AttributeSet"><a href="#AttributeSet" class="headerlink" title="AttributeSet"></a>AttributeSet</h1><p>首先 从AttributeSet和ASC都位于LPS上可以看到设计的一致性。<br>接下来看看属性集的设计：</p>
+<h2 id="ULyraHealthSet"><a href="#ULyraHealthSet" class="headerlink" title="ULyraHealthSet"></a>ULyraHealthSet</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private:</span><br><span class="line"></span><br><span class="line">	// The current health attribute.  The health will be capped by the max health attribute.  Health is hidden from modifiers so only executions can modify it.</span><br><span class="line">	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = &quot;Lyra|Health&quot;, Meta = (HideFromModifiers, AllowPrivateAccess = true))</span><br><span class="line">	FGameplayAttributeData Health;</span><br><span class="line"></span><br><span class="line">	// The current max health attribute.  Max health is an attribute since gameplay effects can modify it.</span><br><span class="line">	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = &quot;Lyra|Health&quot;, Meta = (AllowPrivateAccess = true))</span><br><span class="line">	FGameplayAttributeData MaxHealth;</span><br><span class="line"></span><br><span class="line">	// Used to track when the health reaches 0.</span><br><span class="line">	bool bOutOfHealth;</span><br><span class="line"></span><br><span class="line">	// Store the health before any changes </span><br><span class="line">	float MaxHealthBeforeAttributeChange;</span><br><span class="line">	float HealthBeforeAttributeChange;</span><br><span class="line"></span><br><span class="line">	// -------------------------------------------------------------------</span><br><span class="line">	//	Meta Attribute (please keep attributes that aren&#x27;t &#x27;stateful&#x27; below </span><br><span class="line">	// -------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">	// Incoming healing. This is mapped directly to +Health</span><br><span class="line">	UPROPERTY(BlueprintReadOnly, Category=&quot;Lyra|Health&quot;, Meta=(AllowPrivateAccess=true))</span><br><span class="line">	FGameplayAttributeData Healing;</span><br><span class="line"></span><br><span class="line">	// Incoming damage. This is mapped directly to -Health</span><br><span class="line">	UPROPERTY(BlueprintReadOnly, Category=&quot;Lyra|Health&quot;, Meta=(HideFromModifiers, AllowPrivateAccess=true))</span><br><span class="line">	FGameplayAttributeData Damage;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到简简单单的一个生命属性集 不但有普通的最大生命值，当前生命值，还有两个额外的数值。Healing与Damage。</p>
+<p>在基类LyraAttributeSet中 定义了对应的属性宏用于获取&#x2F;设置属性。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line"> * This macro defines a set of helper functions for accessing and initializing attributes.</span><br><span class="line"> *</span><br><span class="line"> * The following example of the macro:</span><br><span class="line"> *		ATTRIBUTE_ACCESSORS(ULyraHealthSet, Health)</span><br><span class="line"> * will create the following functions:</span><br><span class="line"> *		static FGameplayAttribute GetHealthAttribute();</span><br><span class="line"> *		float GetHealth() const;</span><br><span class="line"> *		void SetHealth(float NewVal);</span><br><span class="line"> *		void InitHealth(float NewVal);</span><br><span class="line"> */</span><br><span class="line">#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \</span><br><span class="line">	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \</span><br><span class="line">	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \</span><br><span class="line">	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \</span><br><span class="line">	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)</span><br></pre></td></tr></table></figure>
+<p>Healing与Damage只是中间处理，并不参与复制。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void ULyraHealthSet::GetLifetimeReplicatedProps(TArray&lt;FLifetimeProperty&gt;&amp; OutLifetimeProps) const</span><br><span class="line">&#123;</span><br><span class="line">	Super::GetLifetimeReplicatedProps(OutLifetimeProps);</span><br><span class="line"></span><br><span class="line">	DOREPLIFETIME_CONDITION_NOTIFY(ULyraHealthSet, Health, COND_None, REPNOTIFY_Always);</span><br><span class="line">	DOREPLIFETIME_CONDITION_NOTIFY(ULyraHealthSet, MaxHealth, COND_None, REPNOTIFY_Always);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之后看到三个属性关键函数：</p>
+<ul>
+<li>PreAttributeBaseChange &#x2F;&#x2F;before any modification happens to an attribute’s base value</li>
+<li>PreAttributeChange &#x2F;&#x2F;before any modification happens to an attribute</li>
+<li>PostAttributeChange &#x2F;&#x2F;just after any modification happens to an attribute</li>
+</ul>
+<p>这三个函数：</p>
+<ul>
+<li>可以做值的范围限制（Clamp），如限制当前生命值大于0，小于最大生命值。最大生命值最小为1。</li>
+<li>可以做值修正。比如最大生命值改变后，限制当前生命值为最大生命值。这里的修正要注意写法。用ApplyModToAttribute。&#x2F;&#x2F;Not invoke Pre&#x2F;PostGameplayEffectExecute calls on the attribute set</li>
+</ul>
+<p>然后是两个重要的GE函数：</p>
+<ul>
+<li>PreGameplayEffectExecute &#x2F;&#x2F;just before modifying the value of an attribute</li>
+<li>PostGameplayEffectExecute &#x2F;&#x2F;just after a GameplayEffect is executed to modify the base value of an attribute</li>
+</ul>
+<p>PreGameplayEffectExecute</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bool ULyraHealthSet::PreGameplayEffectExecute(FGameplayEffectModCallbackData &amp;Data)</span><br><span class="line">&#123;</span><br><span class="line">	if (!Super::PreGameplayEffectExecute(Data))</span><br><span class="line">	&#123;</span><br><span class="line">		return false;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//可以看到这里的是用“伤害”属性来做伤害的</span><br><span class="line">	// Handle modifying incoming normal damage</span><br><span class="line">	if (Data.EvaluatedData.Attribute == GetDamageAttribute())</span><br><span class="line">	&#123;</span><br><span class="line">		if (Data.EvaluatedData.Magnitude &gt; 0.0f)</span><br><span class="line">		&#123;</span><br><span class="line">			//自毁伤害</span><br><span class="line">			const bool bIsDamageFromSelfDestruct = Data.EffectSpec.GetDynamicAssetTags().HasTagExact(TAG_Gameplay_DamageSelfDestruct);</span><br><span class="line"></span><br><span class="line">			//免疫伤害的能力</span><br><span class="line">			if (Data.Target.HasMatchingGameplayTag(TAG_Gameplay_DamageImmunity) &amp;&amp; !bIsDamageFromSelfDestruct)</span><br><span class="line">			&#123;</span><br><span class="line">				// Do not take away any health.</span><br><span class="line">				Data.EvaluatedData.Magnitude = 0.0f;</span><br><span class="line">				return false;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">#if !UE_BUILD_SHIPPING</span><br><span class="line">			//GM模式 - 不扣血</span><br><span class="line">			// Check GodMode cheat, unlimited health is checked below</span><br><span class="line">			if (Data.Target.HasMatchingGameplayTag(LyraGameplayTags::Cheat_GodMode) &amp;&amp; !bIsDamageFromSelfDestruct)</span><br><span class="line">			&#123;</span><br><span class="line">				// Do not take away any health.</span><br><span class="line">				Data.EvaluatedData.Magnitude = 0.0f;</span><br><span class="line">				return false;</span><br><span class="line">			&#125;</span><br><span class="line">#endif // #if !UE_BUILD_SHIPPING</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//改变前记录目前的属性</span><br><span class="line">	// Save the current health</span><br><span class="line">	HealthBeforeAttributeChange = GetHealth();</span><br><span class="line">	MaxHealthBeforeAttributeChange = GetMaxHealth();</span><br><span class="line"></span><br><span class="line">	return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>PostGameplayEffectExecute</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void ULyraHealthSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData&amp; Data)</span><br><span class="line">&#123;</span><br><span class="line">	Super::PostGameplayEffectExecute(Data);</span><br><span class="line"></span><br><span class="line">	const bool bIsDamageFromSelfDestruct = Data.EffectSpec.GetDynamicAssetTags().HasTagExact(TAG_Gameplay_DamageSelfDestruct);</span><br><span class="line">	float MinimumHealth = 0.0f;</span><br><span class="line"></span><br><span class="line">#if !UE_BUILD_SHIPPING</span><br><span class="line">	// GM模式下不死</span><br><span class="line">	// Godmode and unlimited health stop death unless it&#x27;s a self destruct</span><br><span class="line">	if (!bIsDamageFromSelfDestruct &amp;&amp;</span><br><span class="line">		(Data.Target.HasMatchingGameplayTag(LyraGameplayTags::Cheat_GodMode) || Data.Target.HasMatchingGameplayTag(LyraGameplayTags::Cheat_UnlimitedHealth) ))</span><br><span class="line">	&#123;</span><br><span class="line">		MinimumHealth = 1.0f;</span><br><span class="line">	&#125;</span><br><span class="line">#endif // #if !UE_BUILD_SHIPPING</span><br><span class="line"></span><br><span class="line">	const FGameplayEffectContextHandle&amp; EffectContext = Data.EffectSpec.GetEffectContext();</span><br><span class="line"></span><br><span class="line">	// “发起人” 链条源 - &quot;return the original instigator that started the whole chain&quot;</span><br><span class="line">	AActor* Instigator = EffectContext.GetOriginalInstigator();</span><br><span class="line"></span><br><span class="line">	// “引起者” - &quot;the physical actor tied to the application of this effect&quot;</span><br><span class="line">	AActor* Causer = EffectContext.GetEffectCauser();</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	*  玩家[Instigator]→技能→子弹[Causer]→敌人伤害</span><br><span class="line">	*/</span><br><span class="line"></span><br><span class="line">	if (Data.EvaluatedData.Attribute == GetDamageAttribute())</span><br><span class="line">	&#123;</span><br><span class="line">		// Send a standardized verb message that other systems can observe</span><br><span class="line">		if (Data.EvaluatedData.Magnitude &gt; 0.0f)</span><br><span class="line">		&#123;</span><br><span class="line">			//伤害事件 </span><br><span class="line">			FLyraVerbMessage Message;</span><br><span class="line">			Message.Verb = TAG_Lyra_Damage_Message;</span><br><span class="line">			Message.Instigator = Data.EffectSpec.GetEffectContext().GetEffectCauser();</span><br><span class="line">			Message.InstigatorTags = *Data.EffectSpec.CapturedSourceTags.GetAggregatedTags();</span><br><span class="line">			Message.Target = GetOwningActor();</span><br><span class="line">			Message.TargetTags = *Data.EffectSpec.CapturedTargetTags.GetAggregatedTags();</span><br><span class="line">			//@TODO: Fill out context tags, and any non-ability-system source/instigator tags</span><br><span class="line">			//@TODO: Determine if it&#x27;s an opposing team kill, self-own, team kill, etc...</span><br><span class="line">			Message.Magnitude = Data.EvaluatedData.Magnitude;</span><br><span class="line"></span><br><span class="line">			UGameplayMessageSubsystem&amp; MessageSystem = UGameplayMessageSubsystem::Get(GetWorld());</span><br><span class="line">			MessageSystem.BroadcastMessage(Message.Verb, Message);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		//通过元属性Damage 来造成生命值的减少。</span><br><span class="line"></span><br><span class="line">		// Convert into -Health and then clamp</span><br><span class="line">		SetHealth(FMath::Clamp(GetHealth() - GetDamage(), MinimumHealth, GetMaxHealth()));</span><br><span class="line">		SetDamage(0.0f);</span><br><span class="line">	&#125;</span><br><span class="line">	else if (Data.EvaluatedData.Attribute == GetHealingAttribute())</span><br><span class="line">	&#123;</span><br><span class="line">		//治疗</span><br><span class="line">		// Convert into +Health and then clamp</span><br><span class="line">		SetHealth(FMath::Clamp(GetHealth() + GetHealing(), MinimumHealth, GetMaxHealth()));</span><br><span class="line">		SetHealing(0.0f);</span><br><span class="line">	&#125;</span><br><span class="line">	else if (Data.EvaluatedData.Attribute == GetHealthAttribute())</span><br><span class="line">	&#123;</span><br><span class="line">		// Clamp and fall into out of health handling below</span><br><span class="line">		SetHealth(FMath::Clamp(GetHealth(), MinimumHealth, GetMaxHealth()));</span><br><span class="line">	&#125;</span><br><span class="line">	else if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())</span><br><span class="line">	&#123;</span><br><span class="line">		// TODO clamp current health?</span><br><span class="line"></span><br><span class="line">		//这里HealthSet里面新增的广播</span><br><span class="line">		// Notify on any requested max health changes</span><br><span class="line">		OnMaxHealthChanged.Broadcast(Instigator, Causer, &amp;Data.EffectSpec, Data.EvaluatedData.Magnitude, MaxHealthBeforeAttributeChange, GetMaxHealth());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// If health has actually changed activate callbacks</span><br><span class="line">	if (GetHealth() != HealthBeforeAttributeChange)</span><br><span class="line">	&#123;</span><br><span class="line">		//这里HealthSet里面新增的广播</span><br><span class="line">		OnHealthChanged.Broadcast(Instigator, Causer, &amp;Data.EffectSpec, Data.EvaluatedData.Magnitude, HealthBeforeAttributeChange, GetHealth());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if ((GetHealth() &lt;= 0.0f) &amp;&amp; !bOutOfHealth)</span><br><span class="line">	&#123;</span><br><span class="line">		//这里HealthSet里面新增的广播</span><br><span class="line">		OnOutOfHealth.Broadcast(Instigator, Causer, &amp;Data.EffectSpec, Data.EvaluatedData.Magnitude, HealthBeforeAttributeChange, GetHealth());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Check health again in case an event above changed it.</span><br><span class="line">	bOutOfHealth = (GetHealth() &lt;= 0.0f);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但实际的应用，应该还是要追溯到GE。<br>这部分放到后续来看。</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>GAS</tag>
+        <tag>Lyra</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE GAS Modifier相关信息</title>
+    <url>/2025/03/23/UE55GASModifierInfos/</url>
+    <content><![CDATA[<h1 id="总"><a href="#总" class="headerlink" title="总"></a>总</h1><p>列举各个Modifier相关的信息</p>
+<h2 id="FGameplayModifierInfo"><a href="#FGameplayModifierInfo" class="headerlink" title="FGameplayModifierInfo"></a>FGameplayModifierInfo</h2><p>用于定义修改器的规则<br>关键数据 </p>
+<ul>
+<li>目标属性</li>
+<li>修改方式</li>
+<li>修改值</li>
+<li>生效条件(Tags)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line"> * FGameplayModifierInfo</span><br><span class="line"> *	Tells us &quot;Who/What we&quot; modify</span><br><span class="line"> *	Does not tell us how exactly</span><br><span class="line"> */</span><br><span class="line">USTRUCT(BlueprintType)</span><br><span class="line">struct GAMEPLAYABILITIES_API FGameplayModifierInfo</span><br><span class="line">&#123;</span><br><span class="line">	GENERATED_USTRUCT_BODY()</span><br><span class="line">	</span><br><span class="line">	/** The Attribute we modify or the GE we modify modifies. */</span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier, meta=(FilterMetaTag=&quot;HideFromModifiers&quot;))</span><br><span class="line">	FGameplayAttribute Attribute;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * The numeric operation of this modifier: Override, Add, Multiply, etc</span><br><span class="line">	 * When multiple modifiers aggregate together, the equation is:</span><br><span class="line">	 * ((BaseValue + AddBase) * MultiplyAdditive / DivideAdditive * MultiplyCompound) + AddFinal</span><br><span class="line">	 */</span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	TEnumAsByte&lt;EGameplayModOp::Type&gt; ModifierOp = EGameplayModOp::Additive;</span><br><span class="line"></span><br><span class="line">	/** Magnitude of the modifier */</span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	FGameplayEffectModifierMagnitude ModifierMagnitude;</span><br><span class="line"></span><br><span class="line">	/** Evaluation channel settings of the modifier */</span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	FGameplayModEvaluationChannelSettings EvaluationChannelSettings;</span><br><span class="line"></span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	FGameplayTagRequirements	SourceTags;</span><br><span class="line"></span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	FGameplayTagRequirements	TargetTags;</span><br><span class="line"></span><br><span class="line">	/** Equality/Inequality operators */</span><br><span class="line">	bool operator==(const FGameplayModifierInfo&amp; Other) const;</span><br><span class="line">	bool operator!=(const FGameplayModifierInfo&amp; Other) const;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="FModifierSpec"><a href="#FModifierSpec" class="headerlink" title="FModifierSpec"></a>FModifierSpec</h2><p>存储GEModifier的最终计算值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/** Holds evaluated magnitude from a GameplayEffect modifier */</span><br><span class="line">USTRUCT()</span><br><span class="line">struct FModifierSpec</span><br><span class="line">&#123;</span><br><span class="line">	GENERATED_USTRUCT_BODY()</span><br><span class="line"></span><br><span class="line">	FModifierSpec() : EvaluatedMagnitude(0.f) &#123; &#125;</span><br><span class="line"></span><br><span class="line">	float GetEvaluatedMagnitude() const &#123; return EvaluatedMagnitude; &#125;</span><br><span class="line"></span><br><span class="line">private:</span><br><span class="line"></span><br><span class="line">	/** In the event that the modifier spec requires custom magnitude calculations, this is the authoritative, last evaluated value of the magnitude */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	float EvaluatedMagnitude;</span><br><span class="line"></span><br><span class="line">	/** These structures are the only ones that should internally be able to update the EvaluatedMagnitude. Any gamecode that gets its hands on FModifierSpec should never be setting EvaluatedMagnitude manually */</span><br><span class="line">	friend struct FGameplayEffectSpec;</span><br><span class="line">	friend struct FActiveGameplayEffectsContainer;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="FGameplayModifierEvaluatedData"><a href="#FGameplayModifierEvaluatedData" class="headerlink" title="FGameplayModifierEvaluatedData"></a>FGameplayModifierEvaluatedData</h2><p>修改器具体结果数据<br>关键数据 </p>
+<ul>
+<li>目标属性</li>
+<li>修改方式</li>
+<li>修改值</li>
+<li>FActiveGEHandle</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/** Data that describes what happened in an attribute modification. This is passed to ability set callbacks */</span><br><span class="line">USTRUCT(BlueprintType)</span><br><span class="line">struct FGameplayModifierEvaluatedData</span><br><span class="line">&#123;</span><br><span class="line">	GENERATED_USTRUCT_BODY()</span><br><span class="line"></span><br><span class="line">	FGameplayModifierEvaluatedData()</span><br><span class="line">		: Attribute()</span><br><span class="line">		, ModifierOp(EGameplayModOp::Additive)</span><br><span class="line">		, Magnitude(0.f)</span><br><span class="line">		, IsValid(false)</span><br><span class="line">	&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	FGameplayModifierEvaluatedData(const FGameplayAttribute&amp; InAttribute, TEnumAsByte&lt;EGameplayModOp::Type&gt; InModOp, float InMagnitude, FActiveGameplayEffectHandle InHandle = FActiveGameplayEffectHandle())</span><br><span class="line">		: Attribute(InAttribute)</span><br><span class="line">		, ModifierOp(InModOp)</span><br><span class="line">		, Magnitude(InMagnitude)</span><br><span class="line">		, Handle(InHandle)</span><br><span class="line">		, IsValid(true)</span><br><span class="line">	&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/** What attribute was modified */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	FGameplayAttribute Attribute;</span><br><span class="line"></span><br><span class="line">	/** The numeric operation of this modifier: Override, Add, Multiply, etc  */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	TEnumAsByte&lt;EGameplayModOp::Type&gt; ModifierOp;</span><br><span class="line"></span><br><span class="line">	/** The raw magnitude of the applied attribute, this is generally before being clamped */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	float Magnitude;</span><br><span class="line"></span><br><span class="line">	/** Handle of the active gameplay effect that originated us. Will be invalid in many cases */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	FActiveGameplayEffectHandle	Handle;</span><br><span class="line"></span><br><span class="line">	/** True if something was evaluated */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	bool IsValid;</span><br><span class="line"></span><br><span class="line">	FString ToSimpleString() const</span><br><span class="line">	&#123;</span><br><span class="line">		return FString::Printf(TEXT(&quot;%s %s EvalMag: %f&quot;), *Attribute.GetName(), *EGameplayModOpToString(ModifierOp), Magnitude);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>UEGAS</tag>
+        <tag>GAS Modifier</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE5.5-GameplayPrediction</title>
+    <url>/2025/03/05/UE55GamplayPrediction/</url>
+    <content><![CDATA[<h1 id="SourceCode源码"><a href="#SourceCode源码" class="headerlink" title="SourceCode源码"></a><a href="https://github.com/MikeMing126/UESourceCode/blob/main/UE55_GAS_GameplayPrediction.h">SourceCode源码</a></h1><h1 id="Overview-of-Gameplay-Ability-Prediction"><a href="#Overview-of-Gameplay-Ability-Prediction" class="headerlink" title="Overview of Gameplay Ability Prediction"></a>Overview of Gameplay Ability Prediction</h1><h2 id="High-Level-Goals"><a href="#High-Level-Goals" class="headerlink" title="High Level Goals"></a>High Level Goals</h2><ul>
+<li>At the GameplayAbility level (implementing an ability) prediction is transparent. An ability says “Do X-&gt;Y-&gt;Z”, and we will automatically predict the parts of that that we can.</li>
+<li>We wish to avoid having logic such as “If Authority: Do X. Else: Do predictive version of X” in the ability itself.</li>
+</ul>
+<p>At this point, not all cases are solved, but we have a very solid framework for working with client side prediction.</p>
+<p>When we say “client side prediction” we really mean client predicting game simulation state. Things can still be ‘completely client side’ without having to work within a prediction system.<br>For example, footsteps are completely client side and never interact with this system. But clients predicting their mana going from 100 to 90 when they cast a spell is ‘client side prediction’.</p>
+<h2 id="What-do-we-currently-predict"><a href="#What-do-we-currently-predict" class="headerlink" title="What do we currently predict?"></a>What do we currently predict?</h2><ul>
+<li>Initial GameplayAbility activation (and chained activation with caveats)</li>
+<li>Triggered Events</li>
+<li>GameplayEffect application:<ul>
+<li>Attribute modification (EXCEPTIONS: Executions do not currently predict, only attribute modifiers)</li>
+<li>GameplayTag modification</li>
+</ul>
+</li>
+<li>Gameplay Cue events (both from within predictive gameplay effect and on their own)</li>
+<li>Montages</li>
+<li>Movement (built into UE UCharacterMovement)</li>
+</ul>
+<h2 id="Some-things-we-don’t-predict-most-of-these-we-potentially-could-but-currently-dont"><a href="#Some-things-we-don’t-predict-most-of-these-we-potentially-could-but-currently-dont" class="headerlink" title="Some things we don’t predict (most of these we potentially could, but currently dont):"></a>Some things we don’t predict (most of these we potentially could, but currently dont):</h2><ul>
+<li>GameplayEffect removal</li>
+<li>GameplayEffect periodic effects (dots ticking)</li>
+</ul>
+<h2 id="Problems-we-attempt-to-solve"><a href="#Problems-we-attempt-to-solve" class="headerlink" title="Problems we attempt to solve"></a>Problems we attempt to solve</h2><ol>
+<li>“Can I do this?” Basic protocol for prediction.</li>
+<li>“Undo” How to undo side effects when a prediction fails.</li>
+<li>“Redo” How to avoid replaying side effects that we predicted locally but that also get replicated from the server.</li>
+<li>“Completeness” How to be sure we &#x2F;really&#x2F; predicted all side effects.</li>
+<li>“Dependencies” How to manage dependent prediction and chains of predicted events.</li>
+<li>“Override” How to override state predictively that is otherwise replicated&#x2F;owned by the server.</li>
+</ol>
+<hr>
+<h2 id="Implementation-Details"><a href="#Implementation-Details" class="headerlink" title="Implementation Details"></a>Implementation Details</h2><h3 id="​​-PredictionKey-​"><a href="#​​-PredictionKey-​" class="headerlink" title="​​ PredictionKey ​"></a>​<em><strong>​ PredictionKey ​</strong></em></h3><p>A fundamental concept in this system is the <code>FPredictionKey</code>. A prediction key on its own is simply a unique ID that is generated in a central place on the client. The client will send its prediction key to the server,<br>and associate predictive actions and side effects with this key. The server may respond with an accept&#x2F;reject for the prediction key, and will also associate the server-side created side effects with this prediction key.</p>
+<p>(IMPORTANT) <code>FPredictionKey</code> always replicates client -&gt; server, but when replicating server -&gt; clients they <em>only</em> replicate to the client that sent the prediction key to the server in the first place.<br>This happens in <code>FPredictionKey::NetSerialize</code>. All other clients will receive an invalid (0) prediction key when a prediction key sent from a client is replicated back down through a replicated property.</p>
+<hr>
+<h3 id="​​-Ability-Activation-​"><a href="#​​-Ability-Activation-​" class="headerlink" title="​​ Ability Activation ​"></a>​<em><strong>​ Ability Activation ​</strong></em></h3><p>Ability Activation is a first class predictive action – it generates an initial prediction key. Whenever a client predictively activates an ability, it explicitly asks the server and the server explicitly responds. Once an ability has been<br>predictively activated (but the request has not yet been sent), the client has a valid ‘prediction window’ where predictive side effects can happen which are not explicitly ‘asked about’. (E.g., we do not explicitly ask ‘Can I decrement mana, Can I put this ability on cooldown. Those actions are considered logically atomic with activating an ability). You can think of this prediction window as being the initial callstack of <code>ActivateAbility</code>. Once <code>ActivateAbility</code> ends, your<br>prediction window (and therefore your prediction key) is no longer valid. This is important, because many things can invalidate your prediction window such as any timers or latent nodes in your Blueprint; we do not predict over multiple frames.</p>
+<p><strong>AbilitySystemComponent</strong>​ provides a set of functions for communicating ability activation between clients and server: <code>TryActivateAbility</code> -&gt; <code>ServerTryActivateAbility</code> -&gt; <code>ClientActivateAbility(Failed/Succeed)</code>.</p>
+<ol>
+<li>Client calls <code>TryActivateAbility</code> which generates a new <code>FPredictionKey</code> and calls <code>ServerTryActivateAbility</code>.</li>
+<li>Client continues (before hearing back from server) and calls <code>ActivateAbility</code> with the generated <code>PredictionKey</code> associated with the Ability’s <code>ActivationInfo</code>.</li>
+<li>Any side effects that happen &#x2F;before the call to <code>ActivateAbility</code> finish&#x2F; have the generated <code>FPredictionKey</code> associated with them.</li>
+<li>Server decides if the ability really happened in <code>ServerTryActivateAbility</code>, calls <code>ClientActivateAbility(Failed/Succeed)</code> and sets <code>UAbilitySystemComponent::ReplicatedPredictionKey</code> to the generated key that was sent with the request by the client.</li>
+<li>If client receives <code>ClientAbilityFailed</code>, it immediately kills the ability and rolls back side effects that were associated with the prediction key.<ul>
+<li>‘Rolling back’ logic is registered via <code>FPredictionKeyDelegates</code> and <code>FPredictionKey::NewRejectedDelegate/NewCaughtUpDelegate/NewRejectOrCaughtUpDelegate</code>.</li>
+<li><code>ClientAbilityFailed</code> is really the only case where we ‘reject’ prediction keys and thus all of our current predictions rely on if an ability activates or not.</li>
+</ul>
+</li>
+<li>If <code>ServerTryActivateAbility</code> succeeds, client must wait until property replication catches up (the Succeed RPC will be sent immediately, property replication will happen on its own). Once the <code>ReplicatedPredictionKey</code> catches up to the<br>key used previous steps, the client can undo its predictive side effects.<ul>
+<li>See <code>FReplicatedPredictionKeyItem::OnRep</code> for the CatchUpTo logic. See <code>UAbilitySystemComponent::ReplicatedPredictionKeyMap</code> for how the keys actually get replicated. See ~&#96;FScopedPredictionWindow&#96; where the server acknowledges keys.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="​​-GameplayEffect-Prediction-​"><a href="#​​-GameplayEffect-Prediction-​" class="headerlink" title="​​ GameplayEffect Prediction ​"></a>​<em><strong>​ GameplayEffect Prediction ​</strong></em></h3><p>GameplayEffects are considered side effects of ability activation and are not separately accepted&#x2F;rejected.</p>
+<ol>
+<li>GameplayEffects are only applied on clients if there is a valid prediction key. (If no prediction key, it simply skips the application on client).</li>
+<li>Attributes, GameplayCues, and GameplayTags are all predicted if the GameplayEffect is predicted.</li>
+<li>When the <code>FActiveGameplayEffect</code> is created, it stores the prediction key (<code>FActiveGameplayEffect::PredictionKey</code>)<ul>
+<li>Instant effects are explained below in “Attribute Prediction”.</li>
+</ul>
+</li>
+<li>On the server, the same prediction key is also set on the server’s <code>FActiveGameplayEffect</code> that will be replicated down.</li>
+<li>As a client, if you get a replicated <code>FActiveGameplayEffect</code> with a valid prediction key on it, you check to see if you have an <code>ActiveGameplayEffect</code> with that same key, if there is match, we do not apply<br>the ‘on applied’ type of logic, e.g., GameplayCues. The solves the “Redo” problem. However we will have 2 of the ‘same’ GameplayEffects in our ActiveGameplayEffects container, temporarily:</li>
+<li>At the same time, <code>FReplicatedPredictionKeyItem::OnRep</code> will catch up and the predictive effects will be removed. When they are removed in this case, we again check <code>PredictionKey</code> and decide<br>if we should not do the ‘On Remove’ logic &#x2F; GameplayCue.</li>
+</ol>
+<p>See <code>FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec</code> where it registers what to do when caught-up (RemoveActiveGameplayEffect_NoReturn).<br>See <code>FActiveGameplayEffect::PostReplicatedAdd</code>, <code>FActiveGameplayEffect::PreReplicatedRemove</code>, and <code>FActiveGameplayCue::PostReplicatedAdd</code> for examples of how <code>FPredictionKey</code> is associated with the GE’s and GC’s.</p>
+<hr>
+<h3 id="​​-Attribute-Prediction-​"><a href="#​​-Attribute-Prediction-​" class="headerlink" title="​​ Attribute Prediction ​"></a>​<em><strong>​ Attribute Prediction ​</strong></em></h3><p>Since attributes are replicated as standard uproperties, predicting modification to them can be tricky (“Override” problem). Instantaneous modification can be even harder since these are non stateful by nature.<br>(E.g., rolling back an attribute mod is difficult if there is no book keeping past the modification). This makes the “Undo” and “Redo” problem also hard in this case.</p>
+<p>The basic plan of attack is to treat attribute prediction as delta prediction rather than absolute value prediction. We do not predict that we have 90 mana, we predict that we have -10 mana from the server value, until<br>the server confirms our prediction key. Basically, treat instant modifications as &#x2F;infinite duration modifications&#x2F; to attributes while they are done predictively. The solves “Undo” and “Redo”.</p>
+<p>For the “override” problem, we can handle this in the properties <code>OnRep</code> by treating the replicated (server) value as the ‘base value’ instead of ‘final value’ of the attribute, and to<br>reaggregate our ‘final value’ after a replication happens.</p>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example:"></a>Example:</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UMyHealthSet::GetLifetimeReplicatedProps</span><span class="params">(TArray&lt; FLifetimeProperty &gt; &amp; OutLifetimeProps)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Super::<span class="built_in">GetLifetimeReplicatedProps</span>(OutLifetimeProps);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">DOREPLIFETIME_CONDITION_NOTIFY</span>(UMyHealthSet, Health, COND_None, REPNOTIFY_Always);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Gameplay-Cue-Events"><a href="#Gameplay-Cue-Events" class="headerlink" title="Gameplay Cue Events"></a>Gameplay Cue Events</h1><p>Outside of GameplayEffects which are already explained, Gameplay Cues can be activated on their own. These functions (<code>UAbilitySystemComponent::ExecuteGameplayCue</code> etc) take network role and prediction keys into account.</p>
+<p>In <code>UAbilitySystemComponent::ExecuteGameplayCue</code>, if authority then do the multicast event (with replication key). If non authority but w&#x2F; a valid prediction key, predict the GameplayCue.<br>On the receiving end (<code>NetMulticast_InvokeGameplayCueExecuted</code> etc), if there is a replication key, then don’t do the event (assume you predicted it).<br>Remember that <code>FPredictionKeys</code> only replicate to the originating owner. This is an intrinsic property of <code>FReplicationKey</code>.</p>
+<hr>
+<h1 id="Triggered-Data-Prediction"><a href="#Triggered-Data-Prediction" class="headerlink" title="Triggered Data Prediction"></a>Triggered Data Prediction</h1><p>Triggered Data is currently used to activate abilities. Essentially this all goes through the same code path as ActivateAbility. Rather than the ability being activated from input press, it is activated from<br>another game code driven event. Clients are able to predictively execute these events which predictively activate abilities.</p>
+<p>There are some nuances to how, since the server will also run the code that triggers events. The server won’t just wait to hear from the client. The server will keep a list of triggered abilities that have been<br>activated from a predictive ability. When receiving a <code>TryActivate</code> from a triggered ability, the server will look to see if &#x2F;it&#x2F; has already run this ability, and respond with that information.</p>
+<p>The issue is we do not properly rollback these operations. There is work left to do on Triggered Events and replication. (explained at the end).</p>
+<hr>
+<h2 id="Advanced-topic-Dependencies"><a href="#Advanced-topic-Dependencies" class="headerlink" title="Advanced topic! Dependencies"></a>Advanced topic! Dependencies</h2><p>We can have situations such as “Ability X activates and immediately triggers an event which activates Ability Y which triggers another Ability Z”. The dependency chain is X-&gt;Y-&gt;Z.<br>Each of those abilities could be rejected by the server. If Y is rejected, then Z also never happened, but the server does not explicitly decide ‘no Z can’t run’.<br>To handle this, we have a concept of a Base PredictionKey, which is a member of <code>FPredictionKey</code>. When calling <code>TryActivateAbility</code>, we pass in the current PredictionKey (if applicable). That prediction key<br>is used as the base for any new prediction keys generated. We build a chain of keys this way, and can then invalidate Z if Y is rejected.</p>
+<p>This is slightly more nuanced though. In the X-&gt;Y-&gt;Z case, the server will only receive the PredictionKey for X before trying to run the chain itself. E.g., it will TryActivate Y and Z with the original prediction key<br>sent to it from the client, whereas the client will generate a new PredictionKey each time it calls <code>TryActivateAbility</code>. The client has to generate a new PredictionKey for each ability activate, since each activate<br>is not logically atomic. Each side effect produced in the chain of events has to have a unique PredictionKey. We cannot have GameplayEffects produced in X have the same PredictionKey produced in Z.</p>
+<p>To get around this, The prediction key of X is considered the Base key for Y and Z. The dependency from Y to Z is kept completely client side, which is done in by <code>FPredictionKeyDelegates::AddDependency</code>. We add delegates<br>to reject&#x2F;catchup Z if Y rejected&#x2F;confirmed.</p>
+<p>This dependency system allows us to have multiple predictive actions that are not logically atomic within a single prediction window&#x2F;scope.</p>
+<p>There is a problem though: because the dependencies are kept client side, the server does not actually know if it had previously rejected a dependent action. You can design around this issue by using activation tags<br>in your gameplay abilities. For instance, when predicting dependents GA_Combo1 -&gt; GA_Combo2, you could make GA_Combo2 only activate if it has a GameplayTag given by GA_Combo1. Thus a rejection of GA_Combo1 would also<br>cause the server to reject the activation of GA_Combo2.</p>
+<hr>
+<h1 id="Additional-Prediction-Windows-within-an-Ability"><a href="#Additional-Prediction-Windows-within-an-Ability" class="headerlink" title="Additional Prediction Windows (within an Ability)"></a>Additional Prediction Windows (within an Ability)</h1><p>As stated, A prediction key is only usable during a single logical scope. Once <code>ActivateAbility</code> returns, we are essentially done with that key. If the ability is waiting on an external event or timer, it’s possible<br>we will have already received a confirm&#x2F;reject from the server by the time we’re ready to continue execution. Thus any additional side effects produced after the initial activation can no longer be tied to the lifespan of the original key.</p>
+<p>This isn’t that bad, except that abilities will sometimes want to react to player input. For example, ‘a hold down and charge’ ability wants to instantly predict some stuff when the button is released. It is possible<br>to create a new prediction window within an ability with <code>FScopedPredictionWindow</code>.</p>
+<p><strong>FScopedPredictionWindows</strong>​ provides a way to send the server a new prediction key and have the server pick up and use that key within the same logical scope.</p>
+<p><code>UAbilityTask_WaitInputRelease::OnReleaseCallback</code> is a good example. The flow of events is as followed:</p>
+<ol>
+<li>Client enters <code>UAbilityTask_WaitInputRelease::OnReleaseCallback</code> and starts a new <code>FScopedPredictionWindow</code>. This creates a new prediction key for this scope (<code>FScopedPredictionWindow::ScopedPredictionKey</code>).</li>
+<li>Client calls <code>AbilitySystemComponent-&gt;ServerInputRelease</code> which passes <code>ScopedPrediction.ScopedPredictionKey</code> as a parameter.</li>
+<li>Server runs <code>ServerInputRelease_Implementation</code> which takes the passed in PredictionKey and sets it as <code>UAbilitySystemComponent::ScopedPredictionKey</code> with an <code>FScopedPredictionWindow</code>.</li>
+<li>Server runs <code>UAbilityTask_WaitInputRelease::OnReleaseCallback</code> &#x2F;within the same scope&#x2F;</li>
+<li>When the server hits the <code>FScopedPredictionWindow</code> in ::OnReleaseCallback, it gets the prediction key from <code>UAbilitySystemComponent::ScopedPredictionKey</code>. That is now used for all side effects within this logical scope.</li>
+<li>Once the server ends this scoped prediction window, the prediction key used is finished and set to <code>ReplicatedPredictionKey</code>.</li>
+<li>All side effects created in this scope now share a key between client and server.</li>
+</ol>
+<p>The key to this working is that ::OnReleaseCallback calls ::ServerInputRelease which calls ::OnReleaseCallback on the server. There is no room for anything else to happen and use the given prediction key.</p>
+<p>While there is no “Try&#x2F;Failed&#x2F;Succeed” calls in this example, all side effects are procedurally grouped&#x2F;atomic. This solves the “Undo” and “Redo” problems for any arbitrary function calls that run on the server and client.</p>
+<hr>
+<h1 id="Unsupported-Issues-Todo"><a href="#Unsupported-Issues-Todo" class="headerlink" title="Unsupported &#x2F; Issues&#x2F; Todo"></a>Unsupported &#x2F; Issues&#x2F; Todo</h1><h3 id="Triggered-events-do-not-explicitly-replicate"><a href="#Triggered-events-do-not-explicitly-replicate" class="headerlink" title="Triggered events do not explicitly replicate"></a>Triggered events do not explicitly replicate</h3><ul>
+<li>E.g., if a triggered event only runs on the server, the client will never hear about it. This also prevents us from doing cross player&#x2F;AI etc events. Support<br>for this should eventually be added and it should follow the same pattern that GameplayEffect and GameplayCues follow (predict triggered event with a prediction key, ignore the RPC event if it has a prediction key).</li>
+</ul>
+<p>Big caveat with this whole system: Rollback of any chained activations (including triggered events) is currently not possible out of the box. The reason for this is because each ServerTryActivateAbility is going to be responded to in order.<br>Let’s chain dependent GA’s as an example: GA_Mispredict -&gt; GA_Predict1. In this example, when GA_Mispredict is activated and predicted locally it will immediately also activate GA_Predict1. The client sends ServerTryActivateAbility for GA_Mispredict,<br>and the server rejects it (sending back a ClientActivateAbilityFailed). As it stands, we don’t have any delegates that reject dependent abilities on the client (and the server isn’t even aware there are dependencies). On the server, it also<br>receives a ServerTryActivateAbility for GA_Predict1. Assuming that succeeds, the Client and Server are now both executing GA_Predict1 even though GA_Mispredict never happened. You can design around this by using the tag system to ensure GA_Mispredict succeeded.</p>
+<hr>
+<h3 id="Predicting-“Meta”-Attributes-such-as-Damage-Healing-vs-“real”-attributes-such-as-Health"><a href="#Predicting-“Meta”-Attributes-such-as-Damage-Healing-vs-“real”-attributes-such-as-Health" class="headerlink" title="Predicting “Meta” Attributes such as Damage&#x2F;Healing vs “real” attributes such as Health"></a>Predicting “Meta” Attributes such as Damage&#x2F;Healing vs “real” attributes such as Health</h3><p>We are unable to apply meta attributes predictively. Meta attributes only work on instant effects, in the back end of GameplayEffect (Pre&#x2F;Post Modify Attribute on the UAttributeSet). These events are not called when<br>applying duration-based gameplay effects. E.g., a GameplayEffect that modifies damage for 5 seconds doesn’t make sense.</p>
+<p>In order to support this, we would probably add some limited support for duration based meta attributes, and move the transform of the instant gameplay effect from the front end (<code>UAbilitySystemComponent::ApplyGameplayEffectSpecToSelf</code>)<br>to the backend (<code>UAttributeSet::PostModifyAttribute</code>).</p>
+<hr>
+<h3 id="Predicting-ongoing-multiplicative-GameplayEffects"><a href="#Predicting-ongoing-multiplicative-GameplayEffects" class="headerlink" title="Predicting ongoing multiplicative GameplayEffects"></a>Predicting ongoing multiplicative GameplayEffects</h3><p>There are also limitations when predicting % based gameplay effects. Since the server replicates down the ‘final value’ of an attribute, but not the entire aggregator chain of what is modifying it, we may run into cases where<br>the client cannot accurately predict new gameplay effects.</p>
+<p>For example:</p>
+<ul>
+<li>Client has a perm +10% movement speed buff with base movement speed of 500 -&gt; 550 is the final movement speed for this client.</li>
+<li>Client has an ability which grants an additional 10% movement speed buff. It is expected to <em>sum</em> the % based multipliers for a final 20% bonus to 500 -&gt; 600 movement speed.</li>
+<li>However on the client, we just apply a 10% buff to 550 -&gt; 605.</li>
+</ul>
+<p>This will need to be fixed by replicating down the aggregator chain for attributes. We already replicate some of this data, but not the full modifier list. We will need to look into supporting this eventually.</p>
+<hr>
+<h3 id="“Weak-Prediction”"><a href="#“Weak-Prediction”" class="headerlink" title="“Weak Prediction”"></a>“Weak Prediction”</h3><p>We will probably still have cases that do not fit well into this system. Some situations will exist where a prediction key exchange is not feasible. For example, an ability where any one that player collides with&#x2F;touches<br>receives a GameplayEffect that slows them and their material blue. Since we can’t send Server RPCs every time this happens (and the server couldn’t necessarily handle the message at its point in the simulation), there is no<br>way to correlate the gameplay effect side effects between client and server.</p>
+<p>One approach here may be to think about a weaker form of prediction. One where there is not a fresh prediction key used and instead the server assumes the client will predict all side effects from an entire ability. This would<br>at least solve the “redo” problem but would not solve the “completeness” problem. If the client side prediction could be made as minimal as possible - for example only predicting an initial particle effect rather than<br>predicting the state and attribute change - then the problems get less severe.</p>
+<hr>
+<h1 id="FPredictionKey-Implementation-Notes"><a href="#FPredictionKey-Implementation-Notes" class="headerlink" title="FPredictionKey Implementation Notes"></a>FPredictionKey Implementation Notes</h1><p><code>FPredictionKey</code> is a generic way of supporting Clientside Prediction in the GameplayAbility system.<br>A <code>FPredictionKey</code> is essentially an ID for identifying predictive actions and side effects that are<br>done on a client. <code>UAbilitySystemComponent</code> supports synchronization of the prediction key and its side effects<br>between client and server.</p>
+<p>Essentially, anything can be associated with a <code>PredictionKey</code>, for example activating an Ability.<br>The client can generate a fresh <code>PredictionKey</code> and sends it to the server in its <code>ServerTryActivateAbility</code> call.<br>The server can confirm or reject this call (<code>ClientActivateAbilitySucceed/Failed</code>).</p>
+<p>While the client is predicting its ability, it is creating side effects (GameplayEffects, TriggeredEvents, Animations, etc).<br>As the client predicts these side effects, it associates each one with the prediction key generated at the start of the ability<br>activation.</p>
+<p>If the ability activation is rejected, the client can immediately revert these side effects.<br>If the ability activation is accepted, the client must wait until the replicated side effects are sent to the server.<br>(The <code>ClientActivatbleAbilitySucceed</code> RPC will be immediately sent. Property replication may happen a few frames later).<br>Once replication of the server created side effects is finished, the client can undo its locally predictive side effects.</p>
+<p>The main things <code>FPredictionKey</code> itself provides are:</p>
+<ul>
+<li>Unique ID and a system for having dependant chains of <code>Prediction Keys</code> (“Current” and “Base” integers)</li>
+<li>A special implementation of <code>::NetSerialize</code> which only serializes the prediction key to the predicting client<ul>
+<li>This is important as it allows us to serialize prediction keys in replicated state, knowing that only clients that gave the server the prediction key will actually see them!</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>UE Source</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>GAS</tag>
+        <tag>UE Source</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GASPredictionKey自学简记</title>
+    <url>/2025/03/06/UEGamplayPrediction%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h1 id="关键点：PredictionKey"><a href="#关键点：PredictionKey" class="headerlink" title="关键点：PredictionKey"></a>关键点：PredictionKey</h1><p>由GA激活生成的PKey，并由此去影响GAS系统中的各个其他部分。</p>
+<p>客户端预测先行，在收到服务器校验结果后，执行对应的回滚操作。</p>
+<h2 id="概念：预测窗口-Prediction-Window"><a href="#概念：预测窗口-Prediction-Window" class="headerlink" title="概念：预测窗口 Prediction Window"></a>概念：预测窗口 Prediction Window</h2><blockquote>
+<p>“We do not predict over multiple frames”</p>
+</blockquote>
+<p>在多个行为激活形成链条时，每个行为有自己的PKey，但又和之前的PKey相关联。<br>服务端并不确定Reject某个PKey对应的行为，是否会导致后续的行为也被拒绝。这里在实现的时候可能需要额外注意下。</p>
+<h2 id="关于预测窗口"><a href="#关于预测窗口" class="headerlink" title="关于预测窗口"></a>关于预测窗口</h2><p>GA如果依赖于外部事件，或者定时器，在异步等待过程中，可能会收到服务器的confirm&#x2F;reject回调。而PKey在ActivateAbility返回时就结束了。因此后面激活的内容是无法绑定到这个PKey上的。</p>
+<p>【这里可以验证一下 PKey在下发回客户端执行的事情（比如说广播），如果是广播形式，那么确实后面的内容就有问题了。】</p>
+<p>预测窗口和预测键不会跨帧。但是预测本身是可以支持跨帧的。这里主要处理的是异步的GATask等逻辑。为了实现跨多帧的预测逻辑，就需要多个预测窗口。每个帧内的操作都是独立的预测窗口，每个异步操作需要自己的同步执行块。</p>
+<p>这里异步操作对应的预测窗口创建：<br>• Ability中去创建新的PredictionWindow - 见<code>FScopedPredictionWindow</code></p>
+<h2 id="结合官方文档，给出一个Deepseek回答的样例【待考证】"><a href="#结合官方文档，给出一个Deepseek回答的样例【待考证】" class="headerlink" title="结合官方文档，给出一个Deepseek回答的样例【待考证】"></a>结合官方文档，给出一个Deepseek回答的样例【待考证】</h2><p>目前来看 CreateDependentKey 应该是由内部去维护的。<br>参考的样例还是看官方文档的AbilityTask_WaitInputRelease更为合适。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#region Deepseek样例和回答</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UAbilityTask_WaitInputRelease::OnReleaseCallback</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//创建新的预测窗口</span></span><br><span class="line">    <span class="function">FScopedPredictionWindow <span class="title">ScopedPrediction</span><span class="params">(AbilitySystemComponent)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    <span class="comment">//发送RPC时带上预测键</span></span></span><br><span class="line"><span class="function">    AbilitySystemComponent-&gt;<span class="title">ServerInputRelease</span><span class="params">(ScopedPrediction.ScopedPreditionKey)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//[在此作用域内所有副作用自动关联预测键]</span></span><br><span class="line">    <span class="built_in">ApplayGameplayEffect</span>(ChargeEffect)</span><br><span class="line">    <span class="built_in">PlayMontage</span>(ReleaseAnim)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">需要注意新键的创建可能以来于FScopedPredictionWindow。</span><br><span class="line">且依赖链条，可能需要显示创建。</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UGA_Chain::ActivateAbility</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">FCopedPredictionWindow <span class="title">Window1</span><span class="params">(ASC)</span></span>; <span class="comment">//PKey1</span></span><br><span class="line">    <span class="built_in">ServerAction1</span>(PKey1);</span><br><span class="line">    <span class="comment">//显示创建依赖关系</span></span><br><span class="line">    FPredictionKey PKey2 = FPredictionKey::<span class="built_in">CreateDependentKey</span>(PKey1);</span><br><span class="line"></span><br><span class="line">    UAbilityTask_WaitGameplayEvent * Task = UAbilityTask_WaitGameplayEvent::<span class="built_in">WaitGameplayEvent</span>(<span class="keyword">this</span>);</span><br><span class="line">    Task-&gt;EventReceived.<span class="built_in">AddLambda</span>([<span class="keyword">this</span>,PKey2]()&#123;</span><br><span class="line">        FScopedPredictionWindow <span class="built_in">Window2</span>(ASC);<span class="comment">//实际生成Key3</span></span><br><span class="line">        PKey<span class="number">3.</span><span class="built_in">AddDependency</span>(PKey2);    <span class="comment">//建立依赖链</span></span><br><span class="line">        <span class="built_in">ServerAction2</span>(PKey3);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;依赖关系是基于键的当前状态而不是键本身的存在。&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//#endregion Deepseek样例回答</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>GAS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>UE Input输入</title>
     <url>/2025/03/15/UE_Input/</url>
     <content><![CDATA[<p><a href="https://dev.epicgames.com/documentation/zh-cn/unreal-engine/enhanced-input-in-unreal-engine#%E8%BE%93%E5%85%A5%E4%BF%AE%E9%A5%B0%E5%99%A8">官方文章Doc</a></p>
@@ -634,6 +710,25 @@
       <tags>
         <tag>UE</tag>
         <tag>UE基础功能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows下的Git账号更换</title>
+    <url>/2025/03/04/windows-change-git/</url>
+    <content><![CDATA[<h3 id="Hexo更换指定Git账号问题"><a href="#Hexo更换指定Git账号问题" class="headerlink" title="Hexo更换指定Git账号问题"></a>Hexo更换指定Git账号问题</h3><ul>
+<li><p>Git内设置对应的账号和密码</p>
+</li>
+<li><p>控制面板 - 用户 - 凭据管理器 - Windows凭据删除对应git的凭据 在使用时重新通过网页处理凭据 </p>
+</li>
+<li><p>使用新账号登陆即可</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
       </tags>
   </entry>
 </search>

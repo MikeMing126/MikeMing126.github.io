@@ -164,20 +164,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hexo Theme</title>
-    <url>/2025/03/03/Hexo/HexoTheme/</url>
-    <content><![CDATA[<h1 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h1><h2 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h2><p><a href="https://github.com/MaLuns/hexo-theme-async">GitHub</a>  </p>
-<p><a href="https://hexo-theme-async.imalun.com/guide/">Introduction</a>  </p>
-<h2 id="Butterfly"><a href="#Butterfly" class="headerlink" title="Butterfly"></a>Butterfly</h2><p><a href="https://butterfly.js.org/">Introduction</a>  </p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git相关内容学习</title>
     <url>/2025/03/06/Other/GitLearning/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Git在版本维护上面还是能发挥很好的作用的。当然也可以考虑用TortoiseSVN。<br>主要目的还是维护好代码吧。这样有什么临时改动想回滚到之前版本也比较好处理。避免某些操作无法撤销而花很多精力去重新编写内容。</p>
@@ -206,6 +192,20 @@
       </categories>
       <tags>
         <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo Theme</title>
+    <url>/2025/03/03/Hexo/HexoTheme/</url>
+    <content><![CDATA[<h1 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h1><h2 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h2><p><a href="https://github.com/MaLuns/hexo-theme-async">GitHub</a>  </p>
+<p><a href="https://hexo-theme-async.imalun.com/guide/">Introduction</a>  </p>
+<h2 id="Butterfly"><a href="#Butterfly" class="headerlink" title="Butterfly"></a>Butterfly</h2><p><a href="https://butterfly.js.org/">Introduction</a>  </p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -253,155 +253,6 @@
       </categories>
       <tags>
         <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE蓝图笔记</title>
-    <url>/2025/04/06/UE/Engine/UEBlueprintNote/</url>
-    <content><![CDATA[<h1 id="蓝图断点与流程显示"><a href="#蓝图断点与流程显示" class="headerlink" title="蓝图断点与流程显示"></a>蓝图断点与流程显示</h1><p>断点的话，右键对应的节点添加断点即可。</p>
-<p>运行时打开对应的蓝图，并在编辑器中选中对应的对象，可以观看其运行流程。</p>
-<img src="/2025/04/06/UE/Engine/UEBlueprintNote/image.png" class="" title="alt text">
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>Blueprint</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE Input输入</title>
-    <url>/2025/03/15/UE/Engine/UE_Input/</url>
-    <content><![CDATA[<p><a href="https://dev.epicgames.com/documentation/zh-cn/unreal-engine/enhanced-input-in-unreal-engine#%E8%BE%93%E5%85%A5%E4%BF%AE%E9%A5%B0%E5%99%A8">官方文章Doc</a></p>
-<h1 id="基础输入-Actor-Input"><a href="#基础输入-Actor-Input" class="headerlink" title="基础输入 [Actor Input]"></a>基础输入 [Actor Input]</h1><p>Acotr Input<br>响应玩家输入</p>
-<p>启用ActorInput</p>
-<ul>
-<li>将PlayerController与对应的Actor绑定在一起 启用输入</li>
-<li>配套的禁用输入 Disable Input</li>
-</ul>
-<p>使用事件来启用&#x2F;禁用输入</p>
-<ul>
-<li>CollisionComp的Overlap</li>
-</ul>
-<p>此外 输入是有优先级以及“消耗”这一说法的。 [见Consume Input]</p>
-<h1 id="增强输入-Enhanced-Input"><a href="#增强输入-Enhanced-Input" class="headerlink" title="增强输入 [Enhanced Input]"></a>增强输入 [Enhanced Input]</h1><p>键输入的重新映射</p>
-<p>概念：</p>
-<ul>
-<li>输入动作 Input Actions</li>
-<li>输入映射上下文 Input Mapping Context</li>
-<li>输入修饰器 Input Modifers</li>
-<li>输入触发器 Input Tiggers</li>
-</ul>
-<h2 id="输入动作"><a href="#输入动作" class="headerlink" title="输入动作"></a>输入动作</h2><p>输入动作在概念上相当于 操作（Action） 和 轴（Axis） 映射名称，但它们是数据资产。</p>
-<p>每个输入动作应该表示用户可以执行的某件事，例如”蹲伏”或”发射武器”。</p>
-<p>你可以在蓝图或C++中添加 输入侦听器（Input Listeners） ，侦听输入动作的状态何时发生变化。</p>
-<p>输入动作可以是多种不同的类型，这些类型将确定行为。</p>
-<p>可以创建简单的布尔动作或更复杂的3D轴。动作类型将确定值。布尔动作采用简单的布尔值， Axis1D为浮点值， Axis2D为FVector2D， Axis3D 为整个Fvector。</p>
-<p>布尔动作用于状态为开或关的输入。这相当于旧版输入系统中的较旧动作映射。<br>对于游戏手柄控制杆值等控制点，你可以使用2D轴动作来保存控制杆位置的X和Y值。<br>你可以使用3D轴保存更复杂的数据，例如运动控制器信息。</p>
-<p>示例 IA_Move</p>
-<h3 id="触发状态"><a href="#触发状态" class="headerlink" title="触发状态"></a>触发状态</h3><p>触发状态（Trigger State） 表示动作的当前状态。<br>通常，使用”已触发”状态。你可以绑定到C++和蓝图中的特定状态。</p>
-<ul>
-<li>已触发（Triggered）： 动作已触发。这意味着它完成了所有触发器要求的求值。例如，”按下并松开”触发器会在用户松开按键时发送。</li>
-<li>已开始（Started）： 发生了开始触发器求值的某个事件。例如，”双击”触发器的第一次按键将调用一次”已开始”状态。</li>
-<li>进行中（Ongoing）： 触发器仍在进行处理。例如，当用户按下按钮时，在达到指定持续时间之前，”按住”动作处于进行中状态。根据触发器，此事件将在收到输入值之后在对动作求值时，每次更新触发一次。</li>
-<li>已完成（Completed）： 触发器求值过程已完成。</li>
-<li>已取消（Canceled）： 触发已取消。例如，在”按住”动作还没触发之前，用户就松开了按钮。</li>
-</ul>
-<h3 id="输入侦听器"><a href="#输入侦听器" class="headerlink" title="输入侦听器"></a>输入侦听器</h3><p>如题所述，用于侦听对应的事件。</p>
-<h2 id="输入映射上下文"><a href="#输入映射上下文" class="headerlink" title="输入映射上下文"></a>输入映射上下文</h2><p>主要还是起一个Mapping的作用</p>
-<p>输入动作的集合，表示玩家可以处于的特定上下文。它们描述了给定输入动作的触发规则。映射上下文可以动态地为每个用户添加、移除或安排优先次序。<br>Input Action 以及 用户出发InputAction的方式。如键、按钮、动作轴等。</p>
-<p>键下有对应的Triggers和Modifers。为各个用户输入的输入触发器和输入修饰器列表，可用于确定如何筛选或处理输入的原始值，以及它必须满足哪些限制才能驱动顶层的输入动作。</p>
-<p>通过本地玩家的增强输入本地玩家子系统（Enhanced Input Local Player Subsystem）将一个或多个上下文应用到本地玩家，并安排它们的优先次序，避免多个操作由于尝试使用同一输入而发生冲突。</p>
-<p>将实际的键与输入动作[InputAction]绑定，并为每个动作指定额外触发器或修饰器。将输入映射上下文添加到增强输入子系统时，你还可以指定其优先级。如果你有多个上下文映射到同一个输入动作，那么在触发输入动作时，将考虑优先级最高的上下文，而忽略其他上下文。</p>
-<p>例如，你可以为一个可以游泳、行走、驾驶载具的角色提供多个输入映射上下文。一个用于通用动作（始终可用且始终映射到相同用户输入），其他分别用于各类移动模式。</p>
-<p>开发人员随后可以将与载具相关的输入动作放入单独的输入映射上下文中，这些操作将在本地玩家进入载具时添加到玩家，并在退出载具时从本地玩家中移除。[使用多个输入映射上下文]</p>
-<p>这样做有助于确保不合适的输入动作无法运行，从而优化并预防漏洞。此外，使用互斥的输入映射上下文还有助于避免输入冲突，因此当某个用户输入被用于不同的输入动作时，该输入绝不会意外触发错误的操作。</p>
-<h2 id="输入修饰器"><a href="#输入修饰器" class="headerlink" title="输入修饰器"></a>输入修饰器</h2><p>InputModifiers<br>预处理器。</p>
-<p>增强输入插件随附多种输入修饰器，可以执行各种任务，例如更改轴顺序、实现”死区”、将轴输入转换为世界空间。</p>
-<p>很适合用于应用灵敏度设置，在多个帧上平滑输入，或基于玩家状态更改输入的行为。</p>
-<p>比如可以实现反向操作的效果。<br>详细见Modify Raw函数。</p>
-<h3 id="方向输入"><a href="#方向输入" class="headerlink" title="方向输入"></a>方向输入</h3><p>手柄 - 摇杆<br>键盘 - 由一维(键盘WASD输入)转为二维：</p>
-<ul>
-<li>默认情况下 单键为一维度 可以认为是X轴，值为0或1.0</li>
-<li>使用Swizzle Input Axis Values 将其改为Y轴（适用于W与D键）</li>
-<li>使用Negate负值来实现反方向</li>
-</ul>
-<p>不过这里有一点还是值得思考的：键盘单键输入就是0&#x2F;1.0 和摇杆还不太一样。</p>
-<p>按鸣潮的做法，键鼠时，用ctrl来控制慢走&#x2F;快走，而摇杆就可以“轻推”。</p>
-<h2 id="输入触发器"><a href="#输入触发器" class="headerlink" title="输入触发器"></a>输入触发器</h2><p>用于确定用户输入在经过一系列可选输入修饰器的处理后，是否会激活输入映射上下文中的相应输入动作。</p>
-<p>大部分输入触发器都会分析输入本身，检查最小动作值并验证各种模式。</p>
-<p>例如短暂点击、长时间按住或典型的”按下”或”释放”事件。</p>
-<p>此规则的一个例外是”同时按键”输入触发器，该触发器仅通过另一个输入动作触发。</p>
-<p>默认情况下，任意用户输入活动都会在每次更新时触发一次。</p>
-<p>输入触发器有三种类型：</p>
-<ul>
-<li>显式（Explicit） 类型:将使输入在输入触发器成功时成功。</li>
-<li>隐式（Implicit） 类型:将使输入仅在输入触发器和所有其他隐式类型输入触发器都成功时成功。</li>
-<li>阻碍（Blocker） 类型：将使输入在输入触发器成功时失败。</li>
-</ul>
-<p>处理用户输入后，输入触发器可能返回以下三种状态之一：</p>
-<ul>
-<li>无（None） :表明未满足输入触发器的条件，因此输入触发器失败。</li>
-<li>持续（Ongoing） :表明部分满足了输入触发器的条件，并且输入触发器正在处理，但尚未成功。</li>
-<li>已触发（Triggered） :表明已满足输入触发器的所有条件，因此输入触发器成功。</li>
-</ul>
-<p>长按示例:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">Input Trigger Timed Base 会检查输入是否已被按住一段时间，如是，则接受该输入并返回 持续（Ongoing） 状态。</span></span><br><span class="line"><span class="comment">插件提供的&quot;Input Trigger Timed Base&quot;类永远不会返回 已触发（Triggered） 状态。你要在新建的输入触发器子类中重载该函数，来确定它如何响应用户输入。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">**UInputTriggerHold.h**</span><br><span class="line"></span><br><span class="line"><span class="comment">/** UInputTriggerHold</span></span><br><span class="line"><span class="comment">    触发器会在输入保持激活状态达到HoldTimeThreshold秒之后触发。</span></span><br><span class="line"><span class="comment">    触发器可以选择触发一次或反复触发。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">UCLASS</span>(NotBlueprintable, MinimalAPI, meta = (DisplayName = <span class="string">&quot;Hold&quot;</span>))</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UInputTriggerHold</span> <span class="keyword">final</span> : <span class="keyword">public</span> UInputTriggerTimedBase</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"></span><br><span class="line">    <span class="type">bool</span> bTriggered = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> ETriggerState <span class="title">UpdateState_Implementation</span><span class="params">(<span class="type">const</span> UEnhancedPlayerInput* PlayerInput, FInputActionValue ModifiedValue, <span class="type">float</span> DeltaTime)</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> ETriggerEventsSupported <span class="title">GetSupportedTriggerEvents</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">override</span> </span>&#123; <span class="keyword">return</span> ETriggerEventsSupported::Ongoing; &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 输入要保持多久才能导致触发？</span></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, Config, BlueprintReadWrite, Category = <span class="string">&quot;Trigger Settings&quot;</span>, meta = (ClampMin = <span class="string">&quot;0&quot;</span>))</span><br><span class="line">    <span class="type">float</span> HoldTimeThreshold = <span class="number">1.0f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 此触发器应该仅触发一次，还是在满足保持时间阈值之后每帧触发？</span></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, Config, BlueprintReadWrite, Category = <span class="string">&quot;Trigger Settings&quot;</span>)</span><br><span class="line">    <span class="type">bool</span> bIsOneShot = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> FString <span class="title">GetDebugState</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">override</span> </span>&#123; <span class="keyword">return</span> HeldDuration ? FString::<span class="built_in">Printf</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;Hold:%.2f/%.2f&quot;</span>), HeldDuration, HoldTimeThreshold) : <span class="built_in">FString</span>(); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> ~~~</span><br><span class="line">**UInputTriggerHold.<span class="function">cpp**</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">ETriggerState <span class="title">UInputTriggerHold::UpdateState_Implementation</span><span class="params">(<span class="type">const</span> UEnhancedPlayerInput* PlayerInput, FInputActionValue ModifiedValue, <span class="type">float</span> DeltaTime)</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    <span class="comment">// 更新HeldDuration并派生基础状态 </span></span><br><span class="line">    ETriggerState State = Super::<span class="built_in">UpdateState_Implementation</span>(PlayerInput, ModifiedValue, DeltaTime);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在HeldDuration达到阈值时触发 </span></span><br><span class="line">    <span class="type">bool</span> bIsFirstTrigger = !bTriggered; </span><br><span class="line">    bTriggered = HeldDuration &gt;= HoldTimeThreshold; </span><br><span class="line">    <span class="keyword">if</span> (bTriggered) </span><br><span class="line">    &#123; </span><br><span class="line">        <span class="keyword">return</span> (bIsFirstTrigger || !bIsOneShot) ? ETriggerState::Triggered : ETriggerState::None; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> State; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="平台设置"><a href="#平台设置" class="headerlink" title="平台设置"></a>平台设置</h2><p>映射上下文重定向（Mapping Context Redirect）。<br>默认情况下，它包含输入映射上下文的映射，允许你将一个上下文重定向到另一个上下文。<br>要应用此重定向，请将其添加到你的 项目设置（Project Settings） &gt; 增强输入（Enhanced Input） &gt; 平台设置（Platform Settings） &gt; 输入数据（Input Data）。</p>
-<h2 id="其他课题与思考"><a href="#其他课题与思考" class="headerlink" title="其他课题与思考"></a>其他课题与思考</h2><p>常见的一个游戏功能就是玩家按键自定义。<br>这一块应该通过输入映射上下文就可以实现了。<br>这块再做一个本地保存应该就好。</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>UE基础功能</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-Module</title>
-    <url>/2025/04/13/UE/Engine/UEModule/</url>
-    <content><![CDATA[<h1 id="虚幻引擎模块-Module-Doc"><a href="#虚幻引擎模块-Module-Doc" class="headerlink" title="虚幻引擎模块[Module] - Doc"></a>虚幻引擎模块[Module] - Doc</h1><p><a href="https://dev.epicgames.com/documentation/zh-cn/unreal-engine/unreal-engine-modules">官方参考文章地址</a></p>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>模块（Modules）是 虚幻引擎（UE）的软件架构的基本构建块。它们在独立的代码单元中封装了具体的编辑器工具、运行时功能、库或其他功能。</p>
-<h2 id="好处"><a href="#好处" class="headerlink" title="好处"></a>好处</h2><p>使用模块整理项目可带来以下好处：</p>
-<ul>
-<li><p>模块会强制实施良好的代码分离，可用于封装功能并隐藏代码的内部成分。</p>
-</li>
-<li><p>模块编译为单独的编译单元。这意味着，只有已更改的模块才需要编译，较大项目的编译时间会显著缩短。</p>
-</li>
-<li><p>模块在依赖性图表中链接在一起，并且仅允许实际使用的代码包含头文件，以符合Include What You Use (IWYU)标准。这意味着，你的项目中未使用的模块将安全地排除在编译之外。</p>
-</li>
-<li><p>你可以控制在运行时何时加载和卸载具体的模块。这样一来，可以管理哪些系统可用并激活，从而优化项目的性能。</p>
-</li>
-<li><p>你可以基于特定条件（例如，项目是为哪个平台编译的），在你的项目中纳入或排除模块。</p>
-</li>
-</ul>
-<p>总结起来，如果你遵守模块的最佳实践，相较于将项目代码全部放在一个模块中而言，你的项目代码会更加井然有序，能更高效地编译，并且可复用程度更高。</p>
-<h1 id="模块API"><a href="#模块API" class="headerlink" title="模块API"></a>模块API</h1><p>主要参考以下文章进行总结<br><a href="https://dev.epicgames.com/documentation/zh-cn/unreal-engine/module-api-specifiers-in-unreal-engine">官方文章</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/671652937">知乎文章 - 虚幻引擎类和函数等前的 XXX_API 的作用和原理研究</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/698099444">知乎文章 - UEC++编译链接LinkError问题解决汇总</a></p>
-<h2 id="简述和注意点"><a href="#简述和注意点" class="headerlink" title="简述和注意点:"></a>简述和注意点:</h2><h3 id="基础定义"><a href="#基础定义" class="headerlink" title="基础定义"></a>基础定义</h3><p>模块等前定义的 XXX_API 的一个主要作用为为对应的模块等启用 dllexport 等扩展特性语法。（XXX模块对应的模块宏就为XXX_API）</p>
-<p>这个表示把整个类全部公开给其它的模组提供调用，如果不加上这个API宏、那也会出现Link Error。因为没暴露地址的模组就算在Build.cs加上了模组名，也依然是无法在C++的编译链接阶段查找地址失败从而导致编译错误。</p>
-<p>如果是工具类本身就想整个对外提供调用，那放在class后面加上模组API宏也是没问题。但是对于大部分我们自己写的游戏逻辑，把整个class宏公布出去会导致整个类都被编译器捕获，当该模组被其他模组所引用的时候，这整个类都会被重新编译，导致了编译时间变长。这本质上对运行时间是没影响，但项目大起来，难免会多出很多无谓的编译时间。所以这个时候我们可以考虑不在class后面加上宏API，而仅仅只在想被外部模组调用的类方法加上宏，也是可以实现链接成功。</p>
-<h3 id="蓝图调用特殊逻辑"><a href="#蓝图调用特殊逻辑" class="headerlink" title="蓝图调用特殊逻辑"></a>蓝图调用特殊逻辑</h3><p>因为有了宏API的设定，就有了一些只有蓝图可以做，但C++不可以做的事情。比如说原生的UE5插件AnimToTexture，里面的Editor类，就只能够用蓝图调用，而不允许被其它模组的C++调用的。因为这些类并没有对外声明模组API宏，导致了里面的类只能被模组本身访问，但不能被其它C++访问。但由于又声名了BlueprintCallable，所以能被蓝图调用。所以这种情况下，只能说是开发者有意为之的事情。</p>
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>这里以GAS相关的逻辑代码作为示例：<br>首先看到有对应API声明的：</p>
-<img src="/2025/04/13/UE/Engine/UEModule/image.png" class="" title="alt text">
-<img src="/2025/04/13/UE/Engine/UEModule/image2.png" class="" title="alt text">
-<p>因此，自定义子类去继承和处理对应的逻辑是没有问题的。<br>但如果要改写部分函数，比如处理GCN_Looping,直接用内部变量编译就会失败。如对下面的Struct进行引用：</p>
-<img src="/2025/04/13/UE/Engine/UEModule/image3.png" class="" title="alt text">
-<p>该struct属于GAS模块，但是没有声明API，因此自定义类（不属于该模块的），用到时就会报错。</p>
-<h2 id="内部实现"><a href="#内部实现" class="headerlink" title="内部实现"></a>内部实现</h2><p>如果要深入研究，还是要去看UHT的具体逻辑。</p>
-<h3 id="关键点"><a href="#关键点" class="headerlink" title="关键点"></a>关键点</h3><p>dllexport 、dllimport<br>dllexport 和 dllimport 存储类特性是 C 和 C++ 语言的 Microsoft 专用扩展。 可以使用它们从 DLL 中导出或向其中导入函数、数据和对象。<br>使用 dllexport 意味着定义，而使用 dllimport 则意味着声明。</p>
-<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>dllexport 、dllimport 的作用为，让指定的类、属性或函数对外可见或对当前模块可见，需要与 __declspec 配合使用，皆为 C++ 语法特性。<br>在虚幻引擎中，为了提高代码的可读性、编码方便性以及兼容平台差异性，对其做了进一步封装，即为 DLLEXPORT 和 DLLIMPORT ，之后通过编译系统进一步封装到 XXX_API 等宏中，自动完成。</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>Module</tag>
       </tags>
   </entry>
   <entry>
@@ -806,6 +657,155 @@
       </tags>
   </entry>
   <entry>
+    <title>UE蓝图笔记</title>
+    <url>/2025/04/06/UE/Engine/UEBlueprintNote/</url>
+    <content><![CDATA[<h1 id="蓝图断点与流程显示"><a href="#蓝图断点与流程显示" class="headerlink" title="蓝图断点与流程显示"></a>蓝图断点与流程显示</h1><p>断点的话，右键对应的节点添加断点即可。</p>
+<p>运行时打开对应的蓝图，并在编辑器中选中对应的对象，可以观看其运行流程。</p>
+<img src="/2025/04/06/UE/Engine/UEBlueprintNote/image.png" class="" title="alt text">
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>Blueprint</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-Module</title>
+    <url>/2025/04/13/UE/Engine/UEModule/</url>
+    <content><![CDATA[<h1 id="虚幻引擎模块-Module-Doc"><a href="#虚幻引擎模块-Module-Doc" class="headerlink" title="虚幻引擎模块[Module] - Doc"></a>虚幻引擎模块[Module] - Doc</h1><p><a href="https://dev.epicgames.com/documentation/zh-cn/unreal-engine/unreal-engine-modules">官方参考文章地址</a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>模块（Modules）是 虚幻引擎（UE）的软件架构的基本构建块。它们在独立的代码单元中封装了具体的编辑器工具、运行时功能、库或其他功能。</p>
+<h2 id="好处"><a href="#好处" class="headerlink" title="好处"></a>好处</h2><p>使用模块整理项目可带来以下好处：</p>
+<ul>
+<li><p>模块会强制实施良好的代码分离，可用于封装功能并隐藏代码的内部成分。</p>
+</li>
+<li><p>模块编译为单独的编译单元。这意味着，只有已更改的模块才需要编译，较大项目的编译时间会显著缩短。</p>
+</li>
+<li><p>模块在依赖性图表中链接在一起，并且仅允许实际使用的代码包含头文件，以符合Include What You Use (IWYU)标准。这意味着，你的项目中未使用的模块将安全地排除在编译之外。</p>
+</li>
+<li><p>你可以控制在运行时何时加载和卸载具体的模块。这样一来，可以管理哪些系统可用并激活，从而优化项目的性能。</p>
+</li>
+<li><p>你可以基于特定条件（例如，项目是为哪个平台编译的），在你的项目中纳入或排除模块。</p>
+</li>
+</ul>
+<p>总结起来，如果你遵守模块的最佳实践，相较于将项目代码全部放在一个模块中而言，你的项目代码会更加井然有序，能更高效地编译，并且可复用程度更高。</p>
+<h1 id="模块API"><a href="#模块API" class="headerlink" title="模块API"></a>模块API</h1><p>主要参考以下文章进行总结<br><a href="https://dev.epicgames.com/documentation/zh-cn/unreal-engine/module-api-specifiers-in-unreal-engine">官方文章</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/671652937">知乎文章 - 虚幻引擎类和函数等前的 XXX_API 的作用和原理研究</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/698099444">知乎文章 - UEC++编译链接LinkError问题解决汇总</a></p>
+<h2 id="简述和注意点"><a href="#简述和注意点" class="headerlink" title="简述和注意点:"></a>简述和注意点:</h2><h3 id="基础定义"><a href="#基础定义" class="headerlink" title="基础定义"></a>基础定义</h3><p>模块等前定义的 XXX_API 的一个主要作用为为对应的模块等启用 dllexport 等扩展特性语法。（XXX模块对应的模块宏就为XXX_API）</p>
+<p>这个表示把整个类全部公开给其它的模组提供调用，如果不加上这个API宏、那也会出现Link Error。因为没暴露地址的模组就算在Build.cs加上了模组名，也依然是无法在C++的编译链接阶段查找地址失败从而导致编译错误。</p>
+<p>如果是工具类本身就想整个对外提供调用，那放在class后面加上模组API宏也是没问题。但是对于大部分我们自己写的游戏逻辑，把整个class宏公布出去会导致整个类都被编译器捕获，当该模组被其他模组所引用的时候，这整个类都会被重新编译，导致了编译时间变长。这本质上对运行时间是没影响，但项目大起来，难免会多出很多无谓的编译时间。所以这个时候我们可以考虑不在class后面加上宏API，而仅仅只在想被外部模组调用的类方法加上宏，也是可以实现链接成功。</p>
+<h3 id="蓝图调用特殊逻辑"><a href="#蓝图调用特殊逻辑" class="headerlink" title="蓝图调用特殊逻辑"></a>蓝图调用特殊逻辑</h3><p>因为有了宏API的设定，就有了一些只有蓝图可以做，但C++不可以做的事情。比如说原生的UE5插件AnimToTexture，里面的Editor类，就只能够用蓝图调用，而不允许被其它模组的C++调用的。因为这些类并没有对外声明模组API宏，导致了里面的类只能被模组本身访问，但不能被其它C++访问。但由于又声名了BlueprintCallable，所以能被蓝图调用。所以这种情况下，只能说是开发者有意为之的事情。</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>这里以GAS相关的逻辑代码作为示例：<br>首先看到有对应API声明的：</p>
+<img src="/2025/04/13/UE/Engine/UEModule/image.png" class="" title="alt text">
+<img src="/2025/04/13/UE/Engine/UEModule/image2.png" class="" title="alt text">
+<p>因此，自定义子类去继承和处理对应的逻辑是没有问题的。<br>但如果要改写部分函数，比如处理GCN_Looping,直接用内部变量编译就会失败。如对下面的Struct进行引用：</p>
+<img src="/2025/04/13/UE/Engine/UEModule/image3.png" class="" title="alt text">
+<p>该struct属于GAS模块，但是没有声明API，因此自定义类（不属于该模块的），用到时就会报错。</p>
+<h2 id="内部实现"><a href="#内部实现" class="headerlink" title="内部实现"></a>内部实现</h2><p>如果要深入研究，还是要去看UHT的具体逻辑。</p>
+<h3 id="关键点"><a href="#关键点" class="headerlink" title="关键点"></a>关键点</h3><p>dllexport 、dllimport<br>dllexport 和 dllimport 存储类特性是 C 和 C++ 语言的 Microsoft 专用扩展。 可以使用它们从 DLL 中导出或向其中导入函数、数据和对象。<br>使用 dllexport 意味着定义，而使用 dllimport 则意味着声明。</p>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>dllexport 、dllimport 的作用为，让指定的类、属性或函数对外可见或对当前模块可见，需要与 __declspec 配合使用，皆为 C++ 语法特性。<br>在虚幻引擎中，为了提高代码的可读性、编码方便性以及兼容平台差异性，对其做了进一步封装，即为 DLLEXPORT 和 DLLIMPORT ，之后通过编译系统进一步封装到 XXX_API 等宏中，自动完成。</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>Module</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE Input输入</title>
+    <url>/2025/03/15/UE/Engine/UE_Input/</url>
+    <content><![CDATA[<p><a href="https://dev.epicgames.com/documentation/zh-cn/unreal-engine/enhanced-input-in-unreal-engine#%E8%BE%93%E5%85%A5%E4%BF%AE%E9%A5%B0%E5%99%A8">官方文章Doc</a></p>
+<h1 id="基础输入-Actor-Input"><a href="#基础输入-Actor-Input" class="headerlink" title="基础输入 [Actor Input]"></a>基础输入 [Actor Input]</h1><p>Acotr Input<br>响应玩家输入</p>
+<p>启用ActorInput</p>
+<ul>
+<li>将PlayerController与对应的Actor绑定在一起 启用输入</li>
+<li>配套的禁用输入 Disable Input</li>
+</ul>
+<p>使用事件来启用&#x2F;禁用输入</p>
+<ul>
+<li>CollisionComp的Overlap</li>
+</ul>
+<p>此外 输入是有优先级以及“消耗”这一说法的。 [见Consume Input]</p>
+<h1 id="增强输入-Enhanced-Input"><a href="#增强输入-Enhanced-Input" class="headerlink" title="增强输入 [Enhanced Input]"></a>增强输入 [Enhanced Input]</h1><p>键输入的重新映射</p>
+<p>概念：</p>
+<ul>
+<li>输入动作 Input Actions</li>
+<li>输入映射上下文 Input Mapping Context</li>
+<li>输入修饰器 Input Modifers</li>
+<li>输入触发器 Input Tiggers</li>
+</ul>
+<h2 id="输入动作"><a href="#输入动作" class="headerlink" title="输入动作"></a>输入动作</h2><p>输入动作在概念上相当于 操作（Action） 和 轴（Axis） 映射名称，但它们是数据资产。</p>
+<p>每个输入动作应该表示用户可以执行的某件事，例如”蹲伏”或”发射武器”。</p>
+<p>你可以在蓝图或C++中添加 输入侦听器（Input Listeners） ，侦听输入动作的状态何时发生变化。</p>
+<p>输入动作可以是多种不同的类型，这些类型将确定行为。</p>
+<p>可以创建简单的布尔动作或更复杂的3D轴。动作类型将确定值。布尔动作采用简单的布尔值， Axis1D为浮点值， Axis2D为FVector2D， Axis3D 为整个Fvector。</p>
+<p>布尔动作用于状态为开或关的输入。这相当于旧版输入系统中的较旧动作映射。<br>对于游戏手柄控制杆值等控制点，你可以使用2D轴动作来保存控制杆位置的X和Y值。<br>你可以使用3D轴保存更复杂的数据，例如运动控制器信息。</p>
+<p>示例 IA_Move</p>
+<h3 id="触发状态"><a href="#触发状态" class="headerlink" title="触发状态"></a>触发状态</h3><p>触发状态（Trigger State） 表示动作的当前状态。<br>通常，使用”已触发”状态。你可以绑定到C++和蓝图中的特定状态。</p>
+<ul>
+<li>已触发（Triggered）： 动作已触发。这意味着它完成了所有触发器要求的求值。例如，”按下并松开”触发器会在用户松开按键时发送。</li>
+<li>已开始（Started）： 发生了开始触发器求值的某个事件。例如，”双击”触发器的第一次按键将调用一次”已开始”状态。</li>
+<li>进行中（Ongoing）： 触发器仍在进行处理。例如，当用户按下按钮时，在达到指定持续时间之前，”按住”动作处于进行中状态。根据触发器，此事件将在收到输入值之后在对动作求值时，每次更新触发一次。</li>
+<li>已完成（Completed）： 触发器求值过程已完成。</li>
+<li>已取消（Canceled）： 触发已取消。例如，在”按住”动作还没触发之前，用户就松开了按钮。</li>
+</ul>
+<h3 id="输入侦听器"><a href="#输入侦听器" class="headerlink" title="输入侦听器"></a>输入侦听器</h3><p>如题所述，用于侦听对应的事件。</p>
+<h2 id="输入映射上下文"><a href="#输入映射上下文" class="headerlink" title="输入映射上下文"></a>输入映射上下文</h2><p>主要还是起一个Mapping的作用</p>
+<p>输入动作的集合，表示玩家可以处于的特定上下文。它们描述了给定输入动作的触发规则。映射上下文可以动态地为每个用户添加、移除或安排优先次序。<br>Input Action 以及 用户出发InputAction的方式。如键、按钮、动作轴等。</p>
+<p>键下有对应的Triggers和Modifers。为各个用户输入的输入触发器和输入修饰器列表，可用于确定如何筛选或处理输入的原始值，以及它必须满足哪些限制才能驱动顶层的输入动作。</p>
+<p>通过本地玩家的增强输入本地玩家子系统（Enhanced Input Local Player Subsystem）将一个或多个上下文应用到本地玩家，并安排它们的优先次序，避免多个操作由于尝试使用同一输入而发生冲突。</p>
+<p>将实际的键与输入动作[InputAction]绑定，并为每个动作指定额外触发器或修饰器。将输入映射上下文添加到增强输入子系统时，你还可以指定其优先级。如果你有多个上下文映射到同一个输入动作，那么在触发输入动作时，将考虑优先级最高的上下文，而忽略其他上下文。</p>
+<p>例如，你可以为一个可以游泳、行走、驾驶载具的角色提供多个输入映射上下文。一个用于通用动作（始终可用且始终映射到相同用户输入），其他分别用于各类移动模式。</p>
+<p>开发人员随后可以将与载具相关的输入动作放入单独的输入映射上下文中，这些操作将在本地玩家进入载具时添加到玩家，并在退出载具时从本地玩家中移除。[使用多个输入映射上下文]</p>
+<p>这样做有助于确保不合适的输入动作无法运行，从而优化并预防漏洞。此外，使用互斥的输入映射上下文还有助于避免输入冲突，因此当某个用户输入被用于不同的输入动作时，该输入绝不会意外触发错误的操作。</p>
+<h2 id="输入修饰器"><a href="#输入修饰器" class="headerlink" title="输入修饰器"></a>输入修饰器</h2><p>InputModifiers<br>预处理器。</p>
+<p>增强输入插件随附多种输入修饰器，可以执行各种任务，例如更改轴顺序、实现”死区”、将轴输入转换为世界空间。</p>
+<p>很适合用于应用灵敏度设置，在多个帧上平滑输入，或基于玩家状态更改输入的行为。</p>
+<p>比如可以实现反向操作的效果。<br>详细见Modify Raw函数。</p>
+<h3 id="方向输入"><a href="#方向输入" class="headerlink" title="方向输入"></a>方向输入</h3><p>手柄 - 摇杆<br>键盘 - 由一维(键盘WASD输入)转为二维：</p>
+<ul>
+<li>默认情况下 单键为一维度 可以认为是X轴，值为0或1.0</li>
+<li>使用Swizzle Input Axis Values 将其改为Y轴（适用于W与D键）</li>
+<li>使用Negate负值来实现反方向</li>
+</ul>
+<p>不过这里有一点还是值得思考的：键盘单键输入就是0&#x2F;1.0 和摇杆还不太一样。</p>
+<p>按鸣潮的做法，键鼠时，用ctrl来控制慢走&#x2F;快走，而摇杆就可以“轻推”。</p>
+<h2 id="输入触发器"><a href="#输入触发器" class="headerlink" title="输入触发器"></a>输入触发器</h2><p>用于确定用户输入在经过一系列可选输入修饰器的处理后，是否会激活输入映射上下文中的相应输入动作。</p>
+<p>大部分输入触发器都会分析输入本身，检查最小动作值并验证各种模式。</p>
+<p>例如短暂点击、长时间按住或典型的”按下”或”释放”事件。</p>
+<p>此规则的一个例外是”同时按键”输入触发器，该触发器仅通过另一个输入动作触发。</p>
+<p>默认情况下，任意用户输入活动都会在每次更新时触发一次。</p>
+<p>输入触发器有三种类型：</p>
+<ul>
+<li>显式（Explicit） 类型:将使输入在输入触发器成功时成功。</li>
+<li>隐式（Implicit） 类型:将使输入仅在输入触发器和所有其他隐式类型输入触发器都成功时成功。</li>
+<li>阻碍（Blocker） 类型：将使输入在输入触发器成功时失败。</li>
+</ul>
+<p>处理用户输入后，输入触发器可能返回以下三种状态之一：</p>
+<ul>
+<li>无（None） :表明未满足输入触发器的条件，因此输入触发器失败。</li>
+<li>持续（Ongoing） :表明部分满足了输入触发器的条件，并且输入触发器正在处理，但尚未成功。</li>
+<li>已触发（Triggered） :表明已满足输入触发器的所有条件，因此输入触发器成功。</li>
+</ul>
+<p>长按示例:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">Input Trigger Timed Base 会检查输入是否已被按住一段时间，如是，则接受该输入并返回 持续（Ongoing） 状态。</span></span><br><span class="line"><span class="comment">插件提供的&quot;Input Trigger Timed Base&quot;类永远不会返回 已触发（Triggered） 状态。你要在新建的输入触发器子类中重载该函数，来确定它如何响应用户输入。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">**UInputTriggerHold.h**</span><br><span class="line"></span><br><span class="line"><span class="comment">/** UInputTriggerHold</span></span><br><span class="line"><span class="comment">    触发器会在输入保持激活状态达到HoldTimeThreshold秒之后触发。</span></span><br><span class="line"><span class="comment">    触发器可以选择触发一次或反复触发。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">UCLASS</span>(NotBlueprintable, MinimalAPI, meta = (DisplayName = <span class="string">&quot;Hold&quot;</span>))</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UInputTriggerHold</span> <span class="keyword">final</span> : <span class="keyword">public</span> UInputTriggerTimedBase</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"></span><br><span class="line">    <span class="type">bool</span> bTriggered = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> ETriggerState <span class="title">UpdateState_Implementation</span><span class="params">(<span class="type">const</span> UEnhancedPlayerInput* PlayerInput, FInputActionValue ModifiedValue, <span class="type">float</span> DeltaTime)</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> ETriggerEventsSupported <span class="title">GetSupportedTriggerEvents</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">override</span> </span>&#123; <span class="keyword">return</span> ETriggerEventsSupported::Ongoing; &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 输入要保持多久才能导致触发？</span></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, Config, BlueprintReadWrite, Category = <span class="string">&quot;Trigger Settings&quot;</span>, meta = (ClampMin = <span class="string">&quot;0&quot;</span>))</span><br><span class="line">    <span class="type">float</span> HoldTimeThreshold = <span class="number">1.0f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 此触发器应该仅触发一次，还是在满足保持时间阈值之后每帧触发？</span></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, Config, BlueprintReadWrite, Category = <span class="string">&quot;Trigger Settings&quot;</span>)</span><br><span class="line">    <span class="type">bool</span> bIsOneShot = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> FString <span class="title">GetDebugState</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">override</span> </span>&#123; <span class="keyword">return</span> HeldDuration ? FString::<span class="built_in">Printf</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;Hold:%.2f/%.2f&quot;</span>), HeldDuration, HoldTimeThreshold) : <span class="built_in">FString</span>(); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> ~~~</span><br><span class="line">**UInputTriggerHold.<span class="function">cpp**</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">ETriggerState <span class="title">UInputTriggerHold::UpdateState_Implementation</span><span class="params">(<span class="type">const</span> UEnhancedPlayerInput* PlayerInput, FInputActionValue ModifiedValue, <span class="type">float</span> DeltaTime)</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    <span class="comment">// 更新HeldDuration并派生基础状态 </span></span><br><span class="line">    ETriggerState State = Super::<span class="built_in">UpdateState_Implementation</span>(PlayerInput, ModifiedValue, DeltaTime);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在HeldDuration达到阈值时触发 </span></span><br><span class="line">    <span class="type">bool</span> bIsFirstTrigger = !bTriggered; </span><br><span class="line">    bTriggered = HeldDuration &gt;= HoldTimeThreshold; </span><br><span class="line">    <span class="keyword">if</span> (bTriggered) </span><br><span class="line">    &#123; </span><br><span class="line">        <span class="keyword">return</span> (bIsFirstTrigger || !bIsOneShot) ? ETriggerState::Triggered : ETriggerState::None; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> State; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="平台设置"><a href="#平台设置" class="headerlink" title="平台设置"></a>平台设置</h2><p>映射上下文重定向（Mapping Context Redirect）。<br>默认情况下，它包含输入映射上下文的映射，允许你将一个上下文重定向到另一个上下文。<br>要应用此重定向，请将其添加到你的 项目设置（Project Settings） &gt; 增强输入（Enhanced Input） &gt; 平台设置（Platform Settings） &gt; 输入数据（Input Data）。</p>
+<h2 id="其他课题与思考"><a href="#其他课题与思考" class="headerlink" title="其他课题与思考"></a>其他课题与思考</h2><p>常见的一个游戏功能就是玩家按键自定义。<br>这一块应该通过输入映射上下文就可以实现了。<br>这块再做一个本地保存应该就好。</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>UE基础功能</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>UE5.5-Lyra-1-Attribute</title>
     <url>/2025/03/16/UE/Project/Lyra/UE55Lyra1/</url>
     <content><![CDATA[<p>基于官方Lyra的GAS学习。</p>
@@ -967,32 +967,6 @@
       </tags>
   </entry>
   <entry>
-    <title>UE5.5-Lyra-5-GATask-传输数据流程</title>
-    <url>/2025/04/04/UE/Project/Lyra/UE55Lyra5/</url>
-    <content><![CDATA[<h1 id="GATask-WaitTargetData"><a href="#GATask-WaitTargetData" class="headerlink" title="GATask_WaitTargetData"></a>GATask_WaitTargetData</h1><p>以WaitTargetData为例子<br>理解TargetActor的使用流程和逻辑</p>
-<h2 id="客户端传输数据情况"><a href="#客户端传输数据情况" class="headerlink" title="客户端传输数据情况"></a>客户端传输数据情况</h2><h3 id="Client侧"><a href="#Client侧" class="headerlink" title="Client侧"></a>Client侧</h3><p>p1</p>
-<img src="/2025/04/04/UE/Project/Lyra/UE55Lyra5/p1.png" class="">
-<p>p2</p>
-<img src="/2025/04/04/UE/Project/Lyra/UE55Lyra5/p2.png" class="">
-<p>p3</p>
-<img src="/2025/04/04/UE/Project/Lyra/UE55Lyra5/p3.png" class="">
-<h3 id="Server侧"><a href="#Server侧" class="headerlink" title="Server侧"></a>Server侧</h3><p>p4</p>
-<img src="/2025/04/04/UE/Project/Lyra/UE55Lyra5/p4.png" class="">
-<p>p5</p>
-<img src="/2025/04/04/UE/Project/Lyra/UE55Lyra5/p5.png" class="">
-
-<h2 id="服务端自己产生数据情况"><a href="#服务端自己产生数据情况" class="headerlink" title="服务端自己产生数据情况"></a>服务端自己产生数据情况</h2><p>这里以对应AGameplayAbilityTargetActor_Radius作为例子<br>p6</p>
-<img src="/2025/04/04/UE/Project/Lyra/UE55Lyra5/p6.png" class="">]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>GAS</tag>
-        <tag>Lyra</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>UE5.5-Lyra-4-GATask-AGameplayAbilityTargetActor</title>
     <url>/2025/04/01/UE/Project/Lyra/UE55Lyra4/</url>
     <content><![CDATA[<h1 id="中间数据-GameplayAbilityTargetActor"><a href="#中间数据-GameplayAbilityTargetActor" class="headerlink" title="中间数据 GameplayAbilityTargetActor"></a>中间数据 GameplayAbilityTargetActor</h1><p>关于目标数据 以下是几个比较关键的类。<br>AGameplayAbilityTargetActor<br>委托：FAbilityTargetData<br>FGameplayAbilityTargetDataHandle<br>FGameplayAbilityTargetData<br>FGameplayEffectContextHandle<br>FGameplayEffectContext</p>
@@ -1064,6 +1038,32 @@
 
 <h1 id="题外"><a href="#题外" class="headerlink" title="题外"></a>题外</h1><p>ActionRPG的生命值相关改动 还是通过GE来实现的。定义为“PassivegGameplayEffects”。<br>ActionRPG的设计和实现，可以看出来还是针对单机模式的。包括连击的实现，也没有使用多个GA，仅在第一次触发的时候使用了GA。可以参考其武器近战攻击的碰撞检测实现，以及连击的Notify设置，但这块最好还是用Tag来做比较好。</p>
 ]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>GAS</tag>
+        <tag>Lyra</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE5.5-Lyra-5-GATask-传输数据流程</title>
+    <url>/2025/04/04/UE/Project/Lyra/UE55Lyra5/</url>
+    <content><![CDATA[<h1 id="GATask-WaitTargetData"><a href="#GATask-WaitTargetData" class="headerlink" title="GATask_WaitTargetData"></a>GATask_WaitTargetData</h1><p>以WaitTargetData为例子<br>理解TargetActor的使用流程和逻辑</p>
+<h2 id="客户端传输数据情况"><a href="#客户端传输数据情况" class="headerlink" title="客户端传输数据情况"></a>客户端传输数据情况</h2><h3 id="Client侧"><a href="#Client侧" class="headerlink" title="Client侧"></a>Client侧</h3><p>p1</p>
+<img src="/2025/04/04/UE/Project/Lyra/UE55Lyra5/p1.png" class="">
+<p>p2</p>
+<img src="/2025/04/04/UE/Project/Lyra/UE55Lyra5/p2.png" class="">
+<p>p3</p>
+<img src="/2025/04/04/UE/Project/Lyra/UE55Lyra5/p3.png" class="">
+<h3 id="Server侧"><a href="#Server侧" class="headerlink" title="Server侧"></a>Server侧</h3><p>p4</p>
+<img src="/2025/04/04/UE/Project/Lyra/UE55Lyra5/p4.png" class="">
+<p>p5</p>
+<img src="/2025/04/04/UE/Project/Lyra/UE55Lyra5/p5.png" class="">
+
+<h2 id="服务端自己产生数据情况"><a href="#服务端自己产生数据情况" class="headerlink" title="服务端自己产生数据情况"></a>服务端自己产生数据情况</h2><p>这里以对应AGameplayAbilityTargetActor_Radius作为例子<br>p6</p>
+<img src="/2025/04/04/UE/Project/Lyra/UE55Lyra5/p6.png" class="">]]></content>
       <categories>
         <category>UE</category>
       </categories>

@@ -59,51 +59,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hexo Theme</title>
-    <url>/Hexo/HexoTheme/</url>
-    <content><![CDATA[<h1 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h1><h2 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h2><p><a href="https://github.com/MaLuns/hexo-theme-async">GitHub</a>  </p>
-<p><a href="https://hexo-theme-async.imalun.com/guide/">Introduction</a>  </p>
-<h2 id="Butterfly"><a href="#Butterfly" class="headerlink" title="Butterfly"></a>Butterfly</h2><p><a href="https://butterfly.js.org/">Introduction</a>  </p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git相关内容学习</title>
-    <url>/Other/GitLearning/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Git在版本维护上面还是能发挥很好的作用的。当然也可以考虑用TortoiseSVN。<br>主要目的还是维护好代码吧。这样有什么临时改动想回滚到之前版本也比较好处理。避免某些操作无法撤销而花很多精力去重新编写内容。</p>
-<h1 id="基础Git指令"><a href="#基础Git指令" class="headerlink" title="基础Git指令"></a>基础Git指令</h1><p>有需要再补充。</p>
-<h1 id="配置GitIgnore相关内容"><a href="#配置GitIgnore相关内容" class="headerlink" title="配置GitIgnore相关内容"></a>配置GitIgnore相关内容</h1><h2 id="基础说明"><a href="#基础说明" class="headerlink" title="基础说明"></a>基础说明</h2><p>在Git中，.gitignore文件用于指定项目中要忽略的文件和目录，这些文件和目录不会被跟踪和提交到远程仓库。编写.gitignore文件时，你可以使用一系列规则来匹配要忽略的文件和目录。</p>
-<h2 id="基本规则"><a href="#基本规则" class="headerlink" title="基本规则"></a>基本规则</h2><h3 id="忽略特定文件："><a href="#忽略特定文件：" class="headerlink" title="忽略特定文件："></a>忽略特定文件：</h3><p>  filename.ext</p>
-<h3 id="忽略特定目录："><a href="#忽略特定目录：" class="headerlink" title="忽略特定目录："></a>忽略特定目录：</h3><p>  directory&#x2F;</p>
-<h3 id="忽略特定扩展名的所有文件："><a href="#忽略特定扩展名的所有文件：" class="headerlink" title="忽略特定扩展名的所有文件："></a>忽略特定扩展名的所有文件：</h3><p>  *.log</p>
-<h3 id="忽略特定目录下的所有文件："><a href="#忽略特定目录下的所有文件：" class="headerlink" title="忽略特定目录下的所有文件："></a>忽略特定目录下的所有文件：</h3><p>  directory&#x2F;*</p>
-<h3 id="忽略特定目录及其所有子目录："><a href="#忽略特定目录及其所有子目录：" class="headerlink" title="忽略特定目录及其所有子目录："></a>忽略特定目录及其所有子目录：</h3><p>  directory&#x2F;**</p>
-<h2 id="高级规则"><a href="#高级规则" class="headerlink" title="高级规则"></a>高级规则</h2><h3 id="忽略特定模式的文件："><a href="#忽略特定模式的文件：" class="headerlink" title="忽略特定模式的文件："></a>忽略特定模式的文件：</h3><p>  file[0-9].txt</p>
-<h3 id="忽略特定模式的目录："><a href="#忽略特定模式的目录：" class="headerlink" title="忽略特定模式的目录："></a>忽略特定模式的目录：</h3><p>  dir*&#x2F;subdir&#x2F;</p>
-<h3 id="忽略特定目录下的特定文件："><a href="#忽略特定目录下的特定文件：" class="headerlink" title="忽略特定目录下的特定文件："></a>忽略特定目录下的特定文件：</h3><p>  directory&#x2F;filename.ext</p>
-<h3 id="忽略特定目录下的所有文件，但不包括子目录："><a href="#忽略特定目录下的所有文件，但不包括子目录：" class="headerlink" title="忽略特定目录下的所有文件，但不包括子目录："></a>忽略特定目录下的所有文件，但不包括子目录：</h3><p>  directory&#x2F;<em>.</em></p>
-<h3 id="忽略特定目录下的所有文件，但包括子目录中的某些文件："><a href="#忽略特定目录下的所有文件，但包括子目录中的某些文件：" class="headerlink" title="忽略特定目录下的所有文件，但包括子目录中的某些文件："></a>忽略特定目录下的所有文件，但包括子目录中的某些文件：</h3><p>  directory&#x2F;*<br>  !directory&#x2F;subdir&#x2F;important.file</p>
-<h2 id="特殊规则"><a href="#特殊规则" class="headerlink" title="特殊规则"></a>特殊规则</h2><h3 id="忽略隐藏文件"><a href="#忽略隐藏文件" class="headerlink" title="忽略隐藏文件"></a>忽略隐藏文件</h3><p>  以.开头的文件：.*</p>
-<h3 id="忽略空目录"><a href="#忽略空目录" class="headerlink" title="忽略空目录"></a>忽略空目录</h3><p>  Git默认不跟踪空目录，但可以通过创建一个空的.gitkeep文件来跟踪：<br>  忽略所有空目录<br>  *&#x2F;<br>  但跟踪特定空目录<br>  !important_dir&#x2F;</p>
-<h3 id="全局忽略文件"><a href="#全局忽略文件" class="headerlink" title="全局忽略文件"></a>全局忽略文件</h3><p>  在全局配置中设置，适用于所有项目：<br>  git config –global core.excludesfile ~&#x2F;.gitignore_global</p>
-<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><h3 id="顺序"><a href="#顺序" class="headerlink" title="顺序"></a>顺序</h3><p>  Git会按照.gitignore文件中的顺序匹配规则，后面的规则可能会覆盖前面的规则。</p>
-<h3 id="相对路径"><a href="#相对路径" class="headerlink" title="相对路径"></a>相对路径</h3><p>  规则是相对于.gitignore文件所在目录的。</p>
-<h3 id="全局忽略文件-1"><a href="#全局忽略文件-1" class="headerlink" title="全局忽略文件"></a>全局忽略文件</h3><p>  如果你有一些文件或目录在所有项目中都需要忽略，可以考虑使用全局忽略文件。</p>
-<p>通过合理编写.gitignore文件，可以有效地管理项目中的不必要文件，保持仓库的整洁。</p>
-]]></content>
-      <categories>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>RAGFlow</title>
     <url>/AI/RAGFlow/</url>
     <content><![CDATA[<h1 id="使用RAGFlow处理大语言模型幻觉问题。"><a href="#使用RAGFlow处理大语言模型幻觉问题。" class="headerlink" title="使用RAGFlow处理大语言模型幻觉问题。"></a>使用RAGFlow处理大语言模型幻觉问题。</h1><p>大语言模型：基于Ollama部署。</p>
@@ -222,6 +177,51 @@
       </tags>
   </entry>
   <entry>
+    <title>Hexo Theme</title>
+    <url>/Hexo/HexoTheme/</url>
+    <content><![CDATA[<h1 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h1><h2 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h2><p><a href="https://github.com/MaLuns/hexo-theme-async">GitHub</a>  </p>
+<p><a href="https://hexo-theme-async.imalun.com/guide/">Introduction</a>  </p>
+<h2 id="Butterfly"><a href="#Butterfly" class="headerlink" title="Butterfly"></a>Butterfly</h2><p><a href="https://butterfly.js.org/">Introduction</a>  </p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git相关内容学习</title>
+    <url>/Other/GitLearning/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Git在版本维护上面还是能发挥很好的作用的。当然也可以考虑用TortoiseSVN。<br>主要目的还是维护好代码吧。这样有什么临时改动想回滚到之前版本也比较好处理。避免某些操作无法撤销而花很多精力去重新编写内容。</p>
+<h1 id="基础Git指令"><a href="#基础Git指令" class="headerlink" title="基础Git指令"></a>基础Git指令</h1><p>有需要再补充。</p>
+<h1 id="配置GitIgnore相关内容"><a href="#配置GitIgnore相关内容" class="headerlink" title="配置GitIgnore相关内容"></a>配置GitIgnore相关内容</h1><h2 id="基础说明"><a href="#基础说明" class="headerlink" title="基础说明"></a>基础说明</h2><p>在Git中，.gitignore文件用于指定项目中要忽略的文件和目录，这些文件和目录不会被跟踪和提交到远程仓库。编写.gitignore文件时，你可以使用一系列规则来匹配要忽略的文件和目录。</p>
+<h2 id="基本规则"><a href="#基本规则" class="headerlink" title="基本规则"></a>基本规则</h2><h3 id="忽略特定文件："><a href="#忽略特定文件：" class="headerlink" title="忽略特定文件："></a>忽略特定文件：</h3><p>  filename.ext</p>
+<h3 id="忽略特定目录："><a href="#忽略特定目录：" class="headerlink" title="忽略特定目录："></a>忽略特定目录：</h3><p>  directory&#x2F;</p>
+<h3 id="忽略特定扩展名的所有文件："><a href="#忽略特定扩展名的所有文件：" class="headerlink" title="忽略特定扩展名的所有文件："></a>忽略特定扩展名的所有文件：</h3><p>  *.log</p>
+<h3 id="忽略特定目录下的所有文件："><a href="#忽略特定目录下的所有文件：" class="headerlink" title="忽略特定目录下的所有文件："></a>忽略特定目录下的所有文件：</h3><p>  directory&#x2F;*</p>
+<h3 id="忽略特定目录及其所有子目录："><a href="#忽略特定目录及其所有子目录：" class="headerlink" title="忽略特定目录及其所有子目录："></a>忽略特定目录及其所有子目录：</h3><p>  directory&#x2F;**</p>
+<h2 id="高级规则"><a href="#高级规则" class="headerlink" title="高级规则"></a>高级规则</h2><h3 id="忽略特定模式的文件："><a href="#忽略特定模式的文件：" class="headerlink" title="忽略特定模式的文件："></a>忽略特定模式的文件：</h3><p>  file[0-9].txt</p>
+<h3 id="忽略特定模式的目录："><a href="#忽略特定模式的目录：" class="headerlink" title="忽略特定模式的目录："></a>忽略特定模式的目录：</h3><p>  dir*&#x2F;subdir&#x2F;</p>
+<h3 id="忽略特定目录下的特定文件："><a href="#忽略特定目录下的特定文件：" class="headerlink" title="忽略特定目录下的特定文件："></a>忽略特定目录下的特定文件：</h3><p>  directory&#x2F;filename.ext</p>
+<h3 id="忽略特定目录下的所有文件，但不包括子目录："><a href="#忽略特定目录下的所有文件，但不包括子目录：" class="headerlink" title="忽略特定目录下的所有文件，但不包括子目录："></a>忽略特定目录下的所有文件，但不包括子目录：</h3><p>  directory&#x2F;<em>.</em></p>
+<h3 id="忽略特定目录下的所有文件，但包括子目录中的某些文件："><a href="#忽略特定目录下的所有文件，但包括子目录中的某些文件：" class="headerlink" title="忽略特定目录下的所有文件，但包括子目录中的某些文件："></a>忽略特定目录下的所有文件，但包括子目录中的某些文件：</h3><p>  directory&#x2F;*<br>  !directory&#x2F;subdir&#x2F;important.file</p>
+<h2 id="特殊规则"><a href="#特殊规则" class="headerlink" title="特殊规则"></a>特殊规则</h2><h3 id="忽略隐藏文件"><a href="#忽略隐藏文件" class="headerlink" title="忽略隐藏文件"></a>忽略隐藏文件</h3><p>  以.开头的文件：.*</p>
+<h3 id="忽略空目录"><a href="#忽略空目录" class="headerlink" title="忽略空目录"></a>忽略空目录</h3><p>  Git默认不跟踪空目录，但可以通过创建一个空的.gitkeep文件来跟踪：<br>  忽略所有空目录<br>  *&#x2F;<br>  但跟踪特定空目录<br>  !important_dir&#x2F;</p>
+<h3 id="全局忽略文件"><a href="#全局忽略文件" class="headerlink" title="全局忽略文件"></a>全局忽略文件</h3><p>  在全局配置中设置，适用于所有项目：<br>  git config –global core.excludesfile ~&#x2F;.gitignore_global</p>
+<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><h3 id="顺序"><a href="#顺序" class="headerlink" title="顺序"></a>顺序</h3><p>  Git会按照.gitignore文件中的顺序匹配规则，后面的规则可能会覆盖前面的规则。</p>
+<h3 id="相对路径"><a href="#相对路径" class="headerlink" title="相对路径"></a>相对路径</h3><p>  规则是相对于.gitignore文件所在目录的。</p>
+<h3 id="全局忽略文件-1"><a href="#全局忽略文件-1" class="headerlink" title="全局忽略文件"></a>全局忽略文件</h3><p>  如果你有一些文件或目录在所有项目中都需要忽略，可以考虑使用全局忽略文件。</p>
+<p>通过合理编写.gitignore文件，可以有效地管理项目中的不必要文件，保持仓库的整洁。</p>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>旋转与四元数</title>
     <url>/Other/RotationAndQuaternion/</url>
     <content><![CDATA[<h1 id="旋转与四元数"><a href="#旋转与四元数" class="headerlink" title="旋转与四元数"></a>旋转与四元数</h1><h2 id="旋转矩阵"><a href="#旋转矩阵" class="headerlink" title="旋转矩阵"></a>旋转矩阵</h2><p>三维空间中的向量可以基于一组基向量来进行表示。<br>我们可以基于一组基向量来表示另外一组基向量。<br>由此我们可以进行空间转换。</p>
@@ -247,6 +247,40 @@
         <tag>四元数</tag>
         <tag>Quaternion</tag>
         <tag>旋转</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows下的Git账号更换</title>
+    <url>/Other/windows-change-git/</url>
+    <content><![CDATA[<h3 id="Hexo更换指定Git账号问题"><a href="#Hexo更换指定Git账号问题" class="headerlink" title="Hexo更换指定Git账号问题"></a>Hexo更换指定Git账号问题</h3><ul>
+<li><p>Git内设置对应的账号和密码</p>
+</li>
+<li><p>控制面板 - 用户 - 凭据管理器 - Windows凭据删除对应git的凭据 在使用时重新通过网页处理凭据 </p>
+</li>
+<li><p>使用新账号登陆即可</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE蓝图笔记</title>
+    <url>/UE/Engine/UEBlueprintNote/</url>
+    <content><![CDATA[<h1 id="蓝图断点与流程显示"><a href="#蓝图断点与流程显示" class="headerlink" title="蓝图断点与流程显示"></a>蓝图断点与流程显示</h1><p>断点的话，右键对应的节点添加断点即可。</p>
+<p>运行时打开对应的蓝图，并在编辑器中选中对应的对象，可以观看其运行流程。</p>
+<img src="/UE/Engine/UEBlueprintNote/image.png" class="" title="alt text">
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>Blueprint</tag>
       </tags>
   </entry>
   <entry>
@@ -332,21 +366,6 @@
       <tags>
         <tag>UE</tag>
         <tag>Module</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE蓝图笔记</title>
-    <url>/UE/Engine/UEBlueprintNote/</url>
-    <content><![CDATA[<h1 id="蓝图断点与流程显示"><a href="#蓝图断点与流程显示" class="headerlink" title="蓝图断点与流程显示"></a>蓝图断点与流程显示</h1><p>断点的话，右键对应的节点添加断点即可。</p>
-<p>运行时打开对应的蓝图，并在编辑器中选中对应的对象，可以观看其运行流程。</p>
-<img src="/UE/Engine/UEBlueprintNote/image.png" class="" title="alt text">
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>Blueprint</tag>
       </tags>
   </entry>
   <entry>
@@ -440,22 +459,129 @@
       </tags>
   </entry>
   <entry>
-    <title>Windows下的Git账号更换</title>
-    <url>/Other/windows-change-git/</url>
-    <content><![CDATA[<h3 id="Hexo更换指定Git账号问题"><a href="#Hexo更换指定Git账号问题" class="headerlink" title="Hexo更换指定Git账号问题"></a>Hexo更换指定Git账号问题</h3><ul>
-<li><p>Git内设置对应的账号和密码</p>
+    <title>UE - GameplayFramework</title>
+    <url>/UE/OfficialDocLearn/GameplayFramework/</url>
+    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/GameplayFramework/img.png" class="">
+
+<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>GameplayFramework 游戏框架<br>官方文档有一张大图 Overview 可以再看看</p>
+<p>写在前面：<br>最好先去看看World和Level之间的关系，也可以看看源码</p>
+<ul>
+<li>Game Instance </li>
+<li>UWorld</li>
+<li>ULevel</li>
+<li>AActor</li>
+</ul>
+<p>Game Instance</p>
+<ul>
+<li>整一个游戏实例 服务端也有一个<br>Game Instance Subsystem</li>
+</ul>
+<p>GameMode</p>
+<ul>
+<li>Server Only</li>
+<li>With Level [准确说是With World]</li>
+<li>Managing the overall rules and structure of a gameplay session</li>
+</ul>
+<p>GameState</p>
+<ul>
+<li>A GameMode to A Game State [With Level][准确说是With World]</li>
+<li>Replication</li>
+</ul>
+<p>Player State</p>
+<ul>
+<li>Associate with Player [With Level][准确说是With World]</li>
+<li>Replication</li>
+</ul>
+<p>Player</p>
+<ul>
+<li>由GameMode处理生成</li>
+<li>Pawn &amp;&amp; Controller</li>
+</ul>
+<p>其他部分<br>这里的概念还是可以参考知乎的文章：<a href="https://zhuanlan.zhihu.com/p/22924838">https://zhuanlan.zhihu.com/p/22924838</a><br><a href="https://zhuanlan.zhihu.com/p/22924838">Level And World</a><br>重读也会有不同的理解。</p>
+<p>关卡和对象的结构组织 和资源的加载、销毁有着对应的关系，还是要重视的。</p>
+<p>GameInstance</p>
+<ul>
+<li>WorldContext </li>
+<li>World<ul>
+<li>GameMode</li>
+<li>Levels<ul>
+<li>Level <ul>
+<li>WorldSettings</li>
+<li>LevelScriptActor</li>
+<li>Actors[内部其实涵盖AWorldSettings 与 ALevelScriptActor]</li>
+</ul>
 </li>
-<li><p>控制面板 - 用户 - 凭据管理器 - Windows凭据删除对应git的凭据 在使用时重新通过网页处理凭据 </p>
+</ul>
 </li>
-<li><p>使用新账号登陆即可</p>
+</ul>
 </li>
 </ul>
 ]]></content>
       <categories>
-        <category>Git</category>
+        <category>UE</category>
       </categories>
       <tags>
-        <tag>Git</tag>
+        <tag>UE</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE - 官方文档学习</title>
+    <url>/UE/OfficialDocLearn/UESummary/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>虚幻引擎并不是一个“轻量”的引擎。而在游戏的制作过程中，所设计到的知识是方方面面的。自己在行业中学习，越做游戏，了解的知识越多，越深知自己要学习的东西还有很多。</p>
+<p>作为前端开发人员，或者游戏从业者，多了解相关的知识也不是坏事，而不是局限于自己所负责的业务。</p>
+<p>当然，很多时候，技术只是达成目的的手段，但多广泛了解一下各个技术也不是什么坏事。每个方面的知识都可以很深，在学习，了解的时候，可以浅尝辄止，有个大概的概念，选取一两个重点去学习，其他的用到的时候再深入。</p>
+<p>这篇主要用作个人官方文档笔记的导航页和梳理页。</p>
+<p>部分基于有道云笔记的图片，会加上记录的文本内容用于索引。</p>
+<h1 id="物理"><a href="#物理" class="headerlink" title="物理"></a>物理</h1><h2 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h2><a href="/UE/OfficialDocLearn/Physcis/PhyscisTotal/" title="UE - Physcis总览">物理总览</a>
+
+<h2 id="网络复制"><a href="#网络复制" class="headerlink" title="网络复制"></a>网络复制</h2><a href="/UE/OfficialDocLearn/Physcis/PhyscisNetwork/" title="UE - PhyscisNetworkReplication">网络复制</a>
+
+<h2 id="碰撞"><a href="#碰撞" class="headerlink" title="碰撞"></a>碰撞</h2><a href="/UE/OfficialDocLearn/Physcis/PhyscisCollision/" title="UE - PhyscisCollision">碰撞</a>
+
+<h1 id="GameplayFramework"><a href="#GameplayFramework" class="headerlink" title="GameplayFramework"></a>GameplayFramework</h1><a href="/UE/OfficialDocLearn/GameplayFramework/" title="UE - GameplayFramework">GameplayFramework</a>
+
+<h1 id="关卡"><a href="#关卡" class="headerlink" title="关卡"></a>关卡</h1><h2 id="Level"><a href="#Level" class="headerlink" title="Level"></a>Level</h2><a href="/UE/OfficialDocLearn/Levels/Level/" title="UE - Level">Level</a>
+
+<h2 id="WorldPartition"><a href="#WorldPartition" class="headerlink" title="WorldPartition"></a>WorldPartition</h2><a href="/UE/OfficialDocLearn/Levels/WorldPartition/" title="UE - WorldPartition">WorldPartition</a>
+
+<h2 id="LevelInstancing"><a href="#LevelInstancing" class="headerlink" title="LevelInstancing"></a>LevelInstancing</h2><a href="/UE/OfficialDocLearn/Levels/LevelInstancing/" title="UE - LevelInstancing">LevelInstancing</a>
+
+<h1 id="AI"><a href="#AI" class="headerlink" title="AI"></a>AI</h1><h2 id="行为树"><a href="#行为树" class="headerlink" title="行为树"></a>行为树</h2><a href="/UE/OfficialDocLearn/AI/BehaviorTree/" title="UE-BehaviorTree">UE BehaviorTree</a>
+
+<h1 id="C-Coding"><a href="#C-Coding" class="headerlink" title="C++ Coding"></a>C++ Coding</h1><h2 id="Reflection-System"><a href="#Reflection-System" class="headerlink" title="Reflection System"></a>Reflection System</h2><a href="/UE/OfficialDocLearn/Coding/UECPlusPlusReflection/" title="UE-Reflection System">UE C++ ReflectionSystem</a>
+
+<h2 id="UObject"><a href="#UObject" class="headerlink" title="UObject"></a>UObject</h2><h3 id="UObject总体概述"><a href="#UObject总体概述" class="headerlink" title="UObject总体概述"></a>UObject总体概述</h3><a href="/UE/OfficialDocLearn/Coding/UObject/" title="UE-UObject">UObject</a>
+
+<h3 id="UObject创建"><a href="#UObject创建" class="headerlink" title="UObject创建"></a>UObject创建</h3><a href="/UE/OfficialDocLearn/Coding/UObjectCreation/" title="UE-UObjectCreation">UObjectCreation</a>
+
+<h3 id="Package与Outer"><a href="#Package与Outer" class="headerlink" title="Package与Outer"></a>Package与Outer</h3><a href="/UE/OfficialDocLearn/Coding/Package/" title="UE-Package">Package与Outer</a>
+
+<h2 id="Property"><a href="#Property" class="headerlink" title="Property"></a>Property</h2><a href="/UE/OfficialDocLearn/Coding/UProperty/" title="UE-Property">Property</a>
+
+<h2 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h2><a href="/UE/OfficialDocLearn/Coding/UInterface/" title="UE-UInterface">UInterface</a>
+
+<h2 id="SmartPointers"><a href="#SmartPointers" class="headerlink" title="SmartPointers"></a>SmartPointers</h2><a href="/UE/OfficialDocLearn/Coding/SmartPointers/" title="UE-SmartPointers">SmartPointers</a>
+
+<h2 id="CodingStandard-代码规范"><a href="#CodingStandard-代码规范" class="headerlink" title="CodingStandard 代码规范"></a>CodingStandard 代码规范</h2><a href="/UE/OfficialDocLearn/Coding/CodingStandard/" title="UE-Coding Standard">CodingStandard 代码规范</a>
+
+<h2 id="Asserts-断言"><a href="#Asserts-断言" class="headerlink" title="Asserts 断言"></a>Asserts 断言</h2><a href="/UE/OfficialDocLearn/Coding/Asserts/" title="UE-Asserts">Asserts 断言</a>
+
+<h2 id="GameplayTag"><a href="#GameplayTag" class="headerlink" title="GameplayTag"></a>GameplayTag</h2><a href="/UE/OfficialDocLearn/Coding/GameplayTag/" title="UE-GameplayTag">GameplayTag</a>
+
+<h2 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h2><a href="/UE/OfficialDocLearn/Coding/Log/" title="UE-Log">Log</a>
+
+<h2 id="Delegates"><a href="#Delegates" class="headerlink" title="Delegates"></a>Delegates</h2><a href="/UE/OfficialDocLearn/Coding/Delegates/" title="UE-Delegates">Delegates</a>
+
+<h2 id="Tick"><a href="#Tick" class="headerlink" title="Tick"></a>Tick</h2><a href="/UE/OfficialDocLearn/Coding/Tick/" title="UE-Tick">Tick</a>
+
+<h2 id="ActorLifeTime"><a href="#ActorLifeTime" class="headerlink" title="ActorLifeTime"></a>ActorLifeTime</h2><a href="/UE/OfficialDocLearn/Coding/ActorLifeTime/" title="UE-ActorLifeTime">ActorLifeTime</a>
+
+<h1 id="推荐文章"><a href="#推荐文章" class="headerlink" title="推荐文章"></a>推荐文章</h1><p>非常推荐大钊的这篇文章，在学习过程中能帮到很多。<br><a href="https://zhuanlan.zhihu.com/p/717920216">UE5标识符详解 | 史上最全</a></p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
       </tags>
   </entry>
   <entry>
@@ -688,6 +814,32 @@
       </tags>
   </entry>
   <entry>
+    <title>GASPredictionKey自学简记</title>
+    <url>/UE/GAS/UEGamplayPrediction%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h1 id="关键点：PredictionKey"><a href="#关键点：PredictionKey" class="headerlink" title="关键点：PredictionKey"></a>关键点：PredictionKey</h1><p>由GA激活生成的PKey，并由此去影响GAS系统中的各个其他部分。</p>
+<p>客户端预测先行，在收到服务器校验结果后，执行对应的回滚操作。</p>
+<h2 id="概念：预测窗口-Prediction-Window"><a href="#概念：预测窗口-Prediction-Window" class="headerlink" title="概念：预测窗口 Prediction Window"></a>概念：预测窗口 Prediction Window</h2><blockquote>
+<p>“We do not predict over multiple frames”</p>
+</blockquote>
+<p>在多个行为激活形成链条时，每个行为有自己的PKey，但又和之前的PKey相关联。<br>服务端并不确定Reject某个PKey对应的行为，是否会导致后续的行为也被拒绝。这里在实现的时候可能需要额外注意下。</p>
+<h2 id="关于预测窗口"><a href="#关于预测窗口" class="headerlink" title="关于预测窗口"></a>关于预测窗口</h2><p>GA如果依赖于外部事件，或者定时器，在异步等待过程中，可能会收到服务器的confirm&#x2F;reject回调。而PKey在ActivateAbility返回时就结束了。因此后面激活的内容是无法绑定到这个PKey上的。</p>
+<p>【这里可以验证一下 PKey在下发回客户端执行的事情（比如说广播），如果是广播形式，那么确实后面的内容就有问题了。】</p>
+<p>预测窗口和预测键不会跨帧。但是预测本身是可以支持跨帧的。这里主要处理的是异步的GATask等逻辑。为了实现跨多帧的预测逻辑，就需要多个预测窗口。每个帧内的操作都是独立的预测窗口，每个异步操作需要自己的同步执行块。</p>
+<p>这里异步操作对应的预测窗口创建：<br>• Ability中去创建新的PredictionWindow - 见<code>FScopedPredictionWindow</code></p>
+<h2 id="学习方案和计划"><a href="#学习方案和计划" class="headerlink" title="学习方案和计划"></a>学习方案和计划</h2><p>虽然目前国内有着许多AI工具，但是在专业领域里面，AI工具的幻觉还是比较严重的。此外，虚幻引擎的GAS系统也在不断更新和迭代。虚幻4的GAS和虚幻5的GAS在很多接口上面和设计逻辑上面都有着许多的不同。</p>
+<p>在学习时，一方面是要注重设计的理念和思想，一方面是基于目前应用的版本。或者是使用最新版本的引擎和插件来学习。</p>
+<p>在学习和了解时，要基于项目源码。以及一些参考的项目示例。<br>比较好的是虚幻的ActionRPG项目和Lyra项目。不过ActionRPG项目的代码和实现逻辑在研究过后发现是比较旧的，网上的UE5版本的也是基于UE4版本的来改动的。此外，ActionRPG还是本地单机项目，在网络预测上面的逻辑还是比较少，可以说仅参考部分逻辑吧。</p>
+<p>要保持思考，特别是针对目前网络同步的部分，很多实现比较简单，在真实项目应用时，需要多考虑一些。UE一些实现方案对于一些游戏项目也存在问题，要做对应的适配处理。</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>GAS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>UE5.5-GameplayPrediction</title>
     <url>/UE/GAS/UE55GamplayPrediction/</url>
     <content><![CDATA[<h1 id="SourceCode源码"><a href="#SourceCode源码" class="headerlink" title="SourceCode源码"></a><a href="https://github.com/MikeMing126/UESourceCode/blob/main/UE55_GAS_GameplayPrediction.h">SourceCode源码</a></h1><h1 id="Overview-of-Gameplay-Ability-Prediction"><a href="#Overview-of-Gameplay-Ability-Prediction" class="headerlink" title="Overview of Gameplay Ability Prediction"></a>Overview of Gameplay Ability Prediction</h1><h2 id="High-Level-Goals"><a href="#High-Level-Goals" class="headerlink" title="High Level Goals"></a>High Level Goals</h2><ul>
@@ -834,156 +986,6 @@
       </tags>
   </entry>
   <entry>
-    <title>GASPredictionKey自学简记</title>
-    <url>/UE/GAS/UEGamplayPrediction%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h1 id="关键点：PredictionKey"><a href="#关键点：PredictionKey" class="headerlink" title="关键点：PredictionKey"></a>关键点：PredictionKey</h1><p>由GA激活生成的PKey，并由此去影响GAS系统中的各个其他部分。</p>
-<p>客户端预测先行，在收到服务器校验结果后，执行对应的回滚操作。</p>
-<h2 id="概念：预测窗口-Prediction-Window"><a href="#概念：预测窗口-Prediction-Window" class="headerlink" title="概念：预测窗口 Prediction Window"></a>概念：预测窗口 Prediction Window</h2><blockquote>
-<p>“We do not predict over multiple frames”</p>
-</blockquote>
-<p>在多个行为激活形成链条时，每个行为有自己的PKey，但又和之前的PKey相关联。<br>服务端并不确定Reject某个PKey对应的行为，是否会导致后续的行为也被拒绝。这里在实现的时候可能需要额外注意下。</p>
-<h2 id="关于预测窗口"><a href="#关于预测窗口" class="headerlink" title="关于预测窗口"></a>关于预测窗口</h2><p>GA如果依赖于外部事件，或者定时器，在异步等待过程中，可能会收到服务器的confirm&#x2F;reject回调。而PKey在ActivateAbility返回时就结束了。因此后面激活的内容是无法绑定到这个PKey上的。</p>
-<p>【这里可以验证一下 PKey在下发回客户端执行的事情（比如说广播），如果是广播形式，那么确实后面的内容就有问题了。】</p>
-<p>预测窗口和预测键不会跨帧。但是预测本身是可以支持跨帧的。这里主要处理的是异步的GATask等逻辑。为了实现跨多帧的预测逻辑，就需要多个预测窗口。每个帧内的操作都是独立的预测窗口，每个异步操作需要自己的同步执行块。</p>
-<p>这里异步操作对应的预测窗口创建：<br>• Ability中去创建新的PredictionWindow - 见<code>FScopedPredictionWindow</code></p>
-<h2 id="学习方案和计划"><a href="#学习方案和计划" class="headerlink" title="学习方案和计划"></a>学习方案和计划</h2><p>虽然目前国内有着许多AI工具，但是在专业领域里面，AI工具的幻觉还是比较严重的。此外，虚幻引擎的GAS系统也在不断更新和迭代。虚幻4的GAS和虚幻5的GAS在很多接口上面和设计逻辑上面都有着许多的不同。</p>
-<p>在学习时，一方面是要注重设计的理念和思想，一方面是基于目前应用的版本。或者是使用最新版本的引擎和插件来学习。</p>
-<p>在学习和了解时，要基于项目源码。以及一些参考的项目示例。<br>比较好的是虚幻的ActionRPG项目和Lyra项目。不过ActionRPG项目的代码和实现逻辑在研究过后发现是比较旧的，网上的UE5版本的也是基于UE4版本的来改动的。此外，ActionRPG还是本地单机项目，在网络预测上面的逻辑还是比较少，可以说仅参考部分逻辑吧。</p>
-<p>要保持思考，特别是针对目前网络同步的部分，很多实现比较简单，在真实项目应用时，需要多考虑一些。UE一些实现方案对于一些游戏项目也存在问题，要做对应的适配处理。</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>GAS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE - 官方文档学习</title>
-    <url>/UE/OfficialDocLearn/UESummary/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>虚幻引擎并不是一个“轻量”的引擎。而在游戏的制作过程中，所设计到的知识是方方面面的。自己在行业中学习，越做游戏，了解的知识越多，越深知自己要学习的东西还有很多。</p>
-<p>作为前端开发人员，或者游戏从业者，多了解相关的知识也不是坏事，而不是局限于自己所负责的业务。</p>
-<p>当然，很多时候，技术只是达成目的的手段，但多广泛了解一下各个技术也不是什么坏事。每个方面的知识都可以很深，在学习，了解的时候，可以浅尝辄止，有个大概的概念，选取一两个重点去学习，其他的用到的时候再深入。</p>
-<p>这篇主要用作个人官方文档笔记的导航页和梳理页。</p>
-<p>部分基于有道云笔记的图片，会加上记录的文本内容用于索引。</p>
-<h1 id="物理"><a href="#物理" class="headerlink" title="物理"></a>物理</h1><h2 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h2><a href="/UE/OfficialDocLearn/Physcis/PhyscisTotal/" title="UE - Physcis总览">物理总览</a>
-
-<h2 id="网络复制"><a href="#网络复制" class="headerlink" title="网络复制"></a>网络复制</h2><a href="/UE/OfficialDocLearn/Physcis/PhyscisNetwork/" title="UE - PhyscisNetworkReplication">网络复制</a>
-
-<h2 id="碰撞"><a href="#碰撞" class="headerlink" title="碰撞"></a>碰撞</h2><a href="/UE/OfficialDocLearn/Physcis/PhyscisCollision/" title="UE - PhyscisCollision">碰撞</a>
-
-<h1 id="GameplayFramework"><a href="#GameplayFramework" class="headerlink" title="GameplayFramework"></a>GameplayFramework</h1><a href="/UE/OfficialDocLearn/GameplayFramework/" title="UE - GameplayFramework">GameplayFramework</a>
-
-<h1 id="关卡"><a href="#关卡" class="headerlink" title="关卡"></a>关卡</h1><h2 id="Level"><a href="#Level" class="headerlink" title="Level"></a>Level</h2><a href="/UE/OfficialDocLearn/Levels/Level/" title="UE - Level">Level</a>
-
-<h2 id="WorldPartition"><a href="#WorldPartition" class="headerlink" title="WorldPartition"></a>WorldPartition</h2><a href="/UE/OfficialDocLearn/Levels/WorldPartition/" title="UE - WorldPartition">WorldPartition</a>
-
-<h2 id="LevelInstancing"><a href="#LevelInstancing" class="headerlink" title="LevelInstancing"></a>LevelInstancing</h2><a href="/UE/OfficialDocLearn/Levels/LevelInstancing/" title="UE - LevelInstancing">LevelInstancing</a>
-
-<h1 id="C-Coding"><a href="#C-Coding" class="headerlink" title="C++ Coding"></a>C++ Coding</h1><h2 id="Reflection-System"><a href="#Reflection-System" class="headerlink" title="Reflection System"></a>Reflection System</h2><a href="/UE/OfficialDocLearn/Coding/UECPlusPlusReflection/" title="UE-Reflection System">UE C++ ReflectionSystem</a>
-
-<h2 id="UObject"><a href="#UObject" class="headerlink" title="UObject"></a>UObject</h2><h3 id="UObject总体概述"><a href="#UObject总体概述" class="headerlink" title="UObject总体概述"></a>UObject总体概述</h3><a href="/UE/OfficialDocLearn/Coding/UObject/" title="UE-UObject">UObject</a>
-
-<h3 id="UObject创建"><a href="#UObject创建" class="headerlink" title="UObject创建"></a>UObject创建</h3><a href="/UE/OfficialDocLearn/Coding/UObjectCreation/" title="UE-UObjectCreation">UObjectCreation</a>
-
-<h3 id="Package与Outer"><a href="#Package与Outer" class="headerlink" title="Package与Outer"></a>Package与Outer</h3><a href="/UE/OfficialDocLearn/Coding/Package/" title="UE-Package">Package与Outer</a>
-
-<h2 id="Property"><a href="#Property" class="headerlink" title="Property"></a>Property</h2><a href="/UE/OfficialDocLearn/Coding/UProperty/" title="UE-Property">Property</a>
-
-<h2 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h2><a href="/UE/OfficialDocLearn/Coding/UInterface/" title="UE-UInterface">UInterface</a>
-
-<h2 id="SmartPointers"><a href="#SmartPointers" class="headerlink" title="SmartPointers"></a>SmartPointers</h2><a href="/UE/OfficialDocLearn/Coding/SmartPointers/" title="UE-SmartPointers">SmartPointers</a>
-
-<h2 id="CodingStandard-代码规范"><a href="#CodingStandard-代码规范" class="headerlink" title="CodingStandard 代码规范"></a>CodingStandard 代码规范</h2><a href="/UE/OfficialDocLearn/Coding/CodingStandard/" title="UE-Coding Standard">CodingStandard 代码规范</a>
-
-<h2 id="Asserts-断言"><a href="#Asserts-断言" class="headerlink" title="Asserts 断言"></a>Asserts 断言</h2><a href="/UE/OfficialDocLearn/Coding/Asserts/" title="UE-Asserts">Asserts 断言</a>
-
-<h2 id="GameplayTag"><a href="#GameplayTag" class="headerlink" title="GameplayTag"></a>GameplayTag</h2><a href="/UE/OfficialDocLearn/Coding/GameplayTag/" title="UE-GameplayTag">GameplayTag</a>
-
-<h2 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h2><a href="/UE/OfficialDocLearn/Coding/Log/" title="UE-Log">Log</a>
-
-<h2 id="Delegates"><a href="#Delegates" class="headerlink" title="Delegates"></a>Delegates</h2><a href="/UE/OfficialDocLearn/Coding/Delegates/" title="UE-Delegates">Delegates</a>
-
-<h2 id="Tick"><a href="#Tick" class="headerlink" title="Tick"></a>Tick</h2><a href="/UE/OfficialDocLearn/Coding/Tick/" title="UE-Tick">Tick</a>
-
-<h2 id="ActorLifeTime"><a href="#ActorLifeTime" class="headerlink" title="ActorLifeTime"></a>ActorLifeTime</h2><a href="/UE/OfficialDocLearn/Coding/ActorLifeTime/" title="UE-ActorLifeTime">ActorLifeTime</a>
-
-<h1 id="推荐文章"><a href="#推荐文章" class="headerlink" title="推荐文章"></a>推荐文章</h1><p>非常推荐大钊的这篇文章，在学习过程中能帮到很多。<br><a href="https://zhuanlan.zhihu.com/p/717920216">UE5标识符详解 | 史上最全</a></p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE - GameplayFramework</title>
-    <url>/UE/OfficialDocLearn/GameplayFramework/</url>
-    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/GameplayFramework/img.png" class="">
-
-<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>GameplayFramework 游戏框架<br>官方文档有一张大图 Overview 可以再看看</p>
-<p>写在前面：<br>最好先去看看World和Level之间的关系，也可以看看源码</p>
-<ul>
-<li>Game Instance </li>
-<li>UWorld</li>
-<li>ULevel</li>
-<li>AActor</li>
-</ul>
-<p>Game Instance</p>
-<ul>
-<li>整一个游戏实例 服务端也有一个<br>Game Instance Subsystem</li>
-</ul>
-<p>GameMode</p>
-<ul>
-<li>Server Only</li>
-<li>With Level [准确说是With World]</li>
-<li>Managing the overall rules and structure of a gameplay session</li>
-</ul>
-<p>GameState</p>
-<ul>
-<li>A GameMode to A Game State [With Level][准确说是With World]</li>
-<li>Replication</li>
-</ul>
-<p>Player State</p>
-<ul>
-<li>Associate with Player [With Level][准确说是With World]</li>
-<li>Replication</li>
-</ul>
-<p>Player</p>
-<ul>
-<li>由GameMode处理生成</li>
-<li>Pawn &amp;&amp; Controller</li>
-</ul>
-<p>其他部分<br>这里的概念还是可以参考知乎的文章：<a href="https://zhuanlan.zhihu.com/p/22924838">https://zhuanlan.zhihu.com/p/22924838</a><br><a href="https://zhuanlan.zhihu.com/p/22924838">Level And World</a><br>重读也会有不同的理解。</p>
-<p>关卡和对象的结构组织 和资源的加载、销毁有着对应的关系，还是要重视的。</p>
-<p>GameInstance</p>
-<ul>
-<li>WorldContext </li>
-<li>World<ul>
-<li>GameMode</li>
-<li>Levels<ul>
-<li>Level <ul>
-<li>WorldSettings</li>
-<li>LevelScriptActor</li>
-<li>Actors[内部其实涵盖AWorldSettings 与 ALevelScriptActor]</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>UE-PuerTS</title>
     <url>/UE/Script/PuerTS/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>热更新算是现在游戏中非常重要的一部分。虚幻本身使用C++在热更上有很多不便，特别是如果要上移动IOS平台。</p>
@@ -1024,6 +1026,961 @@
       <tags>
         <tag>UE</tag>
         <tag>PuerTS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-BehaviorTree</title>
+    <url>/UE/OfficialDocLearn/AI/BehaviorTree/</url>
+    <content><![CDATA[<h1 id="UE-BehaviorTree"><a href="#UE-BehaviorTree" class="headerlink" title="UE BehaviorTree"></a>UE BehaviorTree</h1><p>虚幻的行为树</p>
+<p>Character,AIController,BehaviorTree(BT),BlackBoard(BB) 组合在一起实现对应的逻辑。</p>
+<p>行为树这块之前有所了解 就不再一点一点赘述了。</p>
+<h2 id="BlackBoard"><a href="#BlackBoard" class="headerlink" title="BlackBoard"></a>BlackBoard</h2><p>BB - 存储行为树相关的数据 -&gt; 决定行为树的Key</p>
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image.png" class="" title="alt text">
+
+<h2 id="Composites"><a href="#Composites" class="headerlink" title="Composites"></a>Composites</h2><p>合成器Composites</p>
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-1.png" class="" title="alt text">
+
+<ul>
+<li>Selector 优先选择</li>
+<li>Sequence 顺序</li>
+<li>Simple Parallel 平行执行 【逻辑异步 但是具体执行还是同步的。】<br>注意Finish Mode。如果是Immediate，并且主任务立即完成，那么对应的次要任务实际上不会执行。<br>可以附加对应的Decorator和Service。</li>
+</ul>
+<h2 id="Decorator-Service"><a href="#Decorator-Service" class="headerlink" title="Decorator &amp;&amp; Service"></a>Decorator &amp;&amp; Service</h2><img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-2.png" class="" title="alt text">
+
+<h3 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h3><p>条件判定 Decorator<br>可以附加到Composite与Task上。虚幻本身有实现了一些对应的装饰器，可以看到这里：<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-behavior-tree-node-reference-decorators">Behavior Tree Node Reference: Decorators</a></p>
+<p>自定义的时候，可以通过重写PerformConditionCheck&#x2F;PerformConditionCheckAI函数。</p>
+<p>没看到的话在Window-&gt;My Blueprint可以打开对应的窗口并override。</p>
+<h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><p>并行节点 Parallel -&gt; Service</p>
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-3.png" class="" title="alt text">
+
+<h2 id="重要特性"><a href="#重要特性" class="headerlink" title="重要特性"></a>重要特性</h2><h3 id="Event-Driven"><a href="#Event-Driven" class="headerlink" title="Event Driven"></a>Event Driven</h3><img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-4.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-5.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-6.png" class="" title="alt text">
+
+<h3 id="Conditionals-Decorators"><a href="#Conditionals-Decorators" class="headerlink" title="Conditionals - Decorators"></a>Conditionals - Decorators</h3><img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-7.png" class="" title="alt text">
+<p>这块到没有太多需要注意的，</p>
+<h3 id="Concurrent-Behaviors"><a href="#Concurrent-Behaviors" class="headerlink" title="Concurrent Behaviors"></a>Concurrent Behaviors</h3><p>并发行为</p>
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-8.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-9.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-10.png" class="" title="alt text">
+<p>这里需要注意Server的执行时序问题。可以看看下面的知乎参考文章。或者自己写测试用例测测。<br>比如一个有装饰器和服务的任务节点：</p>
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-11.png" class="" title="alt text">
+
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>关于特性这部分可以看看这篇文章<br><a href="https://zhuanlan.zhihu.com/p/139514376">浅析UE4-BehaviorTree的特性</a><br>重点还是Event Driven。<br>虚幻引擎的行为树，在任务节点需要有着Finish Execute的逻辑。这也意味着可以在某些节点执行异步任务，待异步任务完成后，再完成。而这个时候，在节点完成之前，整棵树其实就“停留”在对应的节点了。<br>而这个时候，打断对应的Running状态就比较重要了。而对应的事件注册，可以在一定条件触发并执行打断逻辑。从而由事件驱动。</p>
+<h2 id="节点应用"><a href="#节点应用" class="headerlink" title="节点应用"></a>节点应用</h2><p>注意逻辑和数据分离。一般行为树只有单个实例并共用，用BB来进行数据分离。虚幻也支持行为树的节点单独实例化。可以看到官方文档:<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/behavior-tree-node-reference-in-unreal-engine">Behavior Tree Node Reference</a></p>
+<h1 id="其他思考"><a href="#其他思考" class="headerlink" title="其他思考"></a>其他思考</h1><p>实际项目往往还要考虑后端的运行情况。<br>后端不跑虚幻的DS的话 估计还是得抽一套脚本语言的实现方案，确保前后端一致。<br>不然就得前后端单独实现一套了。这样的话开发和维护成本还是比较大的。<br>相关的工具可以去看看Brainiac Designer。</p>
+<p>之前项目有用过由Brainiac Designer作为行为树的预览和编辑工具，最终生成对应的TS代码来执行。当然，对应的行为树运行时观察工具，就得自己手搓了。</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>UE</tag>
+        <tag>BehaviorTree</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-ActorLifeTime</title>
+    <url>/UE/OfficialDocLearn/Coding/ActorLifeTime/</url>
+    <content><![CDATA[<h1 id="ActorLifeTime"><a href="#ActorLifeTime" class="headerlink" title="ActorLifeTime"></a>ActorLifeTime</h1><p>官方有一张LifeTime的流程图<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-actor-lifecycle">官方文档</a></p>
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/actorlifecycle1.png" class="" title="alt text">
+
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image.png" class="" title="alt text">
+<p>-&gt; AISystemBase的纯虚函数 InitializeActorsForPlay<br>实际上这里也是由World调用下来的</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UEngine::LoadMap</span><br><span class="line">  UWorld::InitializeActorsForPlay</span><br><span class="line">    Level-&gt;RouteActorInitialize</span><br><span class="line">      对Level的Actors(Array of all actors in this level.)进行处理</span><br><span class="line">    AISystem-&gt;InitializeActorsForPlay 默认情况下这里没有任何处理</span><br><span class="line"></span><br><span class="line">  UWorld::AddToWorld 添加Level到World</span><br><span class="line">      Level-&gt;RouteActorInitialize</span><br></pre></td></tr></table></figure>
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-1.png" class="" title="alt text">
+<p>在Actor内部存在一个bActorInitialized标志位 可以避免重复初始化。 Level那边也会判定这个标志位。<br>该标志位，在Actor的PostInitializeComponents会进行设置。</p>
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-2.png" class="" title="alt text">
+<p>Actor的创建,看到LevelActor.cpp中的SpawnActor,还是要结合UObject的来。C++层面是进行拷贝复制。其初始化更早。而蓝图方面的初始化就延后到OnConstruction了。</p>
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-3.png" class="" title="alt text">
+<p>Actor生成，蓝图构造代码执行之前。</p>
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-4.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-5.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-6.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-7.png" class="" title="alt text">
+<p>垃圾回收这部分还是可以看到UObject。</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-Asserts</title>
+    <url>/UE/OfficialDocLearn/Coding/Asserts/</url>
+    <content><![CDATA[<h1 id="断言-Asserts"><a href="#断言-Asserts" class="headerlink" title="断言 Asserts"></a>断言 Asserts</h1><p><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/asserts-in-unreal-engine">官方文档 Asserts</a><br>detect and diagnose unexpected or invalid runtime conditions during development.</p>
+<p>C++的断言,assert 与静态断言,static_assert。</p>
+<img src="/UE/OfficialDocLearn/Coding/Asserts/image.png" class="" title="alt text">
+
+<p>虚幻引擎的Assert:</p>
+<ol>
+<li>check<br>  -&gt; 运行时终止程序</li>
+<li>verify<br>  -&gt; 类似check，但发布版本中，仍然执行表达式(忽略返回结果) “保留side effect”<br>  例如:verify((Mesh &#x3D; GetRenderMesh()) !&#x3D; nullptr); 这里内部有Mesh的赋值效果。</li>
+<li>ensure<br>  -&gt; 不终止程序，记录错误并继续运行。</li>
+</ol>
+<p>详细可以看到：Engine&#x2F;Source&#x2F;Runtime&#x2F;Core&#x2F;Public&#x2F;Misc&#x2F;AssertionMacros.h</p>
+<p>static_assert 静态断言还是可以继续应用的。<br>静态断言 static_assert -&gt; 直接在编译时做检测。</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-Coding Standard</title>
+    <url>/UE/OfficialDocLearn/Coding/CodingStandard/</url>
+    <content><![CDATA[<h1 id="Coding-Standard-代码规范"><a href="#Coding-Standard-代码规范" class="headerlink" title="Coding Standard 代码规范"></a>Coding Standard 代码规范</h1><p>不同的项目组一般会有自己的代码规范。<br>比如驼峰语法，小写开头的变量命名、大写函数等。<br>在使用虚幻引擎的时候，还是有必要了解官方的代码规范，特别时各个类的命名。<br>遵守一定的规则，让后续的代码维护和阅读起来更简单。</p>
+<p>本篇主要列出一些相对需要注意的点。<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/epic-cplusplus-coding-standard-for-unreal-engine#classorganization">官方文档</a></p>
+<h2 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h2><p>大写开头<br>布尔变量必须以b为前缀</p>
+<h2 id="类名"><a href="#类名" class="headerlink" title="类名"></a>类名</h2><p>类名需要加额外的大写字符。<br>以下是一些默认的规则:</p>
+<h3 id="模板类-T"><a href="#模板类-T" class="headerlink" title="模板类 - T"></a>模板类 - T</h3><h3 id="继承自UObject-U"><a href="#继承自UObject-U" class="headerlink" title="继承自UObject - U"></a>继承自UObject - U</h3><h3 id="继承自AActor-A"><a href="#继承自AActor-A" class="headerlink" title="继承自AActor  - A"></a>继承自AActor  - A</h3><h3 id="继承自SWidget-S"><a href="#继承自SWidget-S" class="headerlink" title="继承自SWidget - S"></a>继承自SWidget - S</h3><p>这部分可以进一步去了解虚幻引擎的Slate UI Framework</p>
+<h3 id="抽象接口Interface-I"><a href="#抽象接口Interface-I" class="headerlink" title="抽象接口Interface - I"></a>抽象接口Interface - I</h3><h3 id="枚举Enum-E-enum-class-xxx"><a href="#枚举Enum-E-enum-class-xxx" class="headerlink" title="枚举Enum - E   (enum class xxx{})"></a>枚举Enum - E   (enum class xxx{})</h3><h3 id="其他多数类均以F为前缀，部分子系统以其他字符为前缀"><a href="#其他多数类均以F为前缀，部分子系统以其他字符为前缀" class="headerlink" title="其他多数类均以F为前缀，部分子系统以其他字符为前缀"></a>其他多数类均以F为前缀，部分子系统以其他字符为前缀</h3><ul>
+<li>如FField</li>
+</ul>
+<h3 id="宏的名称应该全部大写，用下划线隔开，并以-UE-作为前缀"><a href="#宏的名称应该全部大写，用下划线隔开，并以-UE-作为前缀" class="headerlink" title="宏的名称应该全部大写，用下划线隔开，并以 UE_ 作为前缀"></a>宏的名称应该全部大写，用下划线隔开，并以 UE_ 作为前缀</h3><p>使用类型的时候最好加上对应的大小(特别是int与unit对应占用的bytes数)</p>
+<h2 id="常量正确性"><a href="#常量正确性" class="headerlink" title="常量正确性"></a>常量正确性</h2><p>编写函数的时候，可以考虑使用常量const声明。</p>
+<ul>
+<li>Pass function arguments by const pointer or reference if those arguments are not intended to be modified by the function.</li>
+<li>Flag methods as const if they do not modify the object.</li>
+<li>Use const iteration over containers if the loop isn’t intended to modify the container.</li>
+</ul>
+<h2 id="使用nullptr-而不是-NULL宏"><a href="#使用nullptr-而不是-NULL宏" class="headerlink" title="使用nullptr 而不是 NULL宏"></a>使用nullptr 而不是 NULL宏</h2><h2 id="auto"><a href="#auto" class="headerlink" title="auto"></a>auto</h2><p>一般情况下不要用auto。以下为几个例外</p>
+<ul>
+<li>Bind a lambda to a variable.</li>
+<li>For iterator variables, but only where the iterator’s type is verbose and would impair readability.</li>
+<li>In template code, where the type of an expression cannot easily be discerned. This is an advanced case.</li>
+</ul>
+<h2 id="Range-Based-For"><a href="#Range-Based-For" class="headerlink" title="Range-Based For"></a>Range-Based For</h2><p>使用TPair来进行TMap的遍历，取代CreateIterator的方式</p>
+<h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><p>Lambdas and Anonymous Functions<br>-&gt; 长度限制 最好不要超过2行<br>-&gt; 捕获时不要使用自动捕获([&amp;]与[&#x3D;])<br>-&gt; 延迟执行的Lambdas表达式不要使用引用捕获或者指针的值捕获<br>-&gt; 注意值捕获的性能问题<br>-&gt; CreateWeakLambda &#x2F; CreateSPLambda 用于延迟执行。捕获对象使用TWeakObjectPtr与TWeakPtr<br>-&gt; Accidentally captured UObject pointers are invisible to the garbage collector.</p>
+<h2 id="枚举类声明"><a href="#枚举类声明" class="headerlink" title="枚举类声明"></a>枚举类声明</h2><p>使用 Strongly-Typed Enums<br>enum class EnumClassName<br>{<br>}<br>Enums exposed to Blueprints must continue to be based on uint8.<br>-&gt; enum class EnumClassName:uint8</p>
+<h2 id="移动操作"><a href="#移动操作" class="headerlink" title="移动操作"></a>移动操作</h2><p>Move Semantices:<br>MoveTemp操作</p>
+<h2 id="类中默认的成员变量初始化"><a href="#类中默认的成员变量初始化" class="headerlink" title="类中默认的成员变量初始化"></a>类中默认的成员变量初始化</h2><p>这里主要关注直接使用默认成员初始化，而不是在构造函数中赋值的问题。</p>
+<p>Default Member Initializers 相比较构造函数处理,存在一些downsides:</p>
+<p>Any change to the defaults requires a rebuild of all dependent files.</p>
+<p>Headers can’t change in patch releases of the engine【引擎补丁无法修改头文件】, so this style can limit the kinds of fixes that are possible.</p>
+<p>Some things can’t be initialized in this way, such as base classes, UObject subobjects, pointers to forward-declared types, values deduced from constructor arguments, and members initialized over multiple steps. </p>
+<p>Putting some initializers in the header and the rest in constructors in the .cpp file, can reduce readability and maintainability.</p>
+<p>Use your best judgment when deciding whether to use default member initializers. As a rule of thumb, default member initializers make more sense with in-game code than engine code. Consider using config files for default values.</p>
+<h2 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h2><p>Namespaces<br>-&gt; Not supported by UnrealHeaderTool</p>
+<h2 id="API设计："><a href="#API设计：" class="headerlink" title="API设计："></a>API设计：</h2><h3 id="bool参数优化"><a href="#bool参数优化" class="headerlink" title="bool参数优化"></a>bool参数优化</h3><p>函数上 对于多bool参数函数的优化 - 使用枚举。</p>
+<p>函数参数过多时，声明并使用专用的结构体。</p>
+<p>避免同时重载bool和FString的参数。若重载，在使用TEXT(“String”)时，可能会调用到bool版本。</p>
+<h2 id="接口类注意事项"><a href="#接口类注意事项" class="headerlink" title="接口类注意事项"></a>接口类注意事项</h2><p>接口类都应该为抽象类，不包含成员变量。<br>这里还有一点需要注意：</p>
+<ol>
+<li>允许包含非纯虚函数的普通虚函数。</li>
+<li>允许包含非虚函数或者是静态函数，但必须内联实现。”Implemented inline”</li>
+</ol>
+<ul>
+<li>在头文件中直接加上函数的实现。在头文件中实现方法即隐式内联，无需显示添加inline关键字。<br>声明和重写方法时加上virtual与override关键字。(子类重写父类虚函数的时候两个都加上)</li>
+</ul>
+<h2 id="UObject参数"><a href="#UObject参数" class="headerlink" title="UObject参数"></a>UObject参数</h2><p>函数在使用UObjects作为参数传递时 应当使用指针进行参数传递而非引用</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-Delegates</title>
+    <url>/UE/OfficialDocLearn/Coding/Delegates/</url>
+    <content><![CDATA[<h1 id="Delegates"><a href="#Delegates" class="headerlink" title="Delegates"></a>Delegates</h1><p>参考源码文件:<br>DelegateCombinations.h</p>
+<img src="/UE/OfficialDocLearn/Coding/Delegates/image.png" class="" title="alt text">
+<p>UE的”事件系统”。<br>其实很多项目，在脚本代码层，如lua或ts，会有着自己的事件管理器，用于定义事件，并注册对应的函数。事件触发时，已注册的函数都会被调用。当然，需要注意处理相应的回收逻辑。<br>虚幻的委托在逻辑上感觉是起到同样的功能。</p>
+<img src="/UE/OfficialDocLearn/Coding/Delegates/image-1.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Delegates/image-2.png" class="" title="alt text">
+
+<h2 id="Binding-Delegate"><a href="#Binding-Delegate" class="headerlink" title="Binding Delegate"></a>Binding Delegate</h2><img src="/UE/OfficialDocLearn/Coding/Delegates/image-3.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Delegates/image-4.png" class="" title="alt text">
+
+<h2 id="负载变量（Payload-Variables）"><a href="#负载变量（Payload-Variables）" class="headerlink" title="负载变量（Payload Variables）"></a>负载变量（Payload Variables）</h2><img src="/UE/OfficialDocLearn/Coding/Delegates/image-5.png" class="" title="alt text">
+<p>定义：负载变量是委托绑定（Bind）时附加的额外数据，这些数据会在委托执行时自动传递，无需在调用时显式传入。它们通常用于传递上下文信息（如对象实例、状态变量等）。<br>这部分可以看到DS。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 绑定一个成员函数，并附加一个负载变量（额外参数）</span><br><span class="line">MyDelegate.BindUObject(MyObject, &amp;UMyClass::MyFunction, 100); // 100 是负载变量</span><br><span class="line"></span><br><span class="line">// 调用时只需传递函数参数，负载变量会自动填充</span><br><span class="line">MyDelegate.Broadcast(10, 20);</span><br><span class="line"></span><br><span class="line">这里，MyFunction 的实际签名可能是：</span><br><span class="line">void UMyClass::MyFunction(int32 Param1, int32 Param2, int32 Payload);</span><br></pre></td></tr></table></figure>
+
+<p>当然，单播和多播是不一样的。对于RetVal有返回值的单播委托，可以在判断IsBound后调用执行，并获取返回值，进行逻辑处理。</p>
+<h2 id="Dynamic-Delegate"><a href="#Dynamic-Delegate" class="headerlink" title="Dynamic Delegate"></a>Dynamic Delegate</h2><img src="/UE/OfficialDocLearn/Coding/Delegates/image-6.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Delegates/image-7.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Delegates/image-8.png" class="" title="alt text">
+
+<h2 id="Multi-cast-Delegates"><a href="#Multi-cast-Delegates" class="headerlink" title="Multi-cast Delegates"></a>Multi-cast Delegates</h2><p>多播委托<br>Delegates that can be bound to multiple functions and execute them all at once.</p>
+<img src="/UE/OfficialDocLearn/Coding/Delegates/image-9.png" class="" title="alt text">
+<p>执行用Broadcast。<br>RemoveAll会传入一个参数用来移除，相关可以看到MulticastDelegateBase.h<br>此外，相关的绑定信息也可以看到Delegate.h</p>
+<h2 id="UDELEGATE"><a href="#UDELEGATE" class="headerlink" title="UDELEGATE"></a>UDELEGATE</h2><p>关于委托的宏与说明符:<br>Delegate functions support the same Specifiers as UFunctions, but use the UDELEGATE macro instead of UFUNCTION. For example, the following code adds the BlueprintAuthorityOnly specifier to the FInstigatedAnyDamageSignature delegate:<br>UDELEGATE(BlueprintAuthorityOnly)<br>DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FInstigatedAnyDamageSignature, float, Damage, const UDamageType*, DamageType, AActor*, DamagedActor, AActor*, DamageCauser);<br>默认情况下不用加上UDELEGATE的宏。<br>即便使用UDELEGATE宏，声明为BlueprintCallable，其也无法从蓝图进行调用。需要理解委托的概念。</p>
+<p>动态委托才能像UFUNCTION一样使用UDELEGATE。动态委托支持序列化和元信息也是很重要的一点。</p>
+<h2 id="蓝图应用"><a href="#蓝图应用" class="headerlink" title="蓝图应用"></a>蓝图应用</h2><p>对于C++声明的Dynamic Delegates，要在蓝图中绑定函数到委托，需要通过EventDispatchers来创建Event并进行设置。</p>
+<p>对于单播委托，将对应的委托变量，使用UPROPERTY(BlueprintReadWrite)暴露给蓝图后，可以通过蓝图进行对委托变量进行设置(绑定)。</p>
+<p>对于多播委托，将对应的委托变量，使用UPROPERTY(BlueprintAssignable)暴露给蓝图后，可以通过蓝图进行对对应的委托添加侦听事件。</p>
+<p>但是，无论是单播还是多播，C++定义的委托的触发(Execute或者是Broadcast)都需要通过C++来进行。</p>
+<p>这里也可以补充一下EventDispatcher。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/event-dispatchers-in-unreal-engine">官方文档</a><br>其本质上就是蓝图系统中对动态多播委托的封装和应用。通过蓝图的定义的EventDispatchers和C++不同，可以直接在蓝图进行Call调用。(Call方法)。</p>
+<h2 id="其他学习资料"><a href="#其他学习资料" class="headerlink" title="其他学习资料"></a>其他学习资料</h2><p>这里也有一篇深入学习原理的参考文章，可以结合源码阅读:<a href="https://zhuanlan.zhihu.com/p/460092901">一文理解透UE委托Delegate</a></p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-Log</title>
+    <url>/UE/OfficialDocLearn/Coding/Log/</url>
+    <content><![CDATA[<h1 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h1><p>日志保存位置:<br>Saved&#x2F;Logs</p>
+<h2 id="常用日志宏-UE-LOG"><a href="#常用日志宏-UE-LOG" class="headerlink" title="常用日志宏 UE_LOG"></a>常用日志宏 UE_LOG</h2><p>UE_LOG(LogTemp, Warning, TEXT(“Hello World”));</p>
+<img src="/UE/OfficialDocLearn/Coding/Log/image.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Log/image-1.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Log/image-2.png" class="" title="alt text">
+
+<h3 id="宏处理"><a href="#宏处理" class="headerlink" title="宏处理"></a>宏处理</h3><p>在UE_LOG内可以使用格式化</p>
+<ul>
+<li>字符串:”%s”</li>
+<li>整数:”%d”</li>
+<li>浮点数:”%f”</li>
+<li>向量Vector的话，调用Vector的ToString进行转换再用字符串。</li>
+</ul>
+<p>Vector示例：*TestVec.ToString()</p>
+<blockquote>
+<p>int32 TestInt &#x3D; 100;<br>float TestFloat &#x3D; 6.66;<br>UE_LOG(LogTemp,Warning,TEXT(“Here is a mix text. %s | %d | %f”),TEXT(“str”),TestInt,TestFloat);<br>在OutputLog的输出：LogTemp: Warning: Here is a mix text. str | 100 | 6.660000</p>
+</blockquote>
+<h2 id="Category"><a href="#Category" class="headerlink" title="Category"></a>Category</h2><img src="/UE/OfficialDocLearn/Coding/Log/image-3.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Log/image-4.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Log/image-5.png" class="" title="alt text">
+<p>在源码中可以看到很多示例。比如CoreGlobals.h与CoreGlobals.cpp</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Temporary log category, generally you should not check things in that use this</span><br><span class="line">CORE_API DECLARE_LOG_CATEGORY_EXTERN(LogTemp, Log, All);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">DEFINE_LOG_CATEGORY(LogTemp);</span><br></pre></td></tr></table></figure>
+
+<p>在头文件进行DECLARE_LOG_CATEGORY_EXTERN()声明。<br>在对应的cpp文件中使用DEFINE_LOG_CATEGORY()进行定义。<br>注意，对应的DECLARE和DEFINE只能声明定义一次。<br>测试Demo，定义 Actor1 Actor2 以及辅助头文件tool.h<br>在Actor1.h declare,在Actor1.cpp define:<br>Actor1.cpp正常使用。Actor2.cpp只需要include Actor1.h，不需要重新define，便可以使用。<br>或者直接在tool.h进行declare与define。<br>Actor1与Actor2引入头文件后可以正常使用。</p>
+<p>Log的Category，主要是在打印前面加多一个所属的Category信息。日志仍然是在Saved里</p>
+<h2 id="UE-LOGFMT"><a href="#UE-LOGFMT" class="headerlink" title="UE_LOGFMT"></a>UE_LOGFMT</h2><p>UE5.2版本新引入的UE_LOGFMT宏<br>使用位置或者名称来设置参数。</p>
+<h3 id="Positional"><a href="#Positional" class="headerlink" title="Positional"></a>Positional</h3><p>When using positional parameters, the field values must exactly match the field referenced by format.<br>示例1</p>
+<blockquote>
+<p>UE_LOGFMT(LogCore, Warning, “Loading {Name} failed with error {Error}”, Package-&gt;GetName(),  ErrorCode);<br>示例2<br>UE_LOGFMT(LogTemp,Warning,”This is a test LOGFMT With Pos. {0}, {1}”,TEXT(“str1”),0.5f);</p>
+</blockquote>
+<h3 id="Named"><a href="#Named" class="headerlink" title="Named"></a>Named</h3><p>When using Named parameters, the field values must contain every field reference by format. The order is irrelevant and extra fields are permitted.<br>示例1</p>
+<blockquote>
+<p>UE_LOGFMT(LogCore, Warning, “Loading {Name} failed with error {Error}”,(“Name”, Package-&gt;GetName()), (“Error”, ErrorCode),(“Flags”, LoadFlags));<br>示例2<br>UE_LOGFMT(LogTemp,Warning,”This is a test LOGFMT With Name. {Name1}, {Name2}”,(“Name1”,TEXT(“str1”)),(“Name2”,0.5f),(“ExtraNoUsedInfo”,”no use”));</p>
+</blockquote>
+<img src="/UE/OfficialDocLearn/Coding/Log/image-6.png" class="" title="alt text">
+
+<h2 id="常用屏幕日志打印-AddOnScreenDebugMessage"><a href="#常用屏幕日志打印-AddOnScreenDebugMessage" class="headerlink" title="常用屏幕日志打印 AddOnScreenDebugMessage"></a>常用屏幕日志打印 AddOnScreenDebugMessage</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if (GEngine)</span><br><span class="line">  GEngine-&gt;AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT(&quot;This is an Example on-screen debug message.&quot;));</span><br></pre></td></tr></table></figure>
+<img src="/UE/OfficialDocLearn/Coding/Log/image-7.png" class="" title="alt text">]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-Package</title>
+    <url>/UE/OfficialDocLearn/Coding/Package/</url>
+    <content><![CDATA[<p>Package与Outer</p>
+<h1 id="Package"><a href="#Package" class="headerlink" title="Package"></a>Package</h1><p>了解UPackage的概念。</p>
+<p><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/working-with-assets-in-unreal-engine">官方文档 - Working with Assets</a></p>
+<p>在虚幻引擎资源浏览器中看到的，其实都是Package。Package是一个抽象的概念，一个Package是一个文件（.uasset或者.umap），它包含一些可以UE进行操作和访问的二进制数据文件。一般一个Asset对应一个Package。两个例外：蓝图与HLOD。由多个Assets组成。</p>
+<h1 id="Outer-与-Outermost"><a href="#Outer-与-Outermost" class="headerlink" title="Outer 与 Outermost"></a>Outer 与 Outermost</h1><p>沿着一个 UObject 对象的 Outer 链向上最终能找到一个 UPackage 对象，它决定了此 UObject 对象会被序列化在哪里。</p>
+<h2 id="Outer"><a href="#Outer" class="headerlink" title="Outer"></a>Outer</h2><blockquote>
+<p>UObjectBase.h<br>&#x2F;** Object this object resides in. *&#x2F;</p>
+</blockquote>
+<p>UObject的Outer对象，可以认为是“父对象”。<br>Outer定义了对象的归属。<br>-&gt; 构建层级<br>-&gt; 资源管理与序列化</p>
+<h2 id="Outermost"><a href="#Outermost" class="headerlink" title="Outermost"></a>Outermost</h2><blockquote>
+<p>UObjectBaseUtility.h<br>GetOutermost():Legacy function, has the same behavior as GetPackage.<br>GetPackage():Walks up the list of outers until it finds a package directly associated with the object.<br>GetOutermostObject() : Walks up the list of outers until it finds the top-level one that isn’t a package.</p>
+</blockquote>
+<p>UPackage的直接子对象称为顶层对象(OutermostObject)，因为它才是我们要使用的层级最高的对象，而UPackage仅是保存它们的地方。</p>
+<p>OutmostObject即Package下的顶层对象</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例:"></a>示例:</h3><p>自定义类MyActor，并创建蓝图BP_MyActor继承自MyActor。<br><img src="/Package%5Cimage.png" alt="alt text"><br><img src="/Package%5Cimage-1.png" alt="alt text"><br>同样，我们可以测试场景中的蓝图实例：<br><img src="/Package%5Cimage2.png" alt="alt text"><br><img src="/Package%5Cimage3.png" alt="alt text"></p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-SmartPointers</title>
+    <url>/UE/OfficialDocLearn/Coding/SmartPointers/</url>
+    <content><![CDATA[<h1 id="智能指针-SmartPointers"><a href="#智能指针-SmartPointers" class="headerlink" title="智能指针 SmartPointers"></a>智能指针 SmartPointers</h1><p>写在最前面：<br>UObject及其子类的GC管理和智能指针管理是两套系统。不要混用了。<br>UObject有对应的TWeakObjectPtr与StrongObjectPtr。<br>非UObject类的才使用智能指针。</p>
+<p>智能指针的基础部分在反射系统那边有介绍。</p>
+<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image.png" class="" title="alt text">
+<p>-&gt; 在使用指针指针时 可以轻松区分拥有者和观察者。<br>-&gt; 注意内存开销会比普通指针大。这点和C++内部的智能指针其实是一样的。</p>
+<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-1.png" class="" title="alt text">
+<p>这部分可以看到SharePointer.h文件</p>
+<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-2.png" class="" title="alt text">
+<p>主要是在上层业务使用。<br>使用的时候注意尽量用MakeShared来创建新的对象，或者类继承自TSharedFromThis.</p>
+<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-3.png" class="" title="alt text">
+<p>侵入性访问器<br>非侵入性 - 对象不知道是否被智能指针所持有。<br>想要以TSharedPtr或TSharedRef访问对象，需要继承自TSharedFromThis。<br>然后提供两个接口，一个是 AsShared，一个是SharedThis</p>
+<p>ClassA: public TSharedFromThis<ClassA><br>ClassB: public ClassA</p>
+<p>则在ClassB的对象上：<br>调用AsShared()返回的是ClassA的TSharedRef[ClassA直接继承自TSharedFromThis]<br>调用SharedThis(this)返回的就是ClassB的TSharedRef了.<br>然后可以由Ref转为指针。</p>
+<p>有一点是需要注意的：</p>
+<blockquote>
+<p>Do not call AsShared or SharedThis from constructors, since the shared reference is not initialized at that time and will cause a crash or assert.</p>
+</blockquote>
+<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-4.png" class="" title="alt text">
+<p>Static Cast  -&gt; 编译时 - 依赖开发者确保类型兼容性<br>Dynamic Cast -&gt; 运行时 - 需要动态进行类型检查，而智能指针这块没有RTTI</p>
+<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-5.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-6.png" class="" title="alt text">
+<p>关于这块的转换可以看到SharedPointerTesting.inl文件。<br>比如TSharedRef到const&amp;的转换:<br>const float &amp; MyFloat &#x3D; <em>FloatRef; [看到SharedPointer中对于</em>符号的重写]<br>const float &amp; MyFloat2 &#x3D; FloatRef.Get();</p>
+<h2 id="TSharedPtr与TSharedRef"><a href="#TSharedPtr与TSharedRef" class="headerlink" title="TSharedPtr与TSharedRef"></a>TSharedPtr与TSharedRef</h2><p>TSharedRef与TSharedPtr的转换:<br>Ref -&gt; Ptr的隐式转换: 直接Ptr &#x3D; Ref<br>Ptr -&gt; Ref 做多一个判定:  if(Ptr.IsValid()){Ref &#x3D; Ptr.ToSharedRef()}</p>
+<p>Ptr判定:</p>
+<ol>
+<li>if(Ptr.IsValid())       &#x2F;&#x2F;IsValid</li>
+<li>if(Ptr)                 &#x2F;&#x2F;bool</li>
+<li>if(Ptr.Get()!&#x3D;nullptr)  &#x2F;&#x2F;Ptr</li>
+</ol>
+<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-7.png" class="" title="alt text">
+
+<h2 id="TWeakPtr"><a href="#TWeakPtr" class="headerlink" title="TWeakPtr"></a>TWeakPtr</h2><img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-8.png" class="" title="alt text">
+<p>创建弱指针 也是看到SharedPointer.h<br>可以直接使用TSharedRef创建，或者直接用TSharedPtr赋值</p>
+<p>使用Pin函数将弱指针转为TSharedPtr</p>
+<p>TSharedPtr与TWeakPtr置空<br>调用Reset()或者直接设置为nullptr来清除。</p>
+<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-9.png" class="" title="alt text">
+<ol>
+<li>WeakPtr可以用作值而不要用作键</li>
+<li>在访问其指向对象时，用Pin确保对象的有效性</li>
+</ol>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-GameplayTag</title>
+    <url>/UE/OfficialDocLearn/Coding/GameplayTag/</url>
+    <content><![CDATA[<h1 id="GameplayTag"><a href="#GameplayTag" class="headerlink" title="GameplayTag"></a>GameplayTag</h1><p>最初接触GameplayTag主要还是在GAS,当然GameplayTag是一个更广的内容。</p>
+<img src="/UE/OfficialDocLearn/Coding/GameplayTag/image.png" class="" title="alt text">
+<p>其功能正如”Tag”所代表。<br>相关源码，可以看到GameplayTagContainer.h中。</p>
+<p>相关比较和匹配函数:<br>常用运算符:&#x3D;&#x3D;与!&#x3D;<br>其他：MatchesTag MatchesTagExact。<br>而在属性这块，FGameplayTag内部的TagName是一个FName。<br>关于FName，可以看到UE-Property文章中字符串的相关内容或者官方文档。</p>
+<h2 id="GameplayTag的设置"><a href="#GameplayTag的设置" class="headerlink" title="GameplayTag的设置"></a>GameplayTag的设置</h2><h3 id="项目设置"><a href="#项目设置" class="headerlink" title="项目设置"></a>项目设置</h3><p>Project -&gt; ProjectSettings -&gt; GameplayTag<br>添加方式</p>
+<ul>
+<li>Directly adding or removing them in Project Settings<ul>
+<li>启用Import Tags From Config,从.ini文件导入:including Config&#x2F;DefaultGameplayTags.ini and any in Config&#x2F;Tags</li>
+</ul>
+</li>
+<li>Importing them from Data Table assets</li>
+<li>Defining them with C++</li>
+</ul>
+<h3 id="数据文件设置"><a href="#数据文件设置" class="headerlink" title="数据文件设置"></a>数据文件设置</h3><img src="/UE/OfficialDocLearn/Coding/GameplayTag/image-1.png" class="" title="alt text">
+
+<h3 id="代码设置"><a href="#代码设置" class="headerlink" title="代码设置"></a>代码设置</h3><img src="/UE/OfficialDocLearn/Coding/GameplayTag/image-2.png" class="" title="alt text">
+<p>一个参考样例: LyraHealthSet.h与配套的cpp</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_Damage);</span><br><span class="line">UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_DamageImmunity);</span><br><span class="line">UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_DamageSelfDestruct);</span><br><span class="line">UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_FellOutOfWorld);</span><br><span class="line">UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Lyra_Damage_Message);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_Damage, &quot;Gameplay.Damage&quot;);</span><br><span class="line">UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_DamageImmunity, &quot;Gameplay.DamageImmunity&quot;);</span><br><span class="line">UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_DamageSelfDestruct, &quot;Gameplay.Damage.SelfDestruct&quot;);</span><br><span class="line">UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_FellOutOfWorld, &quot;Gameplay.Damage.FellOutOfWorld&quot;);</span><br><span class="line">UE_DEFINE_GAMEPLAY_TAG(TAG_Lyra_Damage_Message, &quot;Lyra.Damage.Message&quot;);</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">//应用</span><br><span class="line">bool ULyraHealthSet::PreGameplayEffectExecute(FGameplayEffectModCallbackData &amp;Data)</span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">  if (Data.Target.HasMatchingGameplayTag(TAG_Gameplay_DamageImmunity) &amp;&amp; !bIsDamageFromSelfDestruct)</span><br><span class="line">  &#123;</span><br><span class="line">    // Do not take away any health.</span><br><span class="line">    Data.EvaluatedData.Magnitude = 0.0f;</span><br><span class="line">    return false;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="GameplayTag应用"><a href="#GameplayTag应用" class="headerlink" title="GameplayTag应用"></a>GameplayTag应用</h2><img src="/UE/OfficialDocLearn/Coding/GameplayTag/image-3.png" class="" title="alt text">
+<p>FGameplayTagContainer：<br>关键变量:<br>TArray<FGameplayTag> GameplayTags<br>TArray<FGameplayTag> ParentTags<br>在调用AddTag时,除了操作GameplayTags数组外，还会用GameplayTagsManager的ExtractParentTags对ParentTags处理。而下面的比较大部分也会用到ParentTags。<br>函数 HasTag、HasAny、HasAll<br>相关的描述在源码写的比较清楚。<br>当然，这里由引出了一个新的类: FGameplayTagNode。</p>
+<img src="/UE/OfficialDocLearn/Coding/GameplayTag/image-4.png" class="" title="alt text">
+<p>这部分也可以看到源码。官方在源码中有比较好的示例。</p>
+<h2 id="拓展话题-FGameplayTagNode与Mgr管理的节点树"><a href="#拓展话题-FGameplayTagNode与Mgr管理的节点树" class="headerlink" title="拓展话题 FGameplayTagNode与Mgr管理的节点树"></a>拓展话题 FGameplayTagNode与Mgr管理的节点树</h2><p>本身Manager也维护一颗GameplayTagNode节点树。<br>在Mgr的ConstructGameplayTagTree中会进行节点树的构建。<br>Node中，会维护自身和其所有父节点 - CompleteTagWithParents，有需要可以再看。<br>总之，通过Mgr和节点树，对于单个Tag的判断开销就很低了。算是一种空间换时间。不过，考虑到FName本身不是每个字符串存一份，所以内存开销和时间开销都很好。</p>
+<p>这一块其实和红点树是有些类似的。</p>
+<h2 id="限制编辑与接口"><a href="#限制编辑与接口" class="headerlink" title="限制编辑与接口"></a>限制编辑与接口</h2><h3 id="GameplayTags-编辑限制"><a href="#GameplayTags-编辑限制" class="headerlink" title="GameplayTags 编辑限制"></a>GameplayTags 编辑限制</h3><img src="/UE/OfficialDocLearn/Coding/GameplayTag/image-5.png" class="" title="alt text">
+
+<h3 id="使用Interface统一获取接口"><a href="#使用Interface统一获取接口" class="headerlink" title="使用Interface统一获取接口"></a>使用Interface统一获取接口</h3><img src="/UE/OfficialDocLearn/Coding/GameplayTag/image-6.png" class="" title="alt text">]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-Tick</title>
+    <url>/UE/OfficialDocLearn/Coding/Tick/</url>
+    <content><![CDATA[<p>在业务的实际开发中，Update的顺序是比较重要的。在引擎中嵌入脚本语言，也需要有着对应的驱动模块。</p>
+<h1 id="Tick"><a href="#Tick" class="headerlink" title="Tick"></a>Tick</h1><h2 id="Update链条"><a href="#Update链条" class="headerlink" title="Update链条"></a>Update链条</h2><p>Update链条：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Launch的GuardedMain -&gt; EngineTick</span><br><span class="line">↓</span><br><span class="line">LaunchEngineLoop -&gt; Tick</span><br><span class="line">  GEngine -&gt;Tick</span><br><span class="line">    UWorldTick</span><br><span class="line">      RunTickGroup</span><br><span class="line">        PrePhysics - Actor默认 - FActorTickFunction</span><br><span class="line">        StartPhyscis</span><br><span class="line">        DuringPhysics - ActorComp默认 - FActorComponentTickFunction</span><br><span class="line">        EndPhysics</span><br><span class="line">        PostPhysics</span><br><span class="line">        [这里暴露给蓝图的就Pre\During\Post]</span><br><span class="line">      LatentActionManager - 蓝图中的Delay</span><br><span class="line">      TimerManager - SetTimer</span><br><span class="line">      FTickableGameObject::TickObjects(UWorld)  -FTickableGameObject. 可以关注UTickableWorldSubsystem.</span><br><span class="line">      PlayerController - UpdateCameraManager</span><br><span class="line">      RunTickGroup</span><br><span class="line">        PostUpdateWork</span><br><span class="line">        LastDemotable</span><br><span class="line">    FTickableGameObject::TickObjects(nullptr)</span><br><span class="line">  FSlateApplication()::Get().Tick() [两次 两个类型 ESlateTickType]  - UI的Tick</span><br><span class="line">  FTSTicker::GetCoreTicker().Tick(FApp::GetDeltaTime()) - Ticker的Tick</span><br></pre></td></tr></table></figure>
+<p>由此我们可以看到整个Tick的调用流程。</p>
+<h2 id="Actor-Tick"><a href="#Actor-Tick" class="headerlink" title="Actor Tick"></a>Actor Tick</h2><p><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/actor-ticking-in-unreal-engine">官方文档</a></p>
+<img src="/UE/OfficialDocLearn/Coding/Tick/image.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Tick/image-1.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Tick/image-2.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Tick/image-3.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Tick/image-4.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Tick/image-5.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Tick/image-6.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/Tick/image-7.png" class="" title="alt text">
+
+<p>ActorTick的初始化<br>见构造函数 和 InitializedDefaults</p>
+<img src="/UE/OfficialDocLearn/Coding/Tick/image-8.png" class="" title="alt text">
+
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://zhuanlan.zhihu.com/p/477018560">UE4中的三种Tick方式</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/661853225">【浅谈UE】Tick！Tick！Tick！Tick时序分析</a></p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-Reflection System</title>
+    <url>/UE/OfficialDocLearn/Coding/UECPlusPlusReflection/</url>
+    <content><![CDATA[<h1 id="反射系统-Reflection-System"><a href="#反射系统-Reflection-System" class="headerlink" title="反射系统 Reflection System"></a>反射系统 Reflection System</h1><p>参考文章：<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/reflection-system-in-unreal-engine">Reflection System in Unreal Engine</a><br><a href="https://zhuanlan.zhihu.com/p/717920216">UE5标识符详解 | 史上最全 - 知乎</a></p>
+<p>总结：<br>反射指程序在运行时动态检查、修改自身状态或行为的能力。C++本身并不支持反射。<br>之前在用typescript和lua的时候，有很多写法其实就用到了反射的功能，只是没有去意识到。<br>要实现反射功能，需要收集对应的数据，并有相应的逻辑系统进行处理。<br>虚幻的反射便是基于宏来实现的。</p>
+<p>关于虚幻引擎的宏 可以去看看大钊知乎的那篇符号说明的文章。<br>部分宏：<br>UCLASS、UFUNCTION、UPROPERTY、USTRUCT、UINTERFACE、UENUM。<br>通过宏，虚幻的反射系统才能收集到对应的信息并进行处理。</p>
+<blockquote>
+<p>-&gt; make UE aware of new classes,functions and varibales.<br>-&gt; These macros are garbage collected by the engine. 【指对对应的变量进行垃圾回收】。</p>
+</blockquote>
+<p>垃圾回收这块针对的还是变量。UFUNCTION宏主要是将函数暴露给反射系统。</p>
+<p>一个简单的例子我想便是编辑器中对应字段的显示。<br>编辑器和运行时的Game一样，本身也是一个World。我们要在编辑器窗口去显示各种字段，不可能为每一个C++类单独去编写对应的显示逻辑。</p>
+<p>在总览，官方文档还提到了常用的 TSubclassOf 用来获取UClass type的模板类（这里其实就是运行时类型检查了），以及元数据说明符和虚幻自己实现的智能指针。</p>
+<p>关于元数据说明符：Metadata Specifiers，同样可以看大钊的那篇参考文章。meta部分主要是在编辑器下生效，从而可以编写自己的编辑器工具和功能。</p>
+<p>关于智能指针部分：Unreal Smart Pointer Library 智能指针库：</p>
+<ol>
+<li>共享指针：引用计数</li>
+<li>弱指针：引用不计数</li>
+<li>共享引用Shared References(non - nullable Shared Pointers)：同不可为空的共享指针。</li>
+<li>唯一指针Unique Pointers：同一时间仅一个唯一指针指向对象。额外需要注意的一点是，当唯一指针超出作用域时，其会自动删除引用的对象。[这也意味着，对唯一指针引用的对象使用共享指针&#x2F;共享引用是很危险的(也不应当为共享指针&#x2F;引用对象创建唯一指针)]<br>智能指针部分，和反射系统功能存在较为紧密的关系，如GC部分。</li>
+</ol>
+<p>那么，虚幻引擎基于反射又有哪些应用场景呢：</p>
+<ol>
+<li>编辑器集成。 这个刚刚也提到了。</li>
+<li>垃圾回收(GC)。我们要去处理UObject派送类的引用关系，自动管理生命周期。</li>
+<li>蓝图交互</li>
+<li>序列化和反序列化、网络复制。如网络属性同步。<br>等等。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-UInterface</title>
+    <url>/UE/OfficialDocLearn/Coding/UInterface/</url>
+    <content><![CDATA[<h1 id="Unreal-Interfaces"><a href="#Unreal-Interfaces" class="headerlink" title="Unreal Interfaces"></a>Unreal Interfaces</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于接口的概念，在其他很多语言都有类似的定义。比如Typescript。而C++本身没有接口的语法。</p>
+<p>在UE的框架下，几乎万物皆UObject。那么在使用接口这样的概念时，难以避免的一个问题便是类的菱形继承。哦吼，这个时候怎么办？</p>
+<p>在相同功能的情况下，使用组件不失为一种解决方案。但是，面对不同对象要求不同实现的情况呢？</p>
+<blockquote>
+<p>题外话:<br>在游戏开发过程中，面向对象和面向组件是两种思路，也有组合优于继承的说法，之前项目也会有继承链过程而较难维护的问题，这块自己在实践时多留一下即可。</p>
+</blockquote>
+<p>回到正题，这并不影响去设计一个方式来抽出共有的函数接口，来实现“接口”的概念。而用于继承的接口，就不能再来自UObject了。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>-&gt; 接口保证类实现一组共用函数。<br>-&gt; 不同类的函数执行不同的行为。<br>-&gt; 解决UObject菱形继承的问题。</p>
+<p>C++声明:<br>1.用于引擎反射的接口部分 UInterface<br>使用UINTERFACE()宏与继承自UInterface。<br>2.实际用于实现功能的接口部分 IInterface</p>
+<p>这里需要注意，两个对应的接口类都需要GENERATED_BODY()宏。<br>虚幻这里的处理比较巧妙，在有了UInterface对应的反射后，IInterface在不继承自UObject的同时，可以使用UFUNCTION等标记，并能被引擎识别。</p>
+<p>这样，我们实现了接口功能，也能避免菱形继承的问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/*</span><br><span class="line">This class does not need to be modified.</span><br><span class="line">Empty class for reflection system visibility.</span><br><span class="line">Uses the UINTERFACE macro.</span><br><span class="line">Inherits from UInterface.</span><br><span class="line">*/</span><br><span class="line">UINTERFACE()</span><br><span class="line">class UReactToTriggerInterface : public UInterface</span><br><span class="line">&#123;</span><br><span class="line">  GENERATED_BODY()</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">/* Actual Interface declaration. */</span><br><span class="line">class IReactToTriggerInterface</span><br><span class="line">&#123;</span><br><span class="line">  GENERATED_BODY()</span><br><span class="line"> </span><br><span class="line">  // Add interface functions to this class. This is the class that will be inherited to implement this interface.</span><br><span class="line">public:</span><br><span class="line">  // Add interface function declarations here</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>关于UINTERFACE宏相关的说明符，可以参考官方文档或者是大钊那篇标识符的文章。<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/interfaces-in-unreal-engine">Unreal Interface</a></p>
+<h2 id="接口实现与接口函数"><a href="#接口实现与接口函数" class="headerlink" title="接口实现与接口函数"></a>接口实现与接口函数</h2><p>Include对应的接口头文件，并继承自IInterface即可。</p>
+<p>纯C++部分可以直接用普通的函数。无需UFUNCTION说明符。<br>接口声明的虚函数，在仅C++调用时，对应的实现类正常重载即可。</p>
+<p>支持蓝图调用的函数就需要UFUNCTION了。</p>
+<ol>
+<li>BlueprintCallable</li>
+<li>BlueprintImplementableEvent[仅蓝图] 或 BlueprintNativeEvent[支持C++与蓝图,默认C++，蓝图重写。C++部分需要在实现对应的_Implementation版本。]</li>
+<li>非虚函数。</li>
+</ol>
+<p>C++调用BlueprintImplementableEvent或BlueprintNativeEvent:需要加上Execute_前缀</p>
+<blockquote>
+<p>&#x2F;&#x2F; OriginalObject is an object that implements the IReactToTriggerInterface<br>bool bReacted &#x3D; IReactToTriggerInterface::Execute_ReactToTrigger(OriginalObject);</p>
+</blockquote>
+<img src="/UE/OfficialDocLearn/Coding/UInterface/image.png" class="" title="alt text">
+
+<h2 id="接口实现判定"><a href="#接口实现判定" class="headerlink" title="接口实现判定"></a>接口实现判定</h2><p>之前所述，大部分情况下都是直接用的IInterface，但在接口判定的时候需要用的可能是UInterface。毕竟，是通过UInterface来实现反射的。（除了指针转换，毕竟继承的还是IInterface）</p>
+<img src="/UE/OfficialDocLearn/Coding/UInterface/image-1.png" class="" title="alt text">
+<p>此外，除了Cast,也可以用TScriptInterface&lt;&gt;来进行类型转换。</p>
+<h2 id="指定接口实现类的指针"><a href="#指定接口实现类的指针" class="headerlink" title="指定接口实现类的指针"></a>指定接口实现类的指针</h2><p>-&gt; TScriptInterface&lt;&gt;<br>有点类似于TSubclassOf&lt;&gt;</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UMyObject* MyObjectPtr;</span><br><span class="line">TScriptInterface&lt;IMyInterface&gt; MyScriptInterface;</span><br><span class="line"> </span><br><span class="line">if (MyObjectPtr-&gt;Implements&lt;UMyInterface&gt;())</span><br><span class="line">&#123;</span><br><span class="line">  MyScriptInterface = TScriptInterface&lt;IMyInterface&gt;(MyObjectPtr);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">// MyScriptInterface holds a reference to MyObjectPtr and MyInterfacePtr</span><br></pre></td></tr></table></figure>
+<img src="/UE/OfficialDocLearn/Coding/UInterface/image-2.png" class="" title="alt text">
+
+<h2 id="可用于蓝图继承的C-层接口"><a href="#可用于蓝图继承的C-层接口" class="headerlink" title="可用于蓝图继承的C++层接口"></a>可用于蓝图继承的C++层接口</h2><img src="/UE/OfficialDocLearn/Coding/UInterface/image-3.png" class="" title="alt text">
+
+<h2 id="关于UE内部接口实现和UInterface与IInterface问题"><a href="#关于UE内部接口实现和UInterface与IInterface问题" class="headerlink" title="关于UE内部接口实现和UInterface与IInterface问题"></a>关于UE内部接口实现和UInterface与IInterface问题</h2><p>可先看下知乎的这篇文章做一个大致了解:<br><a href="https://zhuanlan.zhihu.com/p/60851912">UE4 Interface原理与使用</a></p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+        <tag>UInterface</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-UObject</title>
+    <url>/UE/OfficialDocLearn/Coding/UObject/</url>
+    <content><![CDATA[<h1 id="UCLASS-宏"><a href="#UCLASS-宏" class="headerlink" title="UCLASS 宏"></a>UCLASS 宏</h1><img src="/UE/OfficialDocLearn/Coding/UObject/image.png" class="" title="alt text">
+<p>使用UCLASS宏 -&gt; 给UObject提供一个UCLASS的引用。<br>UCLASS中包含着定义对应类的属性函数。并维护一个CDO。</p>
+<p>使用对应的宏来让引擎识别对应的函数和属性。<br>UFUNCTION 与 UPROPERTY</p>
+<h1 id="UObject"><a href="#UObject" class="headerlink" title="UObject"></a>UObject</h1><h2 id="UObject-创建"><a href="#UObject-创建" class="headerlink" title="UObject 创建"></a>UObject 创建</h2><p>关于创建的部分，在这里详述:</p>
+<a href="/UE/OfficialDocLearn/Coding/UObjectCreation/" title="UE-UObjectCreation">UObjectCreation</a>
+<h2 id="UObject-Functionality"><a href="#UObject-Functionality" class="headerlink" title="UObject Functionality"></a>UObject Functionality</h2><img src="/UE/OfficialDocLearn/Coding/UObject/image-3.png" class="" title="alt text">
+<h3 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h3><img src="/UE/OfficialDocLearn/Coding/UObject/G1.png" class="" title="alt text">
+<p>这部分可以结合Level的源码来看</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Level.h</span><br><span class="line">/** Array of all actors in this level, </span><br><span class="line">used by FActorIteratorBase and derived classes */</span><br><span class="line">TArray&lt;TObjectPtr&lt;AActor&gt;&gt; Actors;</span><br><span class="line"></span><br><span class="line">/** Array of actors to be exposed to GC in this level. </span><br><span class="line">All other actors will be referenced through ULevelActorContainer */</span><br><span class="line">TArray&lt;TObjectPtr&lt;AActor&gt;&gt; ActorsForGC;</span><br><span class="line"></span><br><span class="line">UPROPERTY(Transient, DuplicateTransient, NonTransactional)</span><br><span class="line">TObjectPtr&lt;ULevelActorContainer&gt; ActorCluster;</span><br><span class="line"></span><br><span class="line">LevelActorContainer.h</span><br><span class="line">/**</span><br><span class="line"> * Root object for all level actors</span><br><span class="line"> */</span><br><span class="line">UCLASS(MinimalAPI, DefaultToInstanced)</span><br><span class="line">class ULevelActorContainer : public UObject</span><br><span class="line">&#123;</span><br><span class="line">  friend class ULevel;</span><br><span class="line"></span><br><span class="line">  GENERATED_BODY()</span><br><span class="line">public:</span><br><span class="line">  /** Array of actors in a level */</span><br><span class="line">  UPROPERTY(transient)</span><br><span class="line">  TArray&lt;TObjectPtr&lt;AActor&gt;&gt; Actors;</span><br><span class="line"></span><br><span class="line">  virtual void CreateCluster() override;</span><br><span class="line">  virtual void OnClusterMarkedAsPendingKill() override;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>算是对UE GC的结构有一个初步的了解。<br>关于RootSet可以看到UObjectBaseUtility的AddToRoot<br>非UObject的GC可以看到GCObject.h -&gt; FGCObject</p>
+<h4 id="增量垃圾回收"><a href="#增量垃圾回收" class="headerlink" title="增量垃圾回收"></a>增量垃圾回收</h4><p>见官方文档 <a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/incremental-garbage-collection-in-unreal-engine">Incremental Garbage Collection</a></p>
+<p>UE的垃圾回收基于标记<br>而对应的垃圾回收处理本身也是有开销的，可能会造成帧卡顿。<br>UObject对象池算是一个解决方法。</p>
+<p>基于自己的开发经验，可以复用，反复处理的对象常常都应当在逻辑侧做池化减少创建开销和GC开销。粒子特效、模型、调用频繁的临时对象等等……</p>
+<p>增量垃圾回收主要就是避免单帧卡顿的问题。可以认为将其逻辑开销分摊到多帧上去进行了。不过目前还是Experimental功能。</p>
+<h3 id="引用更新"><a href="#引用更新" class="headerlink" title="引用更新"></a>引用更新</h3><p>在GC后，相关指针的置空逻辑。见下面的Destroy。</p>
+<h3 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h3><h3 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h3><img src="/UE/OfficialDocLearn/Coding/UObject/S1.png" class="" title="alt text">
+<p>基于UPROPERTY的序列化。”Transient”或者是构造函数之后无变化的值无需进行序列化。<br>可能平时做游戏，在关卡中放置Actor，修改对应Instance属性，然后保存习惯了，并没有细想其是如何实现的。而UObject的序列化，就做到了仅需要UCLASS和UPROPERTY的宏声明，就默认处理了对应的序列化流程。<br>当然，也提供了对应的Serialize重写。</p>
+<blockquote>
+<p>Object.h<br>COREUOBJECT_API virtual void Serialize(FArchive&amp; Ar);<br>COREUOBJECT_API virtual void Serialize(FStructuredArchive::FRecord Record);</p>
+</blockquote>
+<h3 id="默认属性变化时-自动更新"><a href="#默认属性变化时-自动更新" class="headerlink" title="默认属性变化时 自动更新"></a>默认属性变化时 自动更新</h3><img src="/UE/OfficialDocLearn/Coding/UObject/P1.png" class="" title="alt text">
+<p>改变类的默认属性时，(CDO变化)，会将新值更新到对应实例化且属性值未改动的实体上。</p>
+<h3 id="属性初始化的自动化处理"><a href="#属性初始化的自动化处理" class="headerlink" title="属性初始化的自动化处理"></a>属性初始化的自动化处理</h3><p>  在调用构造函数之前，UObject所有属性自动归零，可以在构造函数中对对应的属性进行初始化。</p>
+<h3 id="编辑器整合"><a href="#编辑器整合" class="headerlink" title="编辑器整合"></a>编辑器整合</h3><h3 id="运行时可处理类型信息"><a href="#运行时可处理类型信息" class="headerlink" title="运行时可处理类型信息"></a>运行时可处理类型信息</h3><p>Run-Time Type Information and Casting<br>运行时动态类型转换<br>-&gt; 调用父类 Super::FunctionName()<br>-&gt; IsA()函数类判定 （见UObjectBaseUtility）<br>-&gt; Cast 基类指针转为子类对象指针 Cast&lt;ChildClass&gt;(BaseClassPtr)</p>
+<h3 id="网络复制"><a href="#网络复制" class="headerlink" title="网络复制"></a>网络复制</h3><p>UObject本身也做了网络复制的支持。<br>比如UPROPERT宏相关网络复制的设置，以及UFUNCTION对应的RPC</p>
+<h1 id="UHT-Unreal-Header-Tool"><a href="#UHT-Unreal-Header-Tool" class="headerlink" title="UHT Unreal Header Tool"></a>UHT Unreal Header Tool</h1><img src="/UE/OfficialDocLearn/Coding/UObject/image-4.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/UObject/image-5.png" class="" title="alt text">
+<p>模块API宏的部分可以看之前模块文章，做过具体叙述了。<br>UCLASS与USTRUCT需要加上GENERATED_BODY()宏</p>
+<h1 id="Update-Tick"><a href="#Update-Tick" class="headerlink" title="Update - Tick"></a>Update - Tick</h1><img src="/UE/OfficialDocLearn/Coding/UObject/image-6.png" class="" title="alt text">
+<p>UObject本来没有对应的Tick功能，一般是AActor才有。或者是UActorComponent<br>否则的话 需要继承FTickableGameObject。这部分可以看看Tickable.h</p>
+<h1 id="Destroy"><a href="#Destroy" class="headerlink" title="Destroy"></a>Destroy</h1><img src="/UE/OfficialDocLearn/Coding/UObject/image-7.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/UObject/image-8.png" class="" title="alt text">
+<p>标记回收的还是用MarkAsGarbage接口，这部分可以看到UObjectBaseUtility<br>也可以在UObjectBaseUtility中看到IsPendingKillEnabled接口。(5.4换为了IsGarbageEliminationEnabled接口)</p>
+<p>考虑使用弱引用，并且多用IsValid来判断UObject是否有效（在UObject），否则<br>可能会存在已经垃圾回收了但是仍然有指针引用的问题。</p>
+<p>当然，如果没有UPROPERTY宏的标记，就不会被引擎识别，也不会处理对应的GC，或者是自动置空.</p>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><p>在UObject这块，也可以看看大钊在知乎上发的InsideUE5专栏的UObject系列文章<br>当然,大钊的这系列的文章是基于UE4的较早版本编写的，在看和理解的时候，最好还是<br>结合最新的源码去理解并辨别。</p>
+<p>这里也做一些类的额外补充:</p>
+<p>UObjectBase(包含UClass) -&gt; UObjectBaseUtility -&gt; UObject</p>
+<p>UObject -&gt; UField -&gt; UStruct -&gt; UClass</p>
+<p>UObject -&gt; UInterface</p>
+<p>UObject -&gt; AActor</p>
+<p>实际上 后面单独有一个FField独立出来。<br>可以看到Field.h文件。<br>而类型FProperty则是继承自FField。可以看到UnrealType.h</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+        <tag>UObject</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-UObjectCreation</title>
+    <url>/UE/OfficialDocLearn/Coding/UObjectCreation/</url>
+    <content><![CDATA[<p>UObject的基础部分可以看到这里:</p>
+<a href="/UE/OfficialDocLearn/Coding/UObject/" title="UE-UObject">UObject</a>
+
+<h1 id="创建概述"><a href="#创建概述" class="headerlink" title="创建概述"></a>创建概述</h1><p>基础的类宏声明UCLASS，以及头文件”.generated.h”的引入，和GENERATE_BODY宏就不在这详述了。</p>
+<img src="/UE/OfficialDocLearn/Coding/UObjectCreation/image-1.png" class="" title="alt text">
+<p>UObject并不支持带有参数的构造函数。<br>所有C++侧UObject会在引擎StartUp时初始化。</p>
+<p>创建UObject: [考虑UE本身的内存管理和GC系统]</p>
+<ol>
+<li>运行时创建NewObject</li>
+<li>在构造函数中创建CreateDefaultSubobject 例如一个类中组件变量的<br>初始化流程</li>
+</ol>
+<p>初始化函数和逻辑处理 -&gt; 放在BeginPlay()去处理。</p>
+<img src="/UE/OfficialDocLearn/Coding/UObjectCreation/image-2.png" class="" title="alt text">
+
+<h1 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h1><img src="/UE/OfficialDocLearn/Coding/UObjectCreation/img1.png" class="" title="alt text">
+<p>在头文件中实现构造函数的，需要在UCLASS中加上CustomConstructor声明符。不过这个在UE5已经弃用了，应该不需要太关注。有需要的话，可以去看大钊的说明符文档。</p>
+<p>在上边提到的： UObject的构造函数应该不接入自定义参数。实际上UObject也有多个构造函数版本。默认不传参数，或者传入FObjectInitializer.实际上默认的构造函数其实也会处理FObjectInitializer相关的逻辑。这部分的实现可以看到UObjectGlobals.cpp</p>
+<p>由此就有两个常见的构造函数了:<br>UMyObject::UMyObject()<br>UMyObject::UMyObject(const FObjectInitializer&amp; ObjectInitializer): Super(ObjectInitializer)</p>
+<p>构造函数的作用:This constructor initializes the Class Default Object (CDO), which is the master copy on which future instances of the class are based.</p>
+<img src="/UE/OfficialDocLearn/Coding/UObjectCreation/img2.png" class="" title="alt text">
+
+<p>NewObject函数与CreateDefaultSubobject 这部分可以看到UObjectGlobals.h<br>SpawnActor的声明见到World.h，实现见到LevelActor.cpp。</p>
+<h2 id="FObjectInitializer"><a href="#FObjectInitializer" class="headerlink" title="FObjectInitializer"></a>FObjectInitializer</h2><p>那么不禁好奇，FObjectInitializer的作用是什么？<br>简言之，其负责类成员变量的初始化。</p>
+<p>这里有一篇文章可以结合源码看看<a href="https://zhuanlan.zhihu.com/p/422510443">UE4 FObjectInitializer 对象初始化器</a></p>
+<p>Archetype 原型<br>通过拷贝原型的方式进行实例化。<br>从UObjectGlobal.h的NewObject往下走。<br>所需要的处理:</p>
+<ol>
+<li>分配内存 见UObjectGlobals.cpp的StaticAllocateObject</li>
+<li>执行对应的构造 见UObjectGlobals.cpp中StaticConstructObject_Internal的(*InClass-&gt;ClassConstructor)(FObjectInitializaer(Result,Params))</li>
+</ol>
+<p>冷处理 CreateDefaultSubObject - 只有注册的组件才去处理。</p>
+<p>子类对象构造替换 - FObjectInitializer的 SetDefaultSubobjectClass。</p>
+<h1 id="构造数据与Helper-Constructor-Statics-and-Helpers"><a href="#构造数据与Helper-Constructor-Statics-and-Helpers" class="headerlink" title="构造数据与Helper Constructor Statics and Helpers"></a>构造数据与Helper Constructor Statics and Helpers</h1><img src="/UE/OfficialDocLearn/Coding/UObjectCreation/img3.png" class="" title="alt text">
+<p>关于ConstructorStatics可以在源码中找一些参考。主要是进行一些字符串的初始化。<br>不过引擎内部也主要是在编辑器环境去用。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ATriggerCapsule::ATriggerCapsule(...)</span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">#if WITH_EDITORONLY_DATA</span><br><span class="line">  if (UBillboardComponent* TriggerSpriteComponent = GetSpriteComponent())</span><br><span class="line">  &#123;</span><br><span class="line">    TriggerSpriteComponent-&gt;SetupAttachment(CapsuleCollisionComponent);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  if (GetSpriteComponent())</span><br><span class="line">  &#123;</span><br><span class="line">    // Structure to hold one-time initialization</span><br><span class="line">    struct FConstructorStatics</span><br><span class="line">    &#123;</span><br><span class="line">      ConstructorHelpers::FObjectFinderOptional&lt;UTexture2D&gt; TriggerTextureObject;</span><br><span class="line">      FName ID_Triggers;</span><br><span class="line">      FText NAME_Triggers;</span><br><span class="line">      FConstructorStatics()</span><br><span class="line">        : TriggerTextureObject(TEXT(&quot;/Engine/EditorResources/S_TriggerCapsule&quot;))</span><br><span class="line">        , ID_Triggers(TEXT(&quot;Triggers&quot;))</span><br><span class="line">        , NAME_Triggers(NSLOCTEXT(&quot;SpriteCategory&quot;, &quot;Triggers&quot;, &quot;Triggers&quot;))</span><br><span class="line">      &#123;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    static FConstructorStatics ConstructorStatics;</span><br><span class="line"></span><br><span class="line">    GetSpriteComponent()-&gt;Sprite = ConstructorStatics.TriggerTextureObject.Get();</span><br><span class="line">  &#125;</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而Helper部分可以看到ConstructorHelper.h<br>-&gt; 硬编码的资源引用<br>-&gt; 类引用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UGroomComponent::UGroomComponent(...)</span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">  static ConstructorHelpers::FObjectFinder&lt;UMaterialInterface&gt; Strands_DebugMaterialRef(TEXT(&quot;/HairStrands/Materials/HairDebugMaterial.HairDebugMaterial&quot;));</span><br><span class="line">  static ConstructorHelpers::FObjectFinder&lt;UMaterialInterface&gt; Strands_DefaultMaterialRef(TEXT(&quot;/HairStrands/Materials/HairDefaultMaterial.HairDefaultMaterial&quot;));</span><br><span class="line">  static ConstructorHelpers::FObjectFinder&lt;UMaterialInterface&gt; Cards_DefaultMaterialRef(TEXT(&quot;/HairStrands/Materials/HairCardsDefaultMaterial.HairCardsDefaultMaterial&quot;));</span><br><span class="line">  static ConstructorHelpers::FObjectFinder&lt;UMaterialInterface&gt; Meshes_DefaultMaterialRef(TEXT(&quot;/HairStrands/Materials/HairMeshesDefaultMaterial.HairMeshesDefaultMaterial&quot;));</span><br><span class="line"></span><br><span class="line">  Strands_DebugMaterial   = Strands_DebugMaterialRef.Object;</span><br><span class="line">  Strands_DefaultMaterial = Strands_DefaultMaterialRef.Object;</span><br><span class="line">  Cards_DefaultMaterial = Cards_DefaultMaterialRef.Object;</span><br><span class="line">  Meshes_DefaultMaterial = Meshes_DefaultMaterialRef.Object;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+        <tag>UObject</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE-Property</title>
+    <url>/UE/OfficialDocLearn/Coding/UProperty/</url>
+    <content><![CDATA[<h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><h2 id="属性宏"><a href="#属性宏" class="headerlink" title="属性宏"></a>属性宏</h2><p>UPROPERTY()<br>变量说明符和元数据相关的内容还是看到大钊的那篇文章。这里不多赘述了。<br><a href="https://zhuanlan.zhihu.com/p/717920216">UE5标识符详解 | 史上最全</a></p>
+<h2 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h2><p>int 8,16,32,64<br>uint 8,16,32,64<br>整形可以额外声明作为位掩码并在编辑器中显示。(meta &#x3D; (Bitmask))</p>
+<h2 id="浮点"><a href="#浮点" class="headerlink" title="浮点"></a>浮点</h2><p>float,double,long double</p>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>FString 与 FName 与 FText.</p>
+<h3 id="TEXT-宏"><a href="#TEXT-宏" class="headerlink" title="TEXT()宏"></a>TEXT()宏</h3><blockquote>
+<p>For most uses, Unreal relies on the TCHAR type for characters. The TEXT() macro is available to denote TCHAR literals.<br>MyDogPtr-&gt;DogName &#x3D; FName(TEXT(“Samson Aloysius”));<br>TEXT宏的返回类型为TCHAR数组。为和平台无关的字符类型。</p>
+</blockquote>
+<p>在进行日志输出时，时常需要用到TEXT宏:</p>
+<blockquote>
+<p>FString TestString &#x3D; TEXT(“A TestStr”);<br>UE_LOG(LogTemp,Warning,TEXT(“%s”),*TestString);</p>
+</blockquote>
+<h3 id="FString"><a href="#FString" class="headerlink" title="FString"></a>FString</h3><p>动态字符数组。<br>与FName和FText不同，FString可以与搜索、修改并且与其他字符串比较。<br>其保存自己的字符数组，开销比不可变字符串类更大。</p>
+<h3 id="FName"><a href="#FName" class="headerlink" title="FName"></a>FName</h3><p>虚幻引擎会在全局维护一个唯一的字符串表。<br>在进行 &#x3D;&#x3D; 比较时很高效，因为并不是真的进行字符串比较，而是Index比较。<br>全局字符串表中<strong>不可变</strong>且<strong>不区分大小写</strong>的字符串的引用，比FString更小更高效。其<strong>无法被操作</strong>。</p>
+<p>可以用于表示对象名称、标识符和其他常用于比较的字符串。</p>
+<p>FNames只能被转换为FStrings和FText，只能从FStrings进行转换。<br><strong>但转换需注意了，FName不区分大小写。</strong></p>
+<h3 id="FText"><a href="#FText" class="headerlink" title="FText"></a>FText</h3><p>用于处理本地化的更可靠的字符串。<br>Text Localization：将游戏中文本适配到不同语言和地区。<br>面向用户的文本应当使用FText(UI部分)。</p>
+<p>-&gt; 文本格式<br>-&gt; 依据数字、日期生成的文本<br>-&gt; 衍生文本(大小写)</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>简单需求的话，程序侧主要还是用FString与FName。需要注意FName的不区分大小写特性。<br>在UI方面用FText来展示文本内容。</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE - Level</title>
+    <url>/UE/OfficialDocLearn/Levels/Level/</url>
+    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Levels/Level/img.png" class="">
+
+<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>Level 或者亦可以称之为 Map </p>
+<ul>
+<li>资产文件.umap</li>
+</ul>
+<p>Levels &amp;&amp; World Partition<br>结合UWorld相关的概念进行理解</p>
+<p>World Settings (结合ULevel UWorld)</p>
+<p>设置和Level相关的各类信息。不过这里感觉还是要留意World的概念，以及SubLevels。<br>具体详细的还是看到官方文档。这里没必要做过多赘述。</p>
+<ul>
+<li><p>Precomputed Visibility<br>  -&gt; volumes reduce rendering thread time.<br>  -&gt; For smaller level, Hardware limitation  | 移动设备</p>
+</li>
+<li><p>GameMode</p>
+</li>
+<li><p>Lightmass 光源设置</p>
+</li>
+<li><p>World [相关还是可以看看官方文档]</p>
+<ul>
+<li>Level bounds</li>
+<li>navigation systems</li>
+<li>“World Depth”</li>
+</ul>
+</li>
+<li><p>Physics</p>
+<ul>
+<li>World Gravity 重力</li>
+</ul>
+</li>
+<li><p>Broadphase</p>
+<ul>
+<li>Feature of NVIDIA’s PhysX system</li>
+<li>这部分可以看看知乎文章<a href="https://zhuanlan.zhihu.com/p/113415779">https://zhuanlan.zhihu.com/p/113415779</a></li>
+<li>粗碰撞检测</li>
+</ul>
+</li>
+<li><p>HLODSystem</p>
+<ul>
+<li>Replace multiple Static Mesh Actors with single combined Satic Mesh<br>Actor at long view distances.</li>
+<li>优化Drawcalls</li>
+</ul>
+</li>
+<li><p>World Partition</p>
+<ul>
+<li>For Large world management. [Distance-based level streaming]</li>
+<li>和Sublevels还有关。</li>
+</ul>
+</li>
+<li><p>Navigation</p>
+</li>
+<li><p>VR</p>
+</li>
+<li><p>Rendering</p>
+<ul>
+<li>Distance field ambient occlusion “距离场环境光遮蔽”</li>
+<li>Dynamic indirect shadows</li>
+</ul>
+</li>
+<li><p>Audio</p>
+<ul>
+<li>Volume,Reverb,Fade time</li>
+</ul>
+</li>
+<li><p>Tick</p>
+<ul>
+<li>详细见 Actor ticking</li>
+</ul>
+</li>
+<li><p>AI</p>
+</li>
+<li><p>Cooking</p>
+<ul>
+<li>Affect how the content in Scenes will be included in built game.</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>Level</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE - LevelInstancing</title>
+    <url>/UE/OfficialDocLearn/Levels/LevelInstancing/</url>
+    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Levels/LevelInstancing/img.png" class="">
+
+<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>Level Instances </p>
+<pre><code>- 1. Level Instances -&gt; Collection of Actors, to create sublevel
+
+- 2. Packed Level Blueprints -&gt; 静态网格体组合[渲染优化] 
+</code></pre>
+<p>Creating Level Instances</p>
+<p>小结:<br> 两者其实都是将场景中的对象进行组合一起管理的一种方式。并且提供了复制的功能、<br>在改动时 可以同步对应的改动。<br>  Packed Level Blueprint 有着对应的蓝图对象可以用来操作</p>
+<p>默认情况下使用组合节点的Data Layer,<br>内部也可以自定义不同的Data Layer</p>
+<p>Level Steaming Modes:</p>
+<ol>
+<li><p>Embedded Mode - 相当于仅在编辑器时，存在对应的 Level Instances. 运行<br>时还是加载对应的Actor [这个也是推荐的模式 需要OFPA]</p>
+</li>
+<li><p>Level Streaming Mode - 作为一个整体。其所在的World Partition Cell被加载时，<br>整一个Level也会被加载[Level instances that do not use OFPA]</p>
+</li>
+</ol>
+<p>Summary:<br>比较在意的一点是，官方在这里用的概念是”Level”。在Level Instances中用的概念也<br>是”SubLevel”。实际上，在编辑器中选择Actors打包成Level Instance时,也确实会生成<br>一个Level，并需要保存。而Packed Level Blueprint会生成一个Level和一个Packed Level<br>Actor的蓝图类。</p>
+<p>在逻辑和应用上，我们应该是希望把某一些静态的对象作为一个整体来进行管理，或者是<br>复用。类似于预制体的概念。</p>
+<p>在使用WorldPartition并使用OAPF时可以考虑其进行场景对象的管理[但也需要注意改动一<br>个会影响到其他 可以认为是同一份数据],不影响运行时[Embedded Mode]。而Packed<br>Level Blueprints提到的渲染优化特性也可以一起利用上。</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>Level</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE - WorldPartition</title>
+    <url>/UE/OfficialDocLearn/Levels/WorldPartition/</url>
+    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Levels/WorldPartition/img.png" class="">
+
+<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>目录和话题：</p>
+<ul>
+<li>World Partition</li>
+<li>One File Per Actor</li>
+<li>Data Layers</li>
+</ul>
+<p>World Partition:<br>世界分区 结合之前Level 与 SubLevels的概念</p>
+<ul>
+<li>重点在于如何处理大世界 </li>
+<li>动态的加载和卸载对应的”子地图模块”以及上面的资源</li>
+<li>处理跨地图的寻路和Actor逻辑</li>
+<li>子模块的单独开发[资源独立性 开发效率]</li>
+</ul>
+<p>基于上述需求 - 新的解决方案： World Partition</p>
+<ul>
+<li><p>“Cells” 的概念</p>
+</li>
+<li><p>由WorldPartition来控制Cells的加载与卸载</p>
+</li>
+<li><p>基于流送源的距离 [Based on distance from a streaming source]</p>
+</li>
+<li><p>Single Persistent Level  单个Level</p>
+</li>
+<li><p>“Grid Cells” 单元格概念</p>
+</li>
+</ul>
+<p>Actors - 需要了解 One File Per Actor的概念</p>
+<ul>
+<li>在World Partition中设置其归属Grid</li>
+<li>在不属于Disabled Data Layer时 依据 Is Spatially Loaded 来控制是否动态加载</li>
+</ul>
+<p>One File Per Actor </p>
+<ul>
+<li>Extra File To Save Data For Instatnce Actor</li>
+<li>改变关卡内的Actor时 不需要改变Level</li>
+<li>使用ViewChangeList Window 来查看改动<br>[虚幻内部的管理工具 可了解 In-Editor Source Control]</li>
+</ul>
+<p>Steaming Sources 流送源 [Think of AOI]</p>
+<p>额外需要思考的是服务端与客户端不同情况的加载<br>从PlayerController 的角度来看 服务端为玩家个数 而客户端就为单个了。</p>
+<ul>
+<li>PlayerController 子项设置里面的enable Streaming Source</li>
+</ul>
+<p>World Partition Steaming Source Component<br>这里做一些简要例举 详细的可以看官方Doc</p>
+<p>Cell Size - 256*256*256的正方体<br>Loading Range  - 768(Meter) around a steaming source</p>
+<p>Editor加载逻辑 - 主要是编辑器下相关操作和内容 详细见官方Doc</p>
+<p>HLOD -</p>
+<ul>
+<li>不同的Cells 有着自己的HLOD设定 </li>
+<li>Build -&gt; Build HLODs 依据设定生成对应的数据</li>
+</ul>
+<p>Blueprint -<br>  “世界分区”世界[World Partition world]可以用Blueprint与Level Blueprint<br>但更推荐用Blueprint。</p>
+<ul>
+<li>“Any Actors referenced in Level Blueprint will be marked as Always Loaded”<br>这样就丢失了动态加载的特性了</li>
+</ul>
+<p>World Partition - Data Layers<br>[旧版本的 Layers System]</p>
+<p>Organize Actors 管理对象 [Both runtime and in the Editor]</p>
+<ul>
+<li>两个概念： Data Layer Assets &amp; Data Layer Instance</li>
+<li>动态加载&#x2F;事件触发</li>
+<li>区分元素 Gameplay元素 &amp; 环境元素[美术]</li>
+</ul>
+<p>Data Layer Assets </p>
+<ul>
+<li>独立于”World”的概念 </li>
+<li>Editor 与 Runtime 两种类别。前者用于帮助组织资产，后者可以用于游戏性功能</li>
+</ul>
+<p>具体的实例 - Data Layer Instance [World-Specific]</p>
+<p>Data Layers Outliner 主要也是管理 Data Layer Instance</p>
+<p>Using Data Layers:</p>
+<pre><code>- Start by creating Data Layers Asset
+
+- Create Data Layer Instance [默认是空白的]
+
+- Assign DataLayerAsset to Instance[给Instance指定Asset]
+</code></pre>
+<p>Add Actors to Data Layer Instance</p>
+<p>Performance - 合理组织<br>避免一次性加载过多。</p>
+<p>相关函数:<br>Set Data Layer Instance Runtime State<br>    - Loaded 加载不可见<br>    - Activated 加载并可见</p>
+<p>Level Instances &amp; Packed Level Blueprints</p>
+<ul>
+<li>默认情况下 使用的对应的Data Layer。</li>
+<li>可以内部设置不同的Data Layer, 便于依据情况动态启用</li>
+</ul>
+<p>总之 Actors与DataLayer的耦合不高，对DataLayer的操作不会影响到Actor<br>最多是处理 One File Per Actor文件</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>Level</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE - PhyscisCollision</title>
+    <url>/UE/OfficialDocLearn/Physcis/PhyscisCollision/</url>
+    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Physcis/PhyscisCollision/img.png" class="">
+
+<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>概述 : Collision &amp; Trace</p>
+<ul>
+<li><p>Object Type</p>
+</li>
+<li><p>Trace Response Type</p>
+</li>
+<li><p>ObjectTypes 互相之前应当一致来满足预期效果</p>
+</li>
+<li><p>Events:</p>
+<ul>
+<li>Collision Events</li>
+<li>Overlap Events</li>
+</ul>
+</li>
+</ul>
+<p>在要处理碰撞事件的对象上才启用 Simulation Generates Hit Events.<br>处理事件时 进行Filter 筛选出目标事件</p>
+<p>对于Overlap 和 Ignore：<br>如果Overlap不启用对应的事件(Generate Overlap Events), 则其和Ignore其实是一样的。</p>
+<p>重叠事件 ReceiveBeginOverlap 与 ReceiveEndOverlap</p>
+<ul>
+<li>需要重叠的两个实体都启用事件</li>
+<li>在都启用Generate Overlap Events 时，可以一个Overlap 一个 Block。<br>事件会正常触发</li>
+</ul>
+<p>小结： 简单碰撞和复杂碰撞 Simple &amp; Complex</p>
+<ul>
+<li>性能和不同用途</li>
+<li>注意在Use Complex Collision As Simple 时， 不能进行物理模拟，仅可用于静态碰撞</li>
+</ul>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>Physcis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE - PhyscisNetworkReplication</title>
+    <url>/UE/OfficialDocLearn/Physcis/PhyscisNetwork/</url>
+    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Physcis/PhyscisNetwork/img.png" class="">
+
+<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>综述：<br>    主要的问题：<br>        - 物体速度和网络延迟<br>        - 模拟碰撞</p>
+<p>默认的物理复制<br>复制前提条件[Condition]:</p>
+<ul>
+<li>移动复制 Replicate movement</li>
+<li>根组件启用物理模拟 Simulate Physics</li>
+</ul>
+<p>客户端使用服务器的位置进行矫正和预测，[抛弃本地的模拟]</p>
+<ul>
+<li>服务端传输:半个RTT</li>
+<li>客户端预测:半个RTT</li>
+</ul>
+<p>影响因素：<br>    - 客户端当前的位置ClientPos 以及服务端的预测位置 ServerPredictPos (两者计算出一个Offset)<br>    - 服务端物体的速度Velocity</p>
+<p>矫正速度(简单记为Vc) Vc &#x3D; Offset&#x2F; DesiredCorrectionTime</p>
+<p>V &#x3D; Vc + Velocity(Server)  -&gt; 矫正时间内 可以移动到服务端的预测位置。</p>
+<p>[这里很重要的一点是使用服务端的当前速度]</p>
+<p>预测性插值 Predictive Interpolation</p>
+<ul>
+<li>服务器授权Actor [Server-Authoritative Actors]</li>
+</ul>
+<p>也是修改Client的Velocity来匹配Server的情况。</p>
+<ul>
+<li>会考虑Client本地的Velocity</li>
+<li>考虑RTT 以及数据同步频率 [Time Interval When The Client Receives Data From Server]</li>
+<li>客户端可以先力效果来预测模拟表现</li>
+</ul>
+<p>重新模拟Resimulation</p>
+<p>适用于服务器授权的Pawns与Actors</p>
+<ul>
+<li>主要用于 Handle interactions between Actors running the two different replication modes.</li>
+<li>Pawns movement 由玩家Inputs -&gt; Physics Forces 来驱动</li>
+<li>开销较高</li>
+</ul>
+<p>[客户端纯前向预测] </p>
+<ul>
+<li>Client比Server状态相比 提前半个RTT</li>
+<li>和收到服务端确认相比 提前一个RTT</li>
+</ul>
+<p>[History 缓存和回滚]</p>
+<ul>
+<li>由以上条件，至少需要缓存一个RTT时间内的物理tick状态</li>
+<li>收到服务端结果后，比较并确定是否需要进行重模拟</li>
+</ul>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>Physcis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE - Physcis总览</title>
+    <url>/UE/OfficialDocLearn/Physcis/PhyscisTotal/</url>
+    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Physcis/PhyscisTotal/img.png" class="">
+
+<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>小结：<br>Destruction - 破坏系统<br>可以指定具体的部分去展示<br>同时缓存提供了重播功能，对性能做了优化<br>可以和物理场结合应用。自己也有BreakEvent、CollisionEvent,可以和粒子系统结合在一起。<br>小结 Netwrok Replication<br>主要处理在多人游戏中的物理复制。<br>目标是服务端、客户端的物理模拟效果尽量一致 且流畅<br>共三种模式</p>
+<ol>
+<li>Default: [在复制移动的Actor上生效] - 使用RootComp来模拟物理</li>
+<li>Predictive Interpolation: [Server-Authoritative Actors] - 改变客户端速度Velocity来匹配服务端的速度，<br>从而模拟(预测性插值)</li>
+<li>Resimulation:[Server-Authoritative Pawns and Actors] 允许客户端预测Client Prediction.<br>并且在误差较大时 触发重模拟Resimulation<br>小结 - Debug Tools<br>可视化调试工具<br>Runtime下运行录制并进行Replay<br>刚体运动学<br>子模块部分：<br>Collision<br>Trace with Raycast<br>Physics Constraints<br>Physics Components<br>刚体动画节点和物理动画<br>角色动画中加入刚体部位的模拟<br>Rigid bodies -&gt; Skeletal Mesh<br>小结 布料模拟 Cloth<br>可以在蓝图中调整模拟参数来实现同个布料在不同环境有着不同的表现<br>Debug Tools<br>5.3提供Chaos Cloth Panel Node  新的布料模拟工作流程<br>布娃娃系统<br>载具Vehicle<br>车轮、机翼[飞行载具]等。<br>上升下降的力、转向、摩擦<br>以及相应的物理碰撞<br>小结 物理场 Field<br>指定空间进行模拟<br>和其他系统进行交互 (对物理场进行采样Sample)<br>小结 流体 Fluid<br>毛发物理<br>小结 柔性物理(形变)<br>Static and Skeletal Meshes.<br>肌肉<br>离线处理优化<br>小结 数据流系统 Dataflow Graph System<br>复用性 + 可视化节点工作流程</li>
+</ol>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>Physcis</tag>
       </tags>
   </entry>
   <entry>
@@ -1295,35 +2252,6 @@
       </tags>
   </entry>
   <entry>
-    <title>UE-ActorLifeTime</title>
-    <url>/UE/OfficialDocLearn/Coding/ActorLifeTime/</url>
-    <content><![CDATA[<h1 id="ActorLifeTime"><a href="#ActorLifeTime" class="headerlink" title="ActorLifeTime"></a>ActorLifeTime</h1><p>官方有一张LifeTime的流程图<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-actor-lifecycle">官方文档</a></p>
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/actorlifecycle1.png" class="" title="alt text">
-
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image.png" class="" title="alt text">
-<p>-&gt; AISystemBase的纯虚函数 InitializeActorsForPlay<br>实际上这里也是由World调用下来的</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UEngine::LoadMap</span><br><span class="line">  UWorld::InitializeActorsForPlay</span><br><span class="line">    Level-&gt;RouteActorInitialize</span><br><span class="line">      对Level的Actors(Array of all actors in this level.)进行处理</span><br><span class="line">    AISystem-&gt;InitializeActorsForPlay 默认情况下这里没有任何处理</span><br><span class="line"></span><br><span class="line">  UWorld::AddToWorld 添加Level到World</span><br><span class="line">      Level-&gt;RouteActorInitialize</span><br></pre></td></tr></table></figure>
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-1.png" class="" title="alt text">
-<p>在Actor内部存在一个bActorInitialized标志位 可以避免重复初始化。 Level那边也会判定这个标志位。<br>该标志位，在Actor的PostInitializeComponents会进行设置。</p>
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-2.png" class="" title="alt text">
-<p>Actor的创建,看到LevelActor.cpp中的SpawnActor,还是要结合UObject的来。C++层面是进行拷贝复制。其初始化更早。而蓝图方面的初始化就延后到OnConstruction了。</p>
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-3.png" class="" title="alt text">
-<p>Actor生成，蓝图构造代码执行之前。</p>
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-4.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-5.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-6.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-7.png" class="" title="alt text">
-<p>垃圾回收这部分还是可以看到UObject。</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>UE5.5-Lyra-8-Shooting</title>
     <url>/UE/Project/Lyra/UE55Lyra8/</url>
     <content><![CDATA[<p>主要分析Lyra项目射击的完整流程。</p>
@@ -1394,880 +2322,6 @@
         <tag>UE</tag>
         <tag>GAS</tag>
         <tag>Lyra</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-Coding Standard</title>
-    <url>/UE/OfficialDocLearn/Coding/CodingStandard/</url>
-    <content><![CDATA[<h1 id="Coding-Standard-代码规范"><a href="#Coding-Standard-代码规范" class="headerlink" title="Coding Standard 代码规范"></a>Coding Standard 代码规范</h1><p>不同的项目组一般会有自己的代码规范。<br>比如驼峰语法，小写开头的变量命名、大写函数等。<br>在使用虚幻引擎的时候，还是有必要了解官方的代码规范，特别时各个类的命名。<br>遵守一定的规则，让后续的代码维护和阅读起来更简单。</p>
-<p>本篇主要列出一些相对需要注意的点。<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/epic-cplusplus-coding-standard-for-unreal-engine#classorganization">官方文档</a></p>
-<h2 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h2><p>大写开头<br>布尔变量必须以b为前缀</p>
-<h2 id="类名"><a href="#类名" class="headerlink" title="类名"></a>类名</h2><p>类名需要加额外的大写字符。<br>以下是一些默认的规则:</p>
-<h3 id="模板类-T"><a href="#模板类-T" class="headerlink" title="模板类 - T"></a>模板类 - T</h3><h3 id="继承自UObject-U"><a href="#继承自UObject-U" class="headerlink" title="继承自UObject - U"></a>继承自UObject - U</h3><h3 id="继承自AActor-A"><a href="#继承自AActor-A" class="headerlink" title="继承自AActor  - A"></a>继承自AActor  - A</h3><h3 id="继承自SWidget-S"><a href="#继承自SWidget-S" class="headerlink" title="继承自SWidget - S"></a>继承自SWidget - S</h3><p>这部分可以进一步去了解虚幻引擎的Slate UI Framework</p>
-<h3 id="抽象接口Interface-I"><a href="#抽象接口Interface-I" class="headerlink" title="抽象接口Interface - I"></a>抽象接口Interface - I</h3><h3 id="枚举Enum-E-enum-class-xxx"><a href="#枚举Enum-E-enum-class-xxx" class="headerlink" title="枚举Enum - E   (enum class xxx{})"></a>枚举Enum - E   (enum class xxx{})</h3><h3 id="其他多数类均以F为前缀，部分子系统以其他字符为前缀"><a href="#其他多数类均以F为前缀，部分子系统以其他字符为前缀" class="headerlink" title="其他多数类均以F为前缀，部分子系统以其他字符为前缀"></a>其他多数类均以F为前缀，部分子系统以其他字符为前缀</h3><ul>
-<li>如FField</li>
-</ul>
-<h3 id="宏的名称应该全部大写，用下划线隔开，并以-UE-作为前缀"><a href="#宏的名称应该全部大写，用下划线隔开，并以-UE-作为前缀" class="headerlink" title="宏的名称应该全部大写，用下划线隔开，并以 UE_ 作为前缀"></a>宏的名称应该全部大写，用下划线隔开，并以 UE_ 作为前缀</h3><p>使用类型的时候最好加上对应的大小(特别是int与unit对应占用的bytes数)</p>
-<h2 id="常量正确性"><a href="#常量正确性" class="headerlink" title="常量正确性"></a>常量正确性</h2><p>编写函数的时候，可以考虑使用常量const声明。</p>
-<ul>
-<li>Pass function arguments by const pointer or reference if those arguments are not intended to be modified by the function.</li>
-<li>Flag methods as const if they do not modify the object.</li>
-<li>Use const iteration over containers if the loop isn’t intended to modify the container.</li>
-</ul>
-<h2 id="使用nullptr-而不是-NULL宏"><a href="#使用nullptr-而不是-NULL宏" class="headerlink" title="使用nullptr 而不是 NULL宏"></a>使用nullptr 而不是 NULL宏</h2><h2 id="auto"><a href="#auto" class="headerlink" title="auto"></a>auto</h2><p>一般情况下不要用auto。以下为几个例外</p>
-<ul>
-<li>Bind a lambda to a variable.</li>
-<li>For iterator variables, but only where the iterator’s type is verbose and would impair readability.</li>
-<li>In template code, where the type of an expression cannot easily be discerned. This is an advanced case.</li>
-</ul>
-<h2 id="Range-Based-For"><a href="#Range-Based-For" class="headerlink" title="Range-Based For"></a>Range-Based For</h2><p>使用TPair来进行TMap的遍历，取代CreateIterator的方式</p>
-<h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><p>Lambdas and Anonymous Functions<br>-&gt; 长度限制 最好不要超过2行<br>-&gt; 捕获时不要使用自动捕获([&amp;]与[&#x3D;])<br>-&gt; 延迟执行的Lambdas表达式不要使用引用捕获或者指针的值捕获<br>-&gt; 注意值捕获的性能问题<br>-&gt; CreateWeakLambda &#x2F; CreateSPLambda 用于延迟执行。捕获对象使用TWeakObjectPtr与TWeakPtr<br>-&gt; Accidentally captured UObject pointers are invisible to the garbage collector.</p>
-<h2 id="枚举类声明"><a href="#枚举类声明" class="headerlink" title="枚举类声明"></a>枚举类声明</h2><p>使用 Strongly-Typed Enums<br>enum class EnumClassName<br>{<br>}<br>Enums exposed to Blueprints must continue to be based on uint8.<br>-&gt; enum class EnumClassName:uint8</p>
-<h2 id="移动操作"><a href="#移动操作" class="headerlink" title="移动操作"></a>移动操作</h2><p>Move Semantices:<br>MoveTemp操作</p>
-<h2 id="类中默认的成员变量初始化"><a href="#类中默认的成员变量初始化" class="headerlink" title="类中默认的成员变量初始化"></a>类中默认的成员变量初始化</h2><p>这里主要关注直接使用默认成员初始化，而不是在构造函数中赋值的问题。</p>
-<p>Default Member Initializers 相比较构造函数处理,存在一些downsides:</p>
-<p>Any change to the defaults requires a rebuild of all dependent files.</p>
-<p>Headers can’t change in patch releases of the engine【引擎补丁无法修改头文件】, so this style can limit the kinds of fixes that are possible.</p>
-<p>Some things can’t be initialized in this way, such as base classes, UObject subobjects, pointers to forward-declared types, values deduced from constructor arguments, and members initialized over multiple steps. </p>
-<p>Putting some initializers in the header and the rest in constructors in the .cpp file, can reduce readability and maintainability.</p>
-<p>Use your best judgment when deciding whether to use default member initializers. As a rule of thumb, default member initializers make more sense with in-game code than engine code. Consider using config files for default values.</p>
-<h2 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h2><p>Namespaces<br>-&gt; Not supported by UnrealHeaderTool</p>
-<h2 id="API设计："><a href="#API设计：" class="headerlink" title="API设计："></a>API设计：</h2><h3 id="bool参数优化"><a href="#bool参数优化" class="headerlink" title="bool参数优化"></a>bool参数优化</h3><p>函数上 对于多bool参数函数的优化 - 使用枚举。</p>
-<p>函数参数过多时，声明并使用专用的结构体。</p>
-<p>避免同时重载bool和FString的参数。若重载，在使用TEXT(“String”)时，可能会调用到bool版本。</p>
-<h2 id="接口类注意事项"><a href="#接口类注意事项" class="headerlink" title="接口类注意事项"></a>接口类注意事项</h2><p>接口类都应该为抽象类，不包含成员变量。<br>这里还有一点需要注意：</p>
-<ol>
-<li>允许包含非纯虚函数的普通虚函数。</li>
-<li>允许包含非虚函数或者是静态函数，但必须内联实现。”Implemented inline”</li>
-</ol>
-<ul>
-<li>在头文件中直接加上函数的实现。在头文件中实现方法即隐式内联，无需显示添加inline关键字。<br>声明和重写方法时加上virtual与override关键字。(子类重写父类虚函数的时候两个都加上)</li>
-</ul>
-<h2 id="UObject参数"><a href="#UObject参数" class="headerlink" title="UObject参数"></a>UObject参数</h2><p>函数在使用UObjects作为参数传递时 应当使用指针进行参数传递而非引用</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-Delegates</title>
-    <url>/UE/OfficialDocLearn/Coding/Delegates/</url>
-    <content><![CDATA[<h1 id="Delegates"><a href="#Delegates" class="headerlink" title="Delegates"></a>Delegates</h1><p>参考源码文件:<br>DelegateCombinations.h</p>
-<img src="/UE/OfficialDocLearn/Coding/Delegates/image.png" class="" title="alt text">
-<p>UE的”事件系统”。<br>其实很多项目，在脚本代码层，如lua或ts，会有着自己的事件管理器，用于定义事件，并注册对应的函数。事件触发时，已注册的函数都会被调用。当然，需要注意处理相应的回收逻辑。<br>虚幻的委托在逻辑上感觉是起到同样的功能。</p>
-<img src="/UE/OfficialDocLearn/Coding/Delegates/image-1.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Delegates/image-2.png" class="" title="alt text">
-
-<h2 id="Binding-Delegate"><a href="#Binding-Delegate" class="headerlink" title="Binding Delegate"></a>Binding Delegate</h2><img src="/UE/OfficialDocLearn/Coding/Delegates/image-3.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Delegates/image-4.png" class="" title="alt text">
-
-<h2 id="负载变量（Payload-Variables）"><a href="#负载变量（Payload-Variables）" class="headerlink" title="负载变量（Payload Variables）"></a>负载变量（Payload Variables）</h2><img src="/UE/OfficialDocLearn/Coding/Delegates/image-5.png" class="" title="alt text">
-<p>定义：负载变量是委托绑定（Bind）时附加的额外数据，这些数据会在委托执行时自动传递，无需在调用时显式传入。它们通常用于传递上下文信息（如对象实例、状态变量等）。<br>这部分可以看到DS。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 绑定一个成员函数，并附加一个负载变量（额外参数）</span><br><span class="line">MyDelegate.BindUObject(MyObject, &amp;UMyClass::MyFunction, 100); // 100 是负载变量</span><br><span class="line"></span><br><span class="line">// 调用时只需传递函数参数，负载变量会自动填充</span><br><span class="line">MyDelegate.Broadcast(10, 20);</span><br><span class="line"></span><br><span class="line">这里，MyFunction 的实际签名可能是：</span><br><span class="line">void UMyClass::MyFunction(int32 Param1, int32 Param2, int32 Payload);</span><br></pre></td></tr></table></figure>
-
-<p>当然，单播和多播是不一样的。对于RetVal有返回值的单播委托，可以在判断IsBound后调用执行，并获取返回值，进行逻辑处理。</p>
-<h2 id="Dynamic-Delegate"><a href="#Dynamic-Delegate" class="headerlink" title="Dynamic Delegate"></a>Dynamic Delegate</h2><img src="/UE/OfficialDocLearn/Coding/Delegates/image-6.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Delegates/image-7.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Delegates/image-8.png" class="" title="alt text">
-
-<h2 id="Multi-cast-Delegates"><a href="#Multi-cast-Delegates" class="headerlink" title="Multi-cast Delegates"></a>Multi-cast Delegates</h2><p>多播委托<br>Delegates that can be bound to multiple functions and execute them all at once.</p>
-<img src="/UE/OfficialDocLearn/Coding/Delegates/image-9.png" class="" title="alt text">
-<p>执行用Broadcast。<br>RemoveAll会传入一个参数用来移除，相关可以看到MulticastDelegateBase.h<br>此外，相关的绑定信息也可以看到Delegate.h</p>
-<h2 id="UDELEGATE"><a href="#UDELEGATE" class="headerlink" title="UDELEGATE"></a>UDELEGATE</h2><p>关于委托的宏与说明符:<br>Delegate functions support the same Specifiers as UFunctions, but use the UDELEGATE macro instead of UFUNCTION. For example, the following code adds the BlueprintAuthorityOnly specifier to the FInstigatedAnyDamageSignature delegate:<br>UDELEGATE(BlueprintAuthorityOnly)<br>DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FInstigatedAnyDamageSignature, float, Damage, const UDamageType*, DamageType, AActor*, DamagedActor, AActor*, DamageCauser);<br>默认情况下不用加上UDELEGATE的宏。<br>即便使用UDELEGATE宏，声明为BlueprintCallable，其也无法从蓝图进行调用。需要理解委托的概念。</p>
-<p>动态委托才能像UFUNCTION一样使用UDELEGATE。动态委托支持序列化和元信息也是很重要的一点。</p>
-<h2 id="蓝图应用"><a href="#蓝图应用" class="headerlink" title="蓝图应用"></a>蓝图应用</h2><p>对于C++声明的Dynamic Delegates，要在蓝图中绑定函数到委托，需要通过EventDispatchers来创建Event并进行设置。</p>
-<p>对于单播委托，将对应的委托变量，使用UPROPERTY(BlueprintReadWrite)暴露给蓝图后，可以通过蓝图进行对委托变量进行设置(绑定)。</p>
-<p>对于多播委托，将对应的委托变量，使用UPROPERTY(BlueprintAssignable)暴露给蓝图后，可以通过蓝图进行对对应的委托添加侦听事件。</p>
-<p>但是，无论是单播还是多播，C++定义的委托的触发(Execute或者是Broadcast)都需要通过C++来进行。</p>
-<p>这里也可以补充一下EventDispatcher。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/event-dispatchers-in-unreal-engine">官方文档</a><br>其本质上就是蓝图系统中对动态多播委托的封装和应用。通过蓝图的定义的EventDispatchers和C++不同，可以直接在蓝图进行Call调用。(Call方法)。</p>
-<h2 id="其他学习资料"><a href="#其他学习资料" class="headerlink" title="其他学习资料"></a>其他学习资料</h2><p>这里也有一篇深入学习原理的参考文章，可以结合源码阅读:<a href="https://zhuanlan.zhihu.com/p/460092901">一文理解透UE委托Delegate</a></p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-GameplayTag</title>
-    <url>/UE/OfficialDocLearn/Coding/GameplayTag/</url>
-    <content><![CDATA[<h1 id="GameplayTag"><a href="#GameplayTag" class="headerlink" title="GameplayTag"></a>GameplayTag</h1><p>最初接触GameplayTag主要还是在GAS,当然GameplayTag是一个更广的内容。</p>
-<img src="/UE/OfficialDocLearn/Coding/GameplayTag/image.png" class="" title="alt text">
-<p>其功能正如”Tag”所代表。<br>相关源码，可以看到GameplayTagContainer.h中。</p>
-<p>相关比较和匹配函数:<br>常用运算符:&#x3D;&#x3D;与!&#x3D;<br>其他：MatchesTag MatchesTagExact。<br>而在属性这块，FGameplayTag内部的TagName是一个FName。<br>关于FName，可以看到UE-Property文章中字符串的相关内容或者官方文档。</p>
-<h2 id="GameplayTag的设置"><a href="#GameplayTag的设置" class="headerlink" title="GameplayTag的设置"></a>GameplayTag的设置</h2><h3 id="项目设置"><a href="#项目设置" class="headerlink" title="项目设置"></a>项目设置</h3><p>Project -&gt; ProjectSettings -&gt; GameplayTag<br>添加方式</p>
-<ul>
-<li>Directly adding or removing them in Project Settings<ul>
-<li>启用Import Tags From Config,从.ini文件导入:including Config&#x2F;DefaultGameplayTags.ini and any in Config&#x2F;Tags</li>
-</ul>
-</li>
-<li>Importing them from Data Table assets</li>
-<li>Defining them with C++</li>
-</ul>
-<h3 id="数据文件设置"><a href="#数据文件设置" class="headerlink" title="数据文件设置"></a>数据文件设置</h3><img src="/UE/OfficialDocLearn/Coding/GameplayTag/image-1.png" class="" title="alt text">
-
-<h3 id="代码设置"><a href="#代码设置" class="headerlink" title="代码设置"></a>代码设置</h3><img src="/UE/OfficialDocLearn/Coding/GameplayTag/image-2.png" class="" title="alt text">
-<p>一个参考样例: LyraHealthSet.h与配套的cpp</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_Damage);</span><br><span class="line">UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_DamageImmunity);</span><br><span class="line">UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_DamageSelfDestruct);</span><br><span class="line">UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_FellOutOfWorld);</span><br><span class="line">UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Lyra_Damage_Message);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_Damage, &quot;Gameplay.Damage&quot;);</span><br><span class="line">UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_DamageImmunity, &quot;Gameplay.DamageImmunity&quot;);</span><br><span class="line">UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_DamageSelfDestruct, &quot;Gameplay.Damage.SelfDestruct&quot;);</span><br><span class="line">UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_FellOutOfWorld, &quot;Gameplay.Damage.FellOutOfWorld&quot;);</span><br><span class="line">UE_DEFINE_GAMEPLAY_TAG(TAG_Lyra_Damage_Message, &quot;Lyra.Damage.Message&quot;);</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">//应用</span><br><span class="line">bool ULyraHealthSet::PreGameplayEffectExecute(FGameplayEffectModCallbackData &amp;Data)</span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">  if (Data.Target.HasMatchingGameplayTag(TAG_Gameplay_DamageImmunity) &amp;&amp; !bIsDamageFromSelfDestruct)</span><br><span class="line">  &#123;</span><br><span class="line">    // Do not take away any health.</span><br><span class="line">    Data.EvaluatedData.Magnitude = 0.0f;</span><br><span class="line">    return false;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="GameplayTag应用"><a href="#GameplayTag应用" class="headerlink" title="GameplayTag应用"></a>GameplayTag应用</h2><img src="/UE/OfficialDocLearn/Coding/GameplayTag/image-3.png" class="" title="alt text">
-<p>FGameplayTagContainer：<br>关键变量:<br>TArray<FGameplayTag> GameplayTags<br>TArray<FGameplayTag> ParentTags<br>在调用AddTag时,除了操作GameplayTags数组外，还会用GameplayTagsManager的ExtractParentTags对ParentTags处理。而下面的比较大部分也会用到ParentTags。<br>函数 HasTag、HasAny、HasAll<br>相关的描述在源码写的比较清楚。<br>当然，这里由引出了一个新的类: FGameplayTagNode。</p>
-<img src="/UE/OfficialDocLearn/Coding/GameplayTag/image-4.png" class="" title="alt text">
-<p>这部分也可以看到源码。官方在源码中有比较好的示例。</p>
-<h2 id="拓展话题-FGameplayTagNode与Mgr管理的节点树"><a href="#拓展话题-FGameplayTagNode与Mgr管理的节点树" class="headerlink" title="拓展话题 FGameplayTagNode与Mgr管理的节点树"></a>拓展话题 FGameplayTagNode与Mgr管理的节点树</h2><p>本身Manager也维护一颗GameplayTagNode节点树。<br>在Mgr的ConstructGameplayTagTree中会进行节点树的构建。<br>Node中，会维护自身和其所有父节点 - CompleteTagWithParents，有需要可以再看。<br>总之，通过Mgr和节点树，对于单个Tag的判断开销就很低了。算是一种空间换时间。不过，考虑到FName本身不是每个字符串存一份，所以内存开销和时间开销都很好。</p>
-<p>这一块其实和红点树是有些类似的。</p>
-<h2 id="限制编辑与接口"><a href="#限制编辑与接口" class="headerlink" title="限制编辑与接口"></a>限制编辑与接口</h2><h3 id="GameplayTags-编辑限制"><a href="#GameplayTags-编辑限制" class="headerlink" title="GameplayTags 编辑限制"></a>GameplayTags 编辑限制</h3><img src="/UE/OfficialDocLearn/Coding/GameplayTag/image-5.png" class="" title="alt text">
-
-<h3 id="使用Interface统一获取接口"><a href="#使用Interface统一获取接口" class="headerlink" title="使用Interface统一获取接口"></a>使用Interface统一获取接口</h3><img src="/UE/OfficialDocLearn/Coding/GameplayTag/image-6.png" class="" title="alt text">]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-Log</title>
-    <url>/UE/OfficialDocLearn/Coding/Log/</url>
-    <content><![CDATA[<h1 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h1><p>日志保存位置:<br>Saved&#x2F;Logs</p>
-<h2 id="常用日志宏-UE-LOG"><a href="#常用日志宏-UE-LOG" class="headerlink" title="常用日志宏 UE_LOG"></a>常用日志宏 UE_LOG</h2><p>UE_LOG(LogTemp, Warning, TEXT(“Hello World”));</p>
-<img src="/UE/OfficialDocLearn/Coding/Log/image.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Log/image-1.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Log/image-2.png" class="" title="alt text">
-
-<h3 id="宏处理"><a href="#宏处理" class="headerlink" title="宏处理"></a>宏处理</h3><p>在UE_LOG内可以使用格式化</p>
-<ul>
-<li>字符串:”%s”</li>
-<li>整数:”%d”</li>
-<li>浮点数:”%f”</li>
-<li>向量Vector的话，调用Vector的ToString进行转换再用字符串。</li>
-</ul>
-<p>Vector示例：*TestVec.ToString()</p>
-<blockquote>
-<p>int32 TestInt &#x3D; 100;<br>float TestFloat &#x3D; 6.66;<br>UE_LOG(LogTemp,Warning,TEXT(“Here is a mix text. %s | %d | %f”),TEXT(“str”),TestInt,TestFloat);<br>在OutputLog的输出：LogTemp: Warning: Here is a mix text. str | 100 | 6.660000</p>
-</blockquote>
-<h2 id="Category"><a href="#Category" class="headerlink" title="Category"></a>Category</h2><img src="/UE/OfficialDocLearn/Coding/Log/image-3.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Log/image-4.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Log/image-5.png" class="" title="alt text">
-<p>在源码中可以看到很多示例。比如CoreGlobals.h与CoreGlobals.cpp</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Temporary log category, generally you should not check things in that use this</span><br><span class="line">CORE_API DECLARE_LOG_CATEGORY_EXTERN(LogTemp, Log, All);</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">DEFINE_LOG_CATEGORY(LogTemp);</span><br></pre></td></tr></table></figure>
-
-<p>在头文件进行DECLARE_LOG_CATEGORY_EXTERN()声明。<br>在对应的cpp文件中使用DEFINE_LOG_CATEGORY()进行定义。<br>注意，对应的DECLARE和DEFINE只能声明定义一次。<br>测试Demo，定义 Actor1 Actor2 以及辅助头文件tool.h<br>在Actor1.h declare,在Actor1.cpp define:<br>Actor1.cpp正常使用。Actor2.cpp只需要include Actor1.h，不需要重新define，便可以使用。<br>或者直接在tool.h进行declare与define。<br>Actor1与Actor2引入头文件后可以正常使用。</p>
-<p>Log的Category，主要是在打印前面加多一个所属的Category信息。日志仍然是在Saved里</p>
-<h2 id="UE-LOGFMT"><a href="#UE-LOGFMT" class="headerlink" title="UE_LOGFMT"></a>UE_LOGFMT</h2><p>UE5.2版本新引入的UE_LOGFMT宏<br>使用位置或者名称来设置参数。</p>
-<h3 id="Positional"><a href="#Positional" class="headerlink" title="Positional"></a>Positional</h3><p>When using positional parameters, the field values must exactly match the field referenced by format.<br>示例1</p>
-<blockquote>
-<p>UE_LOGFMT(LogCore, Warning, “Loading {Name} failed with error {Error}”, Package-&gt;GetName(),  ErrorCode);<br>示例2<br>UE_LOGFMT(LogTemp,Warning,”This is a test LOGFMT With Pos. {0}, {1}”,TEXT(“str1”),0.5f);</p>
-</blockquote>
-<h3 id="Named"><a href="#Named" class="headerlink" title="Named"></a>Named</h3><p>When using Named parameters, the field values must contain every field reference by format. The order is irrelevant and extra fields are permitted.<br>示例1</p>
-<blockquote>
-<p>UE_LOGFMT(LogCore, Warning, “Loading {Name} failed with error {Error}”,(“Name”, Package-&gt;GetName()), (“Error”, ErrorCode),(“Flags”, LoadFlags));<br>示例2<br>UE_LOGFMT(LogTemp,Warning,”This is a test LOGFMT With Name. {Name1}, {Name2}”,(“Name1”,TEXT(“str1”)),(“Name2”,0.5f),(“ExtraNoUsedInfo”,”no use”));</p>
-</blockquote>
-<img src="/UE/OfficialDocLearn/Coding/Log/image-6.png" class="" title="alt text">
-
-<h2 id="常用屏幕日志打印-AddOnScreenDebugMessage"><a href="#常用屏幕日志打印-AddOnScreenDebugMessage" class="headerlink" title="常用屏幕日志打印 AddOnScreenDebugMessage"></a>常用屏幕日志打印 AddOnScreenDebugMessage</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if (GEngine)</span><br><span class="line">  GEngine-&gt;AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT(&quot;This is an Example on-screen debug message.&quot;));</span><br></pre></td></tr></table></figure>
-<img src="/UE/OfficialDocLearn/Coding/Log/image-7.png" class="" title="alt text">]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-Package</title>
-    <url>/UE/OfficialDocLearn/Coding/Package/</url>
-    <content><![CDATA[<p>Package与Outer</p>
-<h1 id="Package"><a href="#Package" class="headerlink" title="Package"></a>Package</h1><p>了解UPackage的概念。</p>
-<p><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/working-with-assets-in-unreal-engine">官方文档 - Working with Assets</a></p>
-<p>在虚幻引擎资源浏览器中看到的，其实都是Package。Package是一个抽象的概念，一个Package是一个文件（.uasset或者.umap），它包含一些可以UE进行操作和访问的二进制数据文件。一般一个Asset对应一个Package。两个例外：蓝图与HLOD。由多个Assets组成。</p>
-<h1 id="Outer-与-Outermost"><a href="#Outer-与-Outermost" class="headerlink" title="Outer 与 Outermost"></a>Outer 与 Outermost</h1><p>沿着一个 UObject 对象的 Outer 链向上最终能找到一个 UPackage 对象，它决定了此 UObject 对象会被序列化在哪里。</p>
-<h2 id="Outer"><a href="#Outer" class="headerlink" title="Outer"></a>Outer</h2><blockquote>
-<p>UObjectBase.h<br>&#x2F;** Object this object resides in. *&#x2F;</p>
-</blockquote>
-<p>UObject的Outer对象，可以认为是“父对象”。<br>Outer定义了对象的归属。<br>-&gt; 构建层级<br>-&gt; 资源管理与序列化</p>
-<h2 id="Outermost"><a href="#Outermost" class="headerlink" title="Outermost"></a>Outermost</h2><blockquote>
-<p>UObjectBaseUtility.h<br>GetOutermost():Legacy function, has the same behavior as GetPackage.<br>GetPackage():Walks up the list of outers until it finds a package directly associated with the object.<br>GetOutermostObject() : Walks up the list of outers until it finds the top-level one that isn’t a package.</p>
-</blockquote>
-<p>UPackage的直接子对象称为顶层对象(OutermostObject)，因为它才是我们要使用的层级最高的对象，而UPackage仅是保存它们的地方。</p>
-<p>OutmostObject即Package下的顶层对象</p>
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例:"></a>示例:</h3><p>自定义类MyActor，并创建蓝图BP_MyActor继承自MyActor。<br><img src="/Package%5Cimage.png" alt="alt text"><br><img src="/Package%5Cimage-1.png" alt="alt text"><br>同样，我们可以测试场景中的蓝图实例：<br><img src="/Package%5Cimage2.png" alt="alt text"><br><img src="/Package%5Cimage3.png" alt="alt text"></p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-Asserts</title>
-    <url>/UE/OfficialDocLearn/Coding/Asserts/</url>
-    <content><![CDATA[<h1 id="断言-Asserts"><a href="#断言-Asserts" class="headerlink" title="断言 Asserts"></a>断言 Asserts</h1><p><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/asserts-in-unreal-engine">官方文档 Asserts</a><br>detect and diagnose unexpected or invalid runtime conditions during development.</p>
-<p>C++的断言,assert 与静态断言,static_assert。</p>
-<img src="/UE/OfficialDocLearn/Coding/Asserts/image.png" class="" title="alt text">
-
-<p>虚幻引擎的Assert:</p>
-<ol>
-<li>check<br>  -&gt; 运行时终止程序</li>
-<li>verify<br>  -&gt; 类似check，但发布版本中，仍然执行表达式(忽略返回结果) “保留side effect”<br>  例如:verify((Mesh &#x3D; GetRenderMesh()) !&#x3D; nullptr); 这里内部有Mesh的赋值效果。</li>
-<li>ensure<br>  -&gt; 不终止程序，记录错误并继续运行。</li>
-</ol>
-<p>详细可以看到：Engine&#x2F;Source&#x2F;Runtime&#x2F;Core&#x2F;Public&#x2F;Misc&#x2F;AssertionMacros.h</p>
-<p>static_assert 静态断言还是可以继续应用的。<br>静态断言 static_assert -&gt; 直接在编译时做检测。</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-SmartPointers</title>
-    <url>/UE/OfficialDocLearn/Coding/SmartPointers/</url>
-    <content><![CDATA[<h1 id="智能指针-SmartPointers"><a href="#智能指针-SmartPointers" class="headerlink" title="智能指针 SmartPointers"></a>智能指针 SmartPointers</h1><p>写在最前面：<br>UObject及其子类的GC管理和智能指针管理是两套系统。不要混用了。<br>UObject有对应的TWeakObjectPtr与StrongObjectPtr。<br>非UObject类的才使用智能指针。</p>
-<p>智能指针的基础部分在反射系统那边有介绍。</p>
-<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image.png" class="" title="alt text">
-<p>-&gt; 在使用指针指针时 可以轻松区分拥有者和观察者。<br>-&gt; 注意内存开销会比普通指针大。这点和C++内部的智能指针其实是一样的。</p>
-<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-1.png" class="" title="alt text">
-<p>这部分可以看到SharePointer.h文件</p>
-<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-2.png" class="" title="alt text">
-<p>主要是在上层业务使用。<br>使用的时候注意尽量用MakeShared来创建新的对象，或者类继承自TSharedFromThis.</p>
-<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-3.png" class="" title="alt text">
-<p>侵入性访问器<br>非侵入性 - 对象不知道是否被智能指针所持有。<br>想要以TSharedPtr或TSharedRef访问对象，需要继承自TSharedFromThis。<br>然后提供两个接口，一个是 AsShared，一个是SharedThis</p>
-<p>ClassA: public TSharedFromThis<ClassA><br>ClassB: public ClassA</p>
-<p>则在ClassB的对象上：<br>调用AsShared()返回的是ClassA的TSharedRef[ClassA直接继承自TSharedFromThis]<br>调用SharedThis(this)返回的就是ClassB的TSharedRef了.<br>然后可以由Ref转为指针。</p>
-<p>有一点是需要注意的：</p>
-<blockquote>
-<p>Do not call AsShared or SharedThis from constructors, since the shared reference is not initialized at that time and will cause a crash or assert.</p>
-</blockquote>
-<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-4.png" class="" title="alt text">
-<p>Static Cast  -&gt; 编译时 - 依赖开发者确保类型兼容性<br>Dynamic Cast -&gt; 运行时 - 需要动态进行类型检查，而智能指针这块没有RTTI</p>
-<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-5.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-6.png" class="" title="alt text">
-<p>关于这块的转换可以看到SharedPointerTesting.inl文件。<br>比如TSharedRef到const&amp;的转换:<br>const float &amp; MyFloat &#x3D; <em>FloatRef; [看到SharedPointer中对于</em>符号的重写]<br>const float &amp; MyFloat2 &#x3D; FloatRef.Get();</p>
-<h2 id="TSharedPtr与TSharedRef"><a href="#TSharedPtr与TSharedRef" class="headerlink" title="TSharedPtr与TSharedRef"></a>TSharedPtr与TSharedRef</h2><p>TSharedRef与TSharedPtr的转换:<br>Ref -&gt; Ptr的隐式转换: 直接Ptr &#x3D; Ref<br>Ptr -&gt; Ref 做多一个判定:  if(Ptr.IsValid()){Ref &#x3D; Ptr.ToSharedRef()}</p>
-<p>Ptr判定:</p>
-<ol>
-<li>if(Ptr.IsValid())       &#x2F;&#x2F;IsValid</li>
-<li>if(Ptr)                 &#x2F;&#x2F;bool</li>
-<li>if(Ptr.Get()!&#x3D;nullptr)  &#x2F;&#x2F;Ptr</li>
-</ol>
-<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-7.png" class="" title="alt text">
-
-<h2 id="TWeakPtr"><a href="#TWeakPtr" class="headerlink" title="TWeakPtr"></a>TWeakPtr</h2><img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-8.png" class="" title="alt text">
-<p>创建弱指针 也是看到SharedPointer.h<br>可以直接使用TSharedRef创建，或者直接用TSharedPtr赋值</p>
-<p>使用Pin函数将弱指针转为TSharedPtr</p>
-<p>TSharedPtr与TWeakPtr置空<br>调用Reset()或者直接设置为nullptr来清除。</p>
-<img src="/UE/OfficialDocLearn/Coding/SmartPointers/image-9.png" class="" title="alt text">
-<ol>
-<li>WeakPtr可以用作值而不要用作键</li>
-<li>在访问其指向对象时，用Pin确保对象的有效性</li>
-</ol>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-Reflection System</title>
-    <url>/UE/OfficialDocLearn/Coding/UECPlusPlusReflection/</url>
-    <content><![CDATA[<h1 id="反射系统-Reflection-System"><a href="#反射系统-Reflection-System" class="headerlink" title="反射系统 Reflection System"></a>反射系统 Reflection System</h1><p>参考文章：<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/reflection-system-in-unreal-engine">Reflection System in Unreal Engine</a><br><a href="https://zhuanlan.zhihu.com/p/717920216">UE5标识符详解 | 史上最全 - 知乎</a></p>
-<p>总结：<br>反射指程序在运行时动态检查、修改自身状态或行为的能力。C++本身并不支持反射。<br>之前在用typescript和lua的时候，有很多写法其实就用到了反射的功能，只是没有去意识到。<br>要实现反射功能，需要收集对应的数据，并有相应的逻辑系统进行处理。<br>虚幻的反射便是基于宏来实现的。</p>
-<p>关于虚幻引擎的宏 可以去看看大钊知乎的那篇符号说明的文章。<br>部分宏：<br>UCLASS、UFUNCTION、UPROPERTY、USTRUCT、UINTERFACE、UENUM。<br>通过宏，虚幻的反射系统才能收集到对应的信息并进行处理。</p>
-<blockquote>
-<p>-&gt; make UE aware of new classes,functions and varibales.<br>-&gt; These macros are garbage collected by the engine. 【指对对应的变量进行垃圾回收】。</p>
-</blockquote>
-<p>垃圾回收这块针对的还是变量。UFUNCTION宏主要是将函数暴露给反射系统。</p>
-<p>一个简单的例子我想便是编辑器中对应字段的显示。<br>编辑器和运行时的Game一样，本身也是一个World。我们要在编辑器窗口去显示各种字段，不可能为每一个C++类单独去编写对应的显示逻辑。</p>
-<p>在总览，官方文档还提到了常用的 TSubclassOf 用来获取UClass type的模板类（这里其实就是运行时类型检查了），以及元数据说明符和虚幻自己实现的智能指针。</p>
-<p>关于元数据说明符：Metadata Specifiers，同样可以看大钊的那篇参考文章。meta部分主要是在编辑器下生效，从而可以编写自己的编辑器工具和功能。</p>
-<p>关于智能指针部分：Unreal Smart Pointer Library 智能指针库：</p>
-<ol>
-<li>共享指针：引用计数</li>
-<li>弱指针：引用不计数</li>
-<li>共享引用Shared References(non - nullable Shared Pointers)：同不可为空的共享指针。</li>
-<li>唯一指针Unique Pointers：同一时间仅一个唯一指针指向对象。额外需要注意的一点是，当唯一指针超出作用域时，其会自动删除引用的对象。[这也意味着，对唯一指针引用的对象使用共享指针&#x2F;共享引用是很危险的(也不应当为共享指针&#x2F;引用对象创建唯一指针)]<br>智能指针部分，和反射系统功能存在较为紧密的关系，如GC部分。</li>
-</ol>
-<p>那么，虚幻引擎基于反射又有哪些应用场景呢：</p>
-<ol>
-<li>编辑器集成。 这个刚刚也提到了。</li>
-<li>垃圾回收(GC)。我们要去处理UObject派送类的引用关系，自动管理生命周期。</li>
-<li>蓝图交互</li>
-<li>序列化和反序列化、网络复制。如网络属性同步。<br>等等。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-UInterface</title>
-    <url>/UE/OfficialDocLearn/Coding/UInterface/</url>
-    <content><![CDATA[<h1 id="Unreal-Interfaces"><a href="#Unreal-Interfaces" class="headerlink" title="Unreal Interfaces"></a>Unreal Interfaces</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于接口的概念，在其他很多语言都有类似的定义。比如Typescript。而C++本身没有接口的语法。</p>
-<p>在UE的框架下，几乎万物皆UObject。那么在使用接口这样的概念时，难以避免的一个问题便是类的菱形继承。哦吼，这个时候怎么办？</p>
-<p>在相同功能的情况下，使用组件不失为一种解决方案。但是，面对不同对象要求不同实现的情况呢？</p>
-<blockquote>
-<p>题外话:<br>在游戏开发过程中，面向对象和面向组件是两种思路，也有组合优于继承的说法，之前项目也会有继承链过程而较难维护的问题，这块自己在实践时多留一下即可。</p>
-</blockquote>
-<p>回到正题，这并不影响去设计一个方式来抽出共有的函数接口，来实现“接口”的概念。而用于继承的接口，就不能再来自UObject了。</p>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>-&gt; 接口保证类实现一组共用函数。<br>-&gt; 不同类的函数执行不同的行为。<br>-&gt; 解决UObject菱形继承的问题。</p>
-<p>C++声明:<br>1.用于引擎反射的接口部分 UInterface<br>使用UINTERFACE()宏与继承自UInterface。<br>2.实际用于实现功能的接口部分 IInterface</p>
-<p>这里需要注意，两个对应的接口类都需要GENERATED_BODY()宏。<br>虚幻这里的处理比较巧妙，在有了UInterface对应的反射后，IInterface在不继承自UObject的同时，可以使用UFUNCTION等标记，并能被引擎识别。</p>
-<p>这样，我们实现了接口功能，也能避免菱形继承的问题。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/*</span><br><span class="line">This class does not need to be modified.</span><br><span class="line">Empty class for reflection system visibility.</span><br><span class="line">Uses the UINTERFACE macro.</span><br><span class="line">Inherits from UInterface.</span><br><span class="line">*/</span><br><span class="line">UINTERFACE()</span><br><span class="line">class UReactToTriggerInterface : public UInterface</span><br><span class="line">&#123;</span><br><span class="line">  GENERATED_BODY()</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">/* Actual Interface declaration. */</span><br><span class="line">class IReactToTriggerInterface</span><br><span class="line">&#123;</span><br><span class="line">  GENERATED_BODY()</span><br><span class="line"> </span><br><span class="line">  // Add interface functions to this class. This is the class that will be inherited to implement this interface.</span><br><span class="line">public:</span><br><span class="line">  // Add interface function declarations here</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>关于UINTERFACE宏相关的说明符，可以参考官方文档或者是大钊那篇标识符的文章。<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/interfaces-in-unreal-engine">Unreal Interface</a></p>
-<h2 id="接口实现与接口函数"><a href="#接口实现与接口函数" class="headerlink" title="接口实现与接口函数"></a>接口实现与接口函数</h2><p>Include对应的接口头文件，并继承自IInterface即可。</p>
-<p>纯C++部分可以直接用普通的函数。无需UFUNCTION说明符。<br>接口声明的虚函数，在仅C++调用时，对应的实现类正常重载即可。</p>
-<p>支持蓝图调用的函数就需要UFUNCTION了。</p>
-<ol>
-<li>BlueprintCallable</li>
-<li>BlueprintImplementableEvent[仅蓝图] 或 BlueprintNativeEvent[支持C++与蓝图,默认C++，蓝图重写。C++部分需要在实现对应的_Implementation版本。]</li>
-<li>非虚函数。</li>
-</ol>
-<p>C++调用BlueprintImplementableEvent或BlueprintNativeEvent:需要加上Execute_前缀</p>
-<blockquote>
-<p>&#x2F;&#x2F; OriginalObject is an object that implements the IReactToTriggerInterface<br>bool bReacted &#x3D; IReactToTriggerInterface::Execute_ReactToTrigger(OriginalObject);</p>
-</blockquote>
-<img src="/UE/OfficialDocLearn/Coding/UInterface/image.png" class="" title="alt text">
-
-<h2 id="接口实现判定"><a href="#接口实现判定" class="headerlink" title="接口实现判定"></a>接口实现判定</h2><p>之前所述，大部分情况下都是直接用的IInterface，但在接口判定的时候需要用的可能是UInterface。毕竟，是通过UInterface来实现反射的。（除了指针转换，毕竟继承的还是IInterface）</p>
-<img src="/UE/OfficialDocLearn/Coding/UInterface/image-1.png" class="" title="alt text">
-<p>此外，除了Cast,也可以用TScriptInterface&lt;&gt;来进行类型转换。</p>
-<h2 id="指定接口实现类的指针"><a href="#指定接口实现类的指针" class="headerlink" title="指定接口实现类的指针"></a>指定接口实现类的指针</h2><p>-&gt; TScriptInterface&lt;&gt;<br>有点类似于TSubclassOf&lt;&gt;</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UMyObject* MyObjectPtr;</span><br><span class="line">TScriptInterface&lt;IMyInterface&gt; MyScriptInterface;</span><br><span class="line"> </span><br><span class="line">if (MyObjectPtr-&gt;Implements&lt;UMyInterface&gt;())</span><br><span class="line">&#123;</span><br><span class="line">  MyScriptInterface = TScriptInterface&lt;IMyInterface&gt;(MyObjectPtr);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">// MyScriptInterface holds a reference to MyObjectPtr and MyInterfacePtr</span><br></pre></td></tr></table></figure>
-<img src="/UE/OfficialDocLearn/Coding/UInterface/image-2.png" class="" title="alt text">
-
-<h2 id="可用于蓝图继承的C-层接口"><a href="#可用于蓝图继承的C-层接口" class="headerlink" title="可用于蓝图继承的C++层接口"></a>可用于蓝图继承的C++层接口</h2><img src="/UE/OfficialDocLearn/Coding/UInterface/image-3.png" class="" title="alt text">
-
-<h2 id="关于UE内部接口实现和UInterface与IInterface问题"><a href="#关于UE内部接口实现和UInterface与IInterface问题" class="headerlink" title="关于UE内部接口实现和UInterface与IInterface问题"></a>关于UE内部接口实现和UInterface与IInterface问题</h2><p>可先看下知乎的这篇文章做一个大致了解:<br><a href="https://zhuanlan.zhihu.com/p/60851912">UE4 Interface原理与使用</a></p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-        <tag>UInterface</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-Tick</title>
-    <url>/UE/OfficialDocLearn/Coding/Tick/</url>
-    <content><![CDATA[<p>在业务的实际开发中，Update的顺序是比较重要的。在引擎中嵌入脚本语言，也需要有着对应的驱动模块。</p>
-<h1 id="Tick"><a href="#Tick" class="headerlink" title="Tick"></a>Tick</h1><h2 id="Update链条"><a href="#Update链条" class="headerlink" title="Update链条"></a>Update链条</h2><p>Update链条：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Launch的GuardedMain -&gt; EngineTick</span><br><span class="line">↓</span><br><span class="line">LaunchEngineLoop -&gt; Tick</span><br><span class="line">  GEngine -&gt;Tick</span><br><span class="line">    UWorldTick</span><br><span class="line">      RunTickGroup</span><br><span class="line">        PrePhysics - Actor默认 - FActorTickFunction</span><br><span class="line">        StartPhyscis</span><br><span class="line">        DuringPhysics - ActorComp默认 - FActorComponentTickFunction</span><br><span class="line">        EndPhysics</span><br><span class="line">        PostPhysics</span><br><span class="line">        [这里暴露给蓝图的就Pre\During\Post]</span><br><span class="line">      LatentActionManager - 蓝图中的Delay</span><br><span class="line">      TimerManager - SetTimer</span><br><span class="line">      FTickableGameObject::TickObjects(UWorld)  -FTickableGameObject. 可以关注UTickableWorldSubsystem.</span><br><span class="line">      PlayerController - UpdateCameraManager</span><br><span class="line">      RunTickGroup</span><br><span class="line">        PostUpdateWork</span><br><span class="line">        LastDemotable</span><br><span class="line">    FTickableGameObject::TickObjects(nullptr)</span><br><span class="line">  FSlateApplication()::Get().Tick() [两次 两个类型 ESlateTickType]  - UI的Tick</span><br><span class="line">  FTSTicker::GetCoreTicker().Tick(FApp::GetDeltaTime()) - Ticker的Tick</span><br></pre></td></tr></table></figure>
-<p>由此我们可以看到整个Tick的调用流程。</p>
-<h2 id="Actor-Tick"><a href="#Actor-Tick" class="headerlink" title="Actor Tick"></a>Actor Tick</h2><p><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/actor-ticking-in-unreal-engine">官方文档</a></p>
-<img src="/UE/OfficialDocLearn/Coding/Tick/image.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Tick/image-1.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Tick/image-2.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Tick/image-3.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Tick/image-4.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Tick/image-5.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Tick/image-6.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/Tick/image-7.png" class="" title="alt text">
-
-<p>ActorTick的初始化<br>见构造函数 和 InitializedDefaults</p>
-<img src="/UE/OfficialDocLearn/Coding/Tick/image-8.png" class="" title="alt text">
-
-<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://zhuanlan.zhihu.com/p/477018560">UE4中的三种Tick方式</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/661853225">【浅谈UE】Tick！Tick！Tick！Tick时序分析</a></p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-UObject</title>
-    <url>/UE/OfficialDocLearn/Coding/UObject/</url>
-    <content><![CDATA[<h1 id="UCLASS-宏"><a href="#UCLASS-宏" class="headerlink" title="UCLASS 宏"></a>UCLASS 宏</h1><img src="/UE/OfficialDocLearn/Coding/UObject/image.png" class="" title="alt text">
-<p>使用UCLASS宏 -&gt; 给UObject提供一个UCLASS的引用。<br>UCLASS中包含着定义对应类的属性函数。并维护一个CDO。</p>
-<p>使用对应的宏来让引擎识别对应的函数和属性。<br>UFUNCTION 与 UPROPERTY</p>
-<h1 id="UObject"><a href="#UObject" class="headerlink" title="UObject"></a>UObject</h1><h2 id="UObject-创建"><a href="#UObject-创建" class="headerlink" title="UObject 创建"></a>UObject 创建</h2><p>关于创建的部分，在这里详述:</p>
-<a href="/UE/OfficialDocLearn/Coding/UObjectCreation/" title="UE-UObjectCreation">UObjectCreation</a>
-<h2 id="UObject-Functionality"><a href="#UObject-Functionality" class="headerlink" title="UObject Functionality"></a>UObject Functionality</h2><img src="/UE/OfficialDocLearn/Coding/UObject/image-3.png" class="" title="alt text">
-<h3 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h3><img src="/UE/OfficialDocLearn/Coding/UObject/G1.png" class="" title="alt text">
-<p>这部分可以结合Level的源码来看</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Level.h</span><br><span class="line">/** Array of all actors in this level, </span><br><span class="line">used by FActorIteratorBase and derived classes */</span><br><span class="line">TArray&lt;TObjectPtr&lt;AActor&gt;&gt; Actors;</span><br><span class="line"></span><br><span class="line">/** Array of actors to be exposed to GC in this level. </span><br><span class="line">All other actors will be referenced through ULevelActorContainer */</span><br><span class="line">TArray&lt;TObjectPtr&lt;AActor&gt;&gt; ActorsForGC;</span><br><span class="line"></span><br><span class="line">UPROPERTY(Transient, DuplicateTransient, NonTransactional)</span><br><span class="line">TObjectPtr&lt;ULevelActorContainer&gt; ActorCluster;</span><br><span class="line"></span><br><span class="line">LevelActorContainer.h</span><br><span class="line">/**</span><br><span class="line"> * Root object for all level actors</span><br><span class="line"> */</span><br><span class="line">UCLASS(MinimalAPI, DefaultToInstanced)</span><br><span class="line">class ULevelActorContainer : public UObject</span><br><span class="line">&#123;</span><br><span class="line">  friend class ULevel;</span><br><span class="line"></span><br><span class="line">  GENERATED_BODY()</span><br><span class="line">public:</span><br><span class="line">  /** Array of actors in a level */</span><br><span class="line">  UPROPERTY(transient)</span><br><span class="line">  TArray&lt;TObjectPtr&lt;AActor&gt;&gt; Actors;</span><br><span class="line"></span><br><span class="line">  virtual void CreateCluster() override;</span><br><span class="line">  virtual void OnClusterMarkedAsPendingKill() override;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>算是对UE GC的结构有一个初步的了解。<br>关于RootSet可以看到UObjectBaseUtility的AddToRoot<br>非UObject的GC可以看到GCObject.h -&gt; FGCObject</p>
-<h4 id="增量垃圾回收"><a href="#增量垃圾回收" class="headerlink" title="增量垃圾回收"></a>增量垃圾回收</h4><p>见官方文档 <a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/incremental-garbage-collection-in-unreal-engine">Incremental Garbage Collection</a></p>
-<p>UE的垃圾回收基于标记<br>而对应的垃圾回收处理本身也是有开销的，可能会造成帧卡顿。<br>UObject对象池算是一个解决方法。</p>
-<p>基于自己的开发经验，可以复用，反复处理的对象常常都应当在逻辑侧做池化减少创建开销和GC开销。粒子特效、模型、调用频繁的临时对象等等……</p>
-<p>增量垃圾回收主要就是避免单帧卡顿的问题。可以认为将其逻辑开销分摊到多帧上去进行了。不过目前还是Experimental功能。</p>
-<h3 id="引用更新"><a href="#引用更新" class="headerlink" title="引用更新"></a>引用更新</h3><p>在GC后，相关指针的置空逻辑。见下面的Destroy。</p>
-<h3 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h3><h3 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h3><img src="/UE/OfficialDocLearn/Coding/UObject/S1.png" class="" title="alt text">
-<p>基于UPROPERTY的序列化。”Transient”或者是构造函数之后无变化的值无需进行序列化。<br>可能平时做游戏，在关卡中放置Actor，修改对应Instance属性，然后保存习惯了，并没有细想其是如何实现的。而UObject的序列化，就做到了仅需要UCLASS和UPROPERTY的宏声明，就默认处理了对应的序列化流程。<br>当然，也提供了对应的Serialize重写。</p>
-<blockquote>
-<p>Object.h<br>COREUOBJECT_API virtual void Serialize(FArchive&amp; Ar);<br>COREUOBJECT_API virtual void Serialize(FStructuredArchive::FRecord Record);</p>
-</blockquote>
-<h3 id="默认属性变化时-自动更新"><a href="#默认属性变化时-自动更新" class="headerlink" title="默认属性变化时 自动更新"></a>默认属性变化时 自动更新</h3><img src="/UE/OfficialDocLearn/Coding/UObject/P1.png" class="" title="alt text">
-<p>改变类的默认属性时，(CDO变化)，会将新值更新到对应实例化且属性值未改动的实体上。</p>
-<h3 id="属性初始化的自动化处理"><a href="#属性初始化的自动化处理" class="headerlink" title="属性初始化的自动化处理"></a>属性初始化的自动化处理</h3><p>  在调用构造函数之前，UObject所有属性自动归零，可以在构造函数中对对应的属性进行初始化。</p>
-<h3 id="编辑器整合"><a href="#编辑器整合" class="headerlink" title="编辑器整合"></a>编辑器整合</h3><h3 id="运行时可处理类型信息"><a href="#运行时可处理类型信息" class="headerlink" title="运行时可处理类型信息"></a>运行时可处理类型信息</h3><p>Run-Time Type Information and Casting<br>运行时动态类型转换<br>-&gt; 调用父类 Super::FunctionName()<br>-&gt; IsA()函数类判定 （见UObjectBaseUtility）<br>-&gt; Cast 基类指针转为子类对象指针 Cast&lt;ChildClass&gt;(BaseClassPtr)</p>
-<h3 id="网络复制"><a href="#网络复制" class="headerlink" title="网络复制"></a>网络复制</h3><p>UObject本身也做了网络复制的支持。<br>比如UPROPERT宏相关网络复制的设置，以及UFUNCTION对应的RPC</p>
-<h1 id="UHT-Unreal-Header-Tool"><a href="#UHT-Unreal-Header-Tool" class="headerlink" title="UHT Unreal Header Tool"></a>UHT Unreal Header Tool</h1><img src="/UE/OfficialDocLearn/Coding/UObject/image-4.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/UObject/image-5.png" class="" title="alt text">
-<p>模块API宏的部分可以看之前模块文章，做过具体叙述了。<br>UCLASS与USTRUCT需要加上GENERATED_BODY()宏</p>
-<h1 id="Update-Tick"><a href="#Update-Tick" class="headerlink" title="Update - Tick"></a>Update - Tick</h1><img src="/UE/OfficialDocLearn/Coding/UObject/image-6.png" class="" title="alt text">
-<p>UObject本来没有对应的Tick功能，一般是AActor才有。或者是UActorComponent<br>否则的话 需要继承FTickableGameObject。这部分可以看看Tickable.h</p>
-<h1 id="Destroy"><a href="#Destroy" class="headerlink" title="Destroy"></a>Destroy</h1><img src="/UE/OfficialDocLearn/Coding/UObject/image-7.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/UObject/image-8.png" class="" title="alt text">
-<p>标记回收的还是用MarkAsGarbage接口，这部分可以看到UObjectBaseUtility<br>也可以在UObjectBaseUtility中看到IsPendingKillEnabled接口。(5.4换为了IsGarbageEliminationEnabled接口)</p>
-<p>考虑使用弱引用，并且多用IsValid来判断UObject是否有效（在UObject），否则<br>可能会存在已经垃圾回收了但是仍然有指针引用的问题。</p>
-<p>当然，如果没有UPROPERTY宏的标记，就不会被引擎识别，也不会处理对应的GC，或者是自动置空.</p>
-<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><p>在UObject这块，也可以看看大钊在知乎上发的InsideUE5专栏的UObject系列文章<br>当然,大钊的这系列的文章是基于UE4的较早版本编写的，在看和理解的时候，最好还是<br>结合最新的源码去理解并辨别。</p>
-<p>这里也做一些类的额外补充:</p>
-<p>UObjectBase(包含UClass) -&gt; UObjectBaseUtility -&gt; UObject</p>
-<p>UObject -&gt; UField -&gt; UStruct -&gt; UClass</p>
-<p>UObject -&gt; UInterface</p>
-<p>UObject -&gt; AActor</p>
-<p>实际上 后面单独有一个FField独立出来。<br>可以看到Field.h文件。<br>而类型FProperty则是继承自FField。可以看到UnrealType.h</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-        <tag>UObject</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-Property</title>
-    <url>/UE/OfficialDocLearn/Coding/UProperty/</url>
-    <content><![CDATA[<h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><h2 id="属性宏"><a href="#属性宏" class="headerlink" title="属性宏"></a>属性宏</h2><p>UPROPERTY()<br>变量说明符和元数据相关的内容还是看到大钊的那篇文章。这里不多赘述了。<br><a href="https://zhuanlan.zhihu.com/p/717920216">UE5标识符详解 | 史上最全</a></p>
-<h2 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h2><p>int 8,16,32,64<br>uint 8,16,32,64<br>整形可以额外声明作为位掩码并在编辑器中显示。(meta &#x3D; (Bitmask))</p>
-<h2 id="浮点"><a href="#浮点" class="headerlink" title="浮点"></a>浮点</h2><p>float,double,long double</p>
-<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>FString 与 FName 与 FText.</p>
-<h3 id="TEXT-宏"><a href="#TEXT-宏" class="headerlink" title="TEXT()宏"></a>TEXT()宏</h3><blockquote>
-<p>For most uses, Unreal relies on the TCHAR type for characters. The TEXT() macro is available to denote TCHAR literals.<br>MyDogPtr-&gt;DogName &#x3D; FName(TEXT(“Samson Aloysius”));<br>TEXT宏的返回类型为TCHAR数组。为和平台无关的字符类型。</p>
-</blockquote>
-<p>在进行日志输出时，时常需要用到TEXT宏:</p>
-<blockquote>
-<p>FString TestString &#x3D; TEXT(“A TestStr”);<br>UE_LOG(LogTemp,Warning,TEXT(“%s”),*TestString);</p>
-</blockquote>
-<h3 id="FString"><a href="#FString" class="headerlink" title="FString"></a>FString</h3><p>动态字符数组。<br>与FName和FText不同，FString可以与搜索、修改并且与其他字符串比较。<br>其保存自己的字符数组，开销比不可变字符串类更大。</p>
-<h3 id="FName"><a href="#FName" class="headerlink" title="FName"></a>FName</h3><p>虚幻引擎会在全局维护一个唯一的字符串表。<br>在进行 &#x3D;&#x3D; 比较时很高效，因为并不是真的进行字符串比较，而是Index比较。<br>全局字符串表中<strong>不可变</strong>且<strong>不区分大小写</strong>的字符串的引用，比FString更小更高效。其<strong>无法被操作</strong>。</p>
-<p>可以用于表示对象名称、标识符和其他常用于比较的字符串。</p>
-<p>FNames只能被转换为FStrings和FText，只能从FStrings进行转换。<br><strong>但转换需注意了，FName不区分大小写。</strong></p>
-<h3 id="FText"><a href="#FText" class="headerlink" title="FText"></a>FText</h3><p>用于处理本地化的更可靠的字符串。<br>Text Localization：将游戏中文本适配到不同语言和地区。<br>面向用户的文本应当使用FText(UI部分)。</p>
-<p>-&gt; 文本格式<br>-&gt; 依据数字、日期生成的文本<br>-&gt; 衍生文本(大小写)</p>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>简单需求的话，程序侧主要还是用FString与FName。需要注意FName的不区分大小写特性。<br>在UI方面用FText来展示文本内容。</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-UObjectCreation</title>
-    <url>/UE/OfficialDocLearn/Coding/UObjectCreation/</url>
-    <content><![CDATA[<p>UObject的基础部分可以看到这里:</p>
-<a href="/UE/OfficialDocLearn/Coding/UObject/" title="UE-UObject">UObject</a>
-
-<h1 id="创建概述"><a href="#创建概述" class="headerlink" title="创建概述"></a>创建概述</h1><p>基础的类宏声明UCLASS，以及头文件”.generated.h”的引入，和GENERATE_BODY宏就不在这详述了。</p>
-<img src="/UE/OfficialDocLearn/Coding/UObjectCreation/image-1.png" class="" title="alt text">
-<p>UObject并不支持带有参数的构造函数。<br>所有C++侧UObject会在引擎StartUp时初始化。</p>
-<p>创建UObject: [考虑UE本身的内存管理和GC系统]</p>
-<ol>
-<li>运行时创建NewObject</li>
-<li>在构造函数中创建CreateDefaultSubobject 例如一个类中组件变量的<br>初始化流程</li>
-</ol>
-<p>初始化函数和逻辑处理 -&gt; 放在BeginPlay()去处理。</p>
-<img src="/UE/OfficialDocLearn/Coding/UObjectCreation/image-2.png" class="" title="alt text">
-
-<h1 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h1><img src="/UE/OfficialDocLearn/Coding/UObjectCreation/img1.png" class="" title="alt text">
-<p>在头文件中实现构造函数的，需要在UCLASS中加上CustomConstructor声明符。不过这个在UE5已经弃用了，应该不需要太关注。有需要的话，可以去看大钊的说明符文档。</p>
-<p>在上边提到的： UObject的构造函数应该不接入自定义参数。实际上UObject也有多个构造函数版本。默认不传参数，或者传入FObjectInitializer.实际上默认的构造函数其实也会处理FObjectInitializer相关的逻辑。这部分的实现可以看到UObjectGlobals.cpp</p>
-<p>由此就有两个常见的构造函数了:<br>UMyObject::UMyObject()<br>UMyObject::UMyObject(const FObjectInitializer&amp; ObjectInitializer): Super(ObjectInitializer)</p>
-<p>构造函数的作用:This constructor initializes the Class Default Object (CDO), which is the master copy on which future instances of the class are based.</p>
-<img src="/UE/OfficialDocLearn/Coding/UObjectCreation/img2.png" class="" title="alt text">
-
-<p>NewObject函数与CreateDefaultSubobject 这部分可以看到UObjectGlobals.h<br>SpawnActor的声明见到World.h，实现见到LevelActor.cpp。</p>
-<h2 id="FObjectInitializer"><a href="#FObjectInitializer" class="headerlink" title="FObjectInitializer"></a>FObjectInitializer</h2><p>那么不禁好奇，FObjectInitializer的作用是什么？<br>简言之，其负责类成员变量的初始化。</p>
-<p>这里有一篇文章可以结合源码看看<a href="https://zhuanlan.zhihu.com/p/422510443">UE4 FObjectInitializer 对象初始化器</a></p>
-<p>Archetype 原型<br>通过拷贝原型的方式进行实例化。<br>从UObjectGlobal.h的NewObject往下走。<br>所需要的处理:</p>
-<ol>
-<li>分配内存 见UObjectGlobals.cpp的StaticAllocateObject</li>
-<li>执行对应的构造 见UObjectGlobals.cpp中StaticConstructObject_Internal的(*InClass-&gt;ClassConstructor)(FObjectInitializaer(Result,Params))</li>
-</ol>
-<p>冷处理 CreateDefaultSubObject - 只有注册的组件才去处理。</p>
-<p>子类对象构造替换 - FObjectInitializer的 SetDefaultSubobjectClass。</p>
-<h1 id="构造数据与Helper-Constructor-Statics-and-Helpers"><a href="#构造数据与Helper-Constructor-Statics-and-Helpers" class="headerlink" title="构造数据与Helper Constructor Statics and Helpers"></a>构造数据与Helper Constructor Statics and Helpers</h1><img src="/UE/OfficialDocLearn/Coding/UObjectCreation/img3.png" class="" title="alt text">
-<p>关于ConstructorStatics可以在源码中找一些参考。主要是进行一些字符串的初始化。<br>不过引擎内部也主要是在编辑器环境去用。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ATriggerCapsule::ATriggerCapsule(...)</span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">#if WITH_EDITORONLY_DATA</span><br><span class="line">  if (UBillboardComponent* TriggerSpriteComponent = GetSpriteComponent())</span><br><span class="line">  &#123;</span><br><span class="line">    TriggerSpriteComponent-&gt;SetupAttachment(CapsuleCollisionComponent);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  if (GetSpriteComponent())</span><br><span class="line">  &#123;</span><br><span class="line">    // Structure to hold one-time initialization</span><br><span class="line">    struct FConstructorStatics</span><br><span class="line">    &#123;</span><br><span class="line">      ConstructorHelpers::FObjectFinderOptional&lt;UTexture2D&gt; TriggerTextureObject;</span><br><span class="line">      FName ID_Triggers;</span><br><span class="line">      FText NAME_Triggers;</span><br><span class="line">      FConstructorStatics()</span><br><span class="line">        : TriggerTextureObject(TEXT(&quot;/Engine/EditorResources/S_TriggerCapsule&quot;))</span><br><span class="line">        , ID_Triggers(TEXT(&quot;Triggers&quot;))</span><br><span class="line">        , NAME_Triggers(NSLOCTEXT(&quot;SpriteCategory&quot;, &quot;Triggers&quot;, &quot;Triggers&quot;))</span><br><span class="line">      &#123;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    static FConstructorStatics ConstructorStatics;</span><br><span class="line"></span><br><span class="line">    GetSpriteComponent()-&gt;Sprite = ConstructorStatics.TriggerTextureObject.Get();</span><br><span class="line">  &#125;</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>而Helper部分可以看到ConstructorHelper.h<br>-&gt; 硬编码的资源引用<br>-&gt; 类引用</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UGroomComponent::UGroomComponent(...)</span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">  static ConstructorHelpers::FObjectFinder&lt;UMaterialInterface&gt; Strands_DebugMaterialRef(TEXT(&quot;/HairStrands/Materials/HairDebugMaterial.HairDebugMaterial&quot;));</span><br><span class="line">  static ConstructorHelpers::FObjectFinder&lt;UMaterialInterface&gt; Strands_DefaultMaterialRef(TEXT(&quot;/HairStrands/Materials/HairDefaultMaterial.HairDefaultMaterial&quot;));</span><br><span class="line">  static ConstructorHelpers::FObjectFinder&lt;UMaterialInterface&gt; Cards_DefaultMaterialRef(TEXT(&quot;/HairStrands/Materials/HairCardsDefaultMaterial.HairCardsDefaultMaterial&quot;));</span><br><span class="line">  static ConstructorHelpers::FObjectFinder&lt;UMaterialInterface&gt; Meshes_DefaultMaterialRef(TEXT(&quot;/HairStrands/Materials/HairMeshesDefaultMaterial.HairMeshesDefaultMaterial&quot;));</span><br><span class="line"></span><br><span class="line">  Strands_DebugMaterial   = Strands_DebugMaterialRef.Object;</span><br><span class="line">  Strands_DefaultMaterial = Strands_DefaultMaterialRef.Object;</span><br><span class="line">  Cards_DefaultMaterial = Cards_DefaultMaterialRef.Object;</span><br><span class="line">  Meshes_DefaultMaterial = Meshes_DefaultMaterialRef.Object;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-        <tag>UObject</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE - PhyscisCollision</title>
-    <url>/UE/OfficialDocLearn/Physcis/PhyscisCollision/</url>
-    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Physcis/PhyscisCollision/img.png" class="">
-
-<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>概述 : Collision &amp; Trace</p>
-<ul>
-<li><p>Object Type</p>
-</li>
-<li><p>Trace Response Type</p>
-</li>
-<li><p>ObjectTypes 互相之前应当一致来满足预期效果</p>
-</li>
-<li><p>Events:</p>
-<ul>
-<li>Collision Events</li>
-<li>Overlap Events</li>
-</ul>
-</li>
-</ul>
-<p>在要处理碰撞事件的对象上才启用 Simulation Generates Hit Events.<br>处理事件时 进行Filter 筛选出目标事件</p>
-<p>对于Overlap 和 Ignore：<br>如果Overlap不启用对应的事件(Generate Overlap Events), 则其和Ignore其实是一样的。</p>
-<p>重叠事件 ReceiveBeginOverlap 与 ReceiveEndOverlap</p>
-<ul>
-<li>需要重叠的两个实体都启用事件</li>
-<li>在都启用Generate Overlap Events 时，可以一个Overlap 一个 Block。<br>事件会正常触发</li>
-</ul>
-<p>小结： 简单碰撞和复杂碰撞 Simple &amp; Complex</p>
-<ul>
-<li>性能和不同用途</li>
-<li>注意在Use Complex Collision As Simple 时， 不能进行物理模拟，仅可用于静态碰撞</li>
-</ul>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>Physcis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE - Physcis总览</title>
-    <url>/UE/OfficialDocLearn/Physcis/PhyscisTotal/</url>
-    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Physcis/PhyscisTotal/img.png" class="">
-
-<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>小结：<br>Destruction - 破坏系统<br>可以指定具体的部分去展示<br>同时缓存提供了重播功能，对性能做了优化<br>可以和物理场结合应用。自己也有BreakEvent、CollisionEvent,可以和粒子系统结合在一起。<br>小结 Netwrok Replication<br>主要处理在多人游戏中的物理复制。<br>目标是服务端、客户端的物理模拟效果尽量一致 且流畅<br>共三种模式</p>
-<ol>
-<li>Default: [在复制移动的Actor上生效] - 使用RootComp来模拟物理</li>
-<li>Predictive Interpolation: [Server-Authoritative Actors] - 改变客户端速度Velocity来匹配服务端的速度，<br>从而模拟(预测性插值)</li>
-<li>Resimulation:[Server-Authoritative Pawns and Actors] 允许客户端预测Client Prediction.<br>并且在误差较大时 触发重模拟Resimulation<br>小结 - Debug Tools<br>可视化调试工具<br>Runtime下运行录制并进行Replay<br>刚体运动学<br>子模块部分：<br>Collision<br>Trace with Raycast<br>Physics Constraints<br>Physics Components<br>刚体动画节点和物理动画<br>角色动画中加入刚体部位的模拟<br>Rigid bodies -&gt; Skeletal Mesh<br>小结 布料模拟 Cloth<br>可以在蓝图中调整模拟参数来实现同个布料在不同环境有着不同的表现<br>Debug Tools<br>5.3提供Chaos Cloth Panel Node  新的布料模拟工作流程<br>布娃娃系统<br>载具Vehicle<br>车轮、机翼[飞行载具]等。<br>上升下降的力、转向、摩擦<br>以及相应的物理碰撞<br>小结 物理场 Field<br>指定空间进行模拟<br>和其他系统进行交互 (对物理场进行采样Sample)<br>小结 流体 Fluid<br>毛发物理<br>小结 柔性物理(形变)<br>Static and Skeletal Meshes.<br>肌肉<br>离线处理优化<br>小结 数据流系统 Dataflow Graph System<br>复用性 + 可视化节点工作流程</li>
-</ol>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>Physcis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE - PhyscisNetworkReplication</title>
-    <url>/UE/OfficialDocLearn/Physcis/PhyscisNetwork/</url>
-    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Physcis/PhyscisNetwork/img.png" class="">
-
-<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>综述：<br>    主要的问题：<br>        - 物体速度和网络延迟<br>        - 模拟碰撞</p>
-<p>默认的物理复制<br>复制前提条件[Condition]:</p>
-<ul>
-<li>移动复制 Replicate movement</li>
-<li>根组件启用物理模拟 Simulate Physics</li>
-</ul>
-<p>客户端使用服务器的位置进行矫正和预测，[抛弃本地的模拟]</p>
-<ul>
-<li>服务端传输:半个RTT</li>
-<li>客户端预测:半个RTT</li>
-</ul>
-<p>影响因素：<br>    - 客户端当前的位置ClientPos 以及服务端的预测位置 ServerPredictPos (两者计算出一个Offset)<br>    - 服务端物体的速度Velocity</p>
-<p>矫正速度(简单记为Vc) Vc &#x3D; Offset&#x2F; DesiredCorrectionTime</p>
-<p>V &#x3D; Vc + Velocity(Server)  -&gt; 矫正时间内 可以移动到服务端的预测位置。</p>
-<p>[这里很重要的一点是使用服务端的当前速度]</p>
-<p>预测性插值 Predictive Interpolation</p>
-<ul>
-<li>服务器授权Actor [Server-Authoritative Actors]</li>
-</ul>
-<p>也是修改Client的Velocity来匹配Server的情况。</p>
-<ul>
-<li>会考虑Client本地的Velocity</li>
-<li>考虑RTT 以及数据同步频率 [Time Interval When The Client Receives Data From Server]</li>
-<li>客户端可以先力效果来预测模拟表现</li>
-</ul>
-<p>重新模拟Resimulation</p>
-<p>适用于服务器授权的Pawns与Actors</p>
-<ul>
-<li>主要用于 Handle interactions between Actors running the two different replication modes.</li>
-<li>Pawns movement 由玩家Inputs -&gt; Physics Forces 来驱动</li>
-<li>开销较高</li>
-</ul>
-<p>[客户端纯前向预测] </p>
-<ul>
-<li>Client比Server状态相比 提前半个RTT</li>
-<li>和收到服务端确认相比 提前一个RTT</li>
-</ul>
-<p>[History 缓存和回滚]</p>
-<ul>
-<li>由以上条件，至少需要缓存一个RTT时间内的物理tick状态</li>
-<li>收到服务端结果后，比较并确定是否需要进行重模拟</li>
-</ul>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>Physcis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE - Level</title>
-    <url>/UE/OfficialDocLearn/Levels/Level/</url>
-    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Levels/Level/img.png" class="">
-
-<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>Level 或者亦可以称之为 Map </p>
-<ul>
-<li>资产文件.umap</li>
-</ul>
-<p>Levels &amp;&amp; World Partition<br>结合UWorld相关的概念进行理解</p>
-<p>World Settings (结合ULevel UWorld)</p>
-<p>设置和Level相关的各类信息。不过这里感觉还是要留意World的概念，以及SubLevels。<br>具体详细的还是看到官方文档。这里没必要做过多赘述。</p>
-<ul>
-<li><p>Precomputed Visibility<br>  -&gt; volumes reduce rendering thread time.<br>  -&gt; For smaller level, Hardware limitation  | 移动设备</p>
-</li>
-<li><p>GameMode</p>
-</li>
-<li><p>Lightmass 光源设置</p>
-</li>
-<li><p>World [相关还是可以看看官方文档]</p>
-<ul>
-<li>Level bounds</li>
-<li>navigation systems</li>
-<li>“World Depth”</li>
-</ul>
-</li>
-<li><p>Physics</p>
-<ul>
-<li>World Gravity 重力</li>
-</ul>
-</li>
-<li><p>Broadphase</p>
-<ul>
-<li>Feature of NVIDIA’s PhysX system</li>
-<li>这部分可以看看知乎文章<a href="https://zhuanlan.zhihu.com/p/113415779">https://zhuanlan.zhihu.com/p/113415779</a></li>
-<li>粗碰撞检测</li>
-</ul>
-</li>
-<li><p>HLODSystem</p>
-<ul>
-<li>Replace multiple Static Mesh Actors with single combined Satic Mesh<br>Actor at long view distances.</li>
-<li>优化Drawcalls</li>
-</ul>
-</li>
-<li><p>World Partition</p>
-<ul>
-<li>For Large world management. [Distance-based level streaming]</li>
-<li>和Sublevels还有关。</li>
-</ul>
-</li>
-<li><p>Navigation</p>
-</li>
-<li><p>VR</p>
-</li>
-<li><p>Rendering</p>
-<ul>
-<li>Distance field ambient occlusion “距离场环境光遮蔽”</li>
-<li>Dynamic indirect shadows</li>
-</ul>
-</li>
-<li><p>Audio</p>
-<ul>
-<li>Volume,Reverb,Fade time</li>
-</ul>
-</li>
-<li><p>Tick</p>
-<ul>
-<li>详细见 Actor ticking</li>
-</ul>
-</li>
-<li><p>AI</p>
-</li>
-<li><p>Cooking</p>
-<ul>
-<li>Affect how the content in Scenes will be included in built game.</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>Level</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE - LevelInstancing</title>
-    <url>/UE/OfficialDocLearn/Levels/LevelInstancing/</url>
-    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Levels/LevelInstancing/img.png" class="">
-
-<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>Level Instances </p>
-<pre><code>- 1. Level Instances -&gt; Collection of Actors, to create sublevel
-
-- 2. Packed Level Blueprints -&gt; 静态网格体组合[渲染优化] 
-</code></pre>
-<p>Creating Level Instances</p>
-<p>小结:<br> 两者其实都是将场景中的对象进行组合一起管理的一种方式。并且提供了复制的功能、<br>在改动时 可以同步对应的改动。<br>  Packed Level Blueprint 有着对应的蓝图对象可以用来操作</p>
-<p>默认情况下使用组合节点的Data Layer,<br>内部也可以自定义不同的Data Layer</p>
-<p>Level Steaming Modes:</p>
-<ol>
-<li><p>Embedded Mode - 相当于仅在编辑器时，存在对应的 Level Instances. 运行<br>时还是加载对应的Actor [这个也是推荐的模式 需要OFPA]</p>
-</li>
-<li><p>Level Streaming Mode - 作为一个整体。其所在的World Partition Cell被加载时，<br>整一个Level也会被加载[Level instances that do not use OFPA]</p>
-</li>
-</ol>
-<p>Summary:<br>比较在意的一点是，官方在这里用的概念是”Level”。在Level Instances中用的概念也<br>是”SubLevel”。实际上，在编辑器中选择Actors打包成Level Instance时,也确实会生成<br>一个Level，并需要保存。而Packed Level Blueprint会生成一个Level和一个Packed Level<br>Actor的蓝图类。</p>
-<p>在逻辑和应用上，我们应该是希望把某一些静态的对象作为一个整体来进行管理，或者是<br>复用。类似于预制体的概念。</p>
-<p>在使用WorldPartition并使用OAPF时可以考虑其进行场景对象的管理[但也需要注意改动一<br>个会影响到其他 可以认为是同一份数据],不影响运行时[Embedded Mode]。而Packed<br>Level Blueprints提到的渲染优化特性也可以一起利用上。</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>Level</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE - WorldPartition</title>
-    <url>/UE/OfficialDocLearn/Levels/WorldPartition/</url>
-    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Levels/WorldPartition/img.png" class="">
-
-<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>目录和话题：</p>
-<ul>
-<li>World Partition</li>
-<li>One File Per Actor</li>
-<li>Data Layers</li>
-</ul>
-<p>World Partition:<br>世界分区 结合之前Level 与 SubLevels的概念</p>
-<ul>
-<li>重点在于如何处理大世界 </li>
-<li>动态的加载和卸载对应的”子地图模块”以及上面的资源</li>
-<li>处理跨地图的寻路和Actor逻辑</li>
-<li>子模块的单独开发[资源独立性 开发效率]</li>
-</ul>
-<p>基于上述需求 - 新的解决方案： World Partition</p>
-<ul>
-<li><p>“Cells” 的概念</p>
-</li>
-<li><p>由WorldPartition来控制Cells的加载与卸载</p>
-</li>
-<li><p>基于流送源的距离 [Based on distance from a streaming source]</p>
-</li>
-<li><p>Single Persistent Level  单个Level</p>
-</li>
-<li><p>“Grid Cells” 单元格概念</p>
-</li>
-</ul>
-<p>Actors - 需要了解 One File Per Actor的概念</p>
-<ul>
-<li>在World Partition中设置其归属Grid</li>
-<li>在不属于Disabled Data Layer时 依据 Is Spatially Loaded 来控制是否动态加载</li>
-</ul>
-<p>One File Per Actor </p>
-<ul>
-<li>Extra File To Save Data For Instatnce Actor</li>
-<li>改变关卡内的Actor时 不需要改变Level</li>
-<li>使用ViewChangeList Window 来查看改动<br>[虚幻内部的管理工具 可了解 In-Editor Source Control]</li>
-</ul>
-<p>Steaming Sources 流送源 [Think of AOI]</p>
-<p>额外需要思考的是服务端与客户端不同情况的加载<br>从PlayerController 的角度来看 服务端为玩家个数 而客户端就为单个了。</p>
-<ul>
-<li>PlayerController 子项设置里面的enable Streaming Source</li>
-</ul>
-<p>World Partition Steaming Source Component<br>这里做一些简要例举 详细的可以看官方Doc</p>
-<p>Cell Size - 256*256*256的正方体<br>Loading Range  - 768(Meter) around a steaming source</p>
-<p>Editor加载逻辑 - 主要是编辑器下相关操作和内容 详细见官方Doc</p>
-<p>HLOD -</p>
-<ul>
-<li>不同的Cells 有着自己的HLOD设定 </li>
-<li>Build -&gt; Build HLODs 依据设定生成对应的数据</li>
-</ul>
-<p>Blueprint -<br>  “世界分区”世界[World Partition world]可以用Blueprint与Level Blueprint<br>但更推荐用Blueprint。</p>
-<ul>
-<li>“Any Actors referenced in Level Blueprint will be marked as Always Loaded”<br>这样就丢失了动态加载的特性了</li>
-</ul>
-<p>World Partition - Data Layers<br>[旧版本的 Layers System]</p>
-<p>Organize Actors 管理对象 [Both runtime and in the Editor]</p>
-<ul>
-<li>两个概念： Data Layer Assets &amp; Data Layer Instance</li>
-<li>动态加载&#x2F;事件触发</li>
-<li>区分元素 Gameplay元素 &amp; 环境元素[美术]</li>
-</ul>
-<p>Data Layer Assets </p>
-<ul>
-<li>独立于”World”的概念 </li>
-<li>Editor 与 Runtime 两种类别。前者用于帮助组织资产，后者可以用于游戏性功能</li>
-</ul>
-<p>具体的实例 - Data Layer Instance [World-Specific]</p>
-<p>Data Layers Outliner 主要也是管理 Data Layer Instance</p>
-<p>Using Data Layers:</p>
-<pre><code>- Start by creating Data Layers Asset
-
-- Create Data Layer Instance [默认是空白的]
-
-- Assign DataLayerAsset to Instance[给Instance指定Asset]
-</code></pre>
-<p>Add Actors to Data Layer Instance</p>
-<p>Performance - 合理组织<br>避免一次性加载过多。</p>
-<p>相关函数:<br>Set Data Layer Instance Runtime State<br>    - Loaded 加载不可见<br>    - Activated 加载并可见</p>
-<p>Level Instances &amp; Packed Level Blueprints</p>
-<ul>
-<li>默认情况下 使用的对应的Data Layer。</li>
-<li>可以内部设置不同的Data Layer, 便于依据情况动态启用</li>
-</ul>
-<p>总之 Actors与DataLayer的耦合不高，对DataLayer的操作不会影响到Actor<br>最多是处理 One File Per Actor文件</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>Level</tag>
       </tags>
   </entry>
 </search>

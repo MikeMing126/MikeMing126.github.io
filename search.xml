@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>书本阅读 —— Summary</title>
+    <url>/Books/ReadingSummary/</url>
+    <content><![CDATA[<h1 id="书本阅读-——-Summary"><a href="#书本阅读-——-Summary" class="headerlink" title="书本阅读 —— Summary"></a>书本阅读 —— Summary</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在大学工作之后，我自己倒是很少再单独去看完整的书籍了。大多数情况，是按需求找些博客，找些项目，或者知乎文章来看。或者是单独去抽某本书的部分来看。</p>
+<p>从技术实用角度来说，这样可以依据需求快速的寻找解决方案，到也挺好的。</p>
+<p>不过，我仍然认为，有些书本值得整本去读一读，能开阔不少视野。</p>
+<p>本篇用来汇总记录我的一些读书感想。</p>
+<h2 id="技术项"><a href="#技术项" class="headerlink" title="技术项"></a>技术项</h2><h3 id="《人月神话》"><a href="#《人月神话》" class="headerlink" title="《人月神话》"></a>《人月神话》</h3><a href="/Books/Tech/%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/" title="人月神话">人月神话</a>
+
+
+<h3 id="《重构-改善既有代码的设计》"><a href="#《重构-改善既有代码的设计》" class="headerlink" title="《重构:改善既有代码的设计》"></a>《重构:改善既有代码的设计》</h3><a href="/Books/Tech/%E9%87%8D%E6%9E%84/" title="重构:改善既有代码的设计">重构</a>]]></content>
+      <categories>
+        <category>书本阅读</category>
+      </categories>
+      <tags>
+        <tag>书本阅读</tag>
+        <tag>Summary</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>RAGFlow</title>
     <url>/AI/RAGFlow/</url>
     <content><![CDATA[<h1 id="使用RAGFlow处理大语言模型幻觉问题。"><a href="#使用RAGFlow处理大语言模型幻觉问题。" class="headerlink" title="使用RAGFlow处理大语言模型幻觉问题。"></a>使用RAGFlow处理大语言模型幻觉问题。</h1><p>大语言模型：基于Ollama部署。</p>
@@ -116,25 +135,6 @@
         <tag>RAG</tag>
         <tag>RAGFlow</tag>
         <tag>Ollama</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>书本阅读 —— Summary</title>
-    <url>/Books/ReadingSummary/</url>
-    <content><![CDATA[<h1 id="书本阅读-——-Summary"><a href="#书本阅读-——-Summary" class="headerlink" title="书本阅读 —— Summary"></a>书本阅读 —— Summary</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在大学工作之后，我自己倒是很少再单独去看完整的书籍了。大多数情况，是按需求找些博客，找些项目，或者知乎文章来看。或者是单独去抽某本书的部分来看。</p>
-<p>从技术实用角度来说，这样可以依据需求快速的寻找解决方案，到也挺好的。</p>
-<p>不过，我仍然认为，有些书本值得整本去读一读，能开阔不少视野。</p>
-<p>本篇用来汇总记录我的一些读书感想。</p>
-<h2 id="技术项"><a href="#技术项" class="headerlink" title="技术项"></a>技术项</h2><h3 id="《人月神话》"><a href="#《人月神话》" class="headerlink" title="《人月神话》"></a>《人月神话》</h3><a href="/Books/Tech/%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/" title="人月神话">人月神话</a>
-
-
-<h3 id="《重构-改善既有代码的设计》"><a href="#《重构-改善既有代码的设计》" class="headerlink" title="《重构:改善既有代码的设计》"></a>《重构:改善既有代码的设计》</h3><a href="/Books/Tech/%E9%87%8D%E6%9E%84/" title="重构:改善既有代码的设计">重构</a>]]></content>
-      <categories>
-        <category>书本阅读</category>
-      </categories>
-      <tags>
-        <tag>书本阅读</tag>
-        <tag>Summary</tag>
       </tags>
   </entry>
   <entry>
@@ -559,31 +559,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Unity Animation</title>
-    <url>/Mine/Unity/Animation/</url>
-    <content><![CDATA[<p>动画</p>
-<p>Unity动画系统基于Animation Clips的概念</p>
-<p>Animation Clip</p>
-<ul>
-<li>包含对象随着事件如何改变位置、旋转或其他属性的相关信息。</li>
-</ul>
-<p>Animation Controller</p>
-<ul>
-<li>动画状态机 当前播放的Clip，何时改变以及混合。</li>
-</ul>
-<p>Animator组件</p>
-<ul>
-<li>Animation Clip、Animator Controller and Avatar</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Unity</category>
-      </categories>
-      <tags>
-        <tag>Unity</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Unity异步操作</title>
     <url>/Mine/Unity/AsyncOp/</url>
     <content><![CDATA[<p>异步操作<br>可以参考这篇文章<br><a href="https://juejin.cn/post/7528690628806098995">Unity入门教程之异步篇第二节：协程 or UniTask？Unity 中异步流程到底怎么选</a><br><a href="https://www.bilibili.com/opus/847408446350295046">Unity异步扩展实践（一）——以UniTask库为参考</a></p>
@@ -606,6 +581,31 @@
 <p>对于空类型可以用UniTaskVoid。处理编译器警告-加上Forget()<br>xxxx.Forget();</p>
 <h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>在Unity 2022.2之后，Unity在MonoBehaviour.destroyCancellationToken和Application.exitCancellationToken中添加了 CancellationToken。</p>
 <figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> Cysharp.Threading.Tasks;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Threading;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UniTaskExample</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> GameObject _prefabToLoad;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> _playerScore = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> <span class="built_in">object</span> _scoreLock = <span class="keyword">new</span> <span class="built_in">object</span>();</span><br><span class="line">    <span class="keyword">private</span> CancellationTokenSource _cancellationTokenSource;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        _cancellationTokenSource = <span class="keyword">new</span> CancellationTokenSource();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 启动多个异步任务</span></span><br><span class="line">        RunMultipleTasksAsync().Forget(); <span class="comment">// Forget() 用于不需要等待的 UniTaskVoid</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnDestroy</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 取消所有正在运行的任务</span></span><br><span class="line">        _cancellationTokenSource?.Cancel();</span><br><span class="line">        _cancellationTokenSource?.Dispose();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> UniTaskVoid <span class="title">RunMultipleTasksAsync</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 1. 等待一段时间</span></span><br><span class="line">            <span class="keyword">await</span> UniTask.Delay(TimeSpan.FromSeconds(<span class="number">1</span>), cancellationToken: _cancellationTokenSource.Token);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 2. 异步加载资源（不会阻塞主线程）</span></span><br><span class="line">            GameObject loadedObject = <span class="keyword">await</span> Resources.LoadAsync&lt;GameObject&gt;(<span class="string">&quot;SomeAsset&quot;</span>)</span><br><span class="line">                .ToUniTask(cancellationToken: _cancellationTokenSource.Token) <span class="keyword">as</span> GameObject;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 3. 实例化对象（必须在主线程执行）</span></span><br><span class="line">            Instantiate(loadedObject, transform.position, Quaternion.identity);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 4. 并行执行多个任务</span></span><br><span class="line">            <span class="keyword">await</span> UniTask.WhenAll(</span><br><span class="line">                MoveObjectAsync(loadedObject, Vector3.up, <span class="number">2f</span>),</span><br><span class="line">                ChangeColorAsync(loadedObject, Color.red, <span class="number">1f</span>)</span><br><span class="line">            );</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 5. 使用线程安全的方式更新共享资源</span></span><br><span class="line">            <span class="keyword">await</span> UpdateScoreSafelyAsync(<span class="number">100</span>);</span><br><span class="line">            </span><br><span class="line">            Debug.Log(<span class="string">$&quot;最终分数: <span class="subst">&#123;_playerScore&#125;</span>&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (OperationCanceledException)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 任务被取消时的处理</span></span><br><span class="line">            Debug.Log(<span class="string">&quot;任务被取消&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Exception e)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.LogError(<span class="string">$&quot;任务出错: <span class="subst">&#123;e.Message&#125;</span>&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 安全的分数更新方法</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> UniTask <span class="title">UpdateScoreSafelyAsync</span>(<span class="params"><span class="built_in">int</span> pointsToAdd</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 模拟一些异步工作（可能在后台线程运行）</span></span><br><span class="line">        <span class="keyword">await</span> UniTask.RunOnThreadPool(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 模拟复杂计算</span></span><br><span class="line">            System.Threading.Thread.Sleep(<span class="number">50</span>);</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 对共享资源的访问需要加锁</span></span><br><span class="line">        <span class="keyword">lock</span> (_scoreLock)</span><br><span class="line">        &#123;</span><br><span class="line">            _playerScore += pointsToAdd;</span><br><span class="line">            Debug.Log(<span class="string">$&quot;分数更新: <span class="subst">&#123;_playerScore&#125;</span>&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// UI 更新必须在主线程执行</span></span><br><span class="line">        <span class="keyword">await</span> UniTask.SwitchToMainThread();</span><br><span class="line">        UpdateScoreUI(_playerScore);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">UpdateScoreUI</span>(<span class="params"><span class="built_in">int</span> score</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 这里更新UI元素</span></span><br><span class="line">        Debug.Log(<span class="string">$&quot;更新UI显示分数: <span class="subst">&#123;score&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> UniTask <span class="title">MoveObjectAsync</span>(<span class="params">GameObject obj, Vector3 direction, <span class="built_in">float</span> duration</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">float</span> elapsedTime = <span class="number">0f</span>;</span><br><span class="line">        Vector3 startPosition = obj.transform.position;</span><br><span class="line">        Vector3 targetPosition = startPosition + direction;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> (elapsedTime &lt; duration)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 检查是否取消请求</span></span><br><span class="line">            _cancellationTokenSource.Token.ThrowIfCancellationRequested();</span><br><span class="line">            </span><br><span class="line">            elapsedTime += Time.deltaTime;</span><br><span class="line">            <span class="built_in">float</span> t = Mathf.Clamp01(elapsedTime / duration);</span><br><span class="line">            obj.transform.position = Vector3.Lerp(startPosition, targetPosition, t);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">await</span> UniTask.Yield(); <span class="comment">// 等待下一帧</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> UniTask <span class="title">ChangeColorAsync</span>(<span class="params">GameObject obj, Color targetColor, <span class="built_in">float</span> duration</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Renderer renderer = obj.GetComponent&lt;Renderer&gt;();</span><br><span class="line">        Color startColor = renderer.material.color;</span><br><span class="line">        <span class="built_in">float</span> elapsedTime = <span class="number">0f</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> (elapsedTime &lt; duration)</span><br><span class="line">        &#123;</span><br><span class="line">            _cancellationTokenSource.Token.ThrowIfCancellationRequested();</span><br><span class="line">            </span><br><span class="line">            elapsedTime += Time.deltaTime;</span><br><span class="line">            <span class="built_in">float</span> t = Mathf.Clamp01(elapsedTime / duration);</span><br><span class="line">            renderer.material.color = Color.Lerp(startColor, targetColor, t);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">await</span> UniTask.Yield();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 按钮点击事件示例</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnButtonClick</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 启动一个新任务来响应UI事件</span></span><br><span class="line">        HandleButtonClickAsync().Forget();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> UniTaskVoid <span class="title">HandleButtonClickAsync</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 防止重复点击</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">await</span> CheckIfAlreadyProcessingAsync())</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">await</span> UpdateScoreSafelyAsync(<span class="number">10</span>);</span><br><span class="line">        <span class="keyword">await</span> PlayButtonAnimationAsync();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> UniTask&lt;<span class="built_in">bool</span>&gt; <span class="title">CheckIfAlreadyProcessingAsync</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 模拟异步检查</span></span><br><span class="line">        <span class="keyword">await</span> UniTask.DelayFrame(<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> UniTask <span class="title">PlayButtonAnimationAsync</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 模拟动画播放</span></span><br><span class="line">        <span class="keyword">await</span> UniTask.Delay(TimeSpan.FromSeconds(<span class="number">0.5f</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Unity</category>
+      </categories>
+      <tags>
+        <tag>Unity</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity Animation</title>
+    <url>/Mine/Unity/Animation/</url>
+    <content><![CDATA[<p>动画</p>
+<p>Unity动画系统基于Animation Clips的概念</p>
+<p>Animation Clip</p>
+<ul>
+<li>包含对象随着事件如何改变位置、旋转或其他属性的相关信息。</li>
+</ul>
+<p>Animation Controller</p>
+<ul>
+<li>动画状态机 当前播放的Clip，何时改变以及混合。</li>
+</ul>
+<p>Animator组件</p>
+<ul>
+<li>Animation Clip、Animator Controller and Avatar</li>
+</ul>
 ]]></content>
       <categories>
         <category>Unity</category>
@@ -978,84 +978,6 @@
       </tags>
   </entry>
   <entry>
-    <title>UE5.5-GameplayCue</title>
-    <url>/UE/GAS/UE55GASGC/</url>
-    <content><![CDATA[<h1 id="GameplayCue"><a href="#GameplayCue" class="headerlink" title="GameplayCue"></a>GameplayCue</h1><p>重要的类：<br>GameplayCueSet</p>
-<p>但是游戏中的资源加载并不是这样进行的。</p>
-<p>映射关系： Tag -&gt; GC</p>
-<p>GC的收集过程：<br>将GameplayCue资产放在指定的目录下。<br>具体的可以在.ini里面配置。<br>以Lyra为例子</p>
-<img src="/UE/GAS/UE55GASGC/image.png" class="" title="alt text">
-
-<p>资源的加载：<br>关键类为UAbilitySystemGlobals与UGameplayCueManager。<br>可以看到GameplayCueManager里。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//UAbilitySystemGlobals部分</span><br><span class="line">//GameplayAbilitiesDeveloperSettings.h</span><br><span class="line">//注意宏里面Config的关键字</span><br><span class="line">/** Look in these paths for GameplayCueNotifies. These are your &quot;always loaded&quot; set. */</span><br><span class="line">UPROPERTY(Config, EditDefaultsOnly, Category=GameplayCue, meta = (ConfigRestartRequired=true))</span><br><span class="line">TArray&lt;FString&gt;	GameplayCueNotifyPaths;</span><br><span class="line">TArray&lt;FString&gt; UAbilitySystemGlobals::GetGameplayCueNotifyPaths()</span><br><span class="line">&#123;</span><br><span class="line">PRAGMA_DISABLE_DEPRECATION_WARNINGS</span><br><span class="line">    //Use set so we can append just unique paths</span><br><span class="line">    TSet&lt;FString&gt; ReturnPaths = TSet(GameplayCueNotifyPaths);</span><br><span class="line">PRAGMA_ENABLE_DEPRECATION_WARNINGS</span><br><span class="line"></span><br><span class="line">    ReturnPaths.Append(GetDefault&lt;UGameplayAbilitiesDeveloperSettings&gt;()-&gt;GameplayCueNotifyPaths);</span><br><span class="line">    return ReturnPaths.Array();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//CueManager部分</span><br><span class="line">TArray&lt;FString&gt; UGameplayCueManager::GetAlwaysLoadedGameplayCuePaths()</span><br><span class="line">&#123;</span><br><span class="line">    return UAbilitySystemGlobals::Get().GetGameplayCueNotifyPaths();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void UGameplayCueManager::InitializeRuntimeObjectLibrary()</span><br><span class="line">&#123;</span><br><span class="line">    UE_SCOPED_ENGINE_ACTIVITY(TEXT(&quot;Initializing GameplayCueManager Runtime Object Library&quot;));</span><br><span class="line"></span><br><span class="line">    RuntimeGameplayCueObjectLibrary.Paths = GetAlwaysLoadedGameplayCuePaths();</span><br><span class="line">    if (RuntimeGameplayCueObjectLibrary.CueSet == nullptr)</span><br><span class="line">    &#123;</span><br><span class="line">        RuntimeGameplayCueObjectLibrary.CueSet = NewObject&lt;UGameplayCueSet&gt;(this, TEXT(&quot;GlobalGameplayCueSet&quot;));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    RuntimeGameplayCueObjectLibrary.CueSet-&gt;Empty();</span><br><span class="line">    RuntimeGameplayCueObjectLibrary.bHasBeenInitialized = true;</span><br><span class="line"></span><br><span class="line">    RuntimeGameplayCueObjectLibrary.bShouldSyncScan = ShouldSyncScanRuntimeObjectLibraries();</span><br><span class="line">    RuntimeGameplayCueObjectLibrary.bShouldSyncLoad = ShouldSyncLoadRuntimeObjectLibraries();</span><br><span class="line">    RuntimeGameplayCueObjectLibrary.bShouldAsyncLoad = ShouldAsyncLoadRuntimeObjectLibraries();</span><br><span class="line"></span><br><span class="line">    InitObjectLibrary(RuntimeGameplayCueObjectLibrary);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Lyra项目示例"><a href="#Lyra项目示例" class="headerlink" title="Lyra项目示例"></a>Lyra项目示例</h2><p>还是看到Lyra项目<br>对应的三个例子分别为<br>GE:<br>GE_GameplayCueTest_Burst<br>GE_GameplayCueTest_BurstLatent<br>GE_GameplayCueTest_Looping</p>
-<p>GC:<br>GCN_Test_Burst<br>GCN_Test_BurstLatent<br>GCNL_Test_Looping</p>
-<p>GE的Burst与BurstLatent都是Instant类型。<br>但对应的GC不同，一个派生自GCN_Burst（即Static）,一个派生自GCN_BurstLatent(即Actor)。<br>两者都只需要在OnBurst处理自定义逻辑即可。<br>而后者由于有存在Actor，可以在逻辑中使用延迟等操作。</p>
-<p>&#x2F;&#x2F;关于Actor存在数目可以再关注一下bAllowMultipleWhileActiveEvents与bAllowMultipleWhileActiveEvents</p>
-<p>而Looping，在GE处就要处理Looping逻辑。见Period。<br>GC则会有OnLoopingStart、OnRecurring、OnRemoval对应的逻辑事件处理。</p>
-<h3 id="调用链条"><a href="#调用链条" class="headerlink" title="调用链条"></a>调用链条</h3><p>最上层的调用：<br>UAbilitySystemGlobals::Get().GetGameplayCueManager()-&gt;InvokeGameplayCueExecuted_FromSpec(Owner, SpecToUse, PredictionKey);<br>↓<br>GameplayCueManager的AddPendingCueExecuteInternal<br>↓<br>GameplayCueManager的FlushPendingCues<br>↓<br>取到ASC的GetReplicationInterface函数作为RepInterface，调用ASC的Call_InvokeGameplayCueExecuted_FromSpec<br>↓<br>ASC的NetMulticast_InvokeGameplayCueExecuted_Implementation<br>↓<br>ASC的InvokeGameplayCueEvent[这里指定了事件类型为Executed]</p>
-<h2 id="总结和部分问题"><a href="#总结和部分问题" class="headerlink" title="总结和部分问题"></a>总结和部分问题</h2><p>因为GC实际上是由GameplayTag去触发的，但是在编辑器中不是很直观。可以考虑做一个工具来直观的展示对应的Tag和GC的对应关系。</p>
-<h2 id="持续Buff的GCN"><a href="#持续Buff的GCN" class="headerlink" title="持续Buff的GCN"></a>持续Buff的GCN</h2><h3 id="问题描述和思考流程"><a href="#问题描述和思考流程" class="headerlink" title="问题描述和思考流程"></a>问题描述和思考流程</h3><p>如果应用多个GE的时候，GC表现不太对。<br>实际上，如果是单个的Buff，是要用到GE的Stacking功能来做。<br>【比如身上有中毒buff】</p>
-<p>但是有一个问题。GCN是依赖于Tag与Event来处理的。<br>如果想要做一个中毒的表现，而多个buff可能会加上不同时间&#x2F;伤害等信息的中毒。<br>-&gt; GCN应该是用同一个Tag。但是需要所有buff都结束，才移除GCN。<br>换句话说 应该是Removed要判定？<br>对于中毒这个特效，应该只需要创建一个GCN就可以了。但是，removed必须要判定为所有的毒类型Buff都移除了才能执行。</p>
-<p>这里需要关注<br>Cue的添加与WhileActive事件<br>ASC的AddGameplayCue_Internal<br>-&gt; wasInList</p>
-<p>Cue的移除<br>ASC的RemoveGameplayCue_Internal函数。</p>
-<p>这里如果移除的时候判定Tag可能会好一点。<br>可以自己重写试试。</p>
-<p>获取到对应的ASC 并判断其Cue数量。<br>这里还存在虚幻引擎的模组API宏问题。（对于GCN_Looping这部分）禁止了接口暴露。</p>
-<p>但实际上移除的时候是移除所有Tag的…</p>
-<img src="/UE/GAS/UE55GASGC/image2.png" class="" title="alt text">
-
-<img src="/UE/GAS/UE55GASGC/image3.png" class="" title="alt text">
-
-<img src="/UE/GAS/UE55GASGC/image4.png" class="" title="alt text">
-
-<img src="/UE/GAS/UE55GASGC/image5.png" class="" title="alt text">
-
-<p>目前已经基于该思路验证并实现了这种持续GCN的效果。<br>算是一种实现方案。</p>
-<p>不过，基于此，还需要考虑AOI以及ASC转移时的相关问题。</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>GAS</tag>
-        <tag>Lyra</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE GAS Modifier相关信息</title>
-    <url>/UE/GAS/UE55GASModifierInfos/</url>
-    <content><![CDATA[<h1 id="总"><a href="#总" class="headerlink" title="总"></a>总</h1><p>列举各个Modifier相关的信息</p>
-<h2 id="FGameplayModifierInfo"><a href="#FGameplayModifierInfo" class="headerlink" title="FGameplayModifierInfo"></a>FGameplayModifierInfo</h2><p>用于定义修改器的规则<br>关键数据 </p>
-<ul>
-<li>目标属性</li>
-<li>修改方式</li>
-<li>修改值</li>
-<li>生效条件(Tags)</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line"> * FGameplayModifierInfo</span><br><span class="line"> *	Tells us &quot;Who/What we&quot; modify</span><br><span class="line"> *	Does not tell us how exactly</span><br><span class="line"> */</span><br><span class="line">USTRUCT(BlueprintType)</span><br><span class="line">struct GAMEPLAYABILITIES_API FGameplayModifierInfo</span><br><span class="line">&#123;</span><br><span class="line">	GENERATED_USTRUCT_BODY()</span><br><span class="line">	</span><br><span class="line">	/** The Attribute we modify or the GE we modify modifies. */</span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier, meta=(FilterMetaTag=&quot;HideFromModifiers&quot;))</span><br><span class="line">	FGameplayAttribute Attribute;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * The numeric operation of this modifier: Override, Add, Multiply, etc</span><br><span class="line">	 * When multiple modifiers aggregate together, the equation is:</span><br><span class="line">	 * ((BaseValue + AddBase) * MultiplyAdditive / DivideAdditive * MultiplyCompound) + AddFinal</span><br><span class="line">	 */</span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	TEnumAsByte&lt;EGameplayModOp::Type&gt; ModifierOp = EGameplayModOp::Additive;</span><br><span class="line"></span><br><span class="line">	/** Magnitude of the modifier */</span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	FGameplayEffectModifierMagnitude ModifierMagnitude;</span><br><span class="line"></span><br><span class="line">	/** Evaluation channel settings of the modifier */</span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	FGameplayModEvaluationChannelSettings EvaluationChannelSettings;</span><br><span class="line"></span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	FGameplayTagRequirements	SourceTags;</span><br><span class="line"></span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	FGameplayTagRequirements	TargetTags;</span><br><span class="line"></span><br><span class="line">	/** Equality/Inequality operators */</span><br><span class="line">	bool operator==(const FGameplayModifierInfo&amp; Other) const;</span><br><span class="line">	bool operator!=(const FGameplayModifierInfo&amp; Other) const;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="FModifierSpec"><a href="#FModifierSpec" class="headerlink" title="FModifierSpec"></a>FModifierSpec</h2><p>存储GEModifier的最终计算值</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/** Holds evaluated magnitude from a GameplayEffect modifier */</span><br><span class="line">USTRUCT()</span><br><span class="line">struct FModifierSpec</span><br><span class="line">&#123;</span><br><span class="line">	GENERATED_USTRUCT_BODY()</span><br><span class="line"></span><br><span class="line">	FModifierSpec() : EvaluatedMagnitude(0.f) &#123; &#125;</span><br><span class="line"></span><br><span class="line">	float GetEvaluatedMagnitude() const &#123; return EvaluatedMagnitude; &#125;</span><br><span class="line"></span><br><span class="line">private:</span><br><span class="line"></span><br><span class="line">	/** In the event that the modifier spec requires custom magnitude calculations, this is the authoritative, last evaluated value of the magnitude */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	float EvaluatedMagnitude;</span><br><span class="line"></span><br><span class="line">	/** These structures are the only ones that should internally be able to update the EvaluatedMagnitude. Any gamecode that gets its hands on FModifierSpec should never be setting EvaluatedMagnitude manually */</span><br><span class="line">	friend struct FGameplayEffectSpec;</span><br><span class="line">	friend struct FActiveGameplayEffectsContainer;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="FGameplayModifierEvaluatedData"><a href="#FGameplayModifierEvaluatedData" class="headerlink" title="FGameplayModifierEvaluatedData"></a>FGameplayModifierEvaluatedData</h2><p>修改器具体结果数据<br>关键数据 </p>
-<ul>
-<li>目标属性</li>
-<li>修改方式</li>
-<li>修改值</li>
-<li>FActiveGEHandle</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/** Data that describes what happened in an attribute modification. This is passed to ability set callbacks */</span><br><span class="line">USTRUCT(BlueprintType)</span><br><span class="line">struct FGameplayModifierEvaluatedData</span><br><span class="line">&#123;</span><br><span class="line">	GENERATED_USTRUCT_BODY()</span><br><span class="line"></span><br><span class="line">	FGameplayModifierEvaluatedData()</span><br><span class="line">		: Attribute()</span><br><span class="line">		, ModifierOp(EGameplayModOp::Additive)</span><br><span class="line">		, Magnitude(0.f)</span><br><span class="line">		, IsValid(false)</span><br><span class="line">	&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	FGameplayModifierEvaluatedData(const FGameplayAttribute&amp; InAttribute, TEnumAsByte&lt;EGameplayModOp::Type&gt; InModOp, float InMagnitude, FActiveGameplayEffectHandle InHandle = FActiveGameplayEffectHandle())</span><br><span class="line">		: Attribute(InAttribute)</span><br><span class="line">		, ModifierOp(InModOp)</span><br><span class="line">		, Magnitude(InMagnitude)</span><br><span class="line">		, Handle(InHandle)</span><br><span class="line">		, IsValid(true)</span><br><span class="line">	&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/** What attribute was modified */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	FGameplayAttribute Attribute;</span><br><span class="line"></span><br><span class="line">	/** The numeric operation of this modifier: Override, Add, Multiply, etc  */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	TEnumAsByte&lt;EGameplayModOp::Type&gt; ModifierOp;</span><br><span class="line"></span><br><span class="line">	/** The raw magnitude of the applied attribute, this is generally before being clamped */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	float Magnitude;</span><br><span class="line"></span><br><span class="line">	/** Handle of the active gameplay effect that originated us. Will be invalid in many cases */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	FActiveGameplayEffectHandle	Handle;</span><br><span class="line"></span><br><span class="line">	/** True if something was evaluated */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	bool IsValid;</span><br><span class="line"></span><br><span class="line">	FString ToSimpleString() const</span><br><span class="line">	&#123;</span><br><span class="line">		return FString::Printf(TEXT(&quot;%s %s EvalMag: %f&quot;), *Attribute.GetName(), *EGameplayModOpToString(ModifierOp), Magnitude);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>UEGAS</tag>
-        <tag>GAS Modifier</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>UE5.5-GameplayPrediction</title>
     <url>/UE/GAS/UE55GamplayPrediction/</url>
     <content><![CDATA[<h1 id="SourceCode源码"><a href="#SourceCode源码" class="headerlink" title="SourceCode源码"></a><a href="https://github.com/MikeMing126/UESourceCode/blob/main/UE55_GAS_GameplayPrediction.h">SourceCode源码</a></h1><h1 id="Overview-of-Gameplay-Ability-Prediction"><a href="#Overview-of-Gameplay-Ability-Prediction" class="headerlink" title="Overview of Gameplay Ability Prediction"></a>Overview of Gameplay Ability Prediction</h1><h2 id="High-Level-Goals"><a href="#High-Level-Goals" class="headerlink" title="High Level Goals"></a>High Level Goals</h2><ul>
@@ -1199,6 +1121,84 @@
         <tag>UE</tag>
         <tag>GAS</tag>
         <tag>UE Source</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE GAS Modifier相关信息</title>
+    <url>/UE/GAS/UE55GASModifierInfos/</url>
+    <content><![CDATA[<h1 id="总"><a href="#总" class="headerlink" title="总"></a>总</h1><p>列举各个Modifier相关的信息</p>
+<h2 id="FGameplayModifierInfo"><a href="#FGameplayModifierInfo" class="headerlink" title="FGameplayModifierInfo"></a>FGameplayModifierInfo</h2><p>用于定义修改器的规则<br>关键数据 </p>
+<ul>
+<li>目标属性</li>
+<li>修改方式</li>
+<li>修改值</li>
+<li>生效条件(Tags)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line"> * FGameplayModifierInfo</span><br><span class="line"> *	Tells us &quot;Who/What we&quot; modify</span><br><span class="line"> *	Does not tell us how exactly</span><br><span class="line"> */</span><br><span class="line">USTRUCT(BlueprintType)</span><br><span class="line">struct GAMEPLAYABILITIES_API FGameplayModifierInfo</span><br><span class="line">&#123;</span><br><span class="line">	GENERATED_USTRUCT_BODY()</span><br><span class="line">	</span><br><span class="line">	/** The Attribute we modify or the GE we modify modifies. */</span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier, meta=(FilterMetaTag=&quot;HideFromModifiers&quot;))</span><br><span class="line">	FGameplayAttribute Attribute;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * The numeric operation of this modifier: Override, Add, Multiply, etc</span><br><span class="line">	 * When multiple modifiers aggregate together, the equation is:</span><br><span class="line">	 * ((BaseValue + AddBase) * MultiplyAdditive / DivideAdditive * MultiplyCompound) + AddFinal</span><br><span class="line">	 */</span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	TEnumAsByte&lt;EGameplayModOp::Type&gt; ModifierOp = EGameplayModOp::Additive;</span><br><span class="line"></span><br><span class="line">	/** Magnitude of the modifier */</span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	FGameplayEffectModifierMagnitude ModifierMagnitude;</span><br><span class="line"></span><br><span class="line">	/** Evaluation channel settings of the modifier */</span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	FGameplayModEvaluationChannelSettings EvaluationChannelSettings;</span><br><span class="line"></span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	FGameplayTagRequirements	SourceTags;</span><br><span class="line"></span><br><span class="line">	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier)</span><br><span class="line">	FGameplayTagRequirements	TargetTags;</span><br><span class="line"></span><br><span class="line">	/** Equality/Inequality operators */</span><br><span class="line">	bool operator==(const FGameplayModifierInfo&amp; Other) const;</span><br><span class="line">	bool operator!=(const FGameplayModifierInfo&amp; Other) const;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="FModifierSpec"><a href="#FModifierSpec" class="headerlink" title="FModifierSpec"></a>FModifierSpec</h2><p>存储GEModifier的最终计算值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/** Holds evaluated magnitude from a GameplayEffect modifier */</span><br><span class="line">USTRUCT()</span><br><span class="line">struct FModifierSpec</span><br><span class="line">&#123;</span><br><span class="line">	GENERATED_USTRUCT_BODY()</span><br><span class="line"></span><br><span class="line">	FModifierSpec() : EvaluatedMagnitude(0.f) &#123; &#125;</span><br><span class="line"></span><br><span class="line">	float GetEvaluatedMagnitude() const &#123; return EvaluatedMagnitude; &#125;</span><br><span class="line"></span><br><span class="line">private:</span><br><span class="line"></span><br><span class="line">	/** In the event that the modifier spec requires custom magnitude calculations, this is the authoritative, last evaluated value of the magnitude */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	float EvaluatedMagnitude;</span><br><span class="line"></span><br><span class="line">	/** These structures are the only ones that should internally be able to update the EvaluatedMagnitude. Any gamecode that gets its hands on FModifierSpec should never be setting EvaluatedMagnitude manually */</span><br><span class="line">	friend struct FGameplayEffectSpec;</span><br><span class="line">	friend struct FActiveGameplayEffectsContainer;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="FGameplayModifierEvaluatedData"><a href="#FGameplayModifierEvaluatedData" class="headerlink" title="FGameplayModifierEvaluatedData"></a>FGameplayModifierEvaluatedData</h2><p>修改器具体结果数据<br>关键数据 </p>
+<ul>
+<li>目标属性</li>
+<li>修改方式</li>
+<li>修改值</li>
+<li>FActiveGEHandle</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/** Data that describes what happened in an attribute modification. This is passed to ability set callbacks */</span><br><span class="line">USTRUCT(BlueprintType)</span><br><span class="line">struct FGameplayModifierEvaluatedData</span><br><span class="line">&#123;</span><br><span class="line">	GENERATED_USTRUCT_BODY()</span><br><span class="line"></span><br><span class="line">	FGameplayModifierEvaluatedData()</span><br><span class="line">		: Attribute()</span><br><span class="line">		, ModifierOp(EGameplayModOp::Additive)</span><br><span class="line">		, Magnitude(0.f)</span><br><span class="line">		, IsValid(false)</span><br><span class="line">	&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	FGameplayModifierEvaluatedData(const FGameplayAttribute&amp; InAttribute, TEnumAsByte&lt;EGameplayModOp::Type&gt; InModOp, float InMagnitude, FActiveGameplayEffectHandle InHandle = FActiveGameplayEffectHandle())</span><br><span class="line">		: Attribute(InAttribute)</span><br><span class="line">		, ModifierOp(InModOp)</span><br><span class="line">		, Magnitude(InMagnitude)</span><br><span class="line">		, Handle(InHandle)</span><br><span class="line">		, IsValid(true)</span><br><span class="line">	&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/** What attribute was modified */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	FGameplayAttribute Attribute;</span><br><span class="line"></span><br><span class="line">	/** The numeric operation of this modifier: Override, Add, Multiply, etc  */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	TEnumAsByte&lt;EGameplayModOp::Type&gt; ModifierOp;</span><br><span class="line"></span><br><span class="line">	/** The raw magnitude of the applied attribute, this is generally before being clamped */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	float Magnitude;</span><br><span class="line"></span><br><span class="line">	/** Handle of the active gameplay effect that originated us. Will be invalid in many cases */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	FActiveGameplayEffectHandle	Handle;</span><br><span class="line"></span><br><span class="line">	/** True if something was evaluated */</span><br><span class="line">	UPROPERTY()</span><br><span class="line">	bool IsValid;</span><br><span class="line"></span><br><span class="line">	FString ToSimpleString() const</span><br><span class="line">	&#123;</span><br><span class="line">		return FString::Printf(TEXT(&quot;%s %s EvalMag: %f&quot;), *Attribute.GetName(), *EGameplayModOpToString(ModifierOp), Magnitude);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>UEGAS</tag>
+        <tag>GAS Modifier</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE5.5-GameplayCue</title>
+    <url>/UE/GAS/UE55GASGC/</url>
+    <content><![CDATA[<h1 id="GameplayCue"><a href="#GameplayCue" class="headerlink" title="GameplayCue"></a>GameplayCue</h1><p>重要的类：<br>GameplayCueSet</p>
+<p>但是游戏中的资源加载并不是这样进行的。</p>
+<p>映射关系： Tag -&gt; GC</p>
+<p>GC的收集过程：<br>将GameplayCue资产放在指定的目录下。<br>具体的可以在.ini里面配置。<br>以Lyra为例子</p>
+<img src="/UE/GAS/UE55GASGC/image.png" class="" title="alt text">
+
+<p>资源的加载：<br>关键类为UAbilitySystemGlobals与UGameplayCueManager。<br>可以看到GameplayCueManager里。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//UAbilitySystemGlobals部分</span><br><span class="line">//GameplayAbilitiesDeveloperSettings.h</span><br><span class="line">//注意宏里面Config的关键字</span><br><span class="line">/** Look in these paths for GameplayCueNotifies. These are your &quot;always loaded&quot; set. */</span><br><span class="line">UPROPERTY(Config, EditDefaultsOnly, Category=GameplayCue, meta = (ConfigRestartRequired=true))</span><br><span class="line">TArray&lt;FString&gt;	GameplayCueNotifyPaths;</span><br><span class="line">TArray&lt;FString&gt; UAbilitySystemGlobals::GetGameplayCueNotifyPaths()</span><br><span class="line">&#123;</span><br><span class="line">PRAGMA_DISABLE_DEPRECATION_WARNINGS</span><br><span class="line">    //Use set so we can append just unique paths</span><br><span class="line">    TSet&lt;FString&gt; ReturnPaths = TSet(GameplayCueNotifyPaths);</span><br><span class="line">PRAGMA_ENABLE_DEPRECATION_WARNINGS</span><br><span class="line"></span><br><span class="line">    ReturnPaths.Append(GetDefault&lt;UGameplayAbilitiesDeveloperSettings&gt;()-&gt;GameplayCueNotifyPaths);</span><br><span class="line">    return ReturnPaths.Array();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//CueManager部分</span><br><span class="line">TArray&lt;FString&gt; UGameplayCueManager::GetAlwaysLoadedGameplayCuePaths()</span><br><span class="line">&#123;</span><br><span class="line">    return UAbilitySystemGlobals::Get().GetGameplayCueNotifyPaths();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void UGameplayCueManager::InitializeRuntimeObjectLibrary()</span><br><span class="line">&#123;</span><br><span class="line">    UE_SCOPED_ENGINE_ACTIVITY(TEXT(&quot;Initializing GameplayCueManager Runtime Object Library&quot;));</span><br><span class="line"></span><br><span class="line">    RuntimeGameplayCueObjectLibrary.Paths = GetAlwaysLoadedGameplayCuePaths();</span><br><span class="line">    if (RuntimeGameplayCueObjectLibrary.CueSet == nullptr)</span><br><span class="line">    &#123;</span><br><span class="line">        RuntimeGameplayCueObjectLibrary.CueSet = NewObject&lt;UGameplayCueSet&gt;(this, TEXT(&quot;GlobalGameplayCueSet&quot;));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    RuntimeGameplayCueObjectLibrary.CueSet-&gt;Empty();</span><br><span class="line">    RuntimeGameplayCueObjectLibrary.bHasBeenInitialized = true;</span><br><span class="line"></span><br><span class="line">    RuntimeGameplayCueObjectLibrary.bShouldSyncScan = ShouldSyncScanRuntimeObjectLibraries();</span><br><span class="line">    RuntimeGameplayCueObjectLibrary.bShouldSyncLoad = ShouldSyncLoadRuntimeObjectLibraries();</span><br><span class="line">    RuntimeGameplayCueObjectLibrary.bShouldAsyncLoad = ShouldAsyncLoadRuntimeObjectLibraries();</span><br><span class="line"></span><br><span class="line">    InitObjectLibrary(RuntimeGameplayCueObjectLibrary);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Lyra项目示例"><a href="#Lyra项目示例" class="headerlink" title="Lyra项目示例"></a>Lyra项目示例</h2><p>还是看到Lyra项目<br>对应的三个例子分别为<br>GE:<br>GE_GameplayCueTest_Burst<br>GE_GameplayCueTest_BurstLatent<br>GE_GameplayCueTest_Looping</p>
+<p>GC:<br>GCN_Test_Burst<br>GCN_Test_BurstLatent<br>GCNL_Test_Looping</p>
+<p>GE的Burst与BurstLatent都是Instant类型。<br>但对应的GC不同，一个派生自GCN_Burst（即Static）,一个派生自GCN_BurstLatent(即Actor)。<br>两者都只需要在OnBurst处理自定义逻辑即可。<br>而后者由于有存在Actor，可以在逻辑中使用延迟等操作。</p>
+<p>&#x2F;&#x2F;关于Actor存在数目可以再关注一下bAllowMultipleWhileActiveEvents与bAllowMultipleWhileActiveEvents</p>
+<p>而Looping，在GE处就要处理Looping逻辑。见Period。<br>GC则会有OnLoopingStart、OnRecurring、OnRemoval对应的逻辑事件处理。</p>
+<h3 id="调用链条"><a href="#调用链条" class="headerlink" title="调用链条"></a>调用链条</h3><p>最上层的调用：<br>UAbilitySystemGlobals::Get().GetGameplayCueManager()-&gt;InvokeGameplayCueExecuted_FromSpec(Owner, SpecToUse, PredictionKey);<br>↓<br>GameplayCueManager的AddPendingCueExecuteInternal<br>↓<br>GameplayCueManager的FlushPendingCues<br>↓<br>取到ASC的GetReplicationInterface函数作为RepInterface，调用ASC的Call_InvokeGameplayCueExecuted_FromSpec<br>↓<br>ASC的NetMulticast_InvokeGameplayCueExecuted_Implementation<br>↓<br>ASC的InvokeGameplayCueEvent[这里指定了事件类型为Executed]</p>
+<h2 id="总结和部分问题"><a href="#总结和部分问题" class="headerlink" title="总结和部分问题"></a>总结和部分问题</h2><p>因为GC实际上是由GameplayTag去触发的，但是在编辑器中不是很直观。可以考虑做一个工具来直观的展示对应的Tag和GC的对应关系。</p>
+<h2 id="持续Buff的GCN"><a href="#持续Buff的GCN" class="headerlink" title="持续Buff的GCN"></a>持续Buff的GCN</h2><h3 id="问题描述和思考流程"><a href="#问题描述和思考流程" class="headerlink" title="问题描述和思考流程"></a>问题描述和思考流程</h3><p>如果应用多个GE的时候，GC表现不太对。<br>实际上，如果是单个的Buff，是要用到GE的Stacking功能来做。<br>【比如身上有中毒buff】</p>
+<p>但是有一个问题。GCN是依赖于Tag与Event来处理的。<br>如果想要做一个中毒的表现，而多个buff可能会加上不同时间&#x2F;伤害等信息的中毒。<br>-&gt; GCN应该是用同一个Tag。但是需要所有buff都结束，才移除GCN。<br>换句话说 应该是Removed要判定？<br>对于中毒这个特效，应该只需要创建一个GCN就可以了。但是，removed必须要判定为所有的毒类型Buff都移除了才能执行。</p>
+<p>这里需要关注<br>Cue的添加与WhileActive事件<br>ASC的AddGameplayCue_Internal<br>-&gt; wasInList</p>
+<p>Cue的移除<br>ASC的RemoveGameplayCue_Internal函数。</p>
+<p>这里如果移除的时候判定Tag可能会好一点。<br>可以自己重写试试。</p>
+<p>获取到对应的ASC 并判断其Cue数量。<br>这里还存在虚幻引擎的模组API宏问题。（对于GCN_Looping这部分）禁止了接口暴露。</p>
+<p>但实际上移除的时候是移除所有Tag的…</p>
+<img src="/UE/GAS/UE55GASGC/image2.png" class="" title="alt text">
+
+<img src="/UE/GAS/UE55GASGC/image3.png" class="" title="alt text">
+
+<img src="/UE/GAS/UE55GASGC/image4.png" class="" title="alt text">
+
+<img src="/UE/GAS/UE55GASGC/image5.png" class="" title="alt text">
+
+<p>目前已经基于该思路验证并实现了这种持续GCN的效果。<br>算是一种实现方案。</p>
+<p>不过，基于此，还需要考虑AOI以及ASC转移时的相关问题。</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>GAS</tag>
+        <tag>Lyra</tag>
       </tags>
   </entry>
   <entry>
@@ -1809,6 +1809,35 @@
       </tags>
   </entry>
   <entry>
+    <title>UE-ActorLifeTime</title>
+    <url>/UE/OfficialDocLearn/Coding/ActorLifeTime/</url>
+    <content><![CDATA[<h1 id="ActorLifeTime"><a href="#ActorLifeTime" class="headerlink" title="ActorLifeTime"></a>ActorLifeTime</h1><p>官方有一张LifeTime的流程图<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-actor-lifecycle">官方文档</a></p>
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/actorlifecycle1.png" class="" title="alt text">
+
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image.png" class="" title="alt text">
+<p>-&gt; AISystemBase的纯虚函数 InitializeActorsForPlay<br>实际上这里也是由World调用下来的</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UEngine::LoadMap</span><br><span class="line">  UWorld::InitializeActorsForPlay</span><br><span class="line">    Level-&gt;RouteActorInitialize</span><br><span class="line">      对Level的Actors(Array of all actors in this level.)进行处理</span><br><span class="line">    AISystem-&gt;InitializeActorsForPlay 默认情况下这里没有任何处理</span><br><span class="line"></span><br><span class="line">  UWorld::AddToWorld 添加Level到World</span><br><span class="line">      Level-&gt;RouteActorInitialize</span><br></pre></td></tr></table></figure>
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-1.png" class="" title="alt text">
+<p>在Actor内部存在一个bActorInitialized标志位 可以避免重复初始化。 Level那边也会判定这个标志位。<br>该标志位，在Actor的PostInitializeComponents会进行设置。</p>
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-2.png" class="" title="alt text">
+<p>Actor的创建,看到LevelActor.cpp中的SpawnActor,还是要结合UObject的来。C++层面是进行拷贝复制。其初始化更早。而蓝图方面的初始化就延后到OnConstruction了。</p>
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-3.png" class="" title="alt text">
+<p>Actor生成，蓝图构造代码执行之前。</p>
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-4.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-5.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-6.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-7.png" class="" title="alt text">
+<p>垃圾回收这部分还是可以看到UObject。</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>UE-StateTree</title>
     <url>/UE/OfficialDocLearn/AI/StateTree/</url>
     <content><![CDATA[<h1 id="UE-State-Tree"><a href="#UE-State-Tree" class="headerlink" title="UE State Tree"></a>UE State Tree</h1><p>虚幻的状态树</p>
@@ -1850,252 +1879,6 @@
         <tag>AI</tag>
         <tag>UE</tag>
         <tag>StateTree</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE - LevelInstancing</title>
-    <url>/UE/OfficialDocLearn/Levels/LevelInstancing/</url>
-    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Levels/LevelInstancing/img.png" class="">
-
-<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>Level Instances </p>
-<pre><code>- 1. Level Instances -&gt; Collection of Actors, to create sublevel
-
-- 2. Packed Level Blueprints -&gt; 静态网格体组合[渲染优化] 
-</code></pre>
-<p>Creating Level Instances</p>
-<p>小结:<br> 两者其实都是将场景中的对象进行组合一起管理的一种方式。并且提供了复制的功能、<br>在改动时 可以同步对应的改动。<br>  Packed Level Blueprint 有着对应的蓝图对象可以用来操作</p>
-<p>默认情况下使用组合节点的Data Layer,<br>内部也可以自定义不同的Data Layer</p>
-<p>Level Steaming Modes:</p>
-<ol>
-<li><p>Embedded Mode - 相当于仅在编辑器时，存在对应的 Level Instances. 运行<br>时还是加载对应的Actor [这个也是推荐的模式 需要OFPA]</p>
-</li>
-<li><p>Level Streaming Mode - 作为一个整体。其所在的World Partition Cell被加载时，<br>整一个Level也会被加载[Level instances that do not use OFPA]</p>
-</li>
-</ol>
-<p>Summary:<br>比较在意的一点是，官方在这里用的概念是”Level”。在Level Instances中用的概念也<br>是”SubLevel”。实际上，在编辑器中选择Actors打包成Level Instance时,也确实会生成<br>一个Level，并需要保存。而Packed Level Blueprint会生成一个Level和一个Packed Level<br>Actor的蓝图类。</p>
-<p>在逻辑和应用上，我们应该是希望把某一些静态的对象作为一个整体来进行管理，或者是<br>复用。类似于预制体的概念。</p>
-<p>在使用WorldPartition并使用OAPF时可以考虑其进行场景对象的管理[但也需要注意改动一<br>个会影响到其他 可以认为是同一份数据],不影响运行时[Embedded Mode]。而Packed<br>Level Blueprints提到的渲染优化特性也可以一起利用上。</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>Level</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE - Level</title>
-    <url>/UE/OfficialDocLearn/Levels/Level/</url>
-    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Levels/Level/img.png" class="">
-
-<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>Level 或者亦可以称之为 Map </p>
-<ul>
-<li>资产文件.umap</li>
-</ul>
-<p>Levels &amp;&amp; World Partition<br>结合UWorld相关的概念进行理解</p>
-<p>World Settings (结合ULevel UWorld)</p>
-<p>设置和Level相关的各类信息。不过这里感觉还是要留意World的概念，以及SubLevels。<br>具体详细的还是看到官方文档。这里没必要做过多赘述。</p>
-<ul>
-<li><p>Precomputed Visibility<br>  -&gt; volumes reduce rendering thread time.<br>  -&gt; For smaller level, Hardware limitation  | 移动设备</p>
-</li>
-<li><p>GameMode</p>
-</li>
-<li><p>Lightmass 光源设置</p>
-</li>
-<li><p>World [相关还是可以看看官方文档]</p>
-<ul>
-<li>Level bounds</li>
-<li>navigation systems</li>
-<li>“World Depth”</li>
-</ul>
-</li>
-<li><p>Physics</p>
-<ul>
-<li>World Gravity 重力</li>
-</ul>
-</li>
-<li><p>Broadphase</p>
-<ul>
-<li>Feature of NVIDIA’s PhysX system</li>
-<li>这部分可以看看知乎文章<a href="https://zhuanlan.zhihu.com/p/113415779">https://zhuanlan.zhihu.com/p/113415779</a></li>
-<li>粗碰撞检测</li>
-</ul>
-</li>
-<li><p>HLODSystem</p>
-<ul>
-<li>Replace multiple Static Mesh Actors with single combined Satic Mesh<br>Actor at long view distances.</li>
-<li>优化Drawcalls</li>
-</ul>
-</li>
-<li><p>World Partition</p>
-<ul>
-<li>For Large world management. [Distance-based level streaming]</li>
-<li>和Sublevels还有关。</li>
-</ul>
-</li>
-<li><p>Navigation</p>
-</li>
-<li><p>VR</p>
-</li>
-<li><p>Rendering</p>
-<ul>
-<li>Distance field ambient occlusion “距离场环境光遮蔽”</li>
-<li>Dynamic indirect shadows</li>
-</ul>
-</li>
-<li><p>Audio</p>
-<ul>
-<li>Volume,Reverb,Fade time</li>
-</ul>
-</li>
-<li><p>Tick</p>
-<ul>
-<li>详细见 Actor ticking</li>
-</ul>
-</li>
-<li><p>AI</p>
-</li>
-<li><p>Cooking</p>
-<ul>
-<li>Affect how the content in Scenes will be included in built game.</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>Level</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE - WorldPartition</title>
-    <url>/UE/OfficialDocLearn/Levels/WorldPartition/</url>
-    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Levels/WorldPartition/img.png" class="">
-
-<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>目录和话题：</p>
-<ul>
-<li>World Partition</li>
-<li>One File Per Actor</li>
-<li>Data Layers</li>
-</ul>
-<p>World Partition:<br>世界分区 结合之前Level 与 SubLevels的概念</p>
-<ul>
-<li>重点在于如何处理大世界 </li>
-<li>动态的加载和卸载对应的”子地图模块”以及上面的资源</li>
-<li>处理跨地图的寻路和Actor逻辑</li>
-<li>子模块的单独开发[资源独立性 开发效率]</li>
-</ul>
-<p>基于上述需求 - 新的解决方案： World Partition</p>
-<ul>
-<li><p>“Cells” 的概念</p>
-</li>
-<li><p>由WorldPartition来控制Cells的加载与卸载</p>
-</li>
-<li><p>基于流送源的距离 [Based on distance from a streaming source]</p>
-</li>
-<li><p>Single Persistent Level  单个Level</p>
-</li>
-<li><p>“Grid Cells” 单元格概念</p>
-</li>
-</ul>
-<p>Actors - 需要了解 One File Per Actor的概念</p>
-<ul>
-<li>在World Partition中设置其归属Grid</li>
-<li>在不属于Disabled Data Layer时 依据 Is Spatially Loaded 来控制是否动态加载</li>
-</ul>
-<p>One File Per Actor </p>
-<ul>
-<li>Extra File To Save Data For Instatnce Actor</li>
-<li>改变关卡内的Actor时 不需要改变Level</li>
-<li>使用ViewChangeList Window 来查看改动<br>[虚幻内部的管理工具 可了解 In-Editor Source Control]</li>
-</ul>
-<p>Steaming Sources 流送源 [Think of AOI]</p>
-<p>额外需要思考的是服务端与客户端不同情况的加载<br>从PlayerController 的角度来看 服务端为玩家个数 而客户端就为单个了。</p>
-<ul>
-<li>PlayerController 子项设置里面的enable Streaming Source</li>
-</ul>
-<p>World Partition Steaming Source Component<br>这里做一些简要例举 详细的可以看官方Doc</p>
-<p>Cell Size - 256*256*256的正方体<br>Loading Range  - 768(Meter) around a steaming source</p>
-<p>Editor加载逻辑 - 主要是编辑器下相关操作和内容 详细见官方Doc</p>
-<p>HLOD -</p>
-<ul>
-<li>不同的Cells 有着自己的HLOD设定 </li>
-<li>Build -&gt; Build HLODs 依据设定生成对应的数据</li>
-</ul>
-<p>Blueprint -<br>  “世界分区”世界[World Partition world]可以用Blueprint与Level Blueprint<br>但更推荐用Blueprint。</p>
-<ul>
-<li>“Any Actors referenced in Level Blueprint will be marked as Always Loaded”<br>这样就丢失了动态加载的特性了</li>
-</ul>
-<p>World Partition - Data Layers<br>[旧版本的 Layers System]</p>
-<p>Organize Actors 管理对象 [Both runtime and in the Editor]</p>
-<ul>
-<li>两个概念： Data Layer Assets &amp; Data Layer Instance</li>
-<li>动态加载&#x2F;事件触发</li>
-<li>区分元素 Gameplay元素 &amp; 环境元素[美术]</li>
-</ul>
-<p>Data Layer Assets </p>
-<ul>
-<li>独立于”World”的概念 </li>
-<li>Editor 与 Runtime 两种类别。前者用于帮助组织资产，后者可以用于游戏性功能</li>
-</ul>
-<p>具体的实例 - Data Layer Instance [World-Specific]</p>
-<p>Data Layers Outliner 主要也是管理 Data Layer Instance</p>
-<p>Using Data Layers:</p>
-<pre><code>- Start by creating Data Layers Asset
-
-- Create Data Layer Instance [默认是空白的]
-
-- Assign DataLayerAsset to Instance[给Instance指定Asset]
-</code></pre>
-<p>Add Actors to Data Layer Instance</p>
-<p>Performance - 合理组织<br>避免一次性加载过多。</p>
-<p>相关函数:<br>Set Data Layer Instance Runtime State<br>    - Loaded 加载不可见<br>    - Activated 加载并可见</p>
-<p>Level Instances &amp; Packed Level Blueprints</p>
-<ul>
-<li>默认情况下 使用的对应的Data Layer。</li>
-<li>可以内部设置不同的Data Layer, 便于依据情况动态启用</li>
-</ul>
-<p>总之 Actors与DataLayer的耦合不高，对DataLayer的操作不会影响到Actor<br>最多是处理 One File Per Actor文件</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>Level</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UE-ActorLifeTime</title>
-    <url>/UE/OfficialDocLearn/Coding/ActorLifeTime/</url>
-    <content><![CDATA[<h1 id="ActorLifeTime"><a href="#ActorLifeTime" class="headerlink" title="ActorLifeTime"></a>ActorLifeTime</h1><p>官方有一张LifeTime的流程图<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-actor-lifecycle">官方文档</a></p>
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/actorlifecycle1.png" class="" title="alt text">
-
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image.png" class="" title="alt text">
-<p>-&gt; AISystemBase的纯虚函数 InitializeActorsForPlay<br>实际上这里也是由World调用下来的</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UEngine::LoadMap</span><br><span class="line">  UWorld::InitializeActorsForPlay</span><br><span class="line">    Level-&gt;RouteActorInitialize</span><br><span class="line">      对Level的Actors(Array of all actors in this level.)进行处理</span><br><span class="line">    AISystem-&gt;InitializeActorsForPlay 默认情况下这里没有任何处理</span><br><span class="line"></span><br><span class="line">  UWorld::AddToWorld 添加Level到World</span><br><span class="line">      Level-&gt;RouteActorInitialize</span><br></pre></td></tr></table></figure>
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-1.png" class="" title="alt text">
-<p>在Actor内部存在一个bActorInitialized标志位 可以避免重复初始化。 Level那边也会判定这个标志位。<br>该标志位，在Actor的PostInitializeComponents会进行设置。</p>
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-2.png" class="" title="alt text">
-<p>Actor的创建,看到LevelActor.cpp中的SpawnActor,还是要结合UObject的来。C++层面是进行拷贝复制。其初始化更早。而蓝图方面的初始化就延后到OnConstruction了。</p>
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-3.png" class="" title="alt text">
-<p>Actor生成，蓝图构造代码执行之前。</p>
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-4.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-5.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-6.png" class="" title="alt text">
-<img src="/UE/OfficialDocLearn/Coding/ActorLifeTime/image-7.png" class="" title="alt text">
-<p>垃圾回收这部分还是可以看到UObject。</p>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
       </tags>
   </entry>
   <entry>
@@ -2426,42 +2209,6 @@
       </tags>
   </entry>
   <entry>
-    <title>UE-Reflection System</title>
-    <url>/UE/OfficialDocLearn/Coding/UECPlusPlusReflection/</url>
-    <content><![CDATA[<h1 id="反射系统-Reflection-System"><a href="#反射系统-Reflection-System" class="headerlink" title="反射系统 Reflection System"></a>反射系统 Reflection System</h1><p>参考文章：<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/reflection-system-in-unreal-engine">Reflection System in Unreal Engine</a><br><a href="https://zhuanlan.zhihu.com/p/717920216">UE5标识符详解 | 史上最全 - 知乎</a></p>
-<p>总结：<br>反射指程序在运行时动态检查、修改自身状态或行为的能力。C++本身并不支持反射。<br>之前在用typescript和lua的时候，有很多写法其实就用到了反射的功能，只是没有去意识到。<br>要实现反射功能，需要收集对应的数据，并有相应的逻辑系统进行处理。<br>虚幻的反射便是基于宏来实现的。</p>
-<p>关于虚幻引擎的宏 可以去看看大钊知乎的那篇符号说明的文章。<br>部分宏：<br>UCLASS、UFUNCTION、UPROPERTY、USTRUCT、UINTERFACE、UENUM。<br>通过宏，虚幻的反射系统才能收集到对应的信息并进行处理。</p>
-<blockquote>
-<p>-&gt; make UE aware of new classes,functions and varibales.<br>-&gt; These macros are garbage collected by the engine. 【指对对应的变量进行垃圾回收】。</p>
-</blockquote>
-<p>垃圾回收这块针对的还是变量。UFUNCTION宏主要是将函数暴露给反射系统。</p>
-<p>一个简单的例子我想便是编辑器中对应字段的显示。<br>编辑器和运行时的Game一样，本身也是一个World。我们要在编辑器窗口去显示各种字段，不可能为每一个C++类单独去编写对应的显示逻辑。</p>
-<p>在总览，官方文档还提到了常用的 TSubclassOf 用来获取UClass type的模板类（这里其实就是运行时类型检查了），以及元数据说明符和虚幻自己实现的智能指针。</p>
-<p>关于元数据说明符：Metadata Specifiers，同样可以看大钊的那篇参考文章。meta部分主要是在编辑器下生效，从而可以编写自己的编辑器工具和功能。</p>
-<p>关于智能指针部分：Unreal Smart Pointer Library 智能指针库：</p>
-<ol>
-<li>共享指针：引用计数</li>
-<li>弱指针：引用不计数</li>
-<li>共享引用Shared References(non - nullable Shared Pointers)：同不可为空的共享指针。</li>
-<li>唯一指针Unique Pointers：同一时间仅一个唯一指针指向对象。额外需要注意的一点是，当唯一指针超出作用域时，其会自动删除引用的对象。[这也意味着，对唯一指针引用的对象使用共享指针&#x2F;共享引用是很危险的(也不应当为共享指针&#x2F;引用对象创建唯一指针)]<br>智能指针部分，和反射系统功能存在较为紧密的关系，如GC部分。</li>
-</ol>
-<p>那么，虚幻引擎基于反射又有哪些应用场景呢：</p>
-<ol>
-<li>编辑器集成。 这个刚刚也提到了。</li>
-<li>垃圾回收(GC)。我们要去处理UObject派送类的引用关系，自动管理生命周期。</li>
-<li>蓝图交互</li>
-<li>序列化和反序列化、网络复制。如网络属性同步。<br>等等。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>UE</category>
-      </categories>
-      <tags>
-        <tag>UE</tag>
-        <tag>C++ Coding</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>UE-UInterface</title>
     <url>/UE/OfficialDocLearn/Coding/UInterface/</url>
     <content><![CDATA[<h1 id="Unreal-Interfaces"><a href="#Unreal-Interfaces" class="headerlink" title="Unreal Interfaces"></a>Unreal Interfaces</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于接口的概念，在其他很多语言都有类似的定义。比如Typescript。而C++本身没有接口的语法。</p>
@@ -2632,6 +2379,42 @@
       </tags>
   </entry>
   <entry>
+    <title>UE-Reflection System</title>
+    <url>/UE/OfficialDocLearn/Coding/UECPlusPlusReflection/</url>
+    <content><![CDATA[<h1 id="反射系统-Reflection-System"><a href="#反射系统-Reflection-System" class="headerlink" title="反射系统 Reflection System"></a>反射系统 Reflection System</h1><p>参考文章：<br><a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/reflection-system-in-unreal-engine">Reflection System in Unreal Engine</a><br><a href="https://zhuanlan.zhihu.com/p/717920216">UE5标识符详解 | 史上最全 - 知乎</a></p>
+<p>总结：<br>反射指程序在运行时动态检查、修改自身状态或行为的能力。C++本身并不支持反射。<br>之前在用typescript和lua的时候，有很多写法其实就用到了反射的功能，只是没有去意识到。<br>要实现反射功能，需要收集对应的数据，并有相应的逻辑系统进行处理。<br>虚幻的反射便是基于宏来实现的。</p>
+<p>关于虚幻引擎的宏 可以去看看大钊知乎的那篇符号说明的文章。<br>部分宏：<br>UCLASS、UFUNCTION、UPROPERTY、USTRUCT、UINTERFACE、UENUM。<br>通过宏，虚幻的反射系统才能收集到对应的信息并进行处理。</p>
+<blockquote>
+<p>-&gt; make UE aware of new classes,functions and varibales.<br>-&gt; These macros are garbage collected by the engine. 【指对对应的变量进行垃圾回收】。</p>
+</blockquote>
+<p>垃圾回收这块针对的还是变量。UFUNCTION宏主要是将函数暴露给反射系统。</p>
+<p>一个简单的例子我想便是编辑器中对应字段的显示。<br>编辑器和运行时的Game一样，本身也是一个World。我们要在编辑器窗口去显示各种字段，不可能为每一个C++类单独去编写对应的显示逻辑。</p>
+<p>在总览，官方文档还提到了常用的 TSubclassOf 用来获取UClass type的模板类（这里其实就是运行时类型检查了），以及元数据说明符和虚幻自己实现的智能指针。</p>
+<p>关于元数据说明符：Metadata Specifiers，同样可以看大钊的那篇参考文章。meta部分主要是在编辑器下生效，从而可以编写自己的编辑器工具和功能。</p>
+<p>关于智能指针部分：Unreal Smart Pointer Library 智能指针库：</p>
+<ol>
+<li>共享指针：引用计数</li>
+<li>弱指针：引用不计数</li>
+<li>共享引用Shared References(non - nullable Shared Pointers)：同不可为空的共享指针。</li>
+<li>唯一指针Unique Pointers：同一时间仅一个唯一指针指向对象。额外需要注意的一点是，当唯一指针超出作用域时，其会自动删除引用的对象。[这也意味着，对唯一指针引用的对象使用共享指针&#x2F;共享引用是很危险的(也不应当为共享指针&#x2F;引用对象创建唯一指针)]<br>智能指针部分，和反射系统功能存在较为紧密的关系，如GC部分。</li>
+</ol>
+<p>那么，虚幻引擎基于反射又有哪些应用场景呢：</p>
+<ol>
+<li>编辑器集成。 这个刚刚也提到了。</li>
+<li>垃圾回收(GC)。我们要去处理UObject派送类的引用关系，自动管理生命周期。</li>
+<li>蓝图交互</li>
+<li>序列化和反序列化、网络复制。如网络属性同步。<br>等等。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>UE-UObjectCreation</title>
     <url>/UE/OfficialDocLearn/Coding/UObjectCreation/</url>
     <content><![CDATA[<p>UObject的基础部分可以看到这里:</p>
@@ -2707,6 +2490,223 @@
       <tags>
         <tag>UE</tag>
         <tag>C++ Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE - Level</title>
+    <url>/UE/OfficialDocLearn/Levels/Level/</url>
+    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Levels/Level/img.png" class="">
+
+<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>Level 或者亦可以称之为 Map </p>
+<ul>
+<li>资产文件.umap</li>
+</ul>
+<p>Levels &amp;&amp; World Partition<br>结合UWorld相关的概念进行理解</p>
+<p>World Settings (结合ULevel UWorld)</p>
+<p>设置和Level相关的各类信息。不过这里感觉还是要留意World的概念，以及SubLevels。<br>具体详细的还是看到官方文档。这里没必要做过多赘述。</p>
+<ul>
+<li><p>Precomputed Visibility<br>  -&gt; volumes reduce rendering thread time.<br>  -&gt; For smaller level, Hardware limitation  | 移动设备</p>
+</li>
+<li><p>GameMode</p>
+</li>
+<li><p>Lightmass 光源设置</p>
+</li>
+<li><p>World [相关还是可以看看官方文档]</p>
+<ul>
+<li>Level bounds</li>
+<li>navigation systems</li>
+<li>“World Depth”</li>
+</ul>
+</li>
+<li><p>Physics</p>
+<ul>
+<li>World Gravity 重力</li>
+</ul>
+</li>
+<li><p>Broadphase</p>
+<ul>
+<li>Feature of NVIDIA’s PhysX system</li>
+<li>这部分可以看看知乎文章<a href="https://zhuanlan.zhihu.com/p/113415779">https://zhuanlan.zhihu.com/p/113415779</a></li>
+<li>粗碰撞检测</li>
+</ul>
+</li>
+<li><p>HLODSystem</p>
+<ul>
+<li>Replace multiple Static Mesh Actors with single combined Satic Mesh<br>Actor at long view distances.</li>
+<li>优化Drawcalls</li>
+</ul>
+</li>
+<li><p>World Partition</p>
+<ul>
+<li>For Large world management. [Distance-based level streaming]</li>
+<li>和Sublevels还有关。</li>
+</ul>
+</li>
+<li><p>Navigation</p>
+</li>
+<li><p>VR</p>
+</li>
+<li><p>Rendering</p>
+<ul>
+<li>Distance field ambient occlusion “距离场环境光遮蔽”</li>
+<li>Dynamic indirect shadows</li>
+</ul>
+</li>
+<li><p>Audio</p>
+<ul>
+<li>Volume,Reverb,Fade time</li>
+</ul>
+</li>
+<li><p>Tick</p>
+<ul>
+<li>详细见 Actor ticking</li>
+</ul>
+</li>
+<li><p>AI</p>
+</li>
+<li><p>Cooking</p>
+<ul>
+<li>Affect how the content in Scenes will be included in built game.</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>Level</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE - LevelInstancing</title>
+    <url>/UE/OfficialDocLearn/Levels/LevelInstancing/</url>
+    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Levels/LevelInstancing/img.png" class="">
+
+<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>Level Instances </p>
+<pre><code>- 1. Level Instances -&gt; Collection of Actors, to create sublevel
+
+- 2. Packed Level Blueprints -&gt; 静态网格体组合[渲染优化] 
+</code></pre>
+<p>Creating Level Instances</p>
+<p>小结:<br> 两者其实都是将场景中的对象进行组合一起管理的一种方式。并且提供了复制的功能、<br>在改动时 可以同步对应的改动。<br>  Packed Level Blueprint 有着对应的蓝图对象可以用来操作</p>
+<p>默认情况下使用组合节点的Data Layer,<br>内部也可以自定义不同的Data Layer</p>
+<p>Level Steaming Modes:</p>
+<ol>
+<li><p>Embedded Mode - 相当于仅在编辑器时，存在对应的 Level Instances. 运行<br>时还是加载对应的Actor [这个也是推荐的模式 需要OFPA]</p>
+</li>
+<li><p>Level Streaming Mode - 作为一个整体。其所在的World Partition Cell被加载时，<br>整一个Level也会被加载[Level instances that do not use OFPA]</p>
+</li>
+</ol>
+<p>Summary:<br>比较在意的一点是，官方在这里用的概念是”Level”。在Level Instances中用的概念也<br>是”SubLevel”。实际上，在编辑器中选择Actors打包成Level Instance时,也确实会生成<br>一个Level，并需要保存。而Packed Level Blueprint会生成一个Level和一个Packed Level<br>Actor的蓝图类。</p>
+<p>在逻辑和应用上，我们应该是希望把某一些静态的对象作为一个整体来进行管理，或者是<br>复用。类似于预制体的概念。</p>
+<p>在使用WorldPartition并使用OAPF时可以考虑其进行场景对象的管理[但也需要注意改动一<br>个会影响到其他 可以认为是同一份数据],不影响运行时[Embedded Mode]。而Packed<br>Level Blueprints提到的渲染优化特性也可以一起利用上。</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>Level</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UE - WorldPartition</title>
+    <url>/UE/OfficialDocLearn/Levels/WorldPartition/</url>
+    <content><![CDATA[<h1 id="笔记内容"><a href="#笔记内容" class="headerlink" title="笔记内容"></a>笔记内容</h1><img src="/UE/OfficialDocLearn/Levels/WorldPartition/img.png" class="">
+
+<h1 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h1><p>目录和话题：</p>
+<ul>
+<li>World Partition</li>
+<li>One File Per Actor</li>
+<li>Data Layers</li>
+</ul>
+<p>World Partition:<br>世界分区 结合之前Level 与 SubLevels的概念</p>
+<ul>
+<li>重点在于如何处理大世界 </li>
+<li>动态的加载和卸载对应的”子地图模块”以及上面的资源</li>
+<li>处理跨地图的寻路和Actor逻辑</li>
+<li>子模块的单独开发[资源独立性 开发效率]</li>
+</ul>
+<p>基于上述需求 - 新的解决方案： World Partition</p>
+<ul>
+<li><p>“Cells” 的概念</p>
+</li>
+<li><p>由WorldPartition来控制Cells的加载与卸载</p>
+</li>
+<li><p>基于流送源的距离 [Based on distance from a streaming source]</p>
+</li>
+<li><p>Single Persistent Level  单个Level</p>
+</li>
+<li><p>“Grid Cells” 单元格概念</p>
+</li>
+</ul>
+<p>Actors - 需要了解 One File Per Actor的概念</p>
+<ul>
+<li>在World Partition中设置其归属Grid</li>
+<li>在不属于Disabled Data Layer时 依据 Is Spatially Loaded 来控制是否动态加载</li>
+</ul>
+<p>One File Per Actor </p>
+<ul>
+<li>Extra File To Save Data For Instatnce Actor</li>
+<li>改变关卡内的Actor时 不需要改变Level</li>
+<li>使用ViewChangeList Window 来查看改动<br>[虚幻内部的管理工具 可了解 In-Editor Source Control]</li>
+</ul>
+<p>Steaming Sources 流送源 [Think of AOI]</p>
+<p>额外需要思考的是服务端与客户端不同情况的加载<br>从PlayerController 的角度来看 服务端为玩家个数 而客户端就为单个了。</p>
+<ul>
+<li>PlayerController 子项设置里面的enable Streaming Source</li>
+</ul>
+<p>World Partition Steaming Source Component<br>这里做一些简要例举 详细的可以看官方Doc</p>
+<p>Cell Size - 256*256*256的正方体<br>Loading Range  - 768(Meter) around a steaming source</p>
+<p>Editor加载逻辑 - 主要是编辑器下相关操作和内容 详细见官方Doc</p>
+<p>HLOD -</p>
+<ul>
+<li>不同的Cells 有着自己的HLOD设定 </li>
+<li>Build -&gt; Build HLODs 依据设定生成对应的数据</li>
+</ul>
+<p>Blueprint -<br>  “世界分区”世界[World Partition world]可以用Blueprint与Level Blueprint<br>但更推荐用Blueprint。</p>
+<ul>
+<li>“Any Actors referenced in Level Blueprint will be marked as Always Loaded”<br>这样就丢失了动态加载的特性了</li>
+</ul>
+<p>World Partition - Data Layers<br>[旧版本的 Layers System]</p>
+<p>Organize Actors 管理对象 [Both runtime and in the Editor]</p>
+<ul>
+<li>两个概念： Data Layer Assets &amp; Data Layer Instance</li>
+<li>动态加载&#x2F;事件触发</li>
+<li>区分元素 Gameplay元素 &amp; 环境元素[美术]</li>
+</ul>
+<p>Data Layer Assets </p>
+<ul>
+<li>独立于”World”的概念 </li>
+<li>Editor 与 Runtime 两种类别。前者用于帮助组织资产，后者可以用于游戏性功能</li>
+</ul>
+<p>具体的实例 - Data Layer Instance [World-Specific]</p>
+<p>Data Layers Outliner 主要也是管理 Data Layer Instance</p>
+<p>Using Data Layers:</p>
+<pre><code>- Start by creating Data Layers Asset
+
+- Create Data Layer Instance [默认是空白的]
+
+- Assign DataLayerAsset to Instance[给Instance指定Asset]
+</code></pre>
+<p>Add Actors to Data Layer Instance</p>
+<p>Performance - 合理组织<br>避免一次性加载过多。</p>
+<p>相关函数:<br>Set Data Layer Instance Runtime State<br>    - Loaded 加载不可见<br>    - Activated 加载并可见</p>
+<p>Level Instances &amp; Packed Level Blueprints</p>
+<ul>
+<li>默认情况下 使用的对应的Data Layer。</li>
+<li>可以内部设置不同的Data Layer, 便于依据情况动态启用</li>
+</ul>
+<p>总之 Actors与DataLayer的耦合不高，对DataLayer的操作不会影响到Actor<br>最多是处理 One File Per Actor文件</p>
+]]></content>
+      <categories>
+        <category>UE</category>
+      </categories>
+      <tags>
+        <tag>UE</tag>
+        <tag>Level</tag>
       </tags>
   </entry>
   <entry>

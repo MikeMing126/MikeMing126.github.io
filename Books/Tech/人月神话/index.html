@@ -1,0 +1,380 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>人月神话 | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="章节阅读总结第一章 焦油坑对编程系统产品的一个概述。 点明了一些当前存在的问题。  开发技术一直在进步，一旦设计被冻结，在概念上就已经开始陈旧。 对他人代码的依赖和相关文档的欠缺  第二章 人月神话合理的进度安排 【“重点”】  不合理的原因 估算技术 （并非一切都会良好运行） 进度和工作量并不等同[人月衡量的问题] 进度监控和偏离预期时的人力问题。作者的核心观点：”缺乏合理的进度安排时造成项目滞">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人月神话">
+<meta property="og:url" content="https://mikeming126.github.io/Books/Tech/%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="章节阅读总结第一章 焦油坑对编程系统产品的一个概述。 点明了一些当前存在的问题。  开发技术一直在进步，一旦设计被冻结，在概念上就已经开始陈旧。 对他人代码的依赖和相关文档的欠缺  第二章 人月神话合理的进度安排 【“重点”】  不合理的原因 估算技术 （并非一切都会良好运行） 进度和工作量并不等同[人月衡量的问题] 进度监控和偏离预期时的人力问题。作者的核心观点：”缺乏合理的进度安排时造成项目滞">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2025-07-13T12:34:52.640Z">
+<meta property="article:modified_time" content="2025-07-13T12:58:05.337Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="人月神话">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "人月神话",
+  "url": "https://mikeming126.github.io/Books/Tech/%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2025-07-13T12:34:52.640Z",
+  "dateModified": "2025-07-13T12:58:05.337Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/Books/Tech/%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '人月神话',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">人月神话</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">人月神话</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-07-13T12:34:52.640Z" title="发表于 2025-07-13 20:34:52">2025-07-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-07-13T12:58:05.337Z" title="更新于 2025-07-13 20:58:05">2025-07-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%B9%A6%E6%9C%AC%E9%98%85%E8%AF%BB/">书本阅读</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">6.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>19分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="章节阅读总结"><a href="#章节阅读总结" class="headerlink" title="章节阅读总结"></a>章节阅读总结</h1><h2 id="第一章-焦油坑"><a href="#第一章-焦油坑" class="headerlink" title="第一章 焦油坑"></a>第一章 焦油坑</h2><p>对编程系统产品的一个概述。</p>
+<p>点明了一些当前存在的问题。</p>
+<ul>
+<li>开发技术一直在进步，一旦设计被冻结，在概念上就已经开始陈旧。</li>
+<li>对他人代码的依赖和相关文档的欠缺</li>
+</ul>
+<h2 id="第二章-人月神话"><a href="#第二章-人月神话" class="headerlink" title="第二章 人月神话"></a>第二章 人月神话</h2><p>合理的进度安排 【“重点”】</p>
+<ul>
+<li>不合理的原因</li>
+<li>估算技术 （并非一切都会良好运行）</li>
+<li>进度和工作量并不等同[人月衡量的问题]</li>
+<li>进度监控和偏离预期时的人力问题。<br>作者的核心观点：”缺乏合理的进度安排时造成项目滞后的主要原因“</li>
+</ul>
+<p>阶段：<br>  构思 实现 交流</p>
+<p>关于人月：<br>  培训和沟通成本</p>
+<p>强调系统测试的重要性：<br>计划、编码和测试（构建测试和早期系统测试，系统测试） 在时间安排和最终的分配上，1&#x2F;3 1&#x2F;6 1&#x2F;4 1&#x2F;4<br>不过这里基于不同的项目和开发节奏，应该有所变更</p>
+<p>向进度落后的软件项目增加人手，会使进度更加落后</p>
+<ul>
+<li>这里我感觉到没那么必然，只是管理者必须意识到，增加人手带来的额外开销。</li>
+<li>独立任务的划分也很重要</li>
+</ul>
+<p>“项目的月数依赖于次序的约束，人员的最大数量依赖于独立子任务的数量”</p>
+<h2 id="第三章-外科手术团队"><a href="#第三章-外科手术团队" class="headerlink" title="第三章 外科手术团队"></a>第三章 外科手术团队</h2><p>小型精英团队的问题 - 对于大型项目 所需要的时间太久了。<br>而正如之前所述，时间还是很重要的。 大型系统，不可否认需要大量人手。</p>
+<p>大型项目分多个部分，每个部分由一个团队处理</p>
+<p>外科手术团队 </p>
+<ul>
+<li>“仅一人操刀，而不是所有人都拿刀乱砍”</li>
+</ul>
+<p>外科手术团队的关键：</p>
+<ol>
+<li>有一个关键决策者</li>
+<li>几个了解所有设计和全部代码的人</li>
+<li>专业化分工</li>
+</ol>
+<p>大型项目：<br>每部分的概念完整性的提高<br>分解技术</p>
+<p>重点核心感觉还是在降低沟通和决策的成本。首席程序员的作用。<br>工具维护人员和其他职能人员在于辅助，让重点人员不必要在部分代码上操心<br>在目前有AI工具的情况下，语言语法部分倒是有了比较大的提升。</p>
+<p>从游戏开发角度出发，倒是在功能区分这块做的比较好。</p>
+<h2 id="第四章-贵族制-民主制和系统设计"><a href="#第四章-贵族制-民主制和系统设计" class="headerlink" title="第四章 贵族制 民主制和系统设计"></a>第四章 贵族制 民主制和系统设计</h2><p>作者在这章主要描述的是外部规约。<br>“系统对外部世界（用户、其他系统）所呈现的行为、接口和功能的正式、精确的描述。它定义了系统“做什么”，而不是“怎么做”。”</p>
+<p>其核心观点是 ：<br>少部分人，作为“架构工作者”，“贵族”，来确定外部规约，换句话说，确定系统的需求。<br>“架构的完整性的确要求系统只反映单一的哲学，用户所见的规约应该来自少数人的思想”<br>设计的一致性和概念的完整性： “设计来自一个人” </p>
+<p>将架构工作与实现分离(这里的架构更偏重于当前的需求概念)<br>“架构陈述的是发生什么，而实现描述的是如何让它发生” </p>
+<ul>
+<li>从工作顺序上来讲，确定需求后，再进行执行。“架构 实现 实施”</li>
+</ul>
+<p>从游戏开发的角度来看，还是有挺多不同的。这里这里主要还是明确需求的设定吧。<br>定义好需求是什么。</p>
+<h2 id="第五章-第二系统效应"><a href="#第五章-第二系统效应" class="headerlink" title="第五章 第二系统效应"></a>第五章 第二系统效应</h2><p>约束架构师的创造热情的准则和机制<br>  – 架构师和建造人员之间彻底、谨慎、和谐的交流</p>
+<p>自律 - 第二系统效应</p>
+<p>“第二个系统是一个人所设计过的最危险的系统”<br>—— 普通倾向是过度设计第二个系统，向系统添加很多修饰功能和想法<br>—— 另一个表现：存在对某些技术进行细化、精炼的趋势</p>
+<p>“保持对特殊诱惑的警觉”<br>—— 避免那些对功能的过多修饰。<br>—— 避免延伸出会因假设和目的的变化而废除的功能。</p>
+<p>第二系统效应其实来自于第一个系统开发和迭代过程中的经验和积累。以及对新框架需求的不确定性和拓展性设计。<br>这样看《重构》的理念和提到的东西真的是相辅相成的。<br>坚持“YAGNI”(you arenot going to need it)，如果需求变化了，有需要添加新的功能，可以先重构使得添加变得简单，再处理新功能。</p>
+<p>当然，我认为这并不是说就不要做基础的设计，只是不要做的过多了。<br>从个人开发战斗框架相关的经验看，亦是如此。</p>
+<h2 id="第六章-传递消息"><a href="#第六章-传递消息" class="headerlink" title="第六章 传递消息"></a>第六章 传递消息</h2><p>书面规约 - 手册</p>
+<p>从游戏开发者的角度来说，需求案子。</p>
+<p>版本日期<br>修改内容</p>
+<p>处理原则的一致性（从工作经验来说，有点难，要看策划的文档水平了，比较还是每个人在写）</p>
+<p>形式化和记叙性定义两种方式来进行规约<br>以一种作为标准，另外一种辅助。</p>
+<p>会议 </p>
+<ul>
+<li>小组会议</li>
+</ul>
+<p>个人总结经验和实践教训：<br>作者本章主要强调了对于书面规约（需求文档）的重要性。文档本身需要描述清楚需求，有一致的编写规范。在多重实现（多模块并行开发）时，严格遵守对应的规约。<br>此外，需求也常是变动的，提到了会议和大会，明确架构师的主导权来确保可以拍板对应问题的方案。也提到了电话日志，通过电话日志来记录对应的反馈问题和回答。</p>
+<p>基于个人项目开发经验：<br>在游戏行业中前端的需求主要还是策划案子驱动，对于一致性上应该还是比较难做到高要求保证。行业的需求多变性也意味着案子需常常更新。这块需要及时同步。三方会议，项目组周会都是比较好的实践方案。<br>但在执行过程中，或许测试的介入并没那么理想，还要多多注意吧。</p>
+<h2 id="第七章-为什么巴别塔会失败"><a href="#第七章-为什么巴别塔会失败" class="headerlink" title="第七章 为什么巴别塔会失败"></a>第七章 为什么巴别塔会失败</h2><p>交流和组织的重要性：</p>
+<p>1 非正式交流<br>2 常规项目会议<br>3 工作手册</p>
+<p>工作手册<br>用于了解思路，并可以追溯设计<br>正确的文档结构</p>
+<p>虽然道理比较简单，但是如何维护还是大问题。之前参与的游戏项目在程序侧的文档倒是真的很少。<br>因为需求变化很频繁，还是通过代码来而不是单独的文档。</p>
+<p>不可否认的是，对于大型项目，文档还是比较必要的。例如虚幻引擎的文档。</p>
+<p>组织：<br>交流成本 - 减少交流和协调的数量<br>人力分工和职能专门化<br>管理和技术<br>把时间放在重点问题上</p>
+<h2 id="第八章-胸有成竹"><a href="#第八章-胸有成竹" class="headerlink" title="第八章 胸有成竹"></a>第八章 胸有成竹</h2><p>在进行项目时间估计时，不可简单地仅从编码的量来估计。<br>计划、编制文档、测试、系统集成和培训的时间必须被考虑在内。<br>“对于短跑数据做线性外推是没有意义的。就好像把百码短跑时间外推，得出人类可以在3分钟内跑完1英里的结论一样”</p>
+<p>一项研究（不一定准）<br>工作量 &#x3D; 常数 X 指令的数量^1.5 【幂函数】</p>
+<p>作者强调，在估计时间的时候，不能过于理想化：</p>
+<ol>
+<li>其他业务和意外的时间</li>
+<li>大量交互时的效率下降<br>大约实际耗时为估计的2倍 。而且项目在发展过程中，随着项目规模的变大，对应的编程和调试速度都有下降</li>
+</ol>
+<p>作者这章主要还是说明，在估计的时候要多去考虑一下其他因素。并举了一些相关的数据例子来说明实际的情况。合理的项目规划和时间安排还是比较重要的，在游戏开发行业亦是如此。实际上也经常会有各种问题打断当前的开发进度。在估时的时候，最好不要仅按程序工作量来估。测试方面的流程和时间，从个人经验来说，是比较紧缺的（这样导致了许多问题和线上修复。）还是看能不能学习和吸取一些教训吧。</p>
+<h2 id="第九章-削足适履"><a href="#第九章-削足适履" class="headerlink" title="第九章 削足适履"></a>第九章 削足适履</h2><p>规模控制<br>研究用户及其应用，设置待开发系统的规模。 “规模-速度”权衡方案</p>
+<p>作者这里提出了几点：<br>1 和定制驻留空间预算一样，应该指定总体规模预算；和定制规模预算一样，应该制定后台存储访问的预算<br>2 在规定模块有多大的同时，确切定义模块的功能<br>3 编程人员在优化个人相关的部分时，系统架构师需要保持警觉性，确保连贯的系统完整性。从系统整体出发、面向用户</p>
+<p>用功能换空间【存储空间和内存空间】<br>考虑空间与时间折中【培训，常用功能的高效实现方案】</p>
+<p>“表达时编程的本质”<br>战略上的突破常来自数据或表的重新表达<br>—— 通过重构数据的组织方式、结构或抽象模型，从根本上解决复杂性问题</p>
+<p>现代的硬件相比较过去有了非常大的发展和进步。无论是存储空间还是内存空间。<br>不过即便如此，现代游戏的内存占用（或者到显存），也时常是优化的一个重点。（这里不得不提怪物猎人：荒野的多边形怪兽了）。而存储空间也是很多游戏会考虑的一个点。（特别是部分要考虑首包的）</p>
+<p>不过从程序角度而言，如果不是小程序（强调小首包），代码方面的实际硬件占用空间是非常小的。<br>而另一方面，对于性能（如CPU占用开销）和内存空间（进一步到显存空间），相关的理念还是适用的。</p>
+<p>对于游戏项目，或许还是辩证思考，一方面游戏本身的迭代开发很快，和书本中的操作系统不太一样，另一方面，有《重构》的指导思想，在敏捷开发的过程中，去实际进行性能测试并针对热点改善，效率或许会更高。</p>
+<p>总而言之，在开发过程中有意识的去考虑些性能热点以及内存占用热点，在重构的时候考虑数据的表达方式，应该都是挺有帮助的。</p>
+<h2 id="第十章-提纲挈领"><a href="#第十章-提纲挈领" class="headerlink" title="第十章 提纲挈领"></a>第十章 提纲挈领</h2><p>文书工作：<br>文档的跟踪、维护机制是项目监督和预计的机制。<br>本身可以作为检查列表、状态控制的依据，也可以作为汇报的数据基础。</p>
+<p>产品文档 【时间、地点、人员、项目内容和资金】</p>
+<ul>
+<li>目标</li>
+<li>规约[手册加上性能规约]</li>
+<li>进度</li>
+<li>预算</li>
+<li>组织结构图</li>
+<li>工作空间的分配<br>估算、预测、价格</li>
+</ul>
+<h2 id="第十一章-未雨绸缪"><a href="#第十一章-未雨绸缪" class="headerlink" title="第十一章 未雨绸缪"></a>第十一章 未雨绸缪</h2><p>“试验性工厂”的概念<br>—— 为舍弃而计划</p>
+<p>“唯一不变的就是变化本身” </p>
+<p>由此，我们需要为变更提前做准备：</p>
+<ol>
+<li>为变更设计系统<br>作者强调了高级语言和自文档技术(指通过编写清晰、结构化和表达性强的代码本身来减少对独立外部文档的依赖。“代码应当是首要且最准确的文档来源”)</li>
+</ol>
+<p>以及变更的阶段化，数字版本号，以及对应的日程表和冻结日期。</p>
+<p>从游戏开发的角度亦是如此。在游戏开发过程中，有着对应的开发版本规划。不过代码的迭代和需求变更也是常事。个人觉得在设计的时候未雨绸缪是一件好事，但还是保持不过度设计，做好模块的解耦，利用好重构的方法更好一些。</p>
+<ol start="2">
+<li>为变更计划组织架构<br>设计文档 —— 将自己暴露在每个人的批评之下<br>少数顶级程序作为“技术轻骑兵”可以灵活安排 （从事实际的编程工作）</li>
+</ol>
+<p>比较全能的思想 —— “项目目标、进展和管理问题必须在所有高层人员红得到共享”</p>
+<p>管理人员也要技术课程，高级技术人员也要有管理培训</p>
+<p>个人并不否认两者结合的好处，不过也看到现实的一些问题。项目组确实有人身居高位只管理而脱离底层太久，对技术细节没有了解，而自己在技术发展过程中，也会遇到不能单打独斗，需要带领小组一起攻坚的问题。<br>在发展过程中，个人会认为还是一条为主，一条为辅吧。（还是要有兼顾辅路线的心态和准备）。</p>
+<p>前进两步 退后一步<br>程序维护 和 Bug相关的问题  —— “缺陷修复总会以固定的概率引入新的Bug”<br>回归测试的重要性和对应的成本</p>
+<p>前进一步 后退一步<br>所有修改都倾向于破坏系统的架构，增加了系统的混乱程度。<br>崭新的、基于原有系统的重新设计是完全必要的。</p>
+<p>在游戏行业从事，可以说和变化相处的很多。大版本的需求变化，版本内的需求变更，都是常态。<br>作者在本章主要点明了对应的问题，也基于此提出了为变更设计系统和为变更计划组织框架两点。但在具体实施细节上并没有阐述很多。</p>
+<p>对于前进两步，退后一步和前进一步，退后一步的两个问题，个人认为是想先点出现实问题，管理层需要在版本规划和时间分配上明确对应的潜在风险和成本。<br>从开发者角度来说，如何解决对应的问题呢？特别是在游戏行业。</p>
+<p>我个人还是基于项目经验和最近阅读的书做些不成熟的建议：</p>
+<ol>
+<li>新功能开发时，可以在合理范围内做好拓展性和设计，避免和现有功能过度耦合。</li>
+<li>当然，随着需求变更，或者版本排期时间紧问题，一些临时功能在开发时，常常会逐步导致系统模块和功能的耦合性增加</li>
+<li>利用好《重构》武器，优化可读性和耦合度</li>
+<li>必要的时候，可以对框架进行优化修改。但是需要提高警惕心，做好对应的测试工作。</li>
+</ol>
+<p>自己在开发RPG战斗框架时，几个月时间便对战斗流程梳理更改了好多次，以支持策划的新功能。当然，这块也是要明确和策划沟通清楚，强调重构和优化的重要性。<br>我想也是因为这些工作和开发，项目的战斗总体上比较顺利。算是“未雨绸缪”了。</p>
+<h2 id="第十二章-干将莫邪"><a href="#第十二章-干将莫邪" class="headerlink" title="第十二章 干将莫邪"></a>第十二章 干将莫邪</h2><p>工具<br>通用工具和专业工具  以及专门为此开发的人员和资源</p>
+<p>设备、实用程序、调试辅助程序、测试用例生成工具和处理文档的字处理系统。</p>
+<p>要读懂这章，需要站在最上层管理者、项目经理的角度来思考问题。</p>
+<p>目标机器<br>—— 某种程度是可以认为是测试设备。<br>因为开发进度原因，都是早期使用需求低，晚期使用需求高。在目标设备有限且少数的情况下，可以考虑分配安排时间块的方式进行管理，提高生产率。</p>
+<p>辅助机器和数据服务<br>仿真装置 —— 稳定可靠的平台。（这里对于软件开发者应该是相同，部分bug可能来自于运行平台的问题。且新设备如果不稳定会对开发有比较大的影响）<br>编译器和汇编平台 —— 从游戏行业的角度出发，个人认为，比如打包机。 稳定的打包环境和设备。<br>程序库和管理 —— 从逻辑功能上可以认为类似于SVN源码管理，以及个人的分支（或者说是子项目分支）。开发有对应的备份管理，并有release，使得进展变得正式。[当然，这里还要考虑第三方库&#x2F;插件的使用、升级，以及引擎版本的升级等问题]<br>编程工具 —— 现在的软、硬件已经有很大进步了。不过，项目组一般都会有统一的开发环境（如一些必要插件等）<br>文档系统 —— 类似项目组的知识库。作者提到了“OS&#x2F;360的文档规模是机器庞大的，但阅读计划是被仔细安排的。”<br>性能仿真装置 —— 性能测试</p>
+<p>高级语言和交互式编程<br>现代编程，在不涉及到底层系统的软件，在高级语言方面的应用算是常态了。<br>交互式编程个人觉得还是看应用场景。对于游戏开发者而言，编辑器环境的运行时热重载（如lua或者js）个人认为是加分项而不是必须品。</p>
+<h2 id="第十三章-整体部分"><a href="#第十三章-整体部分" class="headerlink" title="第十三章 整体部分"></a>第十三章 整体部分</h2><p>开发一个可以运行的系统，测试系统，将经过测试的一系列构件集成到已测试过、可以依赖的系统</p>
+<p>剔除bug的设计<br>防范bug的定义 —— 产品的概念完整性  细致的功能定义、仔细的规格说明、规范化的功能描述说，以及这些方法的实施。<br>测试规格说明 —— 提供给外部测试小组，详细的检查说明的完整性和明确性。<br>自上而下的设计 —— 体系化结构设计、设计实现和物理编码实现。模块的独立性，以及细节抑制。<br>结构化编程 —— 以规范化的控制结构组织程序逻辑，使得程序更易于理解，逻辑更清晰</p>
+<p>系统集成调试<br>使用经过调试的构件单元 —— 实际的应用过程中，不一定是在所有构件测试运行完后再开始。这里的观点是，在系统测试中使用完好的、经过调试的构件，能比搭建测试平台和进行全面的构建单元测试节省更多时间。<br>搭建充分的测试平台 —— 伪构件(提供接口和伪数据)，以及辅助程序（开发专用的辅助工具）<br>控制变更 —— 对变更和差异的记载，在一个日志中记录所有的变更。<br>一次添加一个构件 —— 注意完整的测试用例和回归测试<br>阶段化、定期变更 —— 将使用中的构件替换成新版本。注意系统化测试流程。阶段化和定期发布，确保稳定的生产周期。作者的观念和经验是，采用阶段大、间隔宽而不是阶段小而频繁。</p>
+<p>关于测试方面，结合游戏经验，对于控制变更，可以单独提对应的bug单来处理，而阶段化、定期变更，更像是版本切分支。所有的目标都还是为了维护系统的稳定性，同时确保更改可以追溯。</p>
+<p>而在硬件方面的论述和测试，因为和当代差别非常大，这里就不赘述了</p>
+<h2 id="第十四章-祸起萧墙"><a href="#第十四章-祸起萧墙" class="headerlink" title="第十四章 祸起萧墙"></a>第十四章 祸起萧墙</h2><p>“延迟的时间是一天天积累下来的”</p>
+<p>里程碑的定义和具体作用与限制<br>—— 明显边界和无歧义的里程碑</p>
+<p>合理的里程碑规划，以及定时进行的里程碑修订</p>
+<p>滞后的影响 —— PERT和关键路径。<br>整个网状结构的展开、任务之间的依赖关系识别和各个任务链的估计</p>
+<p>面对滞后的问题:<br>两种信息：需要采取行动计划的问题和用来分析的状态数据。<br>隐藏的问题 —— 项目经理和老板的利益冲突 由此而导致问题被隐藏<br>作者提出的两种方法：<br>1 减少角色冲突和鼓励状态共享<br>2 猛地拉开地毯 —— 定期的总体评审 揭露问题</p>
+<p>作者主要强调了项目进度的问题。里程碑边界清晰的重要性。整个团队需要明确关键路径，以及自己的任务是否处于关键路径之上。<br>有必要对计划和控制职能进行人力投资，明确项目的实际进展，关注PERT的更新、修订和报告。</p>
+<p>从个人经验和实际实践角度出发，这章看起来是讲大道理，但对关键路径的重视、设定里程碑的具体时间点、计划各个任务的具体时间点这些做法，还是要予以重视的。<br>里程碑的明确性 —— 明确这个版本的主要目标 对于大型子模块而言，如多久能够前后端联调，多久能给策划一个什么样的基础表现<br>关键路径 —— 多人开发大功能时，哪些是互相影响的？ 比如某个玩法的开发是否基于战斗开发之上？<br>任务的具体时间点 —— 每个需求子单的完成时间点。</p>
+<p>其实个人做其他事情也是类似的。在进行规划后，明确重点，并总结统计具体的完成状况，才能有比较好进展。</p>
+<p>PERT图(Program Evaluation Review Technique) 计划评审技术图<br>项目分解、识别依赖、估算时间、构件网络、计算与分析</p>
+<h2 id="第十五章-另外一面"><a href="#第十五章-另外一面" class="headerlink" title="第十五章 另外一面"></a>第十五章 另外一面</h2><p>文档的重要性。<br>以及如何去编写产生优秀的文档</p>
+<p>需要什么文档 依据用户的不同需求来进行编写</p>
+<p>使用程序<br>目的、环境、范围、实现的功能和使用的算法、输入和输出的格式、操作指令、选项、运行时间、精度和校验</p>
+<p>验证程序 —— 测试用例</p>
+<p>修改程序<br>流程图或子系统的结构图<br>对所用算法的完整描述<br>对所有文件规划的解释<br>数据流处理的概要描述<br>初始设计中，对已预见修改的讨论</p>
+<p>自动文档化的程序<br>基础的函数编写等不再赘述<br>代码的格式一致性和空格应用<br>以段落注释的形式，插入必要的记述性文字</p>
+<p>读书学习知识必须要和实际应用结合在一起。提取其中的精华理念并真正的理解和灵活运用。并不是死板地搬运。<br>对于不同的项目有着把不同的适用场景。</p>
+<p>对于游戏行业的软件开发而言，自文档化我认为是非常有用的思想。也能够帮助维护好代码的结构。<br>而在“使用程序”方面，可以多看看GitHub上面的项目。<br>流程图没必要太死扣格式和形式，重点在于帮助理解。对于复杂的战斗可以作图进行沟通。从个人实践而言，比如对战斗流程和技能流畅，可以编写对于的流程图来梳理逻辑并和其他岗位的同学进行交流。</p>
+<h2 id="剩余内容"><a href="#剩余内容" class="headerlink" title="剩余内容"></a>剩余内容</h2><h3 id="第十六章-没有银弹-十七章-再论“没有银弹”"><a href="#第十六章-没有银弹-十七章-再论“没有银弹”" class="headerlink" title="第十六章  没有银弹 十七章 再论“没有银弹”"></a>第十六章  没有银弹 十七章 再论“没有银弹”</h3><p>根本困难：规格说明、设计和测试这些概念上的结构<br>次要困难：软件、对应概念的实现</p>
+<h3 id="第十八章-《人月神话》的观点：是与非"><a href="#第十八章-《人月神话》的观点：是与非" class="headerlink" title="第十八章 《人月神话》的观点：是与非"></a>第十八章 《人月神话》的观点：是与非</h3><p>对之前的章节的重要观点做了详细的概述</p>
+<h3 id="第十九章-20年后的《人月神话》"><a href="#第十九章-20年后的《人月神话》" class="headerlink" title="第十九章 20年后的《人月神话》"></a>第十九章 20年后的《人月神话》</h3><p>概念完整性和架构师<br>明确需求目标，明确用户群 —— 第二系统的问题<br>错误的瀑布模型和增量开发<br>面向对象、接口，通过信息隐藏来提高软件设计水平<br>人月神话 —— 人力和时间的平衡远不是线性关系<br>“人就是一切” </p>
+<h1 id="总结和感想"><a href="#总结和感想" class="headerlink" title="总结和感想"></a>总结和感想</h1><p>软件行业的发展是非常迅速的。<br>在20世纪70年代的《人月神话》，包括10年后再写的第十七章，再论“没有银弹”，再到20年后的人月神话，和现在仍然有几十年的差距。</p>
+<p>而这几十年，硬件和软件行业的发展无疑是非常迅速的。作者的部分案例和观点到如今或许不太使用，但核心观点，根据实际的项目情况和经验，还是很值得学习参考的。</p>
+<p>读书，不是读死书。理解其观点、核心，并基于当代的实际情况实践应用，才能有更好的成长。</p>
+<p>软件的复杂性，游戏行业迅速的迭代和紧迫的版本规划，都在展示着当今的问题。</p>
+<p>个人并不追求“银弹”，因为在此之前，就有许多要解决的问题。需求的排期，项目架构的设计、交流，人月的观点等等。</p>
+<p>作者在19章 “20年后的《人员神话》》”中有那么一小段</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&quot;这本书如何？你有什么想法吗？&quot;</span><br><span class="line">“噢！这里面的东西我早就知道。”</span><br></pre></td></tr></table></figure>
+<p>我并不会自负的说这里面的东西我早就知道，不过部分章节，作者在提出部分观点的时候，我会觉得这就应该是软件项目开发的思维。很庆幸，在大学中所学到的，给我养成了类似的思维。</p>
+<p>虽然对于根本困难——概念性的结构，在游戏行业中，我们很难说做的很完美，（虽然是策划定的，但我们也可以发挥主观能动性，避免不合理、不规范的需求），但在次要困难上，我们有了很多当代工具。电子文档的组织、自文档的代码编写思想，以及强大的武器——重构，可以让我们的项目更健壮些，提高编码效率。</p>
+<p>当然，对于沟通交流，以及人月的工作量计算、关键路径等问题，在实践中还是需要多留意。</p>
+<p>引用作者最后一句话结束吧：<br>“良好的自我判断以及能够使我们认识到自己的不足——谦逊的品格”。<br>在思考和学习中去成长吧，在这片广阔的天地。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/Books/Tech/%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/">https://mikeming126.github.io/Books/Tech/%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/">人月神话</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/Books/ReadingSummary/" title="书本阅读 —— Summary"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">书本阅读 —— Summary</div></div><div class="info-2"><div class="info-item-1">书本阅读 —— Summary前言在大学工作之后，我自己倒是很少再单独去看完整的书籍了。大多数情况，是按需求找些博客，找些项目，或者知乎文章来看。或者是单独去抽某本书的部分来看。 从技术实用角度来说，这样可以依据需求快速的寻找解决方案，到也挺好的。 不过，我仍然认为，有些书本值得整本去读一读，能开阔不少视野。 本篇用来汇总记录我的一些读书感想。 技术项《人月神话》人月神话   《重构:改善既有代码的设计》重构</div></div></div></a><a class="pagination-related" href="/Books/Tech/%E9%87%8D%E6%9E%84/" title="重构:改善既有代码的设计"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">重构:改善既有代码的设计</div></div><div class="info-2"><div class="info-item-1">章节阅读总结前言重构这本书主要还是要注重其重构的思想和应用方法。多读多看，真是一本好书。 第二章 重构的原则重构的概念：在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本  消除重复代码，改善设计 使得软件更容易理解 便于发现bug 提高编程速度[基于理解性和整体设计，新功能也更易于添加]  小步进行。一致性和单步正确性。”即便重构没有完成，也可以在任何时候停下来“ 正如开头提到的那几句关键：旧的不变，新的创建，一步切换，旧的再见。 重构、架构和YAGNI“you arenot going to need...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AB%A0%E8%8A%82%E9%98%85%E8%AF%BB%E6%80%BB%E7%BB%93"><span class="toc-number">1.</span> <span class="toc-text">章节阅读总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E7%84%A6%E6%B2%B9%E5%9D%91"><span class="toc-number">1.1.</span> <span class="toc-text">第一章 焦油坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D"><span class="toc-number">1.2.</span> <span class="toc-text">第二章 人月神话</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E5%A4%96%E7%A7%91%E6%89%8B%E6%9C%AF%E5%9B%A2%E9%98%9F"><span class="toc-number">1.3.</span> <span class="toc-text">第三章 外科手术团队</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E8%B4%B5%E6%97%8F%E5%88%B6-%E6%B0%91%E4%B8%BB%E5%88%B6%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.4.</span> <span class="toc-text">第四章 贵族制 民主制和系统设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0-%E7%AC%AC%E4%BA%8C%E7%B3%BB%E7%BB%9F%E6%95%88%E5%BA%94"><span class="toc-number">1.5.</span> <span class="toc-text">第五章 第二系统效应</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0-%E4%BC%A0%E9%80%92%E6%B6%88%E6%81%AF"><span class="toc-number">1.6.</span> <span class="toc-text">第六章 传递消息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E7%AB%A0-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B7%B4%E5%88%AB%E5%A1%94%E4%BC%9A%E5%A4%B1%E8%B4%A5"><span class="toc-number">1.7.</span> <span class="toc-text">第七章 为什么巴别塔会失败</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E7%AB%A0-%E8%83%B8%E6%9C%89%E6%88%90%E7%AB%B9"><span class="toc-number">1.8.</span> <span class="toc-text">第八章 胸有成竹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E7%AB%A0-%E5%89%8A%E8%B6%B3%E9%80%82%E5%B1%A5"><span class="toc-number">1.9.</span> <span class="toc-text">第九章 削足适履</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E7%AB%A0-%E6%8F%90%E7%BA%B2%E6%8C%88%E9%A2%86"><span class="toc-number">1.10.</span> <span class="toc-text">第十章 提纲挈领</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0-%E6%9C%AA%E9%9B%A8%E7%BB%B8%E7%BC%AA"><span class="toc-number">1.11.</span> <span class="toc-text">第十一章 未雨绸缪</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0-%E5%B9%B2%E5%B0%86%E8%8E%AB%E9%82%AA"><span class="toc-number">1.12.</span> <span class="toc-text">第十二章 干将莫邪</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0-%E6%95%B4%E4%BD%93%E9%83%A8%E5%88%86"><span class="toc-number">1.13.</span> <span class="toc-text">第十三章 整体部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0-%E7%A5%B8%E8%B5%B7%E8%90%A7%E5%A2%99"><span class="toc-number">1.14.</span> <span class="toc-text">第十四章 祸起萧墙</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0-%E5%8F%A6%E5%A4%96%E4%B8%80%E9%9D%A2"><span class="toc-number">1.15.</span> <span class="toc-text">第十五章 另外一面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%A9%E4%BD%99%E5%86%85%E5%AE%B9"><span class="toc-number">1.16.</span> <span class="toc-text">剩余内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E5%85%AD%E7%AB%A0-%E6%B2%A1%E6%9C%89%E9%93%B6%E5%BC%B9-%E5%8D%81%E4%B8%83%E7%AB%A0-%E5%86%8D%E8%AE%BA%E2%80%9C%E6%B2%A1%E6%9C%89%E9%93%B6%E5%BC%B9%E2%80%9D"><span class="toc-number">1.16.1.</span> <span class="toc-text">第十六章  没有银弹 十七章 再论“没有银弹”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E5%85%AB%E7%AB%A0-%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%E3%80%8B%E7%9A%84%E8%A7%82%E7%82%B9%EF%BC%9A%E6%98%AF%E4%B8%8E%E9%9D%9E"><span class="toc-number">1.16.2.</span> <span class="toc-text">第十八章 《人月神话》的观点：是与非</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B9%9D%E7%AB%A0-20%E5%B9%B4%E5%90%8E%E7%9A%84%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%E3%80%8B"><span class="toc-number">1.16.3.</span> <span class="toc-text">第十九章 20年后的《人月神话》</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E5%92%8C%E6%84%9F%E6%83%B3"><span class="toc-number">2.</span> <span class="toc-text">总结和感想</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Shadow/" title="Unity Shadow">Unity Shadow</a><time datetime="2025-10-05T07:56:07.434Z" title="发表于 2025-10-05 15:56:07">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/SRP/" title="Unity SRP">Unity SRP</a><time datetime="2025-10-02T06:15:27.265Z" title="发表于 2025-10-02 14:15:27">2025-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/AsyncOp/" title="Unity异步操作">Unity异步操作</a><time datetime="2025-09-14T08:01:59.349Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Physics/" title="Unity Physics">Unity Physics</a><time datetime="2025-09-14T08:01:59.345Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '7f27248d6a40576c3d185911cd209175'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

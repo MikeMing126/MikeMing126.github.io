@@ -1,0 +1,463 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Unity Animation | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Mecanim 动画系统Mecanim Animation SystemUnity6 动画系统 作用 Animate the properties of models and assets.  基础概念基于Animation Clips的概念。 Animation Clip包含对象随着事件如何改变位置、旋转或其他属性的相关信息。 外部导入或者Unity内部创建。Clip相关功能：  Transfo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Animation">
+<meta property="og:url" content="https://mikeming126.github.io/Mine/Unity/Animation/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="Mecanim 动画系统Mecanim Animation SystemUnity6 动画系统 作用 Animate the properties of models and assets.  基础概念基于Animation Clips的概念。 Animation Clip包含对象随着事件如何改变位置、旋转或其他属性的相关信息。 外部导入或者Unity内部创建。Clip相关功能：  Transfo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2025-09-14T08:01:59.343Z">
+<meta property="article:modified_time" content="2025-10-13T04:09:09.211Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Unity Animation",
+  "url": "https://mikeming126.github.io/Mine/Unity/Animation/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2025-09-14T08:01:59.343Z",
+  "dateModified": "2025-10-13T04:09:09.211Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/Mine/Unity/Animation/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Unity Animation',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">Unity Animation</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Unity Animation</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-14T08:01:59.343Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-10-13T04:09:09.211Z" title="更新于 2025-10-13 12:09:09">2025-10-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Unity/">Unity</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="Mecanim-动画系统"><a href="#Mecanim-动画系统" class="headerlink" title="Mecanim 动画系统"></a>Mecanim 动画系统</h1><p>Mecanim Animation System<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/6000.0/Documentation/Manual/AnimationSection.html">Unity6 动画系统</a></p>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><blockquote>
+<p>Animate the properties of models and assets.</p>
+</blockquote>
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><p>基于Animation Clips的概念。</p>
+<h2 id="Animation-Clip"><a href="#Animation-Clip" class="headerlink" title="Animation Clip"></a>Animation Clip</h2><p>包含对象随着事件如何改变位置、旋转或其他属性的相关信息。</p>
+<p>外部导入或者Unity内部创建。<br>Clip相关功能：</p>
+<ul>
+<li>Transform信息</li>
+<li>组件属性</li>
+<li>Scripts中的属性</li>
+<li>特定时间调用函数</li>
+</ul>
+<h3 id="Animation-Event"><a href="#Animation-Event" class="headerlink" title="Animation Event"></a>Animation Event</h3><ul>
+<li>仅支持单个参数的函数</li>
+</ul>
+<p>用AnimationEvent Object来传递多个参数：<br>支持一个int,一个float,一个string,一个GameObject引用。</p>
+<h2 id="Humanoid-Avatar"><a href="#Humanoid-Avatar" class="headerlink" title="Humanoid Avatar"></a>Humanoid Avatar</h2><blockquote>
+<p>The rigged character model,has a specific configuration of bones mapped to Unity’s Avatar format.</p>
+</blockquote>
+<p>为人形专门设定。<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/6000.0/Documentation/Manual/ConfiguringtheAvatar.html">Importing a model with humanoid animations</a></p>
+<p>绑定角色模型 转换为Avatar，进行骨骼、肌肉等绑定和映射。</p>
+<p>支持动画重定向、前向和反向动力学。</p>
+<h3 id="Root-Motion"><a href="#Root-Motion" class="headerlink" title="Root Motion"></a>Root Motion</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/6000.0/Documentation/Manual/RootMotion.html">How Root Motion works</a><br>和Animator是否启用Apply Root Motion以及Animation Clip中Root Transform 是否Bake Into Pose相关。如果Bake Into Pose则无Root Motion.</p>
+<h2 id="Animator-Component"><a href="#Animator-Component" class="headerlink" title="Animator Component"></a>Animator Component</h2><ul>
+<li>Animator Controller</li>
+<li>Avatar (对于人形 - Humanoid Character)</li>
+<li>Apply Root Motion</li>
+<li>Update Mode<ul>
+<li>Normal:和Update调用同步。受到当前timescale影响。</li>
+<li>Animate:Physics 和FixedUpdate调用同步。</li>
+<li>Unscaled:Time 和Update调用同步。但忽略当前的timescale，以100%速度进行动画处理。（如Gameplay中暂停，而GUI用这样的动画。）</li>
+</ul>
+</li>
+<li>Culling Mode<ul>
+<li>决定在屏幕外是否剔除</li>
+<li>Always Animate</li>
+<li>Cull Update Transforms:（When renderers are not visible）,禁用重定向、IK和Transform的写入</li>
+<li>Cull Completely:（When renderers are not visible）完全禁用</li>
+</ul>
+</li>
+</ul>
+<h2 id="Animation-Controller"><a href="#Animation-Controller" class="headerlink" title="Animation Controller"></a>Animation Controller</h2><p><strong>动画状态机</strong>。确定当前播放的Clip，何时改变以及混合。</p>
+<ul>
+<li>Animation Clips</li>
+<li>Animation Transitions</li>
+<li>Events</li>
+<li>Sub-State Machines</li>
+</ul>
+<h3 id="Parameters"><a href="#Parameters" class="headerlink" title="Parameters"></a>Parameters</h3><p>动画机参数，可以在Script中访问和设置的值。用于控制影响状态机。</p>
+<blockquote>
+<p>SetFloat、SetInteger、SetBool、SetTrigger(在未消耗前会一直处于激活) 和 ResetTrigger。<br>GetFloat、GetInteger、GetBool、GetTrigger。</p>
+</blockquote>
+<h3 id="Layers"><a href="#Layers" class="headerlink" title="Layers"></a>Layers</h3><p>创建不同的动画层。<br>可以用层来控制角色不同部分的动画。<br>使用Avatar Mask来制定应用的身体部位。<br>设置Blending属性来控制如何混合动画。</p>
+<p>Weight:控制层级的影响幅度。</p>
+<p>Sync - 同步层级节点。 可以减少复制工作量。但是Timing可能也会依据同步层级。如果需要单独当前层级的时间影响，勾选Timing。具体的Timing，受到Weight、同步的层级、当前层级三者影响。</p>
+<h3 id="Animation-States"><a href="#Animation-States" class="headerlink" title="Animation States"></a>Animation States</h3><p>可以参考B站对应的视频来进一步了解细节。<br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1WL411c7mK/">【Unity动画系统详解 九】Write Defaults</a><br>动画状态。</p>
+<p>Motion - 可以使用AnimationClip或者BlendTree。<br>Mirror - 仅适用于Humanoid Animation，镜像。<br>Motion Time - 控制动画Clip对应的时间 如果不代码控制，则会停留在对应的时刻不动。<br>Cycle Offset - 适用于循环动画，参数为0~1，可以控制从不同时间开始循环。<br>Foot IK - 主要还是用于动画重定向的修正，并不是地形的IK修正。<br>Write Defaults:”Whether the AnimatorStates writes the default values for properties that are not animated by its motion”：所以最好不要用。</p>
+<ul>
+<li>Animator Component在OnEnabled时会遍历所有动画状态，确定这些状态修改了哪些属性，并记录其对应的当前值。作为默认值。如果启用Write Default，某个状态没有用到某个属性时，就会取默认值来处理。</li>
+</ul>
+<h4 id="AnyState"><a href="#AnyState" class="headerlink" title="AnyState"></a>AnyState</h4><p>可以用做任何状态的转移。</p>
+<h4 id="Transitions"><a href="#Transitions" class="headerlink" title="Transitions"></a>Transitions</h4><p>两个状态间可以设置多个Transition，每个可以设置不同的条件和参数。<br>多个Transition之间的关系为或，每个Transition的多个条件之间的关系为与。</p>
+<p>Solo和Mute，Mute会禁用转移。</p>
+<blockquote>
+<p>If one transition has Solo enabled, Unity enables Mute on the other transitions.</p>
+</blockquote>
+<h5 id="Exit-Time"><a href="#Exit-Time" class="headerlink" title="Exit Time"></a>Exit Time</h5><p>勾选 Has Exit Time<br>勾选后必须等当前状态播放到Exit TIme才会执行转换，否则不转换。会避免立刻转换的</p>
+<h5 id="Interruption"><a href="#Interruption" class="headerlink" title="Interruption"></a>Interruption</h5><ul>
+<li>和Transitions本身的Interruption Source相关。</li>
+<li>Ordered Interruption:只有优先级比当前高的才能打断。</li>
+</ul>
+<h4 id="Animation-Blend-Trees"><a href="#Animation-Blend-Trees" class="headerlink" title="Animation Blend Trees"></a>Animation Blend Trees</h4><p>用于动画混合。<br>通过不同程度合并每个动画的各个部分来平滑地混合多个动画。一般用于跑步动画等。<br>在多个动画混合时还算有不错的效果。</p>
+<p>支持1D、2D、Direct混合等多种模式混合。</p>
+<h4 id="State-Machine-Behaviours"><a href="#State-Machine-Behaviours" class="headerlink" title="State Machine Behaviours"></a>State Machine Behaviours</h4><p>状态机行为 - 特殊脚本<br>将Script附加到单个状态上。<br>继承自StateMachineBehaviour。</p>
+<ul>
+<li>OnStateEnter<ul>
+<li>First update frame.</li>
+</ul>
+</li>
+<li>OnStateUpdate<ul>
+<li>Invoked on each update frame except for the first and last frame.</li>
+</ul>
+</li>
+<li>OnStateExit<ul>
+<li>Last update frame</li>
+</ul>
+</li>
+<li>OnStateMove<ul>
+<li>Invoked during the Animator <strong>Root Motion</strong> pass.</li>
+</ul>
+</li>
+<li>OnStateIK<ul>
+<li>Invoked during the Animator IK pass.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Animator-Override-Controller"><a href="#Animator-Override-Controller" class="headerlink" title="Animator Override Controller"></a>Animator Override Controller</h3><p>在维持State Machine的同时，去修改对应的Animation Clip。</p>
+<h1 id="Playables-API"><a href="#Playables-API" class="headerlink" title="Playables API"></a>Playables API</h1><p>实际上Timeline和Animator底层实现都是PlayableAPI。</p>
+<p>使用<strong>树形结构PlayableGraph</strong>来对多个数据源进行mix,blend,modify，并最终通过单独输出进行播放。</p>
+<p>基于Animator驱动，但原本的Animator组件不需要再设置Animator Controller。</p>
+<p>可视化工具:<br><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/graph-visualizer">GitHub - graph-visualizer</a><br>相关参考视频教程：<br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1SP4y177YQ/">BiliBili Playable 动画系统</a><br>配套的GitHub <a target="_blank" rel="noopener" href="https://github.com/IrisFenrir/Fenrir-RPG/tree/main/Scripts/Animation">Fenrir-RPG</a><br>文章:<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/380124248">【Unity】简单使用Playable API控制动画</a><br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzkyMTM5Mjg3NQ==&mid=2247535622&idx=1&sn=b96a2d8ac55b49e74261d91bbffa944c&source=41&poc_token=HI8V3mijCNt_phpQCp1RQT70prtaCq08gh1G_Wh4">微信 Playable API：定制你的动画系统</a></p>
+<p>For:</p>
+<ul>
+<li>animation</li>
+<li>audio</li>
+<li>scripts</li>
+</ul>
+<p>优势：</p>
+<ul>
+<li>允许动态动画混合。可以混合场景中的多个对象</li>
+<li>允许简单的播放单个动画</li>
+<li>允许动态创建Blending Graphs并逐帧控制混合权重。</li>
+<li>允许<strong>运行时创建</strong>PlayableGraph</li>
+</ul>
+<h2 id="PlayableGraph"><a href="#PlayableGraph" class="headerlink" title="PlayableGraph"></a>PlayableGraph</h2><p>图中每一个节点可以认为是一个“Playable”。</p>
+<blockquote>
+<p>A C# struct that implements the IPlayable interface</p>
+</blockquote>
+<p>使用Struct实现以避免垃圾回收。<br>除了PlayableBehaviour以外。</p>
+<p><strong>Playable</strong></p>
+<img src="/Mine/Unity/Animation/playable.png" class="" title="Playable">
+
+<p><strong>PlayableOutput</strong></p>
+<img src="/Mine/Unity/Animation/playableoutput.png" class="" title="alt text">
+
+<p>Playable和PlayableOutput本身并没有太多的公开接口，可以使用静态类PlayableExtensions和PlayableOutputExtensions来进行辅助处理。</p>
+<h3 id="ScriptPlayable-和-PlayableBehaviour"><a href="#ScriptPlayable-和-PlayableBehaviour" class="headerlink" title="ScriptPlayable&lt;T&gt; 和 PlayableBehaviour"></a>ScriptPlayable&lt;T&gt; 和 PlayableBehaviour</h3><p>官方文档的示例：<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/6000.0/Documentation/Manual/Playables-Examples.html">Playables Examples</a><br>拓展阅读<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/380710676">【Unity】自定义Animation Playable与Timeline结合</a></p>
+<p>PlayableBehaviour:</p>
+<blockquote>
+<p>Is the base class from which every custom playable script derives.</p>
+</blockquote>
+<p>用户自定义的类，来对Playable进行直接的访问和控制。</p>
+<ul>
+<li>可以用于侦听和处理Graph相关的事件。如Start(Graph.Play()时触发)、Stop等</li>
+<li>每帧动画计算流程的回调 - PrepareFrame</li>
+</ul>
+<p>总体上还是起一个封装的效果。</p>
+<p>创建示例：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">ScriptPlayable&lt;MyCustomPlayableBehaviour&gt;.Create(playableGraph);</span><br><span class="line"><span class="comment">//或者已经创建对象的情况下：</span></span><br><span class="line">MyCustomPlayableBehaviour myPlayable = <span class="keyword">new</span> MyCustomPlayableBehaviour();</span><br><span class="line">ScriptPlayable&lt;MyCustomPlayableBehaviour&gt;.Create(playableGraph, myPlayable);</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="更新频率"><a href="#更新频率" class="headerlink" title="更新频率"></a>更新频率</h3><p>可以通过Graph设置更新频率。SetTimeUpdateMode，枚举为DirectorUpdateMode。</p>
+<ul>
+<li>DSPClock:基于DSP(Digital Sound Processing) clock的更新，用于与声音同步。</li>
+<li>GameTime:基于Time.time的更新，当Time.timeScale &#x3D; 0，动画也会暂停。</li>
+<li>UnscaledGameTime:基于Time.unscaledTime的更新，当Time.timeScale &#x3D; 0，动画也会继续播放。</li>
+<li>Manual:手动更新，调用PlayableGraph.Evaluate(deltaTime)方法来触发一次更新。</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">......</span><br><span class="line">graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);</span><br><span class="line">......</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    graph.Evaluate(Time.deltaTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><p>辅助工具：<br>AnimationPlayableUtilities 也可以看看源码，有挺多示例的。</p>
+<h4 id="简单单节点动画示例"><a href="#简单单节点动画示例" class="headerlink" title="简单单节点动画示例"></a>简单单节点动画示例</h4><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">animator = <span class="keyword">this</span>.GetComponent&lt;Animator&gt;();</span><br><span class="line">graph = PlayableGraph.Create(<span class="string">&quot;MyPlayableAnimGraph&quot;</span>);</span><br><span class="line"><span class="comment">//动画节点</span></span><br><span class="line"><span class="keyword">var</span> animNode = AnimationClipPlayable.Create(graph, AnimClips[<span class="number">0</span>]);</span><br><span class="line">animOutput = AnimationPlayableOutput.Create(graph,<span class="string">&quot;AnimOutput&quot;</span>,animator);</span><br><span class="line">animOutput.SetSourcePlayable(animNode);</span><br><span class="line"><span class="comment">//graph.Play();</span></span><br><span class="line">graph.DestroyPlayable(animNode); <span class="comment">//清除Playable节点</span></span><br><span class="line">graph.DestroyOutput(animOutput); <span class="comment">//清除Output节点</span></span><br><span class="line">graph.Destroy();<span class="comment">//清除所有Graph内的节点</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="混合示例"><a href="#混合示例" class="headerlink" title="混合示例"></a>混合示例</h4><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">......</span><br><span class="line"><span class="comment">//混合示例</span></span><br><span class="line"><span class="comment">//第三个参数Normalize 废弃了。</span></span><br><span class="line">mixerPlayable = AnimationMixerPlayable.Create(graph, <span class="number">2</span>);</span><br><span class="line"><span class="keyword">var</span> animNode1 = AnimationClipPlayable.Create(graph, WalkAndRuns[<span class="number">0</span>]);</span><br><span class="line"><span class="keyword">var</span> animNode2 = AnimationClipPlayable.Create(graph, WalkAndRuns[<span class="number">1</span>]);</span><br><span class="line"><span class="comment">//缓存一下节点后面使用。</span></span><br><span class="line">curAnimNodes.Add(animNode1);</span><br><span class="line">curAnimNodes.Add(animNode2);</span><br><span class="line"></span><br><span class="line"><span class="comment">//设置混合</span></span><br><span class="line"><span class="built_in">float</span> defaultWeight1 = <span class="number">1</span> - mixRange;</span><br><span class="line"><span class="built_in">float</span> defaultWeight2 = mixRange;</span><br><span class="line"><span class="comment">//两种都可</span></span><br><span class="line"><span class="comment">// mixerPlayable.ConnectInput(0, animNode1, 0,defaultWeight1);</span></span><br><span class="line"><span class="comment">// mixerPlayable.ConnectInput(1, animNode2, 0,defaultWeight2);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//采用Graph连接并设置Weight。</span></span><br><span class="line">graph.Connect(animNode1, <span class="number">0</span>, mixerPlayable, <span class="number">0</span>);</span><br><span class="line">graph.Connect(animNode2, <span class="number">0</span>, mixerPlayable, <span class="number">1</span>);</span><br><span class="line"><span class="comment">// mixerPlayable.SetInputWeight(0, defaultWeight1);</span></span><br><span class="line"><span class="comment">// mixerPlayable.SetInputWeight(1, defaultWeight2);</span></span><br><span class="line"></span><br><span class="line">animOutput.SetSourcePlayable(mixerPlayable);</span><br><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//更新权重</span></span><br><span class="line">    mixerPlayable.SetInputWeight(<span class="number">0</span>, <span class="number">1</span> - mixRange);</span><br><span class="line">    mixerPlayable.SetInputWeight(<span class="number">1</span>, mixRange);</span><br><span class="line">    <span class="comment">//Fix Speed </span></span><br><span class="line">    <span class="comment">//由于Mixer的Length是由多个输入的weight和对应的Clip长度决定的 需要修正速度来确保表现正常</span></span><br><span class="line">    <span class="built_in">float</span> walkLength = WalkAndRuns[<span class="number">0</span>].length;</span><br><span class="line">    <span class="built_in">float</span> runLength = WalkAndRuns[<span class="number">1</span>].length;</span><br><span class="line">    <span class="built_in">float</span> mixLength = walkLength*(<span class="number">1</span>-mixRange) + runLength*mixRange;</span><br><span class="line">    <span class="built_in">float</span> fixWalkSpeed = walkLength / mixLength;</span><br><span class="line">    <span class="built_in">float</span> fixRunSpeed = runLength / mixLength;</span><br><span class="line">    curAnimNodes[<span class="number">0</span>].SetSpeed(fixWalkSpeed);</span><br><span class="line">    curAnimNodes[<span class="number">1</span>].SetSpeed(fixRunSpeed);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Layer分层示例"><a href="#Layer分层示例" class="headerlink" title="Layer分层示例"></a>Layer分层示例</h4><p>使用AnimationLayerMixerPlayable，进行混合。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//分层示例</span></span><br><span class="line">layerMixerNode = AnimationLayerMixerPlayable.Create(graph, <span class="number">2</span>); <span class="comment">//Mix两层</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bodyAnim = AnimationClipPlayable.Create(graph, WalkAndRuns[<span class="number">1</span>]);</span><br><span class="line"><span class="keyword">var</span> faceAnim = AnimationClipPlayable.Create(graph, FaceAnims[<span class="number">0</span>]);</span><br><span class="line">layerMixerNode.ConnectInput(<span class="number">0</span>, bodyAnim,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">layerMixerNode.ConnectInput(<span class="number">1</span>, faceAnim,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line"><span class="comment">//设置对应层的avatarMask</span></span><br><span class="line">layerMixerNode.SetLayerMaskFromAvatarMask(<span class="number">1</span>,avatarMask);</span><br><span class="line"><span class="comment">//默认情况下都是Override。可以设置Addictive</span></span><br><span class="line"><span class="comment">//layerMixerNode.SetLayerAdditive(1,true);</span></span><br><span class="line"></span><br><span class="line">animOutput.SetSourcePlayable(layerMixerNode);</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用AnimatorController"><a href="#使用AnimatorController" class="headerlink" title="使用AnimatorController"></a>使用AnimatorController</h4><p>基于AnimatorControllerPlayable来创建节点然后应用即可。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Controller示例</span></span><br><span class="line">AnimatorControllerPlayable controllerPlayable = AnimatorControllerPlayable.Create(graph, controller);</span><br><span class="line">AnimationClipPlayable animNode = AnimationClipPlayable.Create(graph, AnimClips[<span class="number">0</span>]);</span><br><span class="line">mixerPlayable  = AnimationMixerPlayable.Create(graph, <span class="number">2</span>);</span><br><span class="line">mixerPlayable.ConnectInput(<span class="number">0</span>, controllerPlayable,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">mixerPlayable.ConnectInput(<span class="number">1</span>, animNode,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">animOutput.SetSourcePlayable(mixerPlayable);  </span><br></pre></td></tr></table></figure>
+
+<h4 id="PlayableBehaviour"><a href="#PlayableBehaviour" class="headerlink" title="PlayableBehaviour"></a>PlayableBehaviour</h4><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 用Behaviour来做一个Blend效果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyTestPlayableBehaviour</span>:<span class="title">PlayableBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">float</span> mixRange = <span class="number">0.0f</span>;</span><br><span class="line">    <span class="keyword">private</span> PlayableGraph graph;</span><br><span class="line">    <span class="keyword">private</span> AnimationMixerPlayable mixer;</span><br><span class="line">    <span class="keyword">private</span> AnimationClipPlayable mixAnimNode1,mixAnimNode2;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">InitParams</span>(<span class="params">AnimationClip mixClip1, AnimationClip mixClip2</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mixAnimNode1.IsValid())</span><br><span class="line">        &#123;</span><br><span class="line">            graph.DestroyPlayable(mixAnimNode1);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(mixAnimNode2.IsValid())</span><br><span class="line">            graph.DestroyPlayable(mixAnimNode2);</span><br><span class="line"></span><br><span class="line">        mixAnimNode1 = AnimationClipPlayable.Create(graph,mixClip1);</span><br><span class="line">        mixAnimNode2 = AnimationClipPlayable.Create(graph,mixClip2);</span><br><span class="line">        mixer.ConnectInput(<span class="number">0</span>, mixAnimNode1, <span class="number">0</span>, <span class="number">1</span> - mixRange);</span><br><span class="line">        mixer.ConnectInput(<span class="number">1</span>, mixAnimNode2, <span class="number">0</span>, mixRange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetMixRange</span>(<span class="params"><span class="built_in">float</span> <span class="keyword">value</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        mixRange = <span class="keyword">value</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//创建时调用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnPlayableCreate</span>(<span class="params">Playable playable</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">base</span>.OnPlayableCreate(playable);</span><br><span class="line">        <span class="keyword">this</span>.graph = playable.GetGraph();</span><br><span class="line">        </span><br><span class="line">        mixer = AnimationMixerPlayable.Create(graph,<span class="number">2</span>);</span><br><span class="line">        <span class="comment">//把mixer的结果作为当前节点的输入</span></span><br><span class="line">        playable.ConnectInput(<span class="number">0</span>,mixer,<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//每动画帧调用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">PrepareFrame</span>(<span class="params">Playable playable, FrameData info</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">base</span>.PrepareFrame(playable,info);</span><br><span class="line">        <span class="built_in">float</span> sourceWeight = <span class="number">1</span> - mixRange;</span><br><span class="line">        <span class="built_in">float</span> mixAnimWeight = mixRange;</span><br><span class="line">        mixer.SetInputWeight(<span class="number">0</span>, sourceWeight);</span><br><span class="line">        mixer.SetInputWeight(<span class="number">1</span>, mixAnimWeight);</span><br><span class="line">        <span class="comment">//CalSpeed</span></span><br><span class="line">        <span class="built_in">float</span> sourceLength = mixAnimNode1.GetAnimationClip().length;</span><br><span class="line">        <span class="built_in">float</span> mixAnimLength = mixAnimNode2.GetAnimationClip().length;</span><br><span class="line">        <span class="built_in">float</span> curLength = sourceWeight * sourceLength + mixAnimWeight * mixAnimLength;</span><br><span class="line">        mixAnimNode1.SetSpeed(sourceLength/curLength);</span><br><span class="line">        mixAnimNode2.SetSpeed(mixAnimLength/curLength);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">......</span><br><span class="line"><span class="comment">//PlayableBehaviour 1 指定了inputCount</span></span><br><span class="line">myTestSP = ScriptPlayable&lt;MyTestPlayableBehaviour&gt;.Create(graph,<span class="number">1</span>);</span><br><span class="line"><span class="comment">//初始化参数</span></span><br><span class="line">myTestSP.GetBehaviour().InitParams(WalkAndRuns[<span class="number">0</span>],WalkAndRuns[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">animOutput.SetSourcePlayable(myTestSP);</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Timeline"><a href="#Timeline" class="headerlink" title="Timeline"></a>Timeline</h1><p>Timeline后面单独有一个Unity Package（2021）。<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.timeline@1.8/manual/index.html">官方文档</a></p>
+<blockquote>
+<p>To create cinematic content, gameplay sequences, audio sequences, and complex particle effects.</p>
+</blockquote>
+<ul>
+<li>Timeline asset </li>
+<li>Timeline instance</li>
+</ul>
+<p>默认的Timeline中主要还是动画、SetActive等轨道。在应用时，有很多功能还是需要自己通过Playble来自定义。可以看到PacakgeSamples。或者是使用录制功能转换为AnimationClip然后操作。<br>默认的Track:</p>
+<ul>
+<li>Activation Track 控制对象的激活状态</li>
+<li>Animation Track 动画轨道 用于播放Animation Clip等。也可以通过录制来创建对应的片段。</li>
+<li>Audio Track 控制音频</li>
+<li>Control Track 用于嵌套Timeline、粒子系统、ITimeControl脚本等。</li>
+<li>Playable Track 用于Playables API创建的自定义脚本</li>
+</ul>
+<h2 id="Timeline-Customization-Samples"><a href="#Timeline-Customization-Samples" class="headerlink" title="Timeline Customization Samples"></a>Timeline Customization Samples</h2><ul>
+<li>Time dilation track - 控制时间膨胀<ul>
+<li>具体的实现代码还是看到示例的TimeDilation文件夹里</li>
+<li>TimeDilationPlayableAsset,TimeDilationMixerBehaviour,TimeDilationTrack,TimeDilationBehaviour</li>
+</ul>
+</li>
+<li>Video track - 播放视频</li>
+<li>Text track - 控制文本显示</li>
+<li>Tween track - 简单的Transform变换</li>
+</ul>
+<h3 id="从Time-dilation-track看自定义轨道和功能"><a href="#从Time-dilation-track看自定义轨道和功能" class="headerlink" title="从Time dilation track看自定义轨道和功能"></a>从Time dilation track看自定义轨道和功能</h3><ol>
+<li>定义轨道类</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">[<span class="meta">TrackColor(0.855f, 0.8623f, 0.87f)</span>]</span><br><span class="line">[<span class="meta">TrackClipType(typeof(TimeDilationPlayableAsset))</span>] <span class="comment">//指定了PlayableAsset的类，也就是对应的轨道资产。</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TimeDilationTrack</span> : <span class="title">TrackAsset</span> <span class="comment">//新轨道类</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Creates a runtime instance of the track, represented by a PlayableBehaviour.</span></span><br><span class="line">    <span class="comment">// The runtime instance performs mixing on the timeline clips.</span></span><br><span class="line">    <span class="comment">// 这里注意本质上还是Playable的Mixer。作用是进行混合。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> Playable <span class="title">CreateTrackMixer</span>(<span class="params">PlayableGraph graph, GameObject go, <span class="built_in">int</span> inputCount</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> ScriptPlayable&lt;TimeDilationMixerBehaviour&gt;.Create(graph, inputCount);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>定义轨道行为</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TimeDilationMixerBehaviour</span> : <span class="title">PlayableBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">float</span> m_DefaultTimeScale = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called every frame that the timeline is Evaluated.</span></span><br><span class="line">    <span class="comment">//编写混合逻辑。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">ProcessFrame</span>(<span class="params">Playable playable, FrameData info, <span class="built_in">object</span> playerData</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> inputCount = playable.GetInputCount();</span><br><span class="line">        <span class="built_in">float</span> timeScale = <span class="number">0f</span>;</span><br><span class="line">        <span class="built_in">float</span> totalWeight = <span class="number">0f</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// blend clips together</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; inputCount; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">float</span> inputWeight = playable.GetInputWeight(i);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//类型转换。这里和定义轨道类的TrackClipType指定的类型相同。</span></span><br><span class="line">            ScriptPlayable&lt;TimeDilationBehaviour&gt; playableInput = (ScriptPlayable&lt;TimeDilationBehaviour&gt;)playable.GetInput(i);</span><br><span class="line">            TimeDilationBehaviour input = playableInput.GetBehaviour();</span><br><span class="line"></span><br><span class="line">            timeScale += inputWeight * input.timeScale;</span><br><span class="line">            totalWeight += inputWeight;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// blend to/from the default timeline</span></span><br><span class="line">        Time.timeScale = Mathf.Max(<span class="number">0.0001f</span>, Mathf.Lerp(m_DefaultTimeScale, timeScale, Mathf.Clamp01(totalWeight)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the playable graph is created, typically when the timeline is played.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnPlayableCreate</span>(<span class="params">Playable playable</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        m_DefaultTimeScale = Time.timeScale;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the playable is destroyed, typically when the timeline stops.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnPlayableDestroy</span>(<span class="params">Playable playable</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Time.timeScale = m_DefaultTimeScale;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>定义轨道资产</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// A clip for the timeline dilation track.</span></span><br><span class="line"><span class="comment">//继承自PlayableAsset.</span></span><br><span class="line">[<span class="meta">Serializable</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TimeDilationPlayableAsset</span> : <span class="title">PlayableAsset</span>, <span class="title">ITimelineClipAsset</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Using a template for the playable behaviour will allow any serializable fields on the behaviour</span></span><br><span class="line">    <span class="comment">// to be animated.</span></span><br><span class="line">    [<span class="meta">NoFoldOut</span>]</span><br><span class="line">    <span class="keyword">public</span> TimeDilationBehaviour template = <span class="keyword">new</span> TimeDilationBehaviour();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Implementation of ITimelineClipAsset, that tells the timeline editor which</span></span><br><span class="line">    <span class="comment">// features this clip supports.</span></span><br><span class="line">    <span class="keyword">public</span> ClipCaps clipCaps</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> ClipCaps.Extrapolation | ClipCaps.Blending; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called to creates a runtime instance of the clip.</span></span><br><span class="line">    <span class="comment">//重点：返回一个对应的Playable</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> Playable <span class="title">CreatePlayable</span>(<span class="params">PlayableGraph graph, GameObject owner</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Note that template is passed as a parameter - this</span></span><br><span class="line">        <span class="comment">// creates a clone of the template PlayableBehaviour.</span></span><br><span class="line">        <span class="keyword">return</span> ScriptPlayable&lt;TimeDilationBehaviour&gt;.Create(graph, template);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>定义轨道资产实际的Playable类</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Runtime representation of a time dilation clip.</span></span><br><span class="line"><span class="comment">// The Serializable attribute is required to be animated by timeline, and used as a template.</span></span><br><span class="line">[<span class="meta">Serializable</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TimeDilationBehaviour</span> : <span class="title">PlayableBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">Tooltip(<span class="string">&quot;Time.timeScale replacement value.&quot;</span>)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> timeScale = <span class="number">1f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>附图</li>
+</ol>
+<img src="/Mine/Unity/Animation/timelineTDT0.png" class="">
+<img src="/Mine/Unity/Animation/timelineTDT1.png" class="">
+
+
+<h1 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h1><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/6000.0/Documentation/Manual/MecanimPeformanceandOptimization.html">Performance and optimization</a></p>
+<ul>
+<li>Animator在Controller未设置的时候不会花时间处理（Playable算是例外？）</li>
+<li>缩放曲线开销比平移和旋转更高。</li>
+<li>Layers的weight在0的时候会跳过对应层的更新。</li>
+<li>如果不需要用Avatar mask移除人形的IK目标或手指动画。</li>
+<li>使用hashes而非strings来查询Animator</li>
+<li>设置剔除模式</li>
+</ul>
+<p>其他的方案:</p>
+<ul>
+<li>SkinnedMeshRender转为MeshRender以支持GPU Instancing<ul>
+<li>GPU Skinning<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26181838820">Unity3D 实现骨骼动画的 GPU Skinning 详解</a></li>
+</ul>
+</li>
+<li>知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/28159739">利用GPU实现大规模动画角色的渲染</a></li>
+<li>GitHub相关项目<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ForeverZack/Unity-Gpu-Skinning-Tool">Unity-Gpu-Skinning-Tool</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/chenjd/Render-Crowd-Of-Animated-Characters">Render-Crowd-Of-Animated-Characters</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/Animation-Instancing">Unity-Technologies&#x2F;Animation-Instancing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/Mine/Unity/Animation/">https://mikeming126.github.io/Mine/Unity/Animation/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Unity/">Unity</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/UE/Share/25ShangHaiFest/" title="2025 - UE - ShangHaiFest"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">2025 - UE - ShangHaiFest</div></div><div class="info-2"><div class="info-item-1">个人对25UE上海Fest公开直播部分做的小重点记录。下次有机会一定到买票去现场看看。关于其他演讲，官方说10月1号后会有陆续放出，可以再关注关注。 莉莉丝的远光84跨平台开发Unreal的跨平台开发框架 性能优化 - Scalability + Significant Manager  Unreal Insights Unreal的内容生产工具  大地图 高品质角色  高品质动画 ALS Animation Motion Matching 角色技能 GAS 框架  Fortnite 项目实践分享 51WorldAI交互式变化：  自然语言交互 上下文情景感知 个性化内容生成  实时空间计算 数据标准升维 5.6重点回顾Performance的提升 Lumen光追性能的提升 Skeletal Mesh Pipeline的重写、 CPU和GPU的异步运行支持 布料模拟的优化 Niagara Fluids 流体优化 动画方面：Multi Character Motion MatchingSequencer 的缝合轨迹...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/Physics/" title="Unity Physics"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Unity Physics</div></div><div class="info-2"><div class="info-item-1">物理 基础Unity物理系统由浅入深第一节：Unity 物理系统基础与应用 RigidBody 刚体 - 赋予物理属性 Collider 碰撞体 - 碰撞形状 Physic Material 物理材质 - 定义交互特性定义碰撞体之间的摩檫力和弹性。分配给Collider。 碰撞事件  Collision Callbacks 适用于两个非触发器（至少一个带RigidBody）之间的物理碰撞 Trigger Callbacks 至少一个Collider为Is Trigger的情况下，检测到物体进入&#x2F;离开&#x2F;停留在区域内 只有当碰撞中一个Collider附加了Rigidbody或者其为KinematicRigidbody上的Colider时，才能触发对应的回调。(对于KinematicRigidbody，不会触发CollisionCallback，需要用TriggerCallback)  射线检测 Raycast形状检测 Shape...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/Mine/Unity/AsyncOp/" title="Unity异步操作"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-14</div><div class="info-item-2">Unity异步操作</div></div><div class="info-2"><div class="info-item-1">异步操作可以参考这篇文章Unity入门教程之异步篇第二节：协程 or UniTask？Unity 中异步流程到底怎么选Unity异步扩展实践（一）——以UniTask库为参考 关于临界资源问题Unity入门教程之异步篇第三节：多线程初探？理解并发与线程安全 协程 - 逻辑异步 - 单线程协程这块较为通用可以另外参考之前记录。 UniTask本质上是利用C#的Task。但是使用原生的async&#x2F;await和Task存在一些问题：  GC和性能开销(Task本身是引用类型，且async&#x2F;await产生状态机对象和闭包) 线程切换不一定对。且Unity大部分API只能在主线程使用。 任务的生命周期管理问题:任务不会因为对象被销毁而自动停止 平台多线程限制（如WebGL）  因此有UniTaskGitHub优势和注意事项：  零GC 主线程调度。默认完全在Unity的PlayerLoop上运行，因此不使用Thread。在 .NET 实现中，执行 await 语句之前和之后代码的线程是有可能不同的。虽然有线程切换，但我们不需要关心其中的细节，.NET...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/Physics/" title="Unity Physics"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-14</div><div class="info-item-2">Unity Physics</div></div><div class="info-2"><div class="info-item-1">物理 基础Unity物理系统由浅入深第一节：Unity 物理系统基础与应用 RigidBody 刚体 - 赋予物理属性 Collider 碰撞体 - 碰撞形状 Physic Material 物理材质 - 定义交互特性定义碰撞体之间的摩檫力和弹性。分配给Collider。 碰撞事件  Collision Callbacks 适用于两个非触发器（至少一个带RigidBody）之间的物理碰撞 Trigger Callbacks 至少一个Collider为Is Trigger的情况下，检测到物体进入&#x2F;离开&#x2F;停留在区域内 只有当碰撞中一个Collider附加了Rigidbody或者其为KinematicRigidbody上的Colider时，才能触发对应的回调。(对于KinematicRigidbody，不会触发CollisionCallback，需要用TriggerCallback)  射线检测 Raycast形状检测 Shape...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-05</div><div class="info-item-2">Unity PostProcessing</div></div><div class="info-2"><div class="info-item-1">Introduction to post-processingUnity 后处理 在渲染管线之后，FrameBuffer上处理。后处理和全屏效果。 效果参考和支持Post-processing effect availability reference </div></div></div></a><a class="pagination-related" href="/Mine/Unity/Shadow/" title="Unity Shadow"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-05</div><div class="info-item-2">Unity Shadow</div></div><div class="info-2"><div class="info-item-1">阴影Shadow 光源可以产生两种阴影：  Real-time Shadows 实时阴影 Unity stores the shadows cast from each Light in shadow map textures. The textures update each frame; shadows move when the lights move.   Baked Shadows 烘培阴影 The Unity lightmapper stores the shadows received by each GameObject in static lightmap textures, shadow mask textures, or Light Probes. Shadows don’t move when the lights move.    物体的阴影投射：是否生成阴影除了和光源相关还和对应MeshRenderer的设置相关。可以在Mesh Renderer的Lighting内设置。 Shadow MappingUnity实时阴影实现——Shadow...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/SRP/" title="Unity SRP"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-02</div><div class="info-item-2">Unity SRP</div></div><div class="info-2"><div class="info-item-1">官方Doc Rendering paths in UnityUnity URP&#x2F;SRP 渲染管线浅入深出【匠】【Unity】SRP简单入门【Unity】SRP底层渲染流程及原理Scriptable Render Pipeline可编程渲染管线 Render Pipeline基础  A series of operations that take the contents of a scene, and displays them on a screen  在Unity的官方文档中定义为这么几个步骤：  Culling （Frustum Culling视锥体剔除 Occlusion Culling遮挡剔除） Rendering -&gt;To Pixel Buffers Post Processing -&gt;Modify Pixel Buffers  常用的  Built-in Render Pipeline： Universal Render Pipeline (URP) High Definition Render Pipeline...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mecanim-%E5%8A%A8%E7%94%BB%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">Mecanim 动画系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-number">1.2.</span> <span class="toc-text">基础概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Animation-Clip"><span class="toc-number">1.3.</span> <span class="toc-text">Animation Clip</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Animation-Event"><span class="toc-number">1.3.1.</span> <span class="toc-text">Animation Event</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Humanoid-Avatar"><span class="toc-number">1.4.</span> <span class="toc-text">Humanoid Avatar</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Root-Motion"><span class="toc-number">1.4.1.</span> <span class="toc-text">Root Motion</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Animator-Component"><span class="toc-number">1.5.</span> <span class="toc-text">Animator Component</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Animation-Controller"><span class="toc-number">1.6.</span> <span class="toc-text">Animation Controller</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Parameters"><span class="toc-number">1.6.1.</span> <span class="toc-text">Parameters</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Layers"><span class="toc-number">1.6.2.</span> <span class="toc-text">Layers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Animation-States"><span class="toc-number">1.6.3.</span> <span class="toc-text">Animation States</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#AnyState"><span class="toc-number">1.6.3.1.</span> <span class="toc-text">AnyState</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Transitions"><span class="toc-number">1.6.3.2.</span> <span class="toc-text">Transitions</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Exit-Time"><span class="toc-number">1.6.3.2.1.</span> <span class="toc-text">Exit Time</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Interruption"><span class="toc-number">1.6.3.2.2.</span> <span class="toc-text">Interruption</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Animation-Blend-Trees"><span class="toc-number">1.6.3.3.</span> <span class="toc-text">Animation Blend Trees</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#State-Machine-Behaviours"><span class="toc-number">1.6.3.4.</span> <span class="toc-text">State Machine Behaviours</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Animator-Override-Controller"><span class="toc-number">1.6.4.</span> <span class="toc-text">Animator Override Controller</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Playables-API"><span class="toc-number">2.</span> <span class="toc-text">Playables API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PlayableGraph"><span class="toc-number">2.1.</span> <span class="toc-text">PlayableGraph</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ScriptPlayable-%E5%92%8C-PlayableBehaviour"><span class="toc-number">2.1.1.</span> <span class="toc-text">ScriptPlayable&lt;T&gt; 和 PlayableBehaviour</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E9%A2%91%E7%8E%87"><span class="toc-number">2.1.2.</span> <span class="toc-text">更新频率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.3.</span> <span class="toc-text">代码示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%8D%95%E8%8A%82%E7%82%B9%E5%8A%A8%E7%94%BB%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.3.1.</span> <span class="toc-text">简单单节点动画示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.3.2.</span> <span class="toc-text">混合示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Layer%E5%88%86%E5%B1%82%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.3.3.</span> <span class="toc-text">Layer分层示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8AnimatorController"><span class="toc-number">2.1.3.4.</span> <span class="toc-text">使用AnimatorController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PlayableBehaviour"><span class="toc-number">2.1.3.5.</span> <span class="toc-text">PlayableBehaviour</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Timeline"><span class="toc-number">3.</span> <span class="toc-text">Timeline</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Timeline-Customization-Samples"><span class="toc-number">3.1.</span> <span class="toc-text">Timeline Customization Samples</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8ETime-dilation-track%E7%9C%8B%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BD%A8%E9%81%93%E5%92%8C%E5%8A%9F%E8%83%BD"><span class="toc-number">3.1.1.</span> <span class="toc-text">从Time dilation track看自定义轨道和功能</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">性能优化</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Shadow/" title="Unity Shadow">Unity Shadow</a><time datetime="2025-10-05T07:56:07.434Z" title="发表于 2025-10-05 15:56:07">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/SRP/" title="Unity SRP">Unity SRP</a><time datetime="2025-10-02T06:15:27.265Z" title="发表于 2025-10-02 14:15:27">2025-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/AsyncOp/" title="Unity异步操作">Unity异步操作</a><time datetime="2025-09-14T08:01:59.349Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Physics/" title="Unity Physics">Unity Physics</a><time datetime="2025-09-14T08:01:59.345Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '76c31b70e902d935cf32e3fb62579a29'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

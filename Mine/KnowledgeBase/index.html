@@ -1,0 +1,656 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>个人知识库 | Ming Blog</title><meta name="robots" content="noindex"><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基础知识C++C++知识库  算法数据结构和算法  计算机网络网络参考模型 Reference Model分层。各层之间的工作独立。只和上下层打交道。    以下为 OSI七层参考模型 的 Markdown 格式表格整理：（仅教科书）    层级编号 层级名称 功能 关键设备 协议&#x2F;技术 协议数据单元PDU    1 物理层（Physical） 传输原始比特流（0&#x2F;1），定义物">
+<meta property="og:type" content="article">
+<meta property="og:title" content="个人知识库">
+<meta property="og:url" content="https://mikeming126.github.io/Mine/KnowledgeBase/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="基础知识C++C++知识库  算法数据结构和算法  计算机网络网络参考模型 Reference Model分层。各层之间的工作独立。只和上下层打交道。    以下为 OSI七层参考模型 的 Markdown 格式表格整理：（仅教科书）    层级编号 层级名称 功能 关键设备 协议&#x2F;技术 协议数据单元PDU    1 物理层（Physical） 传输原始比特流（0&#x2F;1），定义物">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2025-08-08T10:14:14.920Z">
+<meta property="article:modified_time" content="2025-10-06T03:15:28.058Z">
+<meta property="article:author" content="Ming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "个人知识库",
+  "url": "https://mikeming126.github.io/Mine/KnowledgeBase/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2025-08-08T10:14:14.920Z",
+  "dateModified": "2025-10-06T03:15:28.058Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/Mine/KnowledgeBase/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '个人知识库',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">个人知识库</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">个人知识库</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-08T10:14:14.920Z" title="发表于 2025-08-08 18:14:14">2025-08-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-10-06T03:15:28.058Z" title="更新于 2025-10-06 11:15:28">2025-10-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">10.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>32分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h2 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h2><a href="/Mine/BaseCPlusPlus/" title="C++知识库">C++知识库</a>
+
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><a href="/Mine/DataSturctAndAlgorithms/" title="数据结构与算法">数据结构和算法</a>
+
+<h2 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h2><h3 id="网络参考模型-Reference-Model"><a href="#网络参考模型-Reference-Model" class="headerlink" title="网络参考模型 Reference Model"></a>网络参考模型 Reference Model</h3><p>分层。各层之间的工作独立。只和上下层打交道。</p>
+<img src="/Mine/KnowledgeBase/referenceModel1.png" class="" title="alt text">
+<img src="/Mine/KnowledgeBase/referenceModel2.png" class="" title="alt text">
+
+<p>以下为 <strong>OSI七层参考模型</strong> 的 Markdown 格式表格整理：（仅教科书）</p>
+<table>
+<thead>
+<tr>
+<th><strong>层级编号</strong></th>
+<th><strong>层级名称</strong></th>
+<th><strong>功能</strong></th>
+<th><strong>关键设备</strong></th>
+<th><strong>协议&#x2F;技术</strong></th>
+<th><strong>协议数据单元PDU</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>物理层（Physical）</td>
+<td>传输原始比特流（0&#x2F;1），定义物理介质（电缆、光纤等）的电气和机械特性。</td>
+<td>网线、集线器（Hub）、中继器</td>
+<td>以太网（物理部分）、USB、蓝牙物理层</td>
+<td>比特流Bits</td>
+</tr>
+<tr>
+<td>2</td>
+<td>数据链路层</td>
+<td>将比特流组织成数据帧，通过MAC地址实现局域网通信，处理差错检测。</td>
+<td>交换机（Switch）、网桥</td>
+<td>以太网（MAC协议）、Wi-Fi（802.11）、PPP</td>
+<td>帧Frame</td>
+</tr>
+<tr>
+<td>3</td>
+<td>网络层（Network）[核心之一]</td>
+<td>路由选择、逻辑寻址（IP地址），跨网络传输数据包，处理拥塞控制。</td>
+<td>路由器（Router）</td>
+<td>IP（IPv4&#x2F;IPv6）、ICMP、ARP</td>
+<td>分组、协议数据对象 Packet(Datagram)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>传输层（Transport）[核心之一]</td>
+<td>提供端到端可靠或不可靠传输，流量控制、差错恢复、连接管理。</td>
+<td>-</td>
+<td>TCP、UDP</td>
+<td>数据段Segement</td>
+</tr>
+<tr>
+<td>5</td>
+<td>会话层（Session）</td>
+<td>管理会话连接，协调数据交换，管理同步点（如事务提交）。</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>6</td>
+<td>表示层（Presentation）</td>
+<td>数据格式转换、加密&#x2F;解密、压缩&#x2F;解压，解决不同系统的数据表示差异。</td>
+<td>-</td>
+<td>SSL&#x2F;TLS、ASCII→Unicode、ZIP</td>
+<td>-</td>
+</tr>
+<tr>
+<td>7</td>
+<td>应用层（Application）</td>
+<td>直接面向用户提供服务（如HTTP、FTP），屏蔽底层通信细节。</td>
+<td>-</td>
+<td>HTTP、FTP、SMTP、DNS</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<p><strong>TCP&#x2F;IP 四层模型</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>层级名称</strong></th>
+<th><strong>功能</strong></th>
+<th><strong>关键设备&#x2F;协议</strong></th>
+<th><strong>封装单位</strong></th>
+<th><strong>作用说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>应用层</strong></td>
+<td>直接面向用户提供网络服务（如 HTTP、FTP），定义数据格式和交互规则。</td>
+<td>HTTP、FTP、DNS、SMTP、Telnet、SSH、MQTT、WebSocket</td>
+<td>数据（Data）</td>
+<td>负责应用程序的数据处理和用户接口，屏蔽底层通信细节。</td>
+</tr>
+<tr>
+<td><strong>传输层</strong></td>
+<td>提供端到端的可靠或不可靠数据传输，流量控制、差错恢复、连接管理。</td>
+<td>TCP（可靠）、UDP（不可靠）</td>
+<td>报文段（Segment）<br>或用户数据报（Datagram）</td>
+<td>TCP 通过三次握手&#x2F;四次挥手建立连接，UDP 无连接。</td>
+</tr>
+<tr>
+<td><strong>网络层</strong><br>（互联网层）</td>
+<td>负责跨网络的数据包传输，逻辑寻址（IP 地址），路由选择和拥塞控制。</td>
+<td>IP（IPv4&#x2F;IPv6）、ICMP、ARP、RARP</td>
+<td>IP 数据包（Datagram）</td>
+<td>通过 IP 协议将数据包从源主机传送到目标主机，解决不同网络的互联问题。</td>
+</tr>
+<tr>
+<td><strong>网络接口层</strong></td>
+<td>负责将 IP 数据包传递到物理网络（如以太网、Wi-Fi），定义物理介质的交互。</td>
+<td>以太网（Ethernet）、Wi-Fi（802.11）、DSL、PPP</td>
+<td>帧（Frame）</td>
+<td>对应 OSI 模型的物理层和数据链路层，处理比特流和数据帧的传输。</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="Socket-套接字"><a href="#Socket-套接字" class="headerlink" title="Socket 套接字"></a>Socket 套接字</h3><p><img src="/KnowledgeBase%5Csocket.png" alt="alt text"><br>应用层与传输层之间的抽象接口，通过IP地址和端口号的组合，唯一标识网络中通信的端点。<br>套接字可以看为一个IP与一个端口（port）联合在一起。唯一标识一个进程</p>
+<h3 id="TCP与UDP"><a href="#TCP与UDP" class="headerlink" title="TCP与UDP"></a>TCP与UDP</h3><p>TCP(Transmission Control Protocol) 传输控制协议<br>UDP(User Datagram Protocol) 用户数据报协议</p>
+<h4 id="TCP特性"><a href="#TCP特性" class="headerlink" title="TCP特性"></a>TCP特性</h4><ul>
+<li>面向连接，需要构建连接。</li>
+<li>可靠性 序列号和确认机制确保顺序、重传机制处理丢失的包</li>
+<li>流量控制</li>
+<li>拥塞控制</li>
+</ul>
+<p>三次握手<br>1.SYN(1)seq(n)<br>2.SYN(1)ACK(1)ack(n+1)seq(m)<br>3.ACK(1)ack(m+1)seq(n+1)）</p>
+<p>四次挥手<br>1.FIN(1)seq(n)[C2S]<br>2.ACK(1)ack(n+1)seq(m)[S2C]<br>3.FIN(1)ACK(1)ack(n+1)seq(w)[S2C]<br>4.ACK(1)ack(w+1)seq(n+1)[C2S]<br>半关闭状态。连接的一方在结束它的发送后还能够接受来自另外一端数据的能力。</p>
+<h4 id="UDP特性"><a href="#UDP特性" class="headerlink" title="UDP特性"></a>UDP特性</h4><ul>
+<li>无连接性</li>
+<li>不可靠性 不保证顺序或重传</li>
+<li>低延迟</li>
+<li>数据报分组</li>
+</ul>
+<p>不需要三次握手，无连接，只需要知道目标IP和端口即可。</p>
+<h4 id="可靠的UDP传输"><a href="#可靠的UDP传输" class="headerlink" title="可靠的UDP传输"></a>可靠的UDP传输</h4><ul>
+<li>KCP是一个快速可靠协议，能以比 TCP 浪费 10%-20% 的带宽的代价，换取平均延迟降低 30%-40%，且最大延迟降低三倍的传输效果。<br>KCP项目<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/606724318">《原神》也使用 KCP 进行传输加速</a><br><a target="_blank" rel="noopener" href="https://github.com/skywind3000/kcp">GitHub</a></li>
+</ul>
+<p>其他了解：<br>QUIC</p>
+<h3 id="Protobuf"><a href="#Protobuf" class="headerlink" title="Protobuf"></a>Protobuf</h3><p>Protocol Buffers</p>
+<ul>
+<li>由 Google 开发的一种 语言中性、平台中性、可扩展的数据序列化方法，用于结构化数据的高效存储和通信。</li>
+<li>目标：实现数据的序列化（编码）和反序列化（解码）。数据量相较于json和xml大幅减少。</li>
+<li>通过.proto文件定义数据结构。</li>
+</ul>
+<h3 id="待解决问题"><a href="#待解决问题" class="headerlink" title="待解决问题"></a>待解决问题</h3><p>TCP的拆包和粘包的问题是什么<br>Socket实现的过程是怎么样的</p>
+<h2 id="多进程、多线程"><a href="#多进程、多线程" class="headerlink" title="多进程、多线程"></a>多进程、多线程</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Zeker62/p/15046237.html">进程基础</a><br><a target="_blank" rel="noopener" href="https://geekdaxue.co/read/wemozj@thoq0y/ftts32">操作系统 - 进程相关</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xumaomao/p/12860228.html">进程的数据描述</a></p>
+<h3 id="计算机进程"><a href="#计算机进程" class="headerlink" title="计算机进程"></a>计算机进程</h3><p><strong>定义</strong>：一个具有一定独立功能的程序关于某个数据集合的一次活动。</p>
+<p>进程是资源分配的基本单位。<br>资源包括：</p>
+<ol>
+<li>CPU时间</li>
+<li>内存[分配独立的虚拟地址空间]</li>
+<li>输入&#x2F;输出设备</li>
+<li>网络连接（如TPC&#x2F;IP socket）</li>
+<li>信号量和锁 - 用于进程间通信和同步，管理共享资源的访问</li>
+<li>其他进程间通信机制，如管道、消息队列、共享内存等。</li>
+</ol>
+<p>执行模式：</p>
+<ol>
+<li>顺序执行Sequential Execution<br>特性：Sequential(顺序性)、Close(封闭性，独占所有资源)、Reappear（可重现 结果只与初始条件有关）</li>
+<li>并发执行 Concurrency Execution<br>没有以上特性。</li>
+</ol>
+<h4 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h4><p>Ready、Running、Blocked</p>
+<p>Ready和Running间的切换由CPU调度</p>
+<p>由Running进入Blocked主要是因为等待事件。如IO请求、访问临界资源等。</p>
+<h4 id="进程控制块PCB"><a href="#进程控制块PCB" class="headerlink" title="进程控制块PCB"></a>进程控制块PCB</h4><p>Process Control Block</p>
+<ul>
+<li>PID</li>
+<li>Process State Information 用于存放该进程运行时的处理器现场信息</li>
+<li>Process Control Information 用于存放与管理、调度进程相关的信息</li>
+</ul>
+<h4 id="进程队列和PCB-Table"><a href="#进程队列和PCB-Table" class="headerlink" title="进程队列和PCB Table"></a>进程队列和PCB Table</h4><p>进程队列：相同状态的进程链接在一起，形成队列<br>Process Table(PCB Table) 即当前的进程列表。<br>从进程列表构建进程队列，有Link和Index两种方式。</p>
+<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><p>一个进程可以拥有多个线程，共享进程资源。<br>线程之间可以并发运行。</p>
+<p>把进程作为资源分配单位和调度单位这两个属性分开处理，即进程还是作为资源分配的基本单位，但是不作为调度的基本单位（很少调度或切换），把调度执行与切换的责任交给线程，即线程成为独立调度的基本单位，它比进程更容易（更快）创建，也更容易撤销。</p>
+<p>不过，一个线程的崩溃会导致其他的线程也崩溃。</p>
+<h4 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h4><p>同进程内的多线程共享进程的资源。[代码段、数据段、打开的文件等。]，此外，每个线程还有一些额外的数据：</p>
+<p>额外资源，由此确保线程的控制流是相对独立的。</p>
+<ol>
+<li>PC Program Counter 程序计数器</li>
+<li>Register Set 寄存器集合</li>
+<li>Stack 栈</li>
+</ol>
+<p>同一个进程的线程切换时，也只需要切换线程的私有数据，开销要小很多。</p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/mccand1234/article/details/118465728">内核级线程（KLT）和用户级线程（ULT）</a><br>ULT(User Level Threads)和KLT(Kernel Level Threads)</p>
+<h5 id="ULT"><a href="#ULT" class="headerlink" title="ULT"></a>ULT</h5><p>ULT情况下，内核并不知道线程的存在。<br>一个阻塞，所有阻塞。<br>线程管理 - Management done by user-level threads library </p>
+<h5 id="KLT"><a href="#KLT" class="headerlink" title="KLT"></a>KLT</h5><p>KLT下，<strong>线程是调度的基本单位。</strong><br>由Kernel来处理线程的创建、调度和管理。</p>
+<p>真正要利用好CPU的多核，还是得考虑KLT。</p>
+<h5 id="LWP"><a href="#LWP" class="headerlink" title="LWP"></a>LWP</h5><p>Light weight Process 轻量级进程。<br>一个用户进程可以拥有多个LWP，每个LWP和内核线程一对一。<br>考虑用户线程和LWP的对应关系</p>
+<p>一个用户进程 -&gt; 多个用户线程-&gt; 对应到多个LWP-&gt;每个LWP对应一个内核线程</p>
+<h3 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/465574868">一文搞懂六大进程通信机制原理(全网最详细)</a><br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1919765">详解操作系统之进程间通信 IPC (InterProcess Communication)</a><br>进程通信 InterProcess Communication 进程间的信息交换</p>
+<ul>
+<li>进程同步和进程互斥</li>
+</ul>
+<h4 id="临界资源-和-临界区"><a href="#临界资源-和-临界区" class="headerlink" title="临界资源 和 临界区"></a>临界资源 和 临界区</h4><p>Critical Resource &amp; Critical Region(Section)<br>定义：<br>临界资源： 一次仅允许一个进程访问。[Software &amp; Hardware]<br>临界区:访问临界资源的程序区</p>
+<p>临界区4条件:</p>
+<ol>
+<li>不能有两个进程同时处于临界区</li>
+<li>不对CPU的数量和速度做任何假设</li>
+<li>临界区外的进程不得阻塞其他进程</li>
+<li>不得使进程无期限地等待进入临界区</li>
+</ol>
+<h4 id="通信方案"><a href="#通信方案" class="headerlink" title="通信方案"></a>通信方案</h4><ol>
+<li>匿名管道(pipe)<ul>
+<li>实质是内核缓冲区 一端写入一端读出[单向数据流]。</li>
+<li>匿名，仅能用于父子进程间通信</li>
+<li>无格式字节流</li>
+</ul>
+</li>
+<li>有名管道(FIFO)<ul>
+<li>和匿名管道有些类似，但不限于父子进程。</li>
+<li>名字存于文件系统中，内容存放再内存中</li>
+</ul>
+</li>
+<li>消息(Message)队列<ul>
+<li>本质是存放在内存中的消息的链表，而消息本质上是用户自定义的数据结构。</li>
+<li>允许一个或多个进程向它写入或读取消息，读取某个消息后消息从消息队列中删除</li>
+<li>可以实现消息的随机查询,消息不一定要以先进先出的次序读取,也可以按消息的类型读取.比FIFO更有优势。</li>
+<li>用户进程写入数据到内存中的消息队列时，会发生从用户态拷贝数据到内核态的过程；同样的，另一个用户进程读取内存中的消息数据时，会发生从内核态拷贝数据到用户态的过程。因此，如果数据量较大，使用消息队列就会造成频繁的系统调用，也就是需要消耗更多的时间以便内核介入。</li>
+</ul>
+</li>
+<li>共享内存<ul>
+<li>对于共享内存机制来说，仅在建立共享内存区域时需要系统调用，一旦建立共享内存，所有的访问都可作为常规内存访问，无需借助内核。</li>
+</ul>
+</li>
+<li>信号量（Semaphores）和PV(DownUp)<ul>
+<li>消息队列无需避免冲突，而共享内存机制可能会发生冲突。</li>
+<li>保证共享内存在任何时刻仅有一个进程在访问，并且使得进程可以按照某个特定顺序访问共享内存，使用信号量来实现进程的同步和互斥机制。</li>
+<li>P(Down) 信号量-1，表示申请占用一个资源</li>
+<li>V(Up) 信号量+1，表示释放一个资源</li>
+<li>当信号量的值为 2 的时候，表示有 2 个资源可以使用，当信号量的值为 -2 的时候，表示有两个进程正在等待使用这个资源。</li>
+<li>实现互斥 - 初始化信号量为1，同个进程进行PV</li>
+<li>实现同步 - 不同进程进行PV</li>
+</ul>
+</li>
+<li>信号<ul>
+<li>唯一的异步通信机制，它可以在<strong>任何</strong>时候发送信号给某个进程。通过发送指定信号来通知进程某个异步事件的发送，以迫使进程执行信号处理程序。信号处理完毕后，被中断进程将恢复执行。用户、内核和进程都能生成和发送信号。</li>
+<li>如果该进程当前并未处于执行状态，则该信号就有内核保存起来，知道该进程回复执行并传递给它为止。如果一个信号被进程设置为阻塞，则该信号的传递被延迟，直到其阻塞被取消是才被传递给进程。</li>
+</ul>
+</li>
+<li>Socket 套接字<ul>
+<li>支持跨网络</li>
+<li>本质其实是一个编程接口（API），是应用层与 TCP&#x2F;IP 协议族通信的中间软件抽象层，它对 TCP&#x2F;IP 进行了封装。它把复杂的 TCP&#x2F;IP 协议族隐藏在 Socket 接口后面。对用户来说，只要通过一组简单的 API 就可以实现网络的连接。</li>
+</ul>
+</li>
+</ol>
+<h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><p>用于保证多个线程在访问共享资源时的互斥性。通过加锁，确保在某一个时刻，仅有一个线程能够访问共享资源。</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2481793">C++锁（万字长文）：概念、不同锁实现、死锁现象+代码实例+预防+避免、加锁性能降低8种有效策略</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/672803849">C++-一文了解锁，从概念到实现</a></p>
+<h4 id="乐观锁和悲观锁"><a href="#乐观锁和悲观锁" class="headerlink" title="乐观锁和悲观锁"></a>乐观锁和悲观锁</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Thomas-Jiang/p/18922809">乐观锁与悲观锁</a></p>
+<p>悲观锁：<br>悲观锁基于”最坏情况”假设，认为在数据处理过程中必然会出现并发冲突，因此在操作数据前就对其加锁，确保同一时间只有一个线程能访问该数据。</p>
+<p>乐观锁：<br>乐观锁假设并发冲突发生的概率较低，不主动加锁，而是在更新数据时检查是否有其他线程修改过该数据。若数据未被修改，则执行更新；若已被修改，则放弃或重试。<br>乐观锁的实现：<br>1.版本号&#x2F;基于时间戳的版本号等<br>2.CAS Compare And Swap</p>
+<h4 id="互斥锁-Mutex"><a href="#互斥锁-Mutex" class="headerlink" title="互斥锁 Mutex"></a>互斥锁 Mutex</h4><p>提供互斥访问，一次只有一个线程可以获得锁。<br>通过阻塞保证互斥性。</p>
+<p>应用：适用于保护共享资源，防止并发访问造成数据混乱，例如更新全局变量、文件写入等。</p>
+<p>通常用于实现临界区。进入临界区之前会尝试获取互斥锁，如果成功（即锁未被其他线程持有），则进入临界区。当线程退出临界区时，它会释放互斥锁，使得其他等待该互斥锁的线程可以获取锁并进入临界区。</p>
+<h5 id="C-实现"><a href="#C-实现" class="headerlink" title="C++实现"></a>C++实现</h5><p>std::mutex</p>
+<h5 id="底层原理"><a href="#底层原理" class="headerlink" title="底层原理"></a>底层原理</h5><p>有兴趣可以看看这篇文章:<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/332113890">互斥锁（mutex）的底层原理是什么？ 操作系统具体是怎么实现的？？</a></p>
+<h4 id="递归锁-Recursive-Mutex"><a href="#递归锁-Recursive-Mutex" class="headerlink" title="递归锁 Recursive Mutex"></a>递归锁 Recursive Mutex</h4><p>允许同一线程多次加锁，而不会导致死锁。通常用于需要多次访问同一资源的场景，如递归函数中。</p>
+<h5 id="C-实现-1"><a href="#C-实现-1" class="headerlink" title="C++实现"></a>C++实现</h5><p>std::recursive_mutex</p>
+<h4 id="读写锁-Read-Write-Lock"><a href="#读写锁-Read-Write-Lock" class="headerlink" title="读写锁 Read-Write Lock"></a>读写锁 Read-Write Lock</h4><p>允许多个读线程同时访问资源，但在写线程访问资源时，所有其他线程（无论是读线程还是写线程）都不能访问资源。</p>
+<p>读的时候也会获取读锁。并在处理完毕后释放读锁。<br>写的时候首先检查是否有其他锁（包括读&#x2F;写锁）</p>
+<h5 id="C-实现-2"><a href="#C-实现-2" class="headerlink" title="C++实现"></a>C++实现</h5><p>C++17引入的std::shared_mutex。<br>在写的时候用std::unique_lock获取写锁，读的时候用std::shared_lock获取读锁。</p>
+<h4 id="自旋锁-Spinlock"><a href="#自旋锁-Spinlock" class="headerlink" title="自旋锁 Spinlock"></a>自旋锁 Spinlock</h4><p>是一种特殊类型的锁，当线程无法立即获取锁时，它不会立即进入阻塞状态，而是在一个循环中不断地尝试获取锁，直到成功为止。这种锁适用于锁持有时间短且线程不希望在重新调度上花费过多时间的情况。</p>
+<p>在获取不到锁时，自旋等待并再次尝试获取锁。</p>
+<p><strong>可以避免线程在等待锁时进入阻塞状态，从而减少了线程调度的开销。</strong></p>
+<p>自旋锁应该尽量只在<strong>持锁时间非常短</strong>的情况下使用，否则会由于忙等待导致CPU资源的浪费。</p>
+<h5 id="C-实现-3"><a href="#C-实现-3" class="headerlink" title="C++实现"></a>C++实现</h5><p>用到std::atomic_flag。C++11引入的一个原子类型，只有两个状态：设置和清除。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;atomic&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line">std::atomic_flag lock = ATOMIC_FLAG_INIT;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">spinlockTask</span><span class="params">(<span class="type">int</span> id)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">while</span> (lock.<span class="built_in">test_and_set</span>(std::memory_order_acquire)) &#123;</span><br><span class="line">      <span class="comment">// 自旋等待，直到获取到锁</span></span><br><span class="line">   &#125;</span><br><span class="line">   std::cout &lt;&lt; <span class="string">&quot;Thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot; acquired the lock.&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">   <span class="comment">//清除</span></span><br><span class="line">   lock.<span class="built_in">clear</span>(std::memory_order_release);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="function">std::thread <span class="title">t1</span><span class="params">(spinlockTask, <span class="number">1</span>)</span></span>;</span><br><span class="line">   <span class="function">std::thread <span class="title">t2</span><span class="params">(spinlockTask, <span class="number">2</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">   t<span class="number">1.</span><span class="built_in">join</span>();</span><br><span class="line">   t<span class="number">2.</span><span class="built_in">join</span>();</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h4><p>在C++中，条件变量是一个同步原语，用于阻塞一个线程，直到某个条件为真。<br>std::condition_variable （C++11）<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38210354/article/details/107168532">C++11多线程条件变量std::condition_variable详解</a></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;condition_variable&gt;</span></span></span><br><span class="line"></span><br><span class="line">std::mutex mtx;</span><br><span class="line">std::condition_variable cv;</span><br><span class="line"><span class="type">bool</span> ready = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">print_id</span><span class="params">(<span class="type">int</span> id)</span> </span>&#123;</span><br><span class="line">   <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lck</span><span class="params">(mtx)</span></span>;</span><br><span class="line">   <span class="keyword">while</span> (!ready) </span><br><span class="line">      cv.<span class="built_in">wait</span>(lck);<span class="comment">//这里的wait 会释放传入的锁</span></span><br><span class="line">   std::cout &lt;&lt; <span class="string">&quot;thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">go</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lck</span><span class="params">(mtx)</span></span>;</span><br><span class="line">   ready = <span class="literal">true</span>;</span><br><span class="line">   cv.<span class="built_in">notify_all</span>();<span class="comment">//唤醒，对应线程会重新尝试获取对应的锁。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   std::thread threads[<span class="number">10</span>];</span><br><span class="line">   <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i)</span><br><span class="line">      threads[i] = std::<span class="built_in">thread</span>(print_id, i);</span><br><span class="line">   std::cout &lt;&lt; <span class="string">&quot;10 threads ready to race...\n&quot;</span>;</span><br><span class="line">   <span class="built_in">go</span>();</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; th : threads) th.<span class="built_in">join</span>();</span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="条件变量的应用"><a href="#条件变量的应用" class="headerlink" title="条件变量的应用"></a>条件变量的应用</h5><h6 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h6><p>C++ 本身并没有直接提供信号量，可以利用互斥和条件变量来实现信号量的功能。</p>
+<h6 id="屏障"><a href="#屏障" class="headerlink" title="屏障"></a>屏障</h6><p>也可以使用条件变量和互斥锁来实现。</p>
+<h4 id="死锁问题-Deadlock"><a href="#死锁问题-Deadlock" class="headerlink" title="死锁问题 Deadlock"></a>死锁问题 Deadlock</h4><p>两个或多个线程或进程因争夺资源而相互等待，导致所有参与者都无法继续执行的状态。</p>
+<p>死锁的发生需要满足以下四个条件，这些条件同时成立时，系统可能进入死锁状态：</p>
+<ol>
+<li>互斥<br>至少有一个资源是非共享的，某一时刻只能被一个线程或进程占用。</li>
+<li>占有和等待<br>线程已经持有资源，同时又请求新的资源，但未释放已有资源。</li>
+<li>不可抢占（不可剥夺）<br>已被分配的资源不能强制剥夺，只能由持有该资源的线程或进程主动释放。</li>
+<li>循环等待<br>存在一个线程或进程的循环等待链，链中的每个线程或进程都在等待下一个线程持有的资源。</li>
+</ol>
+<h4 id="加锁性能"><a href="#加锁性能" class="headerlink" title="加锁性能"></a>加锁性能</h4><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2481793">C++锁（万字长文）：概念、不同锁实现、死锁现象+代码实例+预防+避免、加锁性能降低8种有效策略</a></p>
+<ul>
+<li>上下文切换undefined当线程因锁被阻塞时，操作系统会调度其他线程运行，涉及<strong>内核态与用户态的切换</strong>，代价较高。</li>
+<li>锁争用undefined多线程频繁请求同一资源导致锁竞争激烈，线程阻塞等待锁释放，<strong>降低系统吞吐量</strong>。</li>
+<li>长时间持锁undefined锁持有时间过长可能导致其他线程长时间阻塞，影响系统并发性。</li>
+<li>锁粒度过大undefined使用粗粒度的锁（如对整个函数加锁）可能导致无关的操作也被序列化，降低并发性。</li>
+</ul>
+<h5 id="优化策略"><a href="#优化策略" class="headerlink" title="优化策略"></a>优化策略</h5><ul>
+<li>仅对临界区进行加锁。</li>
+<li>读写锁优化读多写少的场景</li>
+<li>使用无锁数据结构<br>锁的等待和上下文切换增加了开销。使用无锁数据结构（如 std::atomic 或自定义的无锁队列）替代加锁。</li>
+<li>避免长时间持有锁</li>
+<li>使用尝试加锁或超时锁<br>使用 std::try_lock 或 std::unique_lock 的超时功能避免长时间阻塞。</li>
+<li>使用分区锁。将数据划分为多个分区，每个分区使用独立的锁</li>
+<li>替代同步机制<br>用条件变量、信号量、事件驱动模型等替代锁。</li>
+</ul>
+<h3 id="C-多线程编程"><a href="#C-多线程编程" class="headerlink" title="C++多线程编程"></a>C++多线程编程</h3><p>可以看看这篇文章先:<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/677232260">【C&#x2F;C++ 线程 】深入浅出：理解 std::thread 的局限性</a></p>
+<p>关于多线程的参考文章:<br><a target="_blank" rel="noopener" href="https://www.runoob.com/cplusplus/cpp-multithreading.html">C++ 多线程</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45031801/article/details/142705048">【C++】多线程编程图文详解</a></p>
+<h4 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h4><p>并发：是指两个或多个事件在同一时间间隔发生，并发是针对单核 CPU 提出的，在同一CPU上的多个事件。<br>并行：是指两个或者多个事件在同一时刻发生，并行则是针对多核 CPU 提出，在不同CPU上的多个事件。</p>
+<h4 id="线程-std-thread"><a href="#线程-std-thread" class="headerlink" title="线程 std::thread"></a>线程 std::thread</h4><h5 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h5><ol>
+<li>立即启动 对象创建后立即执行</li>
+<li>RAII原则。确保在对象生命周期结束时，所持有的资源（如内存、文件句柄、线程等）能够被正确释放。<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="function">std::thread <span class="title">t</span><span class="params">([]()&#123;</span></span></span><br><span class="line"><span class="params"><span class="function">      std::cout &lt;&lt; <span class="string">&quot;线程执行中&quot;</span> &lt;&lt; std::endl;</span></span></span><br><span class="line"><span class="params"><span class="function">   &#125;)</span></span>;</span><br><span class="line">   t.<span class="built_in">join</span>(); <span class="comment">// 显式管理线程</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 当离开作用域，t 被销毁</span></span><br></pre></td></tr></table></figure></li>
+<li>拷贝构造函数 可以看源码，被删去了。 &#x3D; delete</li>
+</ol>
+<h5 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h5><p>使用std::thread 创建对应的线程，参数支持函数指针、函数对象、lambda函数。</p>
+<p>线程管理: 如果不调用 join() 或 detach() 而直接销毁线程对象，会导致程序崩溃。<br>1.join() 用于等待线程完成执行。<br>2.detach() 将线程与主线程分离，线程在后台独立运行，主线程不再等待它。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一个简单的函数，作为线程的入口函数</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span> Z)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; Z; i++) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;线程使用函数指针作为可调用参数\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可调用对象的类定义</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ThreadObj</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">int</span> x)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; x; i++) &#123;</span><br><span class="line">            cout &lt;&lt; <span class="string">&quot;线程使用函数对象作为可调用参数\n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   cout &lt;&lt; <span class="string">&quot;线程 1 、2 、3 独立运行&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 使用函数指针创建线程</span></span><br><span class="line">   <span class="function">thread <span class="title">th1</span><span class="params">(foo, <span class="number">3</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 使用函数对象创建线程</span></span><br><span class="line">   <span class="function">thread <span class="title">th2</span><span class="params">(ThreadObj(), <span class="number">3</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 使用 Lambda 表达式创建线程</span></span><br><span class="line">   <span class="function">thread <span class="title">th3</span><span class="params">([](<span class="type">int</span> x) &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">      <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; x; i++) &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">         cout &lt;&lt; <span class="string">&quot;线程使用 lambda 表达式作为可调用参数\n&quot;</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">      &#125;</span></span></span><br><span class="line"><span class="params"><span class="function">   &#125;, <span class="number">3</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 等待所有线程完成</span></span><br><span class="line">   th<span class="number">1.</span><span class="built_in">join</span>(); <span class="comment">// 等待线程 th1 完成</span></span><br><span class="line">   th<span class="number">2.</span><span class="built_in">join</span>(); <span class="comment">// 等待线程 th2 完成</span></span><br><span class="line">   th<span class="number">3.</span><span class="built_in">join</span>(); <span class="comment">// 等待线程 th3 完成</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="互斥量和锁"><a href="#互斥量和锁" class="headerlink" title="互斥量和锁"></a>互斥量和锁</h4><p>std::mutex 互斥量</p>
+<p>锁 标准库提供的互斥锁RAII封装工具<br>std::lock_guard&lt;&gt; —— {}控制生命周期<br>std::unique_lock&lt;&gt;<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/nihao_2014/article/details/131208348">std::lock_guard（轻锁）std::unique_lock（重锁）区别</a></p>
+<h5 id="实现区别"><a href="#实现区别" class="headerlink" title="实现区别"></a>实现区别</h5><ol>
+<li>lock_guard 是基于互斥锁 std::mutex 实现的，unique_lock 是基于通用锁 std::unique_lock 实现的，unique_lock 可以实现比 lock_guard 更灵活的锁操作。</li>
+<li>lock_guard 是不可移动的（moveable），即不能拷贝、赋值、移动，只能通过构造函数初始化和析构函数销毁，unique_lock 是可移动的，可以拷贝、赋值、移动。<br>unique_lock 提供了更多的控制锁的行为，比如锁超时、不锁定、条件变量等。</li>
+<li>unique_lock 比 lock_guard 更重，因为它有更多的功能，更多的开销。如果只需要简单的互斥保护，使用 lock_guard 更好。</li>
+<li>unique_lock 支持手动解锁，而 lock_guard 不支持。</li>
+</ol>
+<h5 id="代码示例-1"><a href="#代码示例-1" class="headerlink" title="代码示例"></a>代码示例</h5><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">std::mutex mtx;</span><br><span class="line">mtx.<span class="built_in">lock</span>();   <span class="comment">// 锁定互斥锁</span></span><br><span class="line"><span class="comment">// 访问共享资源</span></span><br><span class="line">mtx.<span class="built_in">unlock</span>(); <span class="comment">// 释放互斥锁</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">   <span class="function">std::lock_guard&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>; <span class="comment">// 自动锁定和解锁</span></span><br><span class="line">   <span class="comment">// 访问共享资源</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="其他互斥量"><a href="#其他互斥量" class="headerlink" title="其他互斥量"></a>其他互斥量</h5><p>std::recursive_mutex 用于递归锁。<br>std::timed_mutex 时间互斥锁。—— 如果程序允许指定时间后仍然持有锁，则定时解锁。（try_lock_for和try_lock_until,前者为相对时间，后者为绝对时间）<br>std::recursive_timed_mutex 递归时间互斥锁。</p>
+<h4 id="条件变量-std-condition-variable"><a href="#条件变量-std-condition-variable" class="headerlink" title="条件变量 std::condition_variable"></a>条件变量 std::condition_variable</h4><p>条件变量用于线程间的协调，允许一个或多个线程等待某个条件的发生。<br>常和互斥量一起用，实现线程同步。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">std::condition_variable cv;</span><br><span class="line">std::mutex mtx;</span><br><span class="line"><span class="type">bool</span> ready = <span class="literal">false</span>;</span><br><span class="line"><span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>;</span><br><span class="line">cv.<span class="built_in">wait</span>(lock, []&#123; <span class="keyword">return</span> ready; &#125;); <span class="comment">// 等待条件满足</span></span><br><span class="line"><span class="comment">// 条件满足后执行</span></span><br></pre></td></tr></table></figure>
+
+<p>关于condition_variable可以参考这篇博客：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38210354/article/details/107168532">C++11多线程条件变量std::condition_variable详解</a></p>
+<h4 id="原子操作-std-atomic"><a href="#原子操作-std-atomic" class="headerlink" title="原子操作 std::atomic"></a>原子操作 std::atomic</h4><p>关于原子操作下面单独启一栏。</p>
+<h3 id="原子操作"><a href="#原子操作" class="headerlink" title="原子操作"></a>原子操作</h3><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2507123">深入探究C++原子操作：原理、应用与性能权衡</a><br><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1469010">【C&#x2F;C++ 原子操作】深入浅出：从互斥锁到无锁编程的转变 - 理解C++原子操作和内存模型</a><br>原子操作（Atomic Operation），确保对共享数据的访问是不可分割的，即在多线程环境下，<strong>原子操作要么完全执行，要么完全不执行，不会出现中间状态。</strong></p>
+<p>C++中的无锁编程，常依赖于std::atomic类型和相关操作。<br>优势：</p>
+<ul>
+<li>确保数据一致性的同时，性能提升(减少阻塞和上下文切换)</li>
+<li>避免死锁和饥饿</li>
+</ul>
+<p>原子操作和互斥锁都是同步机制，但它们有不同的适用场景和性能特点。原子操作通常用于<strong>简单的同步场景</strong>，如计数器和标志位，而互斥锁则适用于<strong>更复杂的同步场景</strong>，如保护共享数据结构。</p>
+<p>示例</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;atomic&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">std::atomic&lt;<span class="type">int</span>&gt; <span class="title">count</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">increment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   count.<span class="built_in">fetch_add</span>(<span class="number">1</span>, std::memory_order_relaxed);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="function">std::thread <span class="title">t1</span><span class="params">(increment)</span></span>;</span><br><span class="line">   <span class="function">std::thread <span class="title">t2</span><span class="params">(increment)</span></span>;</span><br><span class="line">   t<span class="number">1.</span><span class="built_in">join</span>();</span><br><span class="line">   t<span class="number">2.</span><span class="built_in">join</span>();</span><br><span class="line">   <span class="keyword">return</span> count; <span class="comment">// 应返回2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="std-atomic"><a href="#std-atomic" class="headerlink" title="std::atomic"></a>std::atomic</h4><p>C++11引入std::atomic类模板，对基本数据类型提供原子操作支持。</p>
+<h5 id="原子操作的内存模型"><a href="#原子操作的内存模型" class="headerlink" title="原子操作的内存模型"></a>原子操作的内存模型</h5><h6 id="为什么要考虑内存顺序？"><a href="#为什么要考虑内存顺序？" class="headerlink" title="为什么要考虑内存顺序？"></a>为什么要考虑内存顺序？</h6><p>在多线程程序中，不同线程对内存的读写操作可能导致意想不到的结果，这主要是因为现代计算机系统和编译器通常会对操作进行重排序，以优化性能和资源利用率。然而，这种重排序可能会打破代码的逻辑顺序，导致数据竞争和一致性问题。</p>
+<p>内存顺序（Memory Ordering），是一种规则，它定义了操作的可见性和执行顺序，是确保多线程程序正确性的关键。（防止单线程指令的合理重排在多线程的环境下出现顺序上的错误。）在C++中，这些规则通过原子操作的内存顺序标志来实现。</p>
+<h6 id="内存顺序"><a href="#内存顺序" class="headerlink" title="内存顺序"></a>内存顺序</h6><p>C++定义了多种内存模型，用于控制操作的内存可见性和顺序。这些内存模型包括：</p>
+<ul>
+<li>memory_order_seq_cst：顺序一致性，默认的内存顺序，提供最强的顺序保证。</li>
+<li>memory_order_relaxed：不对操作的内存顺序做任何保证。</li>
+<li>memory_order_acquire：确保在此操作之前的所有内存写入都对其他线程可见。用于读取操作，保证在该操作之后的内存读写不会被重排序到该操作之前。它确保对共享数据的读取操作可以看到之前的写入操作的结果。</li>
+<li>memory_order_release：用于写入操作，保证在该操作之前的内存读写不会被重排序到该操作之后。它确保写入操作对后续的读取操作可见。</li>
+<li>memory_order_acq_rel：同时具有memory_order_acquire和memory_order_release的特性。<br>选择合适的内存模型对于保证程序的正确性和性能至关重要。</li>
+</ul>
+<h4 id="C-atomic-内存序"><a href="#C-atomic-内存序" class="headerlink" title="C++ atomic 内存序"></a>C++ atomic 内存序</h4><p>在有了上面的基础知识后，再读一下这篇文章深入了解一下：<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/539229114">C++11 atomic和内存序</a></p>
+<p><strong>原子变量</strong>的初步定义：即某些成员方法是原子操作的对象。</p>
+<p><strong>原子操作</strong>下个定义：即在高层代码的一个原子操作，不论在底层是怎么实现的，有多少条指令，在底层这些指令执行期间，都不会受到其它线程或者读写任务的干扰。即<strong>要么执行要么完全不执行</strong></p>
+<h5 id="原子操作的底层实现和支持"><a href="#原子操作的底层实现和支持" class="headerlink" title="原子操作的底层实现和支持"></a>原子操作的底层实现和支持</h5><p>现代CPU提供了对原子操作的硬件支持，如CAS（Compare-And-Swap）指令。CAS指令是一种原子操作，它比较一个内存位置的值与一个预期值，如果相等，则将该内存位置的值更新为一个新的值。</p>
+<p>关于CAS:<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/438406660">聊聊高并发中的 CAS（compare and swap）</a></p>
+<h5 id="内存屏障"><a href="#内存屏障" class="headerlink" title="内存屏障"></a>内存屏障</h5><p>内存屏障就可以想象成用一个匿名的原子变量来保证执行顺序，不需要让b变成原子变量了，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> b = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;</span><br><span class="line">    a = <span class="number">1</span>;</span><br><span class="line">    std::<span class="built_in">atomic_thread_fence</span>(std::memory_order_release);</span><br><span class="line">    b = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(b != <span class="number">2</span>);</span><br><span class="line">    std::<span class="built_in">atomic_thread_fence</span>(std::memory_order_acquire);</span><br><span class="line">    cout&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用release屏障，相当于写操作a&#x3D;1不会重排到b之后。</p>
+<p>使用acquire屏障，相当于读操作cout&lt;&lt;a不会重排while(b !&#x3D;2)之前。</p>
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><p>一个类只会创建一次对象。仅有一个实例。<br>由类提供对外访问方法，构造函数为私有。</p>
+<p>两种形式：<br>饿汉式：在类被加载时就会创建该类的实例对象<br>懒汉式：在类被加载时不回创建该类的实例对象，在首次要使用该实例时才会创建</p>
+<p>要考虑将拷贝构造、移动构造函数删除。<br>懒汉式需要注意线程安全问题。<br>一个简单的解决方案： 静态局部变量来实现懒汉模式，确保线程安全。[C++11中静态局部变量的初始化是线程安全的。]</p>
+<p>这篇基于Java简单介绍了饿汉、懒汉的概念。<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/zlc0827/article/details/136037192">单例模式(饿汉式、懒汉式)详解</a><br>C++有这么一篇参考文章:<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/540185643">c++手撕代码（五）设计模式：线程安全懒汉单例</a></p>
+<h3 id="待解决问题-1"><a href="#待解决问题-1" class="headerlink" title="待解决问题"></a>待解决问题</h3><p>单例模式的缺陷<br>事件消息中心的解耦</p>
+<h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><h3 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h3><p><a target="_blank" rel="noopener" href="https://geekdaxue.co/read/wemozj@thoq0y/ncc6zw">虚拟内存</a></p>
+<p>虚拟地址 -&gt; MMU(Memory Management Unit) -&gt; 物理地址</p>
+<p>避免地址冲突</p>
+<h4 id="内存分段-Segmentation"><a href="#内存分段-Segmentation" class="headerlink" title="内存分段 Segmentation"></a>内存分段 Segmentation</h4><p>连续的内存空间。<br>分段产生外部内存碎片。可以用交换Swap方法来处理内存碎片，但有比较高的开销。(需要和磁盘交互)</p>
+<h4 id="内存分页-Page"><a href="#内存分页-Page" class="headerlink" title="内存分页 Page"></a>内存分页 Page</h4><p>由于内存空间都是预先划分好的，也就不会像分段会产生间隙非常小的内存，这正是分段会产生内存碎片的原因。而采用了分页，那么释放的内存都是以页为单位释放的，也就不会产生无法给进程使用的小内存。</p>
+<p>如果内存空间不够，操作系统会把其他正在运行的进程中的「最近没被使用」的内存页面给释放掉，也就是暂时写在硬盘上，称为换出（Swap Out）。一旦需要的时候，再加载进来，称为换入（Swap In）。所以，一次性写入磁盘的也只有少数的一个页或者几个页，不会花太多时间，内存交换的效率就相对比较高。</p>
+<p>关于页表大小过大的问题，采用局部性原理，有多级页表和段页式两种解决方案。</p>
+<h5 id="多级页表"><a href="#多级页表" class="headerlink" title="多级页表"></a>多级页表</h5><h5 id="段页式"><a href="#段页式" class="headerlink" title="段页式"></a>段页式</h5><h3 id="内存碎片-内部碎片和外部碎片"><a href="#内存碎片-内部碎片和外部碎片" class="headerlink" title="内存碎片 内部碎片和外部碎片"></a>内存碎片 内部碎片和外部碎片</h3><h4 id="内部碎片"><a href="#内部碎片" class="headerlink" title="内部碎片"></a>内部碎片</h4><p>内部碎片是已经被分配出去（能明确指出属于哪个进程）。由于被装入的数据块小于分区大小，从而导致分区内部有空间浪费，这种现象成为内部碎片。</p>
+<p>内部碎片是处于区域内部或页面内部的存储块。占有这些区域或页面的进程并不使用这个存储块。而在进程占有这块存储块时，系统无法利用它。直到进程释放它，或进程结束时，系统才有可能利用这个存储块。</p>
+<p>为了有效的利用内存，使内存产生更少的碎片，要对内存分页，内存以页为单位来使用，最后一页往往装不满，于是形成了内部碎片。</p>
+<p>因为所有的内存分配必须起始于可被 4、8 或 16 整除（视处理器体系结构而定）的地址或者因为MMU(Memory Management Unit)的分页机制的限制，决定内存分配算法仅能把预定大小的内存块分配给客户。假设当某个客户请求一个43字节的内存块时，因为没有适合大小的内存，所以它可能会获得 44字节、48字节等稍大一点的字节，因此由所需大小四舍五入而产生的多余空间就叫内部碎片。</p>
+<h4 id="外部碎片"><a href="#外部碎片" class="headerlink" title="外部碎片"></a>外部碎片</h4><p>外部碎片是指未被分配的空闲内存区域分散且不连续，导致无法满足较大内存请求的现象。即使空闲内存的总量足够，但由于分散成多个小块，无法合并使用。</p>
+<p>采用分段管理的虚拟内存会产生外部碎片。</p>
+<h3 id="内存对齐"><a href="#内存对齐" class="headerlink" title="内存对齐"></a>内存对齐</h3><p>很详细的一篇文章：<br><a target="_blank" rel="noopener" href="https://juejin.cn/post/7522658844990734377">内存对齐：程序员必知的性能优化秘籍</a></p>
+<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><ol>
+<li>平台原因(移植原因)：不是所有的硬件平台都能访问任意地址上的任意数据的；某些硬件平台只能在某些地址处取某些特定类型的数据，否则抛出硬件异常。比如处理器通常只能从地址为 8 的倍数的内存位置开始读取数据。</li>
+<li>性能原因：数据结构(尤其是栈)应该尽可能地在自然边界上对齐。原因在于，为了访问未对齐的内存，处理器需要作两次内存访问；而对齐的内存访问仅需要一次访问。<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">未对齐访问的代价：</span><br><span class="line">假设有一个 8 字节的 double 变量存储在地址 0x1~0x8 的连续内存中。当 CPU 要读取这个值时，由于现代处理器的内存访问机制，会发生以下复杂操作：</span><br><span class="line"></span><br><span class="line">第 1 次内存访问：从地址 0x0 读取 8 字节数据块（包含地址 0x0 的无用数据）；</span><br><span class="line">第 2 次内存访问：从地址 0x8 读取 8 字节数据块（包含地址 0x9~0xF 的无用数据）；</span><br><span class="line">数据提取：从第 1 次访问结果中提取地址 0x1~0x7 的数据；</span><br><span class="line">数据合并：将第 1 次和第 2 次访问的有效数据组合成完整的 double 值。</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p>数据在内存中的起始地址必须是其对齐值的整数倍。</p>
+<p><strong>对齐系数（Alignment Factor）</strong>：<br>这是编译器默认的对齐基准值，在 64 位系统中通常为 8 字节；<br>可以通过 #pragma pack(n) 指令进行修改，其中 n 可以是 1、2、4、8、16；</p>
+<p><strong>有效对齐值（Effective Alignment）</strong>：<br>这是实际决定成员对齐要求的关键值，计算公式：min(数据类型大小, 对齐系数)；<br>例如：在 64 位系统中，int 类型的有效对齐值为 min(4, 8) &#x3D; 4，double 类型的有效对齐值为 min(8, 8) &#x3D; 8；</p>
+<p>内存对齐分为两个层面：内对齐（Internal Alignment）和外对齐（External Alignment），它们共同确保数据访问的高效性和数据在内存中的正确布局。</p>
+<p><strong>内对齐规则</strong>：</p>
+<ul>
+<li>结构体第一个成员的偏移量始终为 0；</li>
+<li>后续每个成员的偏移量必须是<strong>该成员(自己)有效对齐值的整数倍</strong>；</li>
+<li>如果自然偏移量不满足对齐要求，编译器会在前一个成员后插入填充字节（Padding Bytes）；</li>
+<li>这些填充字节不存储任何有效数据，但它们对于保证内存对齐和程序正确运行起着至关重要的作用；</li>
+<li>填充字节确保每个成员都从其有效对齐值的整数倍地址开始，从而保证 CPU 能够高效地访问数据；</li>
+</ul>
+<p><strong>外对齐规则</strong>：</p>
+<ul>
+<li>结构体的总大小必须是结构体中<strong>最大成员</strong>的有效对齐值的整数倍；</li>
+<li>如果不满足这个要求，编译器会在最后一个成员的尾部添加填充字节；</li>
+</ul>
+<p>当结构体中包含嵌套结构体时，嵌套结构体的起始地址必须满足其自身的对齐要求。嵌套结构体的对齐要求由其<strong>内部最大成员的有效对齐值决定</strong>。</p>
+<p>在计算嵌套结构体的外对齐时，不是按照嵌套结构体本身的大小来计算，而是按照结构体中所有<strong>基本数据成员类型的最大有效对齐值</strong>来计算。</p>
+<h4 id="位域"><a href="#位域" class="headerlink" title="位域"></a>位域</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">S5</span> &#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> enabled : <span class="number">1</span>;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> running : <span class="number">2</span>;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> error_code : <span class="number">5</span>;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> status : <span class="number">8</span>;</span><br><span class="line">    <span class="comment">//共用了16bits,剩余的（16~31位）会浪费</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// sizeof(S5) = 4 bytes</span></span><br></pre></td></tr></table></figure>
+
+<p>当结构体内包含位域时，内存对齐规则会变得更加复杂。位域的内存对齐遵循以下核心原则：</p>
+<ol>
+<li><p>容器类型对齐： 位域总是被打包到其声明的基本类型（如 int、unsigned int、char、short 等）中，这个基本类型称为位域的 “容器类型”。容器类型的<strong>起始地址必须遵守其自身的自然对齐规则。</strong></p>
+</li>
+<li><p>位域填充顺序： 编译器将位域填充到容器类型中时，可能从低位到高位填充（小端系统常见），也可能从高位到低位填充（大端系统常见）。具体的填充顺序取决于编译器和目标平台的字节序。</p>
+</li>
+<li><p>容器边界限制： 位域不能跨越其容器类型的边界。如果当前容器中剩余位数不足以容纳下一个位域，编译器会跳过剩余位，为下一个位域分配新的容器实例。</p>
+</li>
+<li><p>结构体整体对齐： 包含位域的结构体，其整体对齐要求由所有成员（<strong>包括位域的容器类型</strong>）中的最大对齐值决定，这与普通结构体的对齐规则相同。</p>
+</li>
+</ol>
+<h5 id="零宽度位域-Zero-width-bit-field"><a href="#零宽度位域-Zero-width-bit-field" class="headerlink" title="零宽度位域 Zero-width bit-field"></a>零宽度位域 Zero-width bit-field</h5><p>零宽度位域（:0）是一个特殊的编译器指令，当编译器遇到它时，即使前面还有剩余空间，编译器也会强制跳过这些剩余位，将下一个位域或普通成员从下一个容器类型的边界开始。它本身并不占用存储空间，但会影响后续成员的内存布局。比如，以下代码将会强制使 status 位域成员从新的 unsigned int 边界开始。</p>
+<p>注意零宽度位域不要有命名。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">S7</span> &#123;</span><br><span class="line">    <span class="type">char</span> id;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> : <span class="number">0</span>; <span class="comment">// 零宽度位域，强制下一个成员从新的 unsigned int 边界开始</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> status : <span class="number">4</span>;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> flags : <span class="number">3</span>;</span><br><span class="line">    <span class="type">short</span> value;</span><br><span class="line">    <span class="type">double</span> timestamp;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h4><p>在实际开发中，合理利用内存对齐可以显著提升程序性能。以下是一些优化建议：</p>
+<ol>
+<li>按大小降序排列：将较大的数据类型放在前面，较小的放在后面，可以有效减少填充字节；</li>
+<li>相关数据聚集：将经常一起访问的成员放在相邻位置，提高缓存命中率；<br>避免跨缓存行：将关键数据结构按缓存行大小对齐，确保不跨越缓存行边界；</li>
+<li>位域的有效使用：使用位域将多个小字段打包到同一字节，节省内存；</li>
+<li>编译器优化指令：合理使用 #pragma pack 和 __attribute__((aligned)) 等编译器特定指令；</li>
+<li>避免伪共享：在多线程环境中，将不同线程访问的数据放在不同的缓存行中，具体做法是将数据结构按缓存行大小对齐，避免不同线程访问的数据在同一缓存行中；<br>通过合理的内存对齐优化，可以在不增加算法复杂度的情况下，获得显著的性能提升。但需要注意的是，过度优化可能导致代码可读性下降，需要在性能和可维护性之间找到平衡。</li>
+</ol>
+<h1 id="引擎知识"><a href="#引擎知识" class="headerlink" title="引擎知识"></a>引擎知识</h1><h2 id="UE"><a href="#UE" class="headerlink" title="UE"></a>UE</h2><h3 id="UE-多线程开发-任务系统-TaskSystem"><a href="#UE-多线程开发-任务系统-TaskSystem" class="headerlink" title="UE 多线程开发 任务系统 TaskSystem"></a>UE 多线程开发 任务系统 TaskSystem</h3><p><a target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/zh-cn/unreal-engine/tasks-systems-in-unreal-engine">官方Doc:任务系统</a></p>
+<h3 id="待解决问题-2"><a href="#待解决问题-2" class="headerlink" title="待解决问题"></a>待解决问题</h3><p>UE反射<br>UE的GC<br>UE的Gameplay框架<br>Gameplay中Instance、World、GameMode、Level、Actor、Pawn的关系是？<br>如何防止UObject被自动GC？<br>你觉得Actor的意义在哪儿，为什么gameplay中有些要继承自Actor、<br>如果要进行关卡切换，但是不想用GameInstance来保存数据，可以怎么做<br>gameplay中，哪些类是不支持tick的<br>反射如何处理C++与蓝图之间的转换</p>
+<p>UE智能指针 SharedPtr 和 SharedRef</p>
+<p>Lyra的如何做输入还有资源的多平台适配</p>
+<p>Lyra的UI框架</p>
+<p>UE有哪些地方可以重载GameMode，如果都重载了以哪一个为准</p>
+<p>GameMode和GameInstance的区别</p>
+<p>UE你认为有哪些通信方式</p>
+<p>异步加载具体用哪些类，步骤？</p>
+<p>GA的生命周期</p>
+<p>GE有哪些时间效果</p>
+<p>Has Duration和Infinite的区别</p>
+<p>属性集属性更改，六个回调的执行顺序</p>
+<p>GAS预测的原理</p>
+<p>ENetMode有哪些</p>
+<p>Dedicated server和ListenServer的区别</p>
+<p>委托的种类，区别</p>
+<h1 id="脚本语言"><a href="#脚本语言" class="headerlink" title="脚本语言"></a>脚本语言</h1><h2 id="Lua"><a href="#Lua" class="headerlink" title="Lua"></a>Lua</h2><a href="/Mine/Lua/" title="Lua">Lua</a>
+
+<h1 id="计算机图形学"><a href="#计算机图形学" class="headerlink" title="计算机图形学"></a>计算机图形学</h1><a href="/Mine/ComputerGraphicAndUnity/" title="计算机图形学和Unity">计算机图形学和Unity</a><!-- flag of hidden posts --></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/Mine/KnowledgeBase/">https://mikeming126.github.io/Mine/KnowledgeBase/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#C"><span class="toc-number">1.1.</span> <span class="toc-text">C++</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C"><span class="toc-number">1.3.</span> <span class="toc-text">计算机网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B-Reference-Model"><span class="toc-number">1.3.1.</span> <span class="toc-text">网络参考模型 Reference Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Socket-%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="toc-number">1.3.2.</span> <span class="toc-text">Socket 套接字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E4%B8%8EUDP"><span class="toc-number">1.3.3.</span> <span class="toc-text">TCP与UDP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TCP%E7%89%B9%E6%80%A7"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">TCP特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UDP%E7%89%B9%E6%80%A7"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">UDP特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E9%9D%A0%E7%9A%84UDP%E4%BC%A0%E8%BE%93"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">可靠的UDP传输</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Protobuf"><span class="toc-number">1.3.4.</span> <span class="toc-text">Protobuf</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%85%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.5.</span> <span class="toc-text">待解决问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E8%BF%9B%E7%A8%8B%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.4.</span> <span class="toc-text">多进程、多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BF%9B%E7%A8%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">计算机进程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8A%B6%E6%80%81"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6%E5%9D%97PCB"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">进程控制块PCB</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%98%9F%E5%88%97%E5%92%8CPCB-Table"><span class="toc-number">1.4.1.3.</span> <span class="toc-text">进程队列和PCB Table</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.4.2.</span> <span class="toc-text">线程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B5%84%E6%BA%90"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">资源</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ULT"><span class="toc-number">1.4.2.2.1.</span> <span class="toc-text">ULT</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#KLT"><span class="toc-number">1.4.2.2.2.</span> <span class="toc-text">KLT</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#LWP"><span class="toc-number">1.4.2.2.3.</span> <span class="toc-text">LWP</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="toc-number">1.4.3.</span> <span class="toc-text">进程间通信</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%B4%E7%95%8C%E8%B5%84%E6%BA%90-%E5%92%8C-%E4%B8%B4%E7%95%8C%E5%8C%BA"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">临界资源 和 临界区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E4%BF%A1%E6%96%B9%E6%A1%88"><span class="toc-number">1.4.3.2.</span> <span class="toc-text">通信方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%81"><span class="toc-number">1.4.4.</span> <span class="toc-text">锁</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8C%E6%82%B2%E8%A7%82%E9%94%81"><span class="toc-number">1.4.4.1.</span> <span class="toc-text">乐观锁和悲观锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%92%E6%96%A5%E9%94%81-Mutex"><span class="toc-number">1.4.4.2.</span> <span class="toc-text">互斥锁 Mutex</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#C-%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.4.2.1.</span> <span class="toc-text">C++实现</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.4.2.2.</span> <span class="toc-text">底层原理</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E9%94%81-Recursive-Mutex"><span class="toc-number">1.4.4.3.</span> <span class="toc-text">递归锁 Recursive Mutex</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#C-%E5%AE%9E%E7%8E%B0-1"><span class="toc-number">1.4.4.3.1.</span> <span class="toc-text">C++实现</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%BB%E5%86%99%E9%94%81-Read-Write-Lock"><span class="toc-number">1.4.4.4.</span> <span class="toc-text">读写锁 Read-Write Lock</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#C-%E5%AE%9E%E7%8E%B0-2"><span class="toc-number">1.4.4.4.1.</span> <span class="toc-text">C++实现</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E6%97%8B%E9%94%81-Spinlock"><span class="toc-number">1.4.4.5.</span> <span class="toc-text">自旋锁 Spinlock</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#C-%E5%AE%9E%E7%8E%B0-3"><span class="toc-number">1.4.4.5.1.</span> <span class="toc-text">C++实现</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="toc-number">1.4.4.6.</span> <span class="toc-text">条件变量</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">1.4.4.6.1.</span> <span class="toc-text">条件变量的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="toc-number">1.4.4.6.1.1.</span> <span class="toc-text">信号量</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%B1%8F%E9%9A%9C"><span class="toc-number">1.4.4.6.1.2.</span> <span class="toc-text">屏障</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98-Deadlock"><span class="toc-number">1.4.4.7.</span> <span class="toc-text">死锁问题 Deadlock</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A0%E9%94%81%E6%80%A7%E8%83%BD"><span class="toc-number">1.4.4.8.</span> <span class="toc-text">加锁性能</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="toc-number">1.4.4.8.1.</span> <span class="toc-text">优化策略</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B"><span class="toc-number">1.4.5.</span> <span class="toc-text">C++多线程编程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.4.5.1.</span> <span class="toc-text">并发和并行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B-std-thread"><span class="toc-number">1.4.5.2.</span> <span class="toc-text">线程 std::thread</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%89%B9%E6%80%A7"><span class="toc-number">1.4.5.2.1.</span> <span class="toc-text">特性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.5.2.2.</span> <span class="toc-text">代码示例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%92%E6%96%A5%E9%87%8F%E5%92%8C%E9%94%81"><span class="toc-number">1.4.5.3.</span> <span class="toc-text">互斥量和锁</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8C%BA%E5%88%AB"><span class="toc-number">1.4.5.3.1.</span> <span class="toc-text">实现区别</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-1"><span class="toc-number">1.4.5.3.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E4%BA%92%E6%96%A5%E9%87%8F"><span class="toc-number">1.4.5.3.3.</span> <span class="toc-text">其他互斥量</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F-std-condition-variable"><span class="toc-number">1.4.5.4.</span> <span class="toc-text">条件变量 std::condition_variable</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C-std-atomic"><span class="toc-number">1.4.5.5.</span> <span class="toc-text">原子操作 std::atomic</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="toc-number">1.4.6.</span> <span class="toc-text">原子操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#std-atomic"><span class="toc-number">1.4.6.1.</span> <span class="toc-text">std::atomic</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.6.1.1.</span> <span class="toc-text">原子操作的内存模型</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%80%83%E8%99%91%E5%86%85%E5%AD%98%E9%A1%BA%E5%BA%8F%EF%BC%9F"><span class="toc-number">1.4.6.1.1.1.</span> <span class="toc-text">为什么要考虑内存顺序？</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.4.6.1.1.2.</span> <span class="toc-text">内存顺序</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-atomic-%E5%86%85%E5%AD%98%E5%BA%8F"><span class="toc-number">1.4.6.2.</span> <span class="toc-text">C++ atomic 内存序</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%92%8C%E6%94%AF%E6%8C%81"><span class="toc-number">1.4.6.2.1.</span> <span class="toc-text">原子操作的底层实现和支持</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C"><span class="toc-number">1.4.6.2.2.</span> <span class="toc-text">内存屏障</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.5.</span> <span class="toc-text">设计模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.5.1.</span> <span class="toc-text">单例模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%85%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98-1"><span class="toc-number">1.5.2.</span> <span class="toc-text">待解决问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.6.</span> <span class="toc-text">操作系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-number">1.6.1.</span> <span class="toc-text">虚拟内存</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E6%AE%B5-Segmentation"><span class="toc-number">1.6.1.1.</span> <span class="toc-text">内存分段 Segmentation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E9%A1%B5-Page"><span class="toc-number">1.6.1.2.</span> <span class="toc-text">内存分页 Page</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8"><span class="toc-number">1.6.1.2.1.</span> <span class="toc-text">多级页表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AE%B5%E9%A1%B5%E5%BC%8F"><span class="toc-number">1.6.1.2.2.</span> <span class="toc-text">段页式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%A2%8E%E7%89%87-%E5%86%85%E9%83%A8%E7%A2%8E%E7%89%87%E5%92%8C%E5%A4%96%E9%83%A8%E7%A2%8E%E7%89%87"><span class="toc-number">1.6.2.</span> <span class="toc-text">内存碎片 内部碎片和外部碎片</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E7%A2%8E%E7%89%87"><span class="toc-number">1.6.2.1.</span> <span class="toc-text">内部碎片</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%96%E9%83%A8%E7%A2%8E%E7%89%87"><span class="toc-number">1.6.2.2.</span> <span class="toc-text">外部碎片</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90"><span class="toc-number">1.6.3.</span> <span class="toc-text">内存对齐</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.6.3.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E"><span class="toc-number">1.6.3.2.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%8D%E5%9F%9F"><span class="toc-number">1.6.3.3.</span> <span class="toc-text">位域</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%9B%B6%E5%AE%BD%E5%BA%A6%E4%BD%8D%E5%9F%9F-Zero-width-bit-field"><span class="toc-number">1.6.3.3.1.</span> <span class="toc-text">零宽度位域 Zero-width bit-field</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.6.3.4.</span> <span class="toc-text">优化建议</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E6%93%8E%E7%9F%A5%E8%AF%86"><span class="toc-number">2.</span> <span class="toc-text">引擎知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UE"><span class="toc-number">2.1.</span> <span class="toc-text">UE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UE-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BC%80%E5%8F%91-%E4%BB%BB%E5%8A%A1%E7%B3%BB%E7%BB%9F-TaskSystem"><span class="toc-number">2.1.1.</span> <span class="toc-text">UE 多线程开发 任务系统 TaskSystem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%85%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98-2"><span class="toc-number">2.1.2.</span> <span class="toc-text">待解决问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80"><span class="toc-number">3.</span> <span class="toc-text">脚本语言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua"><span class="toc-number">3.1.</span> <span class="toc-text">Lua</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6"><span class="toc-number">4.</span> <span class="toc-text">计算机图形学</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Shadow/" title="Unity Shadow">Unity Shadow</a><time datetime="2025-10-05T07:56:07.434Z" title="发表于 2025-10-05 15:56:07">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/SRP/" title="Unity SRP">Unity SRP</a><time datetime="2025-10-02T06:15:27.265Z" title="发表于 2025-10-02 14:15:27">2025-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/AsyncOp/" title="Unity异步操作">Unity异步操作</a><time datetime="2025-09-14T08:01:59.349Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Physics/" title="Unity Physics">Unity Physics</a><time datetime="2025-09-14T08:01:59.345Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || 'd166aa20628a7b7e37d038e02cd29b6e'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

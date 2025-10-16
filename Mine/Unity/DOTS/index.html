@@ -1,0 +1,350 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Unity DOTS | Ming Blog</title><meta name="robots" content="noindex"><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="DOTS Unity Data-Oriented Technology StackDOTS官方文档 概述 Unity ECS重点组件系统。面向数据框架。注意这个数据。因此很多实现，是基于struct而非class。 Burst Compiler编译器，使用LLVM从IL&#x2F;.NET字节码转换为高度优化的本机代码的编译器。 Job System利用多核、多线程。  JobSystemUnit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity DOTS">
+<meta property="og:url" content="https://mikeming126.github.io/Mine/Unity/DOTS/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="DOTS Unity Data-Oriented Technology StackDOTS官方文档 概述 Unity ECS重点组件系统。面向数据框架。注意这个数据。因此很多实现，是基于struct而非class。 Burst Compiler编译器，使用LLVM从IL&#x2F;.NET字节码转换为高度优化的本机代码的编译器。 Job System利用多核、多线程。  JobSystemUnit">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2025-09-14T08:01:59.348Z">
+<meta property="article:modified_time" content="2025-10-06T03:10:43.335Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Unity DOTS",
+  "url": "https://mikeming126.github.io/Mine/Unity/DOTS/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2025-09-14T08:01:59.348Z",
+  "dateModified": "2025-10-06T03:10:43.335Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/Mine/Unity/DOTS/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Unity DOTS',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">Unity DOTS</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Unity DOTS</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-14T08:01:59.348Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-10-06T03:10:43.335Z" title="更新于 2025-10-06 11:10:43">2025-10-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Unity/">Unity</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>DOTS Unity Data-Oriented Technology Stack<br><a target="_blank" rel="noopener" href="https://unity.com/dots">DOTS官方文档</a></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><ul>
+<li>Unity ECS<br>重点组件系统。面向数据框架。注意这个数据。因此很多实现，是基于struct而非class。</li>
+<li>Burst Compiler<br>编译器，使用LLVM从IL&#x2F;.NET字节码转换为高度优化的本机代码的编译器。</li>
+<li>Job System<br>利用多核、多线程。</li>
+</ul>
+<h1 id="JobSystem"><a href="#JobSystem" class="headerlink" title="JobSystem"></a>JobSystem</h1><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7528436312074043438">Unity入门教程之异步篇第四节：Unity 高性能计算？Job System 与 Burst Compiler!</a><br>对于异步操作有UniTask。但是直接使用UniTask进行多线程编程也存在一些问题：</p>
+<ul>
+<li>线程安全的复杂性：需要<strong>手动处理临界资源，管理锁、原子操作、线程安全集合等。</strong></li>
+<li>需要处理和<strong>主线程通信</strong>的逻辑</li>
+<li>性能瓶颈 即便多线程，如果数据结构不优化，CPU 缓存命中率低，或者没有利用好 SIMD 指令，也无法达到极致性能。</li>
+</ul>
+<p>JobSystem优势：</p>
+<ul>
+<li>零GC分配</li>
+<li>自动并行化处理，无需关心线程管理。</li>
+<li>安全系统，避免冲突问题</li>
+</ul>
+<h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56459126">Unity C# Job System介绍(一) Job System总览和多线程</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/FlyingZiming/p/17241013.html">Unity JobSystem使用及技巧</a></p>
+<p>JobSystem通过创建Jobs而不是线程来管理多线程代码。<br>工人线程Worker Threads由JobSystem来管理。<br>JobSystem把Jobs放到Job队列中去执行。工人线程从Job队列中取出内容并执行。</p>
+<p>Jobs：</p>
+<ol>
+<li>可以是独立的任务</li>
+<li>或者依赖其他Jobs完成后再执行。—— Job的关联性。</li>
+</ol>
+<h3 id="安全性系统"><a href="#安全性系统" class="headerlink" title="安全性系统"></a>安全性系统</h3><p>以Job使用主线程的数据引用为例子：<br>C# Job System通过给每一个需要操作数据的Job一份数据的<strong>拷贝</strong>而不是主线程中数据的引用来避免这个问题。拷贝和原本的数据独立，从而排除了资源竞争。</p>
+<p>拷贝数据的方式表明了一个Job只能访问可以位块传输的数据类型(blitable data types)。这种数据类型在托管代码和原生代码之间进行传递的时候不需要类型转换。</p>
+<h3 id="NativeContainer"><a href="#NativeContainer" class="headerlink" title="NativeContainer"></a>NativeContainer</h3><p>安全性系统中拷贝数据的缺点是单个job的计算结果是与外部隔离的。为了突破这个限制，我们需要把结果放在一种<strong>共享内存</strong>——NativeContainer中。</p>
+<p>NativeContainer是一种托管的数据类型，为原生内存提供一种相对安全的C#封装。它包括一个指向非托管分配内存的指针。当和Unity C# Job System一起使用时，一个NativeContainer使得一个Job可以<strong>访问和主线程共享的数据</strong>，而不是在一份拷贝数据上工作。</p>
+<h2 id="官方案例"><a href="#官方案例" class="headerlink" title="官方案例"></a>官方案例</h2><p><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/EntityComponentSystemSamples">GitHub - EntityComponentSystemSamples</a><br>其中的JobSystem101.<br>实际PC上，即便是单线程任务，其也能提升许多效率。</p>
+<h2 id="官方概述"><a href="#官方概述" class="headerlink" title="官方概述"></a>官方概述</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/job-system-overview.html">官方Doc - JobSystem Overview</a></p>
+<p>可以单独使用JobSystem，但最好是一起用上Burst Compiler。(which is specifically designed to compile jobs for Unity’s job system)</p>
+<ul>
+<li>Multithreading</li>
+<li>Work stealing<ul>
+<li>平衡各个工作线程共享的任务量</li>
+</ul>
+</li>
+<li>Safety System<ul>
+<li>检测竞争条件。处理依赖关系。</li>
+<li>使用主线程数据时，不是引用而是副本，从而避免竞争</li>
+<li>只能访问可直接复制的数据类型(Only Access blittable data types)<ul>
+<li>具体而言，其在托管内存和非托管内存中具有通用的表示形式。<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Blittable_types">Wikipedia</a></li>
+<li>大部分非用户定义的值类型，但是不包含Boolean,Char。</li>
+</ul>
+</li>
+<li>使用memcpy复制blittable types。在managed and native parts之间传输。<ul>
+<li><blockquote>
+<p>It uses memcpy to put data into native memory when scheduling jobs and gives the managed side access to that copy when executing jobs.</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Jobs"><a href="#Jobs" class="headerlink" title="Jobs"></a>Jobs</h2><p>Job - 执行一项特定任务的最小单元。可以独立或者依赖于其他Job。<br>注意，是实现了特定接口的<strong>结构体</strong>。</p>
+<blockquote>
+<p>In Unity, a job refers to any <strong>struct</strong> that implements the IJob interface.</p>
+</blockquote>
+<p>关键点：</p>
+<ul>
+<li><strong>仅主线程可以调度和完成Jobs</strong> Only the main thread can schedule and complete jobs. </li>
+<li><strong>主线程不能访问运行中的Jobs的内容</strong> It can’t access the content of any running jobs</li>
+<li><strong>两个Jobs之间不能同时访问相同的内容</strong> Two jobs can’t access the contents of a job at the same time. </li>
+<li>To ensure efficient running of jobs, you can make them dependent on each other. Unity’s job system allows you to create complex dependency chains to ensure that your jobs complete in the correct order.</li>
+</ul>
+<h3 id="Job定义"><a href="#Job定义" class="headerlink" title="Job定义"></a>Job定义</h3><p>类型:</p>
+<ol>
+<li>IJob - Runs a single task on a job thread.</li>
+<li>IJobParallelFor - Runs a task in parallel. Each worker thread that runs in parallel <strong>has an exclusive index</strong> to access <strong>shared data</strong> between worker threads safely.</li>
+<li>IJobParallelForTransform - Runs a task in parallel. Each worker thread running in parallel <strong>has an exclusive Transform</strong> from the transform hierarchy to operate on.</li>
+<li>IJobFor - The same as IJobParallelFor, but <strong>allows you to schedule the job so that it doesn’t run in parallel</strong>.</li>
+</ol>
+<h3 id="数据访问"><a href="#数据访问" class="headerlink" title="数据访问"></a>数据访问</h3><blockquote>
+<p>The job system works best when you use it with the Burst compiler. Because Burst doesn’t support managed objects, you need to use unmanaged types to access the data in jobs. You can do this with blittable types, or use Unity’s built-in NativeContainer objects.</p>
+</blockquote>
+<ul>
+<li>使用NativeArray<T> 避免数据复制。NativeArray将数据存储在非托管内容（因此原始的Job的都指向同一内存），且JobSystem确保不会同时读写。（确保数据访问线程安全）<ul>
+<li>其他还有NativeList,NativeQueue,NativeHashMap,NativeHashSet等等。</li>
+<li>对于不需写的数据，使用属性[ReadOnly]进行标记。</li>
+<li>注意用Dispose进行内存释放。</li>
+<li>参考文档<a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/job-system-native-container.html">NativeContainer</a></li>
+</ul>
+</li>
+<li>不要访问非只读数据和可修改的静态数据。</li>
+<li>A job should not perform I&#x2F;O.</li>
+<li>A job should not access managed objects.</li>
+</ul>
+<blockquote>
+<p>Important: There’s no protection against accessing non-readonly or mutable static data from within a job. Accessing this kind of data circumvents all safety systems and might crash your application or the Unity Editor.</p>
+</blockquote>
+<h3 id="调度流程"><a href="#调度流程" class="headerlink" title="调度流程"></a>调度流程</h3><p>1.创建Job，实现对应的Job接口，如IJob，实现Execute方法。<br>2.调度Job，调用Schedule。（Jobs Run 用来在主线程立即执行，用于调试）<br>3.完成，读取数据。在JobHandle调用Complete方法。记得要调用Complete，否则可能会存在内存泄漏。 - It’s best practice to call Complete as late as possible in your code. </p>
+<p>Best Practices For Schedule and Complete：</p>
+<ul>
+<li>一旦数据准备好，就调用Schedule。</li>
+<li>在需要结果之前，不要调用Complete。</li>
+<li>进行作业分配，考虑把不太重要的作业安排在框架的某个部分。</li>
+<li>避免长时间的作业，因为一旦开始，其必须完成，不会放弃。将长时作业分为多个小的，互相依赖的作业。</li>
+</ul>
+<h4 id="Complete"><a href="#Complete" class="headerlink" title="Complete"></a>Complete</h4><p>可以通过JobHandle的IsComplete方法判断是否完成。<br>Complete会强制等待Job完成。如果 Job 尚未完成，调用 Complete() 会阻塞主线程直到Job完成。通常在需要读取 Job 结果前调用。</p>
+<p>其执行逻辑如下:</p>
+<ul>
+<li>Completes all dependencies of the job (including the dependencies of the dependencies, recursively).</li>
+<li>Waits for the job to finish execution (if it hasn’t finished already).</li>
+<li>Removes all remaining references to the job from the job queue.</li>
+</ul>
+<p>对于已经完成的JobHandle调用Complete不会有影响，也不会抛出错误。</p>
+<h3 id="依赖-Dependecy"><a href="#依赖-Dependecy" class="headerlink" title="依赖 Dependecy"></a>依赖 Dependecy</h3><ul>
+<li>在Schedule时传入JobHandle作为依赖</li>
+<li>使用JobHandle.CombineDependencies合并多个依赖的JobHandle</li>
+</ul>
+<p>示例</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//GetHandle</span></span><br><span class="line">JobHandle tempJobHandle = testIJob1.Schedule();</span><br><span class="line">JobHandle tempJobHandle2 = testIJob2.Schedule();</span><br><span class="line"></span><br><span class="line"><span class="comment">//CombineHandle</span></span><br><span class="line"><span class="comment">//JobHandle CombinedJobHandle = JobHandle.CombineDependencies(tempJobHandle, tempJobHandle2);</span></span><br><span class="line">NativeArray&lt;JobHandle&gt; jobHandleArray = <span class="keyword">new</span> NativeArray&lt;JobHandle&gt;(<span class="number">10</span>, Allocator.Temp);</span><br><span class="line">jobHandleArray[<span class="number">0</span>] = tempJobHandle;</span><br><span class="line">jobHandleArray[<span class="number">1</span>] = tempJobHandle2;</span><br><span class="line">JobHandle CombinedJobHandle = JobHandle.CombineDependencies(jobHandleArray);</span><br><span class="line"></span><br><span class="line"><span class="comment">//ScheduleJobWithDependence</span></span><br><span class="line">DJob1 DpJob = <span class="keyword">new</span> DJob1() &#123; nativeIntArray1 = <span class="keyword">this</span>.nativeIntArray ,nativeIntArray2 = tempArray&#125;;</span><br><span class="line">JobHandle dpJobHandle = DpJob.Schedule(CombinedJobHandle);</span><br></pre></td></tr></table></figure>
+
+<h3 id="并行作业-Parallel-Job"><a href="#并行作业-Parallel-Job" class="headerlink" title="并行作业 Parallel Job"></a>并行作业 Parallel Job</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/job-system-parallel-for-jobs.html">Parallel jobs 并行作业</a><br>IJobParallelFor</p>
+<blockquote>
+<p>A ParallelFor job <strong>uses a NativeArray of data to act on as its data source</strong>. ParallelFor jobs run across multiple CPU cores. There’s one job per core, with each handling a subset of the workload.</p>
+</blockquote>
+<p>其Execute针对数据源中的每个项目执行一次。此外，Execute还有一个整数参数索引，用于访问和操作单个数据源。</p>
+<p>测试案例：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> PJob1: IJobParallelFor</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> NativeArray&lt;<span class="built_in">float</span>&gt; inValueArray1;</span><br><span class="line">    [<span class="meta">ReadOnly</span>] <span class="comment">//由于多个Jobs可能同时读取同一个位置的值 必须加上ReadOnly</span></span><br><span class="line">    <span class="keyword">public</span> NativeArray&lt;<span class="built_in">float</span>&gt; inValueArray2;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> NativeArray&lt;<span class="built_in">float</span>&gt; resultArray;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Execute</span> (<span class="params"><span class="built_in">int</span> index</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">float</span> addValue = <span class="number">0</span>;</span><br><span class="line">        addValue = (index %<span class="number">2</span>==<span class="number">0</span>)?inValueArray2[index]:inValueArray2[index+<span class="number">1</span>];</span><br><span class="line">        resultArray[index] = inValueArray1[index] + addValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//...</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TestFunForParral</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    NativeArray&lt;<span class="built_in">float</span>&gt; inValueArray1 = <span class="keyword">new</span> NativeArray&lt;<span class="built_in">float</span>&gt;(<span class="number">5</span>, Allocator.TempJob);</span><br><span class="line">    NativeArray&lt;<span class="built_in">float</span>&gt; inValueArray2 = <span class="keyword">new</span> NativeArray&lt;<span class="built_in">float</span>&gt;(<span class="number">10</span>, Allocator.TempJob);</span><br><span class="line">    NativeArray&lt;<span class="built_in">float</span>&gt; resultArray = <span class="keyword">new</span> NativeArray&lt;<span class="built_in">float</span>&gt;(<span class="number">5</span>, Allocator.TempJob);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> a = <span class="number">0</span>; a &lt; <span class="number">5</span>; a++)</span><br><span class="line">    &#123;</span><br><span class="line">        inValueArray1[a] = a+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> a = <span class="number">0</span>; a &lt; <span class="number">10</span>; a++)</span><br><span class="line">    &#123;</span><br><span class="line">        inValueArray2[a] = (a+<span class="number">1</span>)*<span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    PJob1 pJob = <span class="keyword">new</span> PJob1()</span><br><span class="line">    &#123;</span><br><span class="line">        inValueArray1 = inValueArray1,</span><br><span class="line">        inValueArray2 = inValueArray2,</span><br><span class="line">        resultArray = resultArray</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二个参数BatchSize处理如何分批。实际测试后设置值。</span></span><br><span class="line">    <span class="comment">// The second parameter is the batch size,</span></span><br><span class="line">    <span class="comment">// essentially the no-overhead innerloop that just invokes Execute(i) in a loop.</span></span><br><span class="line">    <span class="comment">// When there is a lot of work in each iteration then a value of 1 can be sensible.</span></span><br><span class="line">    <span class="comment">// When there is very little work values of 32 or 64 can make sense.</span></span><br><span class="line">    JobHandle handle = pJob.Schedule(resultArray.Length, <span class="number">32</span>);</span><br><span class="line">    </span><br><span class="line">    handle.Complete();</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; resultArray.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(<span class="string">$&quot;resultArray[<span class="subst">&#123;i&#125;</span>]=<span class="subst">&#123;resultArray[i]&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    inValueArray1.Dispose();</span><br><span class="line">    inValueArray2.Dispose();</span><br><span class="line">    resultArray.Dispose();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="ParallelForTransform"><a href="#ParallelForTransform" class="headerlink" title="ParallelForTransform"></a>ParallelForTransform</h4><p>设计专门用于操作Transform.<br>由于 Transform 是 Unity 场景中最频繁被修改的组件之一，这个 Job 类型在性能优化上意义重大。<br>使用TransformAccessArray来传递TransformArray。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Jobs.IJobParallelForTransform.html">官方示例</a></p>
+<h1 id="Burst-Compiler"><a href="#Burst-Compiler" class="headerlink" title="Burst Compiler"></a>Burst Compiler</h1><blockquote>
+<p>Compile compatible sections of your C# code into highly-optimized native CPU code.</p>
+</blockquote>
+<p>一般针对JobSystem。也可以用于编译静态方法。<br>只需要在对应的Job数据结构&#x2F;静态方法上加上属性[BurstCompile]即可。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">[<span class="meta">BurstCompile</span>]</span><br><span class="line"><span class="keyword">struct</span> MyJob : IJob</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> NativeArray&lt;<span class="built_in">int</span>&gt; nativeIntArray;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Execute</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        nativeIntArray[<span class="number">0</span>] = nativeIntArray[<span class="number">0</span>] + <span class="number">10</span>;</span><br><span class="line">        Debug.LogError(<span class="string">&quot;ExecuteJob&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="ECS"><a href="#ECS" class="headerlink" title="ECS"></a>ECS</h1><a href="/Mine/Unity/ECS/" title="Unity ECS">ECS</a><!-- flag of hidden posts --></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/Mine/Unity/DOTS/">https://mikeming126.github.io/Mine/Unity/DOTS/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Unity/">Unity</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/Mine/Unity/Animation/" title="Unity Animation"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-14</div><div class="info-item-2">Unity Animation</div></div><div class="info-2"><div class="info-item-1">Mecanim 动画系统Mecanim Animation SystemUnity6 动画系统 作用 Animate the properties of models and assets.  基础概念基于Animation Clips的概念。 Animation Clip包含对象随着事件如何改变位置、旋转或其他属性的相关信息。 外部导入或者Unity内部创建。Clip相关功能：  Transform信息 组件属性 Scripts中的属性 特定时间调用函数  Animation Event 仅支持单个参数的函数  用AnimationEvent Object来传递多个参数：支持一个int,一个float,一个string,一个GameObject引用。 Humanoid Avatar The rigged character model,has a specific configuration of bones mapped to Unity’s Avatar format.  为人形专门设定。Importing a model with humanoid...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/AsyncOp/" title="Unity异步操作"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-14</div><div class="info-item-2">Unity异步操作</div></div><div class="info-2"><div class="info-item-1">异步操作可以参考这篇文章Unity入门教程之异步篇第二节：协程 or UniTask？Unity 中异步流程到底怎么选Unity异步扩展实践（一）——以UniTask库为参考 关于临界资源问题Unity入门教程之异步篇第三节：多线程初探？理解并发与线程安全 协程 - 逻辑异步 - 单线程协程这块较为通用可以另外参考之前记录。 UniTask本质上是利用C#的Task。但是使用原生的async&#x2F;await和Task存在一些问题：  GC和性能开销(Task本身是引用类型，且async&#x2F;await产生状态机对象和闭包) 线程切换不一定对。且Unity大部分API只能在主线程使用。 任务的生命周期管理问题:任务不会因为对象被销毁而自动停止 平台多线程限制（如WebGL）  因此有UniTaskGitHub优势和注意事项：  零GC 主线程调度。默认完全在Unity的PlayerLoop上运行，因此不使用Thread。在 .NET 实现中，执行 await 语句之前和之后代码的线程是有可能不同的。虽然有线程切换，但我们不需要关心其中的细节，.NET...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/Physics/" title="Unity Physics"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-14</div><div class="info-item-2">Unity Physics</div></div><div class="info-2"><div class="info-item-1">物理 基础Unity物理系统由浅入深第一节：Unity 物理系统基础与应用 RigidBody 刚体 - 赋予物理属性 Collider 碰撞体 - 碰撞形状 Physic Material 物理材质 - 定义交互特性定义碰撞体之间的摩檫力和弹性。分配给Collider。 碰撞事件  Collision Callbacks 适用于两个非触发器（至少一个带RigidBody）之间的物理碰撞 Trigger Callbacks 至少一个Collider为Is Trigger的情况下，检测到物体进入&#x2F;离开&#x2F;停留在区域内 只有当碰撞中一个Collider附加了Rigidbody或者其为KinematicRigidbody上的Colider时，才能触发对应的回调。(对于KinematicRigidbody，不会触发CollisionCallback，需要用TriggerCallback)  射线检测 Raycast形状检测 Shape...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-05</div><div class="info-item-2">Unity PostProcessing</div></div><div class="info-2"><div class="info-item-1">Introduction to post-processingUnity 后处理 在渲染管线之后，FrameBuffer上处理。后处理和全屏效果。 效果参考和支持Post-processing effect availability reference </div></div></div></a><a class="pagination-related" href="/Mine/Unity/Shadow/" title="Unity Shadow"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-05</div><div class="info-item-2">Unity Shadow</div></div><div class="info-2"><div class="info-item-1">阴影Shadow 光源可以产生两种阴影：  Real-time Shadows 实时阴影 Unity stores the shadows cast from each Light in shadow map textures. The textures update each frame; shadows move when the lights move.   Baked Shadows 烘培阴影 The Unity lightmapper stores the shadows received by each GameObject in static lightmap textures, shadow mask textures, or Light Probes. Shadows don’t move when the lights move.    物体的阴影投射：是否生成阴影除了和光源相关还和对应MeshRenderer的设置相关。可以在Mesh Renderer的Lighting内设置。 Shadow MappingUnity实时阴影实现——Shadow...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/SRP/" title="Unity SRP"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-02</div><div class="info-item-2">Unity SRP</div></div><div class="info-2"><div class="info-item-1">官方Doc Rendering paths in UnityUnity URP&#x2F;SRP 渲染管线浅入深出【匠】【Unity】SRP简单入门【Unity】SRP底层渲染流程及原理Scriptable Render Pipeline可编程渲染管线 Render Pipeline基础  A series of operations that take the contents of a scene, and displays them on a screen  在Unity的官方文档中定义为这么几个步骤：  Culling （Frustum Culling视锥体剔除 Occlusion Culling遮挡剔除） Rendering -&gt;To Pixel Buffers Post Processing -&gt;Modify Pixel Buffers  常用的  Built-in Render Pipeline： Universal Render Pipeline (URP) High Definition Render Pipeline...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JobSystem"><span class="toc-number">2.</span> <span class="toc-text">JobSystem</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0"><span class="toc-number">2.1.</span> <span class="toc-text">简述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.1.1.</span> <span class="toc-text">安全性系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NativeContainer"><span class="toc-number">2.1.2.</span> <span class="toc-text">NativeContainer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E6%A1%88%E4%BE%8B"><span class="toc-number">2.2.</span> <span class="toc-text">官方案例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E6%A6%82%E8%BF%B0"><span class="toc-number">2.3.</span> <span class="toc-text">官方概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jobs"><span class="toc-number">2.4.</span> <span class="toc-text">Jobs</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Job%E5%AE%9A%E4%B9%89"><span class="toc-number">2.4.1.</span> <span class="toc-text">Job定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE"><span class="toc-number">2.4.2.</span> <span class="toc-text">数据访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6%E6%B5%81%E7%A8%8B"><span class="toc-number">2.4.3.</span> <span class="toc-text">调度流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Complete"><span class="toc-number">2.4.3.1.</span> <span class="toc-text">Complete</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96-Dependecy"><span class="toc-number">2.4.4.</span> <span class="toc-text">依赖 Dependecy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C%E4%BD%9C%E4%B8%9A-Parallel-Job"><span class="toc-number">2.4.5.</span> <span class="toc-text">并行作业 Parallel Job</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ParallelForTransform"><span class="toc-number">2.4.5.1.</span> <span class="toc-text">ParallelForTransform</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Burst-Compiler"><span class="toc-number">3.</span> <span class="toc-text">Burst Compiler</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ECS"><span class="toc-number">4.</span> <span class="toc-text">ECS</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Shadow/" title="Unity Shadow">Unity Shadow</a><time datetime="2025-10-05T07:56:07.434Z" title="发表于 2025-10-05 15:56:07">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/SRP/" title="Unity SRP">Unity SRP</a><time datetime="2025-10-02T06:15:27.265Z" title="发表于 2025-10-02 14:15:27">2025-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/AsyncOp/" title="Unity异步操作">Unity异步操作</a><time datetime="2025-09-14T08:01:59.349Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Physics/" title="Unity Physics">Unity Physics</a><time datetime="2025-09-14T08:01:59.345Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '2f95c7541bd8bec4326addc65592d7ce'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

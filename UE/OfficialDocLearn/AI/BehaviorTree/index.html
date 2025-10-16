@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>UE-BehaviorTree | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="UE BehaviorTree虚幻的行为树 Character,AIController,BehaviorTree(BT),BlackBoard(BB) 组合在一起实现对应的逻辑。 行为树这块之前有所了解 就不再一点一点赘述了。 BlackBoardBB - 存储行为树相关的数据 -&gt; 决定行为树的Key   Composites合成器Composites    Selector 优先选择">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UE-BehaviorTree">
+<meta property="og:url" content="https://mikeming126.github.io/UE/OfficialDocLearn/AI/BehaviorTree/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="UE BehaviorTree虚幻的行为树 Character,AIController,BehaviorTree(BT),BlackBoard(BB) 组合在一起实现对应的逻辑。 行为树这块之前有所了解 就不再一点一点赘述了。 BlackBoardBB - 存储行为树相关的数据 -&gt; 决定行为树的Key   Composites合成器Composites    Selector 优先选择">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2025-06-24T13:15:19.459Z">
+<meta property="article:modified_time" content="2025-06-25T14:21:52.172Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="BehaviorTree">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UE-BehaviorTree",
+  "url": "https://mikeming126.github.io/UE/OfficialDocLearn/AI/BehaviorTree/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2025-06-24T13:15:19.459Z",
+  "dateModified": "2025-06-25T14:21:52.172Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/UE/OfficialDocLearn/AI/BehaviorTree/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'UE-BehaviorTree',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">UE-BehaviorTree</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">UE-BehaviorTree</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-06-24T13:15:19.459Z" title="发表于 2025-06-24 21:15:19">2025-06-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-06-25T14:21:52.172Z" title="更新于 2025-06-25 22:21:52">2025-06-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">705</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="UE-BehaviorTree"><a href="#UE-BehaviorTree" class="headerlink" title="UE BehaviorTree"></a>UE BehaviorTree</h1><p>虚幻的行为树</p>
+<p>Character,AIController,BehaviorTree(BT),BlackBoard(BB) 组合在一起实现对应的逻辑。</p>
+<p>行为树这块之前有所了解 就不再一点一点赘述了。</p>
+<h2 id="BlackBoard"><a href="#BlackBoard" class="headerlink" title="BlackBoard"></a>BlackBoard</h2><p>BB - 存储行为树相关的数据 -&gt; 决定行为树的Key</p>
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image.png" class="" title="alt text">
+
+<h2 id="Composites"><a href="#Composites" class="headerlink" title="Composites"></a>Composites</h2><p>合成器Composites</p>
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-1.png" class="" title="alt text">
+
+<ul>
+<li>Selector 优先选择</li>
+<li>Sequence 顺序</li>
+<li>Simple Parallel 平行执行 【逻辑异步 但是具体执行还是同步的。】<br>注意Finish Mode。如果是Immediate，并且主任务立即完成，那么对应的次要任务实际上不会执行。<br>可以附加对应的Decorator和Service。</li>
+</ul>
+<h2 id="Decorator-Service"><a href="#Decorator-Service" class="headerlink" title="Decorator &amp;&amp; Service"></a>Decorator &amp;&amp; Service</h2><img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-2.png" class="" title="alt text">
+
+<h3 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h3><p>条件判定 Decorator<br>可以附加到Composite与Task上。虚幻本身有实现了一些对应的装饰器，可以看到这里：<br><a target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-behavior-tree-node-reference-decorators">Behavior Tree Node Reference: Decorators</a></p>
+<p>自定义的时候，可以通过重写PerformConditionCheck&#x2F;PerformConditionCheckAI函数。</p>
+<p>没看到的话在Window-&gt;My Blueprint可以打开对应的窗口并override。</p>
+<h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><p>并行节点 Parallel -&gt; Service</p>
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-3.png" class="" title="alt text">
+
+<h2 id="重要特性"><a href="#重要特性" class="headerlink" title="重要特性"></a>重要特性</h2><h3 id="Event-Driven"><a href="#Event-Driven" class="headerlink" title="Event Driven"></a>Event Driven</h3><img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-4.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-5.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-6.png" class="" title="alt text">
+
+<h3 id="Conditionals-Decorators"><a href="#Conditionals-Decorators" class="headerlink" title="Conditionals - Decorators"></a>Conditionals - Decorators</h3><img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-7.png" class="" title="alt text">
+<p>这块到没有太多需要注意的，</p>
+<h3 id="Concurrent-Behaviors"><a href="#Concurrent-Behaviors" class="headerlink" title="Concurrent Behaviors"></a>Concurrent Behaviors</h3><p>并发行为</p>
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-8.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-9.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-10.png" class="" title="alt text">
+<p>这里需要注意Server的执行时序问题。可以看看下面的知乎参考文章。或者自己写测试用例测测。<br>比如一个有装饰器和服务的任务节点：</p>
+<img src="/UE/OfficialDocLearn/AI/BehaviorTree/image-11.png" class="" title="alt text">
+
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>关于特性这部分可以看看这篇文章<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/139514376">浅析UE4-BehaviorTree的特性</a><br>重点还是Event Driven。<br>虚幻引擎的行为树，在任务节点需要有着Finish Execute的逻辑。这也意味着可以在某些节点执行异步任务，待异步任务完成后，再完成。而这个时候，在节点完成之前，整棵树其实就“停留”在对应的节点了。<br>而这个时候，打断对应的Running状态就比较重要了。而对应的事件注册，可以在一定条件触发并执行打断逻辑。从而由事件驱动。</p>
+<h2 id="节点应用"><a href="#节点应用" class="headerlink" title="节点应用"></a>节点应用</h2><p>注意逻辑和数据分离。一般行为树只有单个实例并共用，用BB来进行数据分离。虚幻也支持行为树的节点单独实例化。可以看到官方文档:<br><a target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/en-us/unreal-engine/behavior-tree-node-reference-in-unreal-engine">Behavior Tree Node Reference</a></p>
+<h1 id="其他思考"><a href="#其他思考" class="headerlink" title="其他思考"></a>其他思考</h1><p>实际项目往往还要考虑后端的运行情况。<br>后端不跑虚幻的DS的话 估计还是得抽一套脚本语言的实现方案，确保前后端一致。<br>不然就得前后端单独实现一套了。这样的话开发和维护成本还是比较大的。<br>相关的工具可以去看看Brainiac Designer。</p>
+<p>之前项目有用过由Brainiac Designer作为行为树的预览和编辑工具，最终生成对应的TS代码来执行。当然，对应的行为树运行时观察工具，就得自己手搓了。</p>
+<h2 id="源码部分"><a href="#源码部分" class="headerlink" title="源码部分:"></a>源码部分:</h2><p>AIController</p>
+<p>BehaviorTreeManager</p>
+<p>BrainComponent</p>
+<p>BehaviorTree<br>Root节点，以及UBTCompositeNode的相关逻辑</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/UE/OfficialDocLearn/AI/BehaviorTree/">https://mikeming126.github.io/UE/OfficialDocLearn/AI/BehaviorTree/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/BehaviorTree/">BehaviorTree</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/UE/OfficialDocLearn/Coding/ActorLifeTime/" title="UE-ActorLifeTime"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">UE-ActorLifeTime</div></div><div class="info-2"><div class="info-item-1">ActorLifeTime官方有一张LifeTime的流程图官方文档    -&gt; AISystemBase的纯虚函数 InitializeActorsForPlay实际上这里也是由World调用下来的 UEngine::LoadMap  UWorld::InitializeActorsForPlay    Level-&gt;RouteActorInitialize      对Level的Actors(Array of all actors in this level.)进行处理    AISystem-&gt;InitializeActorsForPlay 默认情况下这里没有任何处理  UWorld::AddToWorld 添加Level到World      Level-&gt;RouteActorInitialize  在Actor内部存在一个bActorInitialized标志位 可以避免重复初始化。...</div></div></div></a><a class="pagination-related" href="/UE/OfficialDocLearn/AI/StateTree/" title="UE-StateTree"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">UE-StateTree</div></div><div class="info-2"><div class="info-item-1">UE State Tree虚幻的状态树 官方文档 总览     Selection Flow     参数预定义的上下文数据执行器 Custom CodeGlobalTask - 开始时执行的全局任务 持久性数据 应用1 Grouping Similar Tasks 任务分组管理 xxx对象 - 子任务1 - 子任务2 2 Sequences 顺序执行多个任务在状态成功完成后，转移至下一个状态 3 Failure Handling 失败逻辑处理在状态失败后 转移至下一个状态 4 Hierarchical Data 层次数据子任务可以使用父任务产生的Data。 Tasks can share data between each other. The data exposed by a Task will be available to any other Task that belongs to an active State. 5 Refining Behavior...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/UE/OfficialDocLearn/AI/StateTree/" title="UE-StateTree"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-30</div><div class="info-item-2">UE-StateTree</div></div><div class="info-2"><div class="info-item-1">UE State Tree虚幻的状态树 官方文档 总览     Selection Flow     参数预定义的上下文数据执行器 Custom CodeGlobalTask - 开始时执行的全局任务 持久性数据 应用1 Grouping Similar Tasks 任务分组管理 xxx对象 - 子任务1 - 子任务2 2 Sequences 顺序执行多个任务在状态成功完成后，转移至下一个状态 3 Failure Handling 失败逻辑处理在状态失败后 转移至下一个状态 4 Hierarchical Data 层次数据子任务可以使用父任务产生的Data。 Tasks can share data between each other. The data exposed by a Task will be available to any other Task that belongs to an active State. 5 Refining Behavior...</div></div></div></a><a class="pagination-related" href="/AI/RAGFlow/" title="RAGFlow"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-14</div><div class="info-item-2">RAGFlow</div></div><div class="info-2"><div class="info-item-1">使用RAGFlow处理大语言模型幻觉问题。大语言模型：基于Ollama部署。 重点优势：自动化的RAG工作流。 Ollama模型部署和本地配置。略。简单且已完成。可以参考其他教程。 Docker参考文档Install Docker EngineDocker Desktop 注意了，使用不同底层性能是有差异的。可以看下面的介绍。还是用WSL2好点。  碎碎念: 想要开发和涉及AI部分，还是少不了Linux。而不是在Windows平台去处理对应的逻辑。大部分AI训练的模型都是直接用Linux的,且很多依赖在Windows上都要单独去做处理，找对应的编译文件……坑已踩。不过基于Docker去使用模型和直接在Windwos环境下使用模型又有多少性能损失，是一个值得考虑和研究的问题。  基于WSL的Docekr安装 - Windwos部分说明见WSL2 backend x86_64 Windows WSL(Windows Subsystem for Linux)Windows文档说明 URL 如果安装较慢...</div></div></div></a><a class="pagination-related" href="/UE/Engine/UEBlueprintNote/" title="UE蓝图笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-06</div><div class="info-item-2">UE蓝图笔记</div></div><div class="info-2"><div class="info-item-1">蓝图断点与流程显示断点的话，右键对应的节点添加断点即可。 运行时打开对应的蓝图，并在编辑器中选中对应的对象，可以观看其运行流程。  </div></div></div></a><a class="pagination-related" href="/UE/Engine/UEModule/" title="UE-Module"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-13</div><div class="info-item-2">UE-Module</div></div><div class="info-2"><div class="info-item-1">虚幻引擎模块[Module] - Doc官方参考文章地址 简介模块（Modules）是 虚幻引擎（UE）的软件架构的基本构建块。它们在独立的代码单元中封装了具体的编辑器工具、运行时功能、库或其他功能。 好处使用模块整理项目可带来以下好处：  模块会强制实施良好的代码分离，可用于封装功能并隐藏代码的内部成分。  模块编译为单独的编译单元。这意味着，只有已更改的模块才需要编译，较大项目的编译时间会显著缩短。  模块在依赖性图表中链接在一起，并且仅允许实际使用的代码包含头文件，以符合Include What You Use...</div></div></div></a><a class="pagination-related" href="/UE/Engine/UE_Input/" title="UE Input输入"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-15</div><div class="info-item-2">UE Input输入</div></div><div class="info-2"><div class="info-item-1">官方文章Doc 基础输入 [Actor Input]Acotr Input响应玩家输入 启用ActorInput  将PlayerController与对应的Actor绑定在一起 启用输入 配套的禁用输入 Disable Input  使用事件来启用&#x2F;禁用输入  CollisionComp的Overlap  此外 输入是有优先级以及“消耗”这一说法的。 [见Consume Input] 增强输入 [Enhanced Input]键输入的重新映射 概念：  输入动作 Input Actions 输入映射上下文 Input Mapping Context 输入修饰器 Input Modifers 输入触发器 Input Tiggers  输入动作输入动作在概念上相当于 操作（Action） 和 轴（Axis） 映射名称，但它们是数据资产。 每个输入动作应该表示用户可以执行的某件事，例如”蹲伏”或”发射武器”。 你可以在蓝图或C++中添加 输入侦听器（Input Listeners）...</div></div></div></a><a class="pagination-related" href="/UE/GAS/UE55GAS/" title="UE5.5-GAS-ReadMe"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-04</div><div class="info-item-2">UE5.5-GAS-ReadMe</div></div><div class="info-2"><div class="info-item-1">  GASPurpose of this DocumentationThis documentation is meant to support and enhance the official Gameplay Ability System Unreal Developer Community documentation.  In particular, this document lives in the code repository under Gameplay Ability System plug-in folder and thus any user reading this documentation can submit a pull request to clarify functionality, update inaccurate information, or work with the community to flesh out areas that are missing. It is worth noting there are...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#UE-BehaviorTree"><span class="toc-number">1.</span> <span class="toc-text">UE BehaviorTree</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#BlackBoard"><span class="toc-number">1.1.</span> <span class="toc-text">BlackBoard</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Composites"><span class="toc-number">1.2.</span> <span class="toc-text">Composites</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Decorator-Service"><span class="toc-number">1.3.</span> <span class="toc-text">Decorator &amp;&amp; Service</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Decorator"><span class="toc-number">1.3.1.</span> <span class="toc-text">Decorator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service"><span class="toc-number">1.3.2.</span> <span class="toc-text">Service</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%A6%81%E7%89%B9%E6%80%A7"><span class="toc-number">1.4.</span> <span class="toc-text">重要特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Event-Driven"><span class="toc-number">1.4.1.</span> <span class="toc-text">Event Driven</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conditionals-Decorators"><span class="toc-number">1.4.2.</span> <span class="toc-text">Conditionals - Decorators</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Concurrent-Behaviors"><span class="toc-number">1.4.3.</span> <span class="toc-text">Concurrent Behaviors</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">1.4.4.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E5%BA%94%E7%94%A8"><span class="toc-number">1.5.</span> <span class="toc-text">节点应用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%80%9D%E8%80%83"><span class="toc-number">2.</span> <span class="toc-text">其他思考</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E9%83%A8%E5%88%86"><span class="toc-number">2.1.</span> <span class="toc-text">源码部分:</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Shadow/" title="Unity Shadow">Unity Shadow</a><time datetime="2025-10-05T07:56:07.434Z" title="发表于 2025-10-05 15:56:07">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/SRP/" title="Unity SRP">Unity SRP</a><time datetime="2025-10-02T06:15:27.265Z" title="发表于 2025-10-02 14:15:27">2025-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/AsyncOp/" title="Unity异步操作">Unity异步操作</a><time datetime="2025-09-14T08:01:59.349Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Physics/" title="Unity Physics">Unity Physics</a><time datetime="2025-09-14T08:01:59.345Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '21100a65338cd15710291adf196acf02'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

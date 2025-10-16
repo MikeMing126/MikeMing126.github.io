@@ -1,0 +1,467 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>2025 - UE - ShangHaiFest | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="个人对25UE上海Fest公开直播部分做的小重点记录。下次有机会一定到买票去现场看看。关于其他演讲，官方说10月1号后会有陆续放出，可以再关注关注。 莉莉丝的远光84跨平台开发Unreal的跨平台开发框架 性能优化 - Scalability + Significant Manager  Unreal Insights Unreal的内容生产工具  大地图 高品质角色  高品质动画 ALS Ani">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2025 - UE - ShangHaiFest">
+<meta property="og:url" content="https://mikeming126.github.io/UE/Share/25ShangHaiFest/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="个人对25UE上海Fest公开直播部分做的小重点记录。下次有机会一定到买票去现场看看。关于其他演讲，官方说10月1号后会有陆续放出，可以再关注关注。 莉莉丝的远光84跨平台开发Unreal的跨平台开发框架 性能优化 - Scalability + Significant Manager  Unreal Insights Unreal的内容生产工具  大地图 高品质角色  高品质动画 ALS Ani">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2025-08-22T11:09:27.474Z">
+<meta property="article:modified_time" content="2025-08-25T09:37:54.738Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="2025ShangHaiFest">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "2025 - UE - ShangHaiFest",
+  "url": "https://mikeming126.github.io/UE/Share/25ShangHaiFest/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2025-08-22T11:09:27.474Z",
+  "dateModified": "2025-08-25T09:37:54.738Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/UE/Share/25ShangHaiFest/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '2025 - UE - ShangHaiFest',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">2025 - UE - ShangHaiFest</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">2025 - UE - ShangHaiFest</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-22T11:09:27.474Z" title="发表于 2025-08-22 19:09:27">2025-08-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-25T09:37:54.738Z" title="更新于 2025-08-25 17:37:54">2025-08-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>个人对25UE上海Fest公开直播部分做的小重点记录。<br>下次有机会一定到买票去现场看看。<br>关于其他演讲，官方说10月1号后会有陆续放出，可以再关注关注。</p>
+<h2 id="莉莉丝的远光84"><a href="#莉莉丝的远光84" class="headerlink" title="莉莉丝的远光84"></a>莉莉丝的远光84</h2><p>跨平台开发<br>Unreal的跨平台开发框架</p>
+<p>性能优化 - Scalability + Significant Manager  Unreal Insights</p>
+<p>Unreal的内容生产工具</p>
+<ul>
+<li>大地图</li>
+<li>高品质角色 </li>
+<li>高品质动画 ALS Animation Motion Matching</li>
+<li>角色技能 GAS 框架</li>
+</ul>
+<p>Fortnite 项目实践分享</p>
+<h2 id="51World"><a href="#51World" class="headerlink" title="51World"></a>51World</h2><p>AI<br>交互式变化：</p>
+<ul>
+<li>自然语言交互</li>
+<li>上下文情景感知</li>
+<li>个性化内容生成</li>
+</ul>
+<p>实时空间计算</p>
+<p>数据标准升维</p>
+<h2 id="5-6重点回顾"><a href="#5-6重点回顾" class="headerlink" title="5.6重点回顾"></a>5.6重点回顾</h2><p>Performance的提升</p>
+<p>Lumen光追性能的提升</p>
+<p>Skeletal Mesh Pipeline的重写、 CPU和GPU的异步运行支持</p>
+<p>布料模拟的优化</p>
+<p>Niagara Fluids 流体优化</p>
+<p>动画方面：<br>Multi Character Motion Matching<br>Sequencer 的缝合轨迹 在动画间切换</p>
+<p>大世界方面：<br>Steaming</p>
+<p>物理：</p>
+<ul>
+<li>异步的物理状态创建 Physics State Creation</li>
+<li>Groud Scatter from PCG - runs on GPU</li>
+<li>FastGeo Plugin - for streaming static geometry</li>
+</ul>
+<p>移动端：<br>Mobile Preview的优化</p>
+<p>打包方面：<br>可以了解一下，有相关支持可以在不重新打包的情况下进行迭代</p>
+<p>Metahuman的优化</p>
+<h2 id="5-7"><a href="#5-7" class="headerlink" title="5.7"></a>5.7</h2><p>可以去看看roadmap</p>
+<p>Nanite的优化。</p>
+<p>Experimental </p>
+<ul>
+<li>Recommaned Not shipping on it</li>
+<li>API变化、文档变化、工作流变化等<br>Beta</li>
+<li>Likely have shipped internal projects on this</li>
+<li>Likely reasonably ready for everyone within 2 releases.</li>
+</ul>
+<p>关于引擎版本维护<br>不更改引擎。限制更改。<br>Best Practices：</p>
+<ul>
+<li>Use components&#x2F;Plugin based development</li>
+<li>Use&#x2F;Add minimally invasive extension points and extend in plugins</li>
+<li>Document&#x2F;comment changes</li>
+<li>Revert changes down the line when Epic improvements arrive</li>
+<li>Do shadow integrations on special integration branch</li>
+<li>Dont change all the things.Focus on an area unique to your game.</li>
+</ul>
+<p>UE开发方式和工具</p>
+<ul>
+<li>Horde <a target="_blank" rel="noopener" href="https://www.flyandnotdown.com/post/2098fb78-2f78-802b-85b7-d466d3f811b4">参考文章</a></li>
+<li>Zen <a target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/zh-cn/unreal-engine/zen-loader-in-unreal-engine">官网</a></li>
+<li>Unreal Build Accelerator(UBA)</li>
+</ul>
+<h3 id="5-7新特性"><a href="#5-7新特性" class="headerlink" title="5.7新特性"></a>5.7新特性</h3><h4 id="渲染工作流程与可拓展性"><a href="#渲染工作流程与可拓展性" class="headerlink" title="渲染工作流程与可拓展性"></a>渲染工作流程与可拓展性</h4><p>Substrate Materials</p>
+<ul>
+<li>next generation material expression</li>
+</ul>
+<p>MegaLights (Beta)<br>灯光性能<br>目标是硬件光线追踪</p>
+<p>Nanite Foliage &amp; Skinning(Experimental)</p>
+<ul>
+<li>Scale,render  &amp; animate dense,high detail foliage assets</li>
+<li>future?: Nanite for character?</li>
+</ul>
+<p>60Hz优化计划</p>
+<ul>
+<li>Frame pacing</li>
+<li>GPU Profile（Experimental）</li>
+</ul>
+<p>New Material Translator(Experimental)</p>
+<ul>
+<li>删除重复着色器 优化着色器</li>
+</ul>
+<p>Virtual Texture(已经支持并建议使用)</p>
+<ul>
+<li>流式传输所需要的部分纹理</li>
+</ul>
+<h4 id="Simulation"><a href="#Simulation" class="headerlink" title="Simulation"></a>Simulation</h4><p>Niagara</p>
+<ul>
+<li>MegaLights 支持粒子光源</li>
+<li>Nanite Renderer</li>
+<li>Stateless emitters</li>
+</ul>
+<p>Chaos Physics<br>Character simulation(Experimental)</p>
+<ul>
+<li>fast in runtime, pre calculation in editor</li>
+</ul>
+<h4 id="World-Creation"><a href="#World-Creation" class="headerlink" title="World Creation"></a>World Creation</h4><p>官方Doc World Building Guide<br><a target="_blank" rel="noopener" href="https://dev.epicgames.com/community/learning/knowledge-base/r6wl/unreal-engine-world-building-guide">World Building Guide</a></p>
+<p>PCG(Procedural Content Generation)(Production Ready)</p>
+<ul>
+<li>both editor and runtime</li>
+<li>can run GPU only</li>
+</ul>
+<p>New Foliage &amp; Vegetation tools(Experimental) </p>
+<p>Mesh Terrain(Experimental)</p>
+<ul>
+<li>not simple height field</li>
+</ul>
+<p>Fast Geo Steaming(Production Ready)[大世界]</p>
+<p>Memory tracking for world partition in insight(Production Ready)</p>
+<p>Custom HLODs （(Production Ready)）</p>
+<h4 id="Character-Animation"><a href="#Character-Animation" class="headerlink" title="Character &amp; Animation"></a>Character &amp; Animation</h4><p>Animation Authoring</p>
+<ul>
+<li>Selection Sets(Beta)</li>
+<li>On Mesh Controls(Experimental)</li>
+</ul>
+<p>Sequencer</p>
+<ul>
+<li>Sequence Validation(Experimental)</li>
+</ul>
+<p>Rigging</p>
+<p>Retargeting</p>
+<p>Animation Runtime &amp; Gameplay</p>
+<p>Unreal Animation Framework(experimental)</p>
+<ul>
+<li>State Machine UX,state reEntry</li>
+<li>Motion Matching Chooser integration</li>
+<li>Adjustment Blending,abstract Hierarchy</li>
+<li>Various UI&#x2F;UX</li>
+</ul>
+<p>Mover 2.0</p>
+<ul>
+<li>New spring-based movement model 基于弹簧的运动模型</li>
+<li>Network physics driven kinematic movement</li>
+<li>Debugger</li>
+</ul>
+<p>Mutable<br>Customizable Character System</p>
+<ul>
+<li>Mutable Graph</li>
+<li>Mutable Core</li>
+<li>Mutable Editor<br>如果要做自定角色可以看看<br>(Mentioned as important system)、</li>
+</ul>
+<p>MetaHuman Framework</p>
+<h4 id="Framework-Gameplay-Systems"><a href="#Framework-Gameplay-Systems" class="headerlink" title="Framework &amp; Gameplay Systems"></a>Framework &amp; Gameplay Systems</h4><p>NetworkingSystems</p>
+<p>Iris replication systems(Beta)</p>
+<ul>
+<li>performance benefits</li>
+</ul>
+<p>Multi server replication plugin(Experimental)</p>
+<p>State Tree</p>
+<ul>
+<li>for make complex state systems</li>
+</ul>
+<p>Gameplay Camera System(Experimental)</p>
+<p>Mass Framework</p>
+<h4 id="Developer-Creator-Iteration-Workflows"><a href="#Developer-Creator-Iteration-Workflows" class="headerlink" title="Developer &amp; Creator Iteration Workflows"></a>Developer &amp; Creator Iteration Workflows</h4><p>Incremental Cooking(Beta)<br>之前是 iterative cooking。</p>
+<ul>
+<li>Only cook the delta for assets that have changed in your scene.</li>
+<li>编辑器环境cook优化</li>
+</ul>
+<p>Build Health Analytics(Experimental)</p>
+<p>Zen Platform Streaming<br>优化打包测试调试流程</p>
+<p>Cook Improvements</p>
+<ul>
+<li>Speed提升</li>
+<li>内存占用提升</li>
+</ul>
+<p>Unreal Build Accelerator<br>联合编译</p>
+<ul>
+<li>Hugely improved code &amp; shader complication speeds</li>
+</ul>
+<p>Audio</p>
+<p>MetaSound</p>
+<h2 id="卡顿优化-Hitches"><a href="#卡顿优化-Hitches" class="headerlink" title="卡顿优化 Hitches"></a>卡顿优化 Hitches</h2><h3 id="原则"><a href="#原则" class="headerlink" title="原则"></a>原则</h3><p>1.What is slow？<br>Use Profiler</p>
+<p>2.Why is it slow?<br>Investigate,with facts,not guess.</p>
+<p>3.How do we fix it?<br>Use info from the point we start fixing it. Not Before.</p>
+<p>实际上和重构那本书所述，不要盲目的优化，基于分析，也仅基于分析，而不是臆想。</p>
+<h3 id="常见卡顿原因"><a href="#常见卡顿原因" class="headerlink" title="常见卡顿原因"></a>常见卡顿原因</h3><p>List of common hitches：</p>
+<ol>
+<li><p>Level Steaming</p>
+<ul>
+<li>Actors for static geometry<ul>
+<li>PLAs(Packed Level Actors)</li>
+<li>PCG (Single Actor per cell with ISM component)</li>
+<li>ISM&#x2F;HISM ((Hierarchical Instance Static Mesh))</li>
+<li>Foliage Tool</li>
+<li>Use Mass or Niagara</li>
+<li>Cell Transformers (For World Partitioned Maps)</li>
+<li>Fast Geo Streaming Plugin</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>The Physics<br>推荐视频<br><a target="_blank" rel="noopener" href="https://dev.epicgames.com/community/learning/talks-and-demos/3KWR/unreal-engine-collision-data-in-ue5-practical-tips-for-managing-collision-settings-queries-unreal-fest-2023">Collision Data in UE5: Practical Tips for Managing Collision Settings &amp; Queries | Unreal Fest 2023</a></p>
+<ul>
+<li>optimizing meshes for physics<ul>
+<li>Simple and complex physics.Use simple as complex, only override on a per-mesh basis.</li>
+<li>Prefer in order: Sphere,Capsule,Box,Convex Polygon(Capsule的低于Box的)</li>
+<li>No Physcis</li>
+<li>Set up proper collision channels.</li>
+<li>Disable Unnecessary Overlaps</li>
+<li>Skip Updating Overlaps during level streaming</li>
+<li>Reduce the physics scene size</li>
+<li>Editor View Modes and Chaos Visual Debugger to find issues.</li>
+<li>Use Physics Proxies</li>
+<li>Use Async Traces(Only C++. Delay to next frame)</li>
+<li>Async Physics Initialization(Experimental)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Actor Spawning</p>
+<ul>
+<li>Needs to complete immediately</li>
+<li>Simplify Actor. Limit the number spawn dynamically each frame.</li>
+<li>Delay compoents initialization.（如Skeletal animations）</li>
+<li>对象池+隐藏</li>
+</ul>
+</li>
+<li><p>PSO Compliation （Pipeline State Object Compilation，管线状态对象编译）<br><a target="_blank" rel="noopener" href="https://www.unrealengine.com/zh-CN/tech-blog/game-engines-and-shader-stuttering-unreal-engines-solution-to-the-problem">游戏引擎与着色器卡顿：虚幻引擎的解决方案</a><br>(DX12,Vulkan and Metal have a new way of dispatching draw calls)</p>
+<ul>
+<li>Need to include the fully compiled shader code.Need to compiled on the user’s device. Takes time.</li>
+<li>PSO Precaching(UE 5.3)</li>
+<li>PSO Compliation Strategy</li>
+</ul>
+</li>
+<li><p>Garbage Collection</p>
+<ul>
+<li>Reduce UObject count<ul>
+<li>留意StaticMeshActors、Use WorldPartition</li>
+<li>(&lt;50,000) profile.</li>
+</ul>
+</li>
+<li>Change GC Strategy. Manually GC.</li>
+<li>Reachablitlity Analysis. Incremental Reachability Analysis.(Experimental)</li>
+</ul>
+</li>
+<li><p>Synchronous Loading<br>“Load Asset Blocking”<br>同步加载,也会影响到异步加载</p>
+<ul>
+<li>flushes the asynchronous loading queue.</li>
+<li>Dont do blocking loads.Use Async versions instead.</li>
+</ul>
+</li>
+<li><p>Blueprint&#x2F;Content<br>“Too much problem”.</p>
+<ul>
+<li>Do less. Use Fake things, Not Everything need to tick every frame.</li>
+<li>LOD HLODs. AI Behaviors,audio,particles,etc</li>
+<li>Spread things out.(Beginplay可以Incremental for streamed in levels.)</li>
+<li>Unreal Insights工具</li>
+</ul>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/UE/Share/25ShangHaiFest/">https://mikeming126.github.io/UE/Share/25ShangHaiFest/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/2025ShangHaiFest/">2025ShangHaiFest</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/Books/Tech/%E9%87%8D%E6%9E%84/" title="重构:改善既有代码的设计"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">重构:改善既有代码的设计</div></div><div class="info-2"><div class="info-item-1">章节阅读总结前言重构这本书主要还是要注重其重构的思想和应用方法。多读多看，真是一本好书。 第二章 重构的原则重构的概念：在不改变软件可观察行为的前提下，提高其可理解性，降低其修改成本  消除重复代码，改善设计 使得软件更容易理解 便于发现bug 提高编程速度[基于理解性和整体设计，新功能也更易于添加]  小步进行。一致性和单步正确性。”即便重构没有完成，也可以在任何时候停下来“ 正如开头提到的那几句关键：旧的不变，新的创建，一步切换，旧的再见。 重构、架构和YAGNI“you arenot going to need...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/Animation/" title="Unity Animation"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Unity Animation</div></div><div class="info-2"><div class="info-item-1">Mecanim 动画系统Mecanim Animation SystemUnity6 动画系统 作用 Animate the properties of models and assets.  基础概念基于Animation Clips的概念。 Animation Clip包含对象随着事件如何改变位置、旋转或其他属性的相关信息。 外部导入或者Unity内部创建。Clip相关功能：  Transform信息 组件属性 Scripts中的属性 特定时间调用函数  Animation Event 仅支持单个参数的函数  用AnimationEvent Object来传递多个参数：支持一个int,一个float,一个string,一个GameObject引用。 Humanoid Avatar The rigged character model,has a specific configuration of bones mapped to Unity’s Avatar format.  为人形专门设定。Importing a model with humanoid...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/UE/Engine/UEBlueprintNote/" title="UE蓝图笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-06</div><div class="info-item-2">UE蓝图笔记</div></div><div class="info-2"><div class="info-item-1">蓝图断点与流程显示断点的话，右键对应的节点添加断点即可。 运行时打开对应的蓝图，并在编辑器中选中对应的对象，可以观看其运行流程。  </div></div></div></a><a class="pagination-related" href="/UE/Engine/UEModule/" title="UE-Module"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-13</div><div class="info-item-2">UE-Module</div></div><div class="info-2"><div class="info-item-1">虚幻引擎模块[Module] - Doc官方参考文章地址 简介模块（Modules）是 虚幻引擎（UE）的软件架构的基本构建块。它们在独立的代码单元中封装了具体的编辑器工具、运行时功能、库或其他功能。 好处使用模块整理项目可带来以下好处：  模块会强制实施良好的代码分离，可用于封装功能并隐藏代码的内部成分。  模块编译为单独的编译单元。这意味着，只有已更改的模块才需要编译，较大项目的编译时间会显著缩短。  模块在依赖性图表中链接在一起，并且仅允许实际使用的代码包含头文件，以符合Include What You Use...</div></div></div></a><a class="pagination-related" href="/UE/Engine/UE_Input/" title="UE Input输入"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-15</div><div class="info-item-2">UE Input输入</div></div><div class="info-2"><div class="info-item-1">官方文章Doc 基础输入 [Actor Input]Acotr Input响应玩家输入 启用ActorInput  将PlayerController与对应的Actor绑定在一起 启用输入 配套的禁用输入 Disable Input  使用事件来启用&#x2F;禁用输入  CollisionComp的Overlap  此外 输入是有优先级以及“消耗”这一说法的。 [见Consume Input] 增强输入 [Enhanced Input]键输入的重新映射 概念：  输入动作 Input Actions 输入映射上下文 Input Mapping Context 输入修饰器 Input Modifers 输入触发器 Input Tiggers  输入动作输入动作在概念上相当于 操作（Action） 和 轴（Axis） 映射名称，但它们是数据资产。 每个输入动作应该表示用户可以执行的某件事，例如”蹲伏”或”发射武器”。 你可以在蓝图或C++中添加 输入侦听器（Input Listeners）...</div></div></div></a><a class="pagination-related" href="/UE/GAS/UE55GAS/" title="UE5.5-GAS-ReadMe"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-04</div><div class="info-item-2">UE5.5-GAS-ReadMe</div></div><div class="info-2"><div class="info-item-1">  GASPurpose of this DocumentationThis documentation is meant to support and enhance the official Gameplay Ability System Unreal Developer Community documentation.  In particular, this document lives in the code repository under Gameplay Ability System plug-in folder and thus any user reading this documentation can submit a pull request to clarify functionality, update inaccurate information, or work with the community to flesh out areas that are missing. It is worth noting there are...</div></div></div></a><a class="pagination-related" href="/UE/GAS/UE55GASModifierInfos/" title="UE GAS Modifier相关信息"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-23</div><div class="info-item-2">UE GAS Modifier相关信息</div></div><div class="info-2"><div class="info-item-1">总列举各个Modifier相关的信息 FGameplayModifierInfo用于定义修改器的规则关键数据   目标属性 修改方式 修改值 生效条件(Tags)  /** * FGameplayModifierInfo *	Tells us &quot;Who/What we&quot; modify *	Does not tell us how exactly */USTRUCT(BlueprintType)struct GAMEPLAYABILITIES_API FGameplayModifierInfo&#123;	GENERATED_USTRUCT_BODY()		/** The Attribute we modify or the GE we modify modifies. */	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier, meta=(FilterMetaTag=&quot;HideFromModifiers&quot;))	FGameplayAttribute Attribute;	/**	 *...</div></div></div></a><a class="pagination-related" href="/UE/GAS/UE55GamplayPrediction/" title="UE5.5-GameplayPrediction"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-05</div><div class="info-item-2">UE5.5-GameplayPrediction</div></div><div class="info-2"><div class="info-item-1">SourceCode源码Overview of Gameplay Ability PredictionHigh Level Goals At the GameplayAbility level (implementing an ability) prediction is transparent. An ability says “Do X-&gt;Y-&gt;Z”, and we will automatically predict the parts of that that we can. We wish to avoid having logic such as “If Authority: Do X. Else: Do predictive version of X” in the ability itself.  At this point, not all cases are solved, but we have a very solid framework for working with client side prediction. When we say...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%89%E8%8E%89%E4%B8%9D%E7%9A%84%E8%BF%9C%E5%85%8984"><span class="toc-number">1.</span> <span class="toc-text">莉莉丝的远光84</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#51World"><span class="toc-number">2.</span> <span class="toc-text">51World</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-6%E9%87%8D%E7%82%B9%E5%9B%9E%E9%A1%BE"><span class="toc-number">3.</span> <span class="toc-text">5.6重点回顾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-7"><span class="toc-number">4.</span> <span class="toc-text">5.7</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-7%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-number">4.1.</span> <span class="toc-text">5.7新特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%B8%8E%E5%8F%AF%E6%8B%93%E5%B1%95%E6%80%A7"><span class="toc-number">4.1.1.</span> <span class="toc-text">渲染工作流程与可拓展性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Simulation"><span class="toc-number">4.1.2.</span> <span class="toc-text">Simulation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#World-Creation"><span class="toc-number">4.1.3.</span> <span class="toc-text">World Creation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Character-Animation"><span class="toc-number">4.1.4.</span> <span class="toc-text">Character &amp; Animation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Framework-Gameplay-Systems"><span class="toc-number">4.1.5.</span> <span class="toc-text">Framework &amp; Gameplay Systems</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Developer-Creator-Iteration-Workflows"><span class="toc-number">4.1.6.</span> <span class="toc-text">Developer &amp; Creator Iteration Workflows</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96-Hitches"><span class="toc-number">5.</span> <span class="toc-text">卡顿优化 Hitches</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%88%99"><span class="toc-number">5.1.</span> <span class="toc-text">原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%8D%A1%E9%A1%BF%E5%8E%9F%E5%9B%A0"><span class="toc-number">5.2.</span> <span class="toc-text">常见卡顿原因</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Shadow/" title="Unity Shadow">Unity Shadow</a><time datetime="2025-10-05T07:56:07.434Z" title="发表于 2025-10-05 15:56:07">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/SRP/" title="Unity SRP">Unity SRP</a><time datetime="2025-10-02T06:15:27.265Z" title="发表于 2025-10-02 14:15:27">2025-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/AsyncOp/" title="Unity异步操作">Unity异步操作</a><time datetime="2025-09-14T08:01:59.349Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Physics/" title="Unity Physics">Unity Physics</a><time datetime="2025-09-14T08:01:59.345Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '2dc2752acd4616903ccd7fbbf31df5c1'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

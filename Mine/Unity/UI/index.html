@@ -1,0 +1,341 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>UGUI | Ming Blog</title><meta name="robots" content="noindex"><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="UGUI官方文档 UGUI 相关学习文章[UGUI源码一]6千字带你入门UGUI源码 概述 Unity UI(UGUI) is a GameObject-based UI system that you can use to develop user interfaces for games and applications.   基本的UGUI界面：  Canvas 画布。所有绘制的UI元素应该">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UGUI">
+<meta property="og:url" content="https://mikeming126.github.io/Mine/Unity/UI/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="UGUI官方文档 UGUI 相关学习文章[UGUI源码一]6千字带你入门UGUI源码 概述 Unity UI(UGUI) is a GameObject-based UI system that you can use to develop user interfaces for games and applications.   基本的UGUI界面：  Canvas 画布。所有绘制的UI元素应该">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2025-09-05T00:10:51.373Z">
+<meta property="article:modified_time" content="2025-09-28T07:21:27.758Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UGUI",
+  "url": "https://mikeming126.github.io/Mine/Unity/UI/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2025-09-05T00:10:51.373Z",
+  "dateModified": "2025-09-28T07:21:27.758Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/Mine/Unity/UI/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'UGUI',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">UGUI</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">UGUI</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-05T00:10:51.373Z" title="发表于 2025-09-05 08:10:51">2025-09-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-28T07:21:27.758Z" title="更新于 2025-09-28 15:21:27">2025-09-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Unity/">Unity</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>UGUI<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.ugui@2.0/manual/index.html">官方文档 UGUI</a></p>
+<p>相关学习文章<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/437704772">[UGUI源码一]6千字带你入门UGUI源码</a></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><blockquote>
+<p>Unity UI(UGUI) is a GameObject-based UI system that you can use to develop user interfaces for games and applications. </p>
+</blockquote>
+<p>基本的UGUI界面：</p>
+<ul>
+<li>Canvas 画布。所有绘制的UI元素应该置于画布之下。</li>
+<li>构成UI元素，如Image</li>
+<li>EventSystem UGUI的响应，依赖于EventSystem。</li>
+</ul>
+<h1 id="Canvas"><a href="#Canvas" class="headerlink" title="Canvas"></a>Canvas</h1><p>所有UI元素绘制的区域。<br>添加Canvas，也会默认加上一个EventSystem。</p>
+<p>Canvas默认自带组件</p>
+<ul>
+<li>Canvas</li>
+<li>Graphic Raycaster：处理UI射线检测</li>
+<li>Canvas Scaler</li>
+</ul>
+<p>Event System：<br>管理所有UI交互事件。UGUI事件处理中枢。</p>
+<h2 id="绘制顺序"><a href="#绘制顺序" class="headerlink" title="绘制顺序"></a>绘制顺序</h2><p>默认情况下，和Hierarchy中的顺序一致。具体情况还要考虑材质、合批等。可以用Frame Debugger来查看。<br>关于Batch的信息，可以使用Profile在UI那层细看。</p>
+<h2 id="Render-Modes-渲染模式"><a href="#Render-Modes-渲染模式" class="headerlink" title="Render Modes 渲染模式"></a>Render Modes 渲染模式</h2><p>基础可以分为两种 Screen Space和 World Space.</p>
+<h3 id="ScreenSpace"><a href="#ScreenSpace" class="headerlink" title="ScreenSpace"></a>ScreenSpace</h3><p>在屏幕空间进行渲染。<br>分为两种：</p>
+<ul>
+<li>Overlay 叠加。<br> 将UI元素绘制在Screen顶部。画布会自动适配屏幕大小、分辨率的改动</li>
+<li>Camera 摄像机<br> 类似于Overlay。但在此模式下，可以认为画布是放置在摄像机前给定举例。因此，摄像机的变动会影响UI的外观。调整屏幕大小、更改分辨率或相机视锥体发生变化，画布也会自动更改大小以匹配。<br> 可以做到UI绘制和物体绘制穿插。当然，正交投影和透视投影的表现是不同的。</li>
+</ul>
+<h3 id="World-Space"><a href="#World-Space" class="headerlink" title="World Space"></a>World Space</h3><p>Canvas将和场景中任何其他对象一样。</p>
+<blockquote>
+<p>This is useful for UIs that are meant to be a part of the world. This is also known as a “diegetic interface”.</p>
+</blockquote>
+<h2 id="性能优化和注意事项"><a href="#性能优化和注意事项" class="headerlink" title="性能优化和注意事项"></a>性能优化和注意事项</h2><p>深入了解应该还是要看UGUI相关源码。<br><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/uGUI">GitHub UGUI</a></p>
+<p>Unity中渲染的物体都是由Mesh构成的。重构即Canvas负责将子节点的UI元素的网格合并，并生成相应的渲染指令再发送到Unity的图形管道的过程。</p>
+<p>同一个Canvas下的<strong>任意元素变化（位置、颜色等、Active状态）</strong>，会触发整个Canvas的重绘。<br>Rebuild - 主要分为布局重构Layout Rebuild和绘制重构Graphic Rebuild。<br>前者主要是尺寸、位置、布局规则等，后者主要是颜色、问题等图形属性。<br>Canvas的Batch只会影响其子节点，并不会影响子Canvas。</p>
+<h3 id="优化策略"><a href="#优化策略" class="headerlink" title="优化策略"></a>优化策略</h3><ul>
+<li>频繁变化的UI与基本不变的分Canvas处理，减少变化耗时</li>
+<li>使用坐标移动方式来代替SetActive显隐</li>
+</ul>
+<h1 id="Sprite-Atlas"><a href="#Sprite-Atlas" class="headerlink" title="Sprite Atlas"></a>Sprite Atlas</h1><blockquote>
+<p>An asset that consolidates several textures into a single combined texture. Unity can call this single texture to issue a single draw call instead of multiple draw calls to access the packed textures all at once at a smaller performance overhead.</p>
+</blockquote>
+<p>需要安装对应的插件。PacakgeManager -&gt; 2D Sprite<br>启用在ProjectSettings - Editor - SpritePacker里设置Mode。</p>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>Type - 图集类型。主图集&#x2F;变体图集。变体图集用于创建和主图集不同分辨率的图集。<br>Include in Build - 打包项目自动包含图集，并且在运行中自动加载。如果不自动加载，则需要进行后期绑定。<br>Allow Rotation - 一般启用，最大限度利用空间，但对于Canvas UI元素的纹理，需要禁用。<br>Padding - 填充，避免相邻的Sprite之间出现Pixel重叠。<br>Read&#x2F;Write Enabled - 启用后会翻倍内存，会创建副本。仅适用于未压缩或DXT压缩纹理，启用后可以通过Texture2D.SetPixels等脚本访问纹理数据。</p>
+<h2 id="后期绑定"><a href="#后期绑定" class="headerlink" title="后期绑定"></a>后期绑定</h2><p>可以参考这篇文章:<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/456101373">[UGUI性能优化]精灵图集(Sprite Atlas)保姆式教程</a><br>处理SpriteAtlasManager.atlasRequested事件。</p>
+<h2 id="图集和AB"><a href="#图集和AB" class="headerlink" title="图集和AB"></a>图集和AB</h2><p>有两篇参考文章：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/msxh/p/14194756.html">【Unity游戏开发】SpriteAtlas与AssetBundle最佳食用方案</a><br><a target="_blank" rel="noopener" href="https://github.com/tuyoogame/YooAsset/issues/168#event-10419735688">图集打包与加载问题</a></p>
+<p>如果使用Sprite Atlas,对应的sprite本身在没有被直接引用的情况下可以不打AB。</p>
+<p>YooAsset在处理AB构建时，注意使用BuiltinBuildPipeline。使用默认的ScriptableBuildPipeline会存在构造冗余AB的问题。</p>
+<h2 id="图集优化"><a href="#图集优化" class="headerlink" title="图集优化"></a>图集优化</h2><p>1.大图不用图集<br>2.边界情况，如多一个图从1024x1024变为1024x2048的情况 - 可以分多个图集。<br>3.注意图集乱用的情况，区分公共图集和单独界面的图集等。</p>
+<h1 id="Event-System"><a href="#Event-System" class="headerlink" title="Event System"></a>Event System</h1><blockquote>
+<p>A way of sending events to objects in the application based on input</p>
+</blockquote>
+<p><strong>场景中只能有一个EventSystem.</strong></p>
+<p>具体而言，包含以下功能：</p>
+<ul>
+<li>管理哪个游戏对象被认为是选中的</li>
+<li>管理正在使用的输入模块</li>
+<li>管理射线检测(如果需要) （结合Canvas的GO上的Graphic Raycaster等。3D的检测也是由EventSystem来处理的。）</li>
+<li>根据需要更新所有输入模块</li>
+</ul>
+<h2 id="输入模块-Input-Modules"><a href="#输入模块-Input-Modules" class="headerlink" title="输入模块 Input Modules"></a>输入模块 Input Modules</h2><ul>
+<li>处理输入</li>
+<li>管理事件状态</li>
+<li>将事件发送到场景对象。</li>
+</ul>
+<h2 id="射线投射-Raycaster"><a href="#射线投射-Raycaster" class="headerlink" title="射线投射 Raycaster"></a>射线投射 Raycaster</h2><ul>
+<li>Graphic Raycaster 用于UI元素</li>
+<li>Physics 2D Raycaster 用于2D物理元素</li>
+<li>Physics Raycaster 用于3D物理元素</li>
+</ul>
+<h1 id="应用经验和注意事项"><a href="#应用经验和注意事项" class="headerlink" title="应用经验和注意事项"></a>应用经验和注意事项</h1><p>可以通过在Canvas下创建对应的UI元素并拖拽创建对应的UI预制体。UI预制体需要放置在Canvas下才可以正确处理。</p>
+<h1 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h1><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1359365?policyId=1003">如何快速优化手游性能问题？从UGUI优化说起</a><br><a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/TechSharing_244.html">如何优化UI中大量使用SetActive的问题</a></p>
+<ol>
+<li>合理的分配图集<br>同UI界面同图集。共用图集。不同格式的图片放置于不同图集，</li>
+<li>优化CPU开销<br>CPU高开销主要是Canvas的重建。Canvas.SendWillRenderCanvases或Canvas.BuildBatch。<ul>
+<li>动静分离。</li>
+<li>减少UI元素的Enable和Disable，替代为对canvasRender。进行操作。</li>
+<li>慎用Text的Best Fit。</li>
+<li>慎用Canvas的Pixel Perfect。</li>
+<li>ScrollView使用缓存池。缓存对象也不用enable或disable，而是放到缓冲池中。</li>
+<li>非必要的图片禁用raycast</li>
+</ul>
+</li>
+</ol>
+<h2 id="UI-合批规则"><a href="#UI-合批规则" class="headerlink" title="UI 合批规则"></a>UI 合批规则</h2><p><a target="_blank" rel="noopener" href="https://qlipphoth.github.io/2024/11/03/2024-11-3-1/index.html">UGUI 番外之合批</a></p>
+<p>本质上还是渲染Mesh。这个过程为Canvas的Rebuild。</p>
+<p>具体而言，看到对应的Rebuild逻辑。</p>
+<ol>
+<li>计算 Canvas alpha，包括父 Canvas 和嵌套 Canvas（alpha&#x3D;0不生成合并批次）。</li>
+<li>UI 层次结构发生变化时，更新 Batch 顺序，对 Canvas 下所有UI元素（CanvasRenderer）按 UI 层次结构深度优先排序，生成 UI Instructions。</li>
+<li>更新所有需要同步数据的 renderer UI 数据，包括 vertex, color, material, transform, rect, depth（按UI层次结构深度优先排序的深度）等。<strong>非活动（IsActive() &#x3D;&#x3D; false）且不强制更新的UI元素，将不同步数据。</strong></li>
+<li>Canvas 数据更新时（m_CanvasData.isDirty，如 UI层次结构改变，同步关键数据，Canvas.Awake等），计算 UI Instructions 的 depth 并排序、生成 Batch。</li>
+</ol>
+<h3 id="关于Depth的计算"><a href="#关于Depth的计算" class="headerlink" title="关于Depth的计算"></a>关于Depth的计算</h3><p>默认的处理逻辑是按照Hierarchy的顺序进行深度遍历的。<br>对于一个UI元素，若其不进行渲染，则对于的深度为-1。<br>若其渲染:</p>
+<ul>
+<li>底下没有其他渲染元素的，Depth &#x3D; 0.</li>
+<li>底下有其他渲染元素的，对底下所有元素进行如下计算：<ul>
+<li>若对应元素(lowUI)可以和当前元素合批（Material和Textrue一致），Depth &#x3D; max(curDepth, lowUI.depth)</li>
+<li>若对应元素(lowUI)不能和当前元素合批，Depth &#x3D; max(curDepth, lowUI.depth)。<br>简单说就是会求当前元素的最大Depth。</li>
+</ul>
+</li>
+</ul>
+<p>在计算完毕后，剔除Depth为-1的，按照Depth&gt;MaterialID&gt;TextrueID&gt;RenderOrder 进行排序，然后尝试进行合批。(RenderOrder依据Hierarchy顺序，即sibling index决定，不过待考据)<br>排序后，内部相邻的元素，如果符合合批条件，即MaterialID和TextrueID相同，则可以合批。</p>
+<h3 id="Mask："><a href="#Mask：" class="headerlink" title="Mask："></a>Mask：</h3><p>可以在UGUI源码看。Mask本身会有一个m_MaskMaterial和m_UnmaskMaterial。<br>其依赖于GPU的模板测试：Stencil Test。</p>
+<p>对于Mask会额外调用两次DrawCall，第一次用于绘制Stencil Mask，用于模板测试，第二次则用于溢出Stencil Mask。Mask内的元素在满足条件情况下可以合批，Mask外的和Mask内的元素则无法合批。<br>举例：</p>
+<ul>
+<li>调用第一个DrawCall绘制Mask 移除 (Batch Breaking Reason - Diff Material Instance)</li>
+<li>调用第二个DrawCall绘制Mask内的元素 (Batch Breaking Reason - Diff Material Instance)</li>
+<li>调用第三个DrawCall将Stencil Mask移除 (Batch Breaking Reason - Diff Material Instance)</li>
+</ul>
+<p>多个Mask之间，内部元素可以进行合批。不过仍然需要注意对应的元素不能有相互遮挡关系否则不能合批。</p>
+<h3 id="RectMask"><a href="#RectMask" class="headerlink" title="RectMask"></a>RectMask</h3><p>可以在UGUI源码看。详细见PerformClipping函数。<br>原理：设置canvasRenderer的clipRect</p>
+<ul>
+<li>调用第一个DrawCall绘制Mask</li>
+<li>调用第二个DrawCall绘制Mask内的元素(Batch Breaking Reason - Different Rect Clipping)</li>
+</ul>
+<p>多个 RectMask2D 之间无法合批，即每个 RectMask2D 在绘制内部元素时都会产生一个额外的 Draw Call。这是因为每个 RectMask2D 所对应的 ClipRect 是不同的，CPU 需要单独设置渲染状态。</p>
+<h3 id="Mask和RectMask使用事项"><a href="#Mask和RectMask使用事项" class="headerlink" title="Mask和RectMask使用事项"></a>Mask和RectMask使用事项</h3><p>相交会影响合批。遮罩区域外的元素，虽然被裁剪也会影响相交和Depth计算，影响合批。</p>
+<p>Mask 会增加至少两个 Draw Call，而 RectMask2D 会增加一个 Draw Call，但二者的合批机制不同，因此优化思路也不同：</p>
+<ul>
+<li>当场景中的 Mask 内部元素材质纹理等相同时，使用 Mask 要优于 RectMask2D，因为 Mask 内部元素能够进行合批。</li>
+<li>当场景中的 Mask 内部元素材质纹理等不同时，使用 RectMask2D 要优于 Mask，因为 Mask 会产生更多额外的 Draw Call。</li>
+</ul>
+<p>如果想要不打断合批的Mask? - 自定义Shader，计算像素点是否在渲染范围内。（待验证）</p>
+<!-- flag of hidden posts --></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/Mine/Unity/UI/">https://mikeming126.github.io/Mine/Unity/UI/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Unity/">Unity</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/Mine/Unity/Animation/" title="Unity Animation"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-14</div><div class="info-item-2">Unity Animation</div></div><div class="info-2"><div class="info-item-1">Mecanim 动画系统Mecanim Animation SystemUnity6 动画系统 作用 Animate the properties of models and assets.  基础概念基于Animation Clips的概念。 Animation Clip包含对象随着事件如何改变位置、旋转或其他属性的相关信息。 外部导入或者Unity内部创建。Clip相关功能：  Transform信息 组件属性 Scripts中的属性 特定时间调用函数  Animation Event 仅支持单个参数的函数  用AnimationEvent Object来传递多个参数：支持一个int,一个float,一个string,一个GameObject引用。 Humanoid Avatar The rigged character model,has a specific configuration of bones mapped to Unity’s Avatar format.  为人形专门设定。Importing a model with humanoid...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/AsyncOp/" title="Unity异步操作"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-14</div><div class="info-item-2">Unity异步操作</div></div><div class="info-2"><div class="info-item-1">异步操作可以参考这篇文章Unity入门教程之异步篇第二节：协程 or UniTask？Unity 中异步流程到底怎么选Unity异步扩展实践（一）——以UniTask库为参考 关于临界资源问题Unity入门教程之异步篇第三节：多线程初探？理解并发与线程安全 协程 - 逻辑异步 - 单线程协程这块较为通用可以另外参考之前记录。 UniTask本质上是利用C#的Task。但是使用原生的async&#x2F;await和Task存在一些问题：  GC和性能开销(Task本身是引用类型，且async&#x2F;await产生状态机对象和闭包) 线程切换不一定对。且Unity大部分API只能在主线程使用。 任务的生命周期管理问题:任务不会因为对象被销毁而自动停止 平台多线程限制（如WebGL）  因此有UniTaskGitHub优势和注意事项：  零GC 主线程调度。默认完全在Unity的PlayerLoop上运行，因此不使用Thread。在 .NET 实现中，执行 await 语句之前和之后代码的线程是有可能不同的。虽然有线程切换，但我们不需要关心其中的细节，.NET...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/Physics/" title="Unity Physics"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-14</div><div class="info-item-2">Unity Physics</div></div><div class="info-2"><div class="info-item-1">物理 基础Unity物理系统由浅入深第一节：Unity 物理系统基础与应用 RigidBody 刚体 - 赋予物理属性 Collider 碰撞体 - 碰撞形状 Physic Material 物理材质 - 定义交互特性定义碰撞体之间的摩檫力和弹性。分配给Collider。 碰撞事件  Collision Callbacks 适用于两个非触发器（至少一个带RigidBody）之间的物理碰撞 Trigger Callbacks 至少一个Collider为Is Trigger的情况下，检测到物体进入&#x2F;离开&#x2F;停留在区域内 只有当碰撞中一个Collider附加了Rigidbody或者其为KinematicRigidbody上的Colider时，才能触发对应的回调。(对于KinematicRigidbody，不会触发CollisionCallback，需要用TriggerCallback)  射线检测 Raycast形状检测 Shape...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-05</div><div class="info-item-2">Unity PostProcessing</div></div><div class="info-2"><div class="info-item-1">Introduction to post-processingUnity 后处理 在渲染管线之后，FrameBuffer上处理。后处理和全屏效果。 效果参考和支持Post-processing effect availability reference </div></div></div></a><a class="pagination-related" href="/Mine/Unity/Shadow/" title="Unity Shadow"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-05</div><div class="info-item-2">Unity Shadow</div></div><div class="info-2"><div class="info-item-1">阴影Shadow 光源可以产生两种阴影：  Real-time Shadows 实时阴影 Unity stores the shadows cast from each Light in shadow map textures. The textures update each frame; shadows move when the lights move.   Baked Shadows 烘培阴影 The Unity lightmapper stores the shadows received by each GameObject in static lightmap textures, shadow mask textures, or Light Probes. Shadows don’t move when the lights move.    物体的阴影投射：是否生成阴影除了和光源相关还和对应MeshRenderer的设置相关。可以在Mesh Renderer的Lighting内设置。 Shadow MappingUnity实时阴影实现——Shadow...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/SRP/" title="Unity SRP"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-02</div><div class="info-item-2">Unity SRP</div></div><div class="info-2"><div class="info-item-1">官方Doc Rendering paths in UnityUnity URP&#x2F;SRP 渲染管线浅入深出【匠】【Unity】SRP简单入门【Unity】SRP底层渲染流程及原理Scriptable Render Pipeline可编程渲染管线 Render Pipeline基础  A series of operations that take the contents of a scene, and displays them on a screen  在Unity的官方文档中定义为这么几个步骤：  Culling （Frustum Culling视锥体剔除 Occlusion Culling遮挡剔除） Rendering -&gt;To Pixel Buffers Post Processing -&gt;Modify Pixel Buffers  常用的  Built-in Render Pipeline： Universal Render Pipeline (URP) High Definition Render Pipeline...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Canvas"><span class="toc-number">2.</span> <span class="toc-text">Canvas</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E9%A1%BA%E5%BA%8F"><span class="toc-number">2.1.</span> <span class="toc-text">绘制顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Render-Modes-%E6%B8%B2%E6%9F%93%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">Render Modes 渲染模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ScreenSpace"><span class="toc-number">2.2.1.</span> <span class="toc-text">ScreenSpace</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#World-Space"><span class="toc-number">2.2.2.</span> <span class="toc-text">World Space</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%92%8C%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">2.3.</span> <span class="toc-text">性能优化和注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="toc-number">2.3.1.</span> <span class="toc-text">优化策略</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Sprite-Atlas"><span class="toc-number">3.</span> <span class="toc-text">Sprite Atlas</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7"><span class="toc-number">3.1.</span> <span class="toc-text">属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E6%9C%9F%E7%BB%91%E5%AE%9A"><span class="toc-number">3.2.</span> <span class="toc-text">后期绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E9%9B%86%E5%92%8CAB"><span class="toc-number">3.3.</span> <span class="toc-text">图集和AB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E9%9B%86%E4%BC%98%E5%8C%96"><span class="toc-number">3.4.</span> <span class="toc-text">图集优化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Event-System"><span class="toc-number">4.</span> <span class="toc-text">Event System</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E6%A8%A1%E5%9D%97-Input-Modules"><span class="toc-number">4.1.</span> <span class="toc-text">输入模块 Input Modules</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%84%E7%BA%BF%E6%8A%95%E5%B0%84-Raycaster"><span class="toc-number">4.2.</span> <span class="toc-text">射线投射 Raycaster</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E7%BB%8F%E9%AA%8C%E5%92%8C%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">5.</span> <span class="toc-text">应用经验和注意事项</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">6.</span> <span class="toc-text">性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UI-%E5%90%88%E6%89%B9%E8%A7%84%E5%88%99"><span class="toc-number">6.1.</span> <span class="toc-text">UI 合批规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EDepth%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="toc-number">6.1.1.</span> <span class="toc-text">关于Depth的计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mask%EF%BC%9A"><span class="toc-number">6.1.2.</span> <span class="toc-text">Mask：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RectMask"><span class="toc-number">6.1.3.</span> <span class="toc-text">RectMask</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mask%E5%92%8CRectMask%E4%BD%BF%E7%94%A8%E4%BA%8B%E9%A1%B9"><span class="toc-number">6.1.4.</span> <span class="toc-text">Mask和RectMask使用事项</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Shadow/" title="Unity Shadow">Unity Shadow</a><time datetime="2025-10-05T07:56:07.434Z" title="发表于 2025-10-05 15:56:07">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/SRP/" title="Unity SRP">Unity SRP</a><time datetime="2025-10-02T06:15:27.265Z" title="发表于 2025-10-02 14:15:27">2025-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/AsyncOp/" title="Unity异步操作">Unity异步操作</a><time datetime="2025-09-14T08:01:59.349Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Physics/" title="Unity Physics">Unity Physics</a><time datetime="2025-09-14T08:01:59.345Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '963e28d8f119f636a07853b7a2efef42'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

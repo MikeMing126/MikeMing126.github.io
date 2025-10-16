@@ -1,0 +1,475 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Unity面经 | Ming Blog</title><meta name="robots" content="noindex"><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言若是要长期使用Unity，必须对自己的知识框架和学习路线做相应的规划。 Unity的底层Unity3D引擎核心架构与设计哲学深度解析官方Doc: Scripting: Unity 架构  The Unity engine is built with native C&#x2F;C++ internally, however it has a C# wrapper that you use to">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity面经">
+<meta property="og:url" content="https://mikeming126.github.io/Mine/Unity/KnowledgeUnity/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="前言若是要长期使用Unity，必须对自己的知识框架和学习路线做相应的规划。 Unity的底层Unity3D引擎核心架构与设计哲学深度解析官方Doc: Scripting: Unity 架构  The Unity engine is built with native C&#x2F;C++ internally, however it has a C# wrapper that you use to">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2025-09-05T00:17:24.046Z">
+<meta property="article:modified_time" content="2025-09-05T00:17:51.949Z">
+<meta property="article:author" content="Ming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Unity面经",
+  "url": "https://mikeming126.github.io/Mine/Unity/KnowledgeUnity/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2025-09-05T00:17:24.046Z",
+  "dateModified": "2025-09-05T00:17:51.949Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/Mine/Unity/KnowledgeUnity/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Unity面经',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">Unity面经</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Unity面经</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-05T00:17:24.046Z" title="发表于 2025-09-05 08:17:24">2025-09-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-05T00:17:51.949Z" title="更新于 2025-09-05 08:17:51">2025-09-05</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">5.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>18分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>若是要长期使用Unity，必须对自己的知识框架和学习路线做相应的规划。</p>
+<h2 id="Unity的底层"><a href="#Unity的底层" class="headerlink" title="Unity的底层"></a>Unity的底层</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/oWanMeiShiKong/article/details/146044911">Unity3D引擎核心架构与设计哲学深度解析</a><br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2022.3/Manual/unity-architecture.html">官方Doc: Scripting: Unity 架构</a></p>
+<blockquote>
+<p>The Unity engine is built with native C&#x2F;C++ internally, however it has a C# wrapper that you use to interact with it.</p>
+</blockquote>
+<h3 id="分层架构"><a href="#分层架构" class="headerlink" title="分层架构"></a>分层架构</h3><p>本身底层是C++。上层交互用C#。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">┌──────────────────────────────┐</span><br><span class="line">│    Editor Tools (C#/IMGUI)   │</span><br><span class="line">├──────────────────────────────┤</span><br><span class="line">│Scripting Runtime (Mono/IL2CPP) │ </span><br><span class="line">├──────────────────────────────┤</span><br><span class="line">│ Native Engine Core (C++)     │</span><br><span class="line">│   - Rendering (SRP/URP/HDRP) │  </span><br><span class="line">│   - Physics (PhysX/Havok)    │</span><br><span class="line">│   - Audio (FMOD/Wwise)       │</span><br><span class="line">└──────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>关键设计原则：</p>
+<ul>
+<li>模块解耦：每个子系统（如Rendering&#x2F;Physics）以DLL形式动态加载</li>
+<li>接口抽象：通过IScriptableRenderPipeline等接口实现可替换组件</li>
+<li>数据驱动：YAML格式的Scene&#x2F;Asset序列化机制</li>
+</ul>
+<h3 id="多平台"><a href="#多平台" class="headerlink" title="多平台"></a>多平台</h3><p>硬件抽象层，定义对于的结构。</p>
+<p>关键机制：</p>
+<ul>
+<li>平台定义文件（PlatformDefines）：通过宏指令隔离平台相关代码</li>
+<li>IL2CPP转换层：将C# IL代码转换为C++，作为AOT的实现方案。</li>
+<li>UnityPlayer动态库：封装各平台原生API调用</li>
+</ul>
+<h3 id="Unity的-NET概述"><a href="#Unity的-NET概述" class="headerlink" title="Unity的.NET概述"></a>Unity的.NET概述</h3><p>使用.NET 平台来确保多种硬件支持。<br>两种代码后端</p>
+<ul>
+<li>Mono - JIT</li>
+<li>IL2CPP - AOT<br>项目设置 - Player - Other Settings - Scripting Backend</li>
+</ul>
+<h4 id="代码剥离-优化未使用的代码"><a href="#代码剥离-优化未使用的代码" class="headerlink" title="代码剥离 - 优化未使用的代码"></a>代码剥离 - 优化未使用的代码</h4><p>IL2CPP一直有，Mono默认禁用代码剥离，也是在Other Settings - Managed Stripping Level。<br>代码剥离存在删去依赖代码的风险。特别是在使用反射或者是在运行时生成代码的情况。<br>可以考虑使用Preserve Attribue [Preserve] 来防止代码被剥离。具体的可以参考官方文档。</p>
+<h4 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h4><p>对Mono和IL2CPP后端均使用Boehm垃圾收集器。默认使用增量GC。</p>
+<h4 id="C-反射开销"><a href="#C-反射开销" class="headerlink" title="C#反射开销"></a>C#反射开销</h4><p>Mono和IL2CPP内部缓存所有C#反射 (System.Reflection) 对象，且Unity不会对它们进行垃圾回收。GC会扫描反射对象而导致不必要的开销。</p>
+<p>减少这种开销，避免使用Assembly.GetTypes 和 Type.GetMethods() 等会在运行时创建许多C#反射对象的方法。</p>
+<h4 id="UnityEngine-Object-特殊行为"><a href="#UnityEngine-Object-特殊行为" class="headerlink" title="UnityEngine.Object 特殊行为"></a>UnityEngine.Object 特殊行为</h4><blockquote>
+<p>UnityEngine.Object is a special type of C# object in Unity, because it’s linked to a native C++ counterpart object.<br>留意native C++ 中对应的UnityEngine.Object。</p>
+</blockquote>
+<p>C#到Native层的穿透也有性能开销。<br>可以看看这篇文章，从SetActive入手<br><a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/TechSharing_244.html">如何优化UI中大量使用SetActive的问题</a></p>
+<p>extern 关键字与 [MethodImpl(MethodImplOptions.InternalCall)] 属性</p>
+<blockquote>
+<p>It’s a C# attribute (which indicates to the mono runtime that it is a call to a native method), which invokes native C&#x2F;C++ code in a .dll linked with the executable embedding the mono runtime (and the .dll exports the function) or in the executable embedding the runtime (using “__Internal” in DLLImport).</p>
+</blockquote>
+<p>而访问Unity对象的属性或方法，也有可能会涉及到穿透。</p>
+<blockquote>
+<p>If your application tries to access a destroyed UnityEngine.Object again, Unity recreates the native counterpart object for most types. Two exceptions to this recreation behavior are MonoBehaviour and ScriptableObject: Unity never reloads them once they have been destroyed.</p>
+</blockquote>
+<h2 id="Unity组成元素"><a href="#Unity组成元素" class="headerlink" title="Unity组成元素"></a>Unity组成元素</h2><p><a target="_blank" rel="noopener" href="https://www.theknowledgeacademy.com/blog/unity-architecture/">Unity Architecture: Explanation and Definition</a><br>Unity Architecture</p>
+<ul>
+<li>Unity Engine</li>
+<li>Scripting API</li>
+</ul>
+<p>Unity架构的组件</p>
+<ul>
+<li>Unity Engine<br>负责执行游戏脚本、渲染场景、管理物理模拟以及处理用户输入。</li>
+<li>Scripting API<br>主要使用C#脚本进行游戏开发流程。通过脚本定义和控制游戏元素的行为。</li>
+<li>Game Objects<br>基础实体。每个对象代表游戏世界中的独特实体。</li>
+<li>Components<br>附加在游戏对象上，用于定义游戏对象的行为和属性。</li>
+<li>Unity Editor</li>
+<li>Asset Pipeline<br>集成资源管线，处理各种资源。</li>
+<li>Scene Management<br>将游戏内容组织为场景。每个场景包含一组游戏对象，共同构成游戏关卡或某个游戏环节。</li>
+<li>Networking</li>
+<li>Physics Engine</li>
+<li>Animation</li>
+</ul>
+<p>大体上介绍了Unity的部分架构内容和游戏中的重要元素。<br>不过外网这篇文章还是比较简单的，感觉不是很深入。</p>
+<h2 id="Unity的Gameplay"><a href="#Unity的Gameplay" class="headerlink" title="Unity的Gameplay"></a>Unity的Gameplay</h2><p>Unity6的官方英文文档在入门那里加了新的Key concepts篇章。<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/6000.2/Documentation/Manual/key-concepts.html">Unity6.2KeyConcepts</a></p>
+<h3 id="重点概念"><a href="#重点概念" class="headerlink" title="重点概念"></a>重点概念</h3><p>基于Unity6和Unity2022.3文档整理重点内容</p>
+<h4 id="GameObjects-components-and-scenes"><a href="#GameObjects-components-and-scenes" class="headerlink" title="GameObjects, components, and scenes"></a>GameObjects, components, and scenes</h4><ul>
+<li>GameObjects<br>Represent everything in your game. In the Unity Editor, all objects in a scene are GameObjects. </li>
+<li>Components<br>The behavior of GameObjects is defined by blocks of functionality called components. </li>
+<li>Scenes<br>GameObjects exist in 2D or 3D environments called scenes.</li>
+</ul>
+<p>Project Assets: source files that you add to scenes.</p>
+<h5 id="重点组件"><a href="#重点组件" class="headerlink" title="重点组件"></a>重点组件</h5><ul>
+<li>Transform<br>position&#x2F;rotation&#x2F;scale <strong>每个游戏对象都有一个Transform组件</strong></li>
+<li>Mesh Filter<br>定义3D游戏对象的形状</li>
+<li>Mesh Renderer<br>应用纹理和光照下的外观</li>
+<li>Cameras<br>捕获并显示世界内容、游戏对象</li>
+<li>Rigidbody<br>允许游戏对象与物理系统交互，重力、碰撞等。</li>
+<li>Colliders<br>碰撞器，定义物理碰撞形状</li>
+</ul>
+<h5 id="Constraints-约束"><a href="#Constraints-约束" class="headerlink" title="Constraints 约束"></a>Constraints 约束</h5><p>约束组件将游戏对象的位置、旋转或缩放与另一个游戏对象关联。受约束的游戏对象像关联到的游戏对象一样移动、旋转或缩放。</p>
+<h4 id="Prefabs"><a href="#Prefabs" class="headerlink" title="Prefabs"></a>Prefabs</h4><h4 id="Scripting"><a href="#Scripting" class="headerlink" title="Scripting"></a>Scripting</h4><p>脚本组件 Script Component。</p>
+<h4 id="Rendering-Meshes"><a href="#Rendering-Meshes" class="headerlink" title="Rendering Meshes"></a>Rendering Meshes</h4><p>使用Mesh Filter和Mesh Renderer</p>
+<h4 id="Materials"><a href="#Materials" class="headerlink" title="Materials"></a>Materials</h4><p>Textures、color tints、shaders。</p>
+<h4 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h4><h4 id="Lighting"><a href="#Lighting" class="headerlink" title="Lighting"></a>Lighting</h4><h4 id="Audio"><a href="#Audio" class="headerlink" title="Audio"></a>Audio</h4><h4 id="Physics"><a href="#Physics" class="headerlink" title="Physics"></a>Physics</h4><h4 id="UI-User-Interface-and-Layers"><a href="#UI-User-Interface-and-Layers" class="headerlink" title="UI User Interface and Layers"></a>UI User Interface and Layers</h4><h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>Unity的设计理念 Entity-Component</p>
+<ul>
+<li>万物皆对象，GameObject.以GO(GameObject)作为容器载体。</li>
+<li>组件</li>
+</ul>
+<p>Unity本身并没有一套成熟结构化的Gameplay Framework,由开发人员自己处理。</p>
+<h1 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h1><h2 id="对象查找"><a href="#对象查找" class="headerlink" title="对象查找"></a>对象查找</h2><h3 id="仅适用于Active状态的对象"><a href="#仅适用于Active状态的对象" class="headerlink" title="仅适用于Active状态的对象"></a>仅适用于Active状态的对象</h3><ul>
+<li><p>GameObject.Find(string name)<br>全局。通过名称&#x2F;路径查找。注意相对路径问题： </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 相对路径 &quot;path1/child&quot;</span><br><span class="line">- 基于根节点的绝对路径 &quot;/path1/child&quot;</span><br></pre></td></tr></table></figure></li>
+<li><p>GameObject.FindObjectOfType&lt;类型&gt;();<br>根据类型(组件&#x2F;自定义脚本)查找并返回这个类。有复数版本。</p>
+</li>
+<li><p>GameObject.FindGameObjectWithTag(string tag)<br>根据标签查找游戏物体并返回。对应标签必须先声明，否则抛出异常。有复数版本。</p>
+</li>
+</ul>
+<h3 id="可适用于隐藏状态对象"><a href="#可适用于隐藏状态对象" class="headerlink" title="可适用于隐藏状态对象"></a>可适用于隐藏状态对象</h3><ul>
+<li><p>transform.Find(string name)<br>局部查找。transform所在根节点必须可见。返回Transform</p>
+</li>
+<li><p>transform.GetChild(int index)<br>局部查找</p>
+</li>
+</ul>
+<h3 id="获取子组件"><a href="#获取子组件" class="headerlink" title="获取子组件"></a>获取子组件</h3><ul>
+<li>public T[] GetComponentsInChildren<T>(bool includeInactive)<br>注意，如果调用对象自己也有这个组件，也会包含在内。</li>
+</ul>
+<h3 id="拓展阅读："><a href="#拓展阅读：" class="headerlink" title="拓展阅读："></a>拓展阅读：</h3><p>如果目标Transform处于非激活状态等情况。<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/629282688">在 Unity 查找场景下的对象，一篇就够了！！！</a></p>
+<h2 id="帧更新-FixedUpdate-Update-LateUpdate"><a href="#帧更新-FixedUpdate-Update-LateUpdate" class="headerlink" title="帧更新 FixedUpdate&#x2F;Update&#x2F;LateUpdate"></a>帧更新 FixedUpdate&#x2F;Update&#x2F;LateUpdate</h2><p>三者执行顺序：FixedUpdate ——&gt;Update ——&gt;LateUpdate<br>三者作用：</p>
+<ul>
+<li>FixedUpdate固定帧更新，一般用作物理更新</li>
+<li>Update一般用作游戏逻辑更新</li>
+<li>LateUpdate一般用作相机更新</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/enternalstar/article/details/108507205">Unity中的FixedUpdate、Update、LateUpdate的区别及游戏帧更新</a></p>
+<h2 id="多线程编程-JobSystem"><a href="#多线程编程-JobSystem" class="headerlink" title="多线程编程 JobSystem"></a>多线程编程 JobSystem</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56459126">Unity C# Job System介绍(一) Job System总览和多线程</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/FlyingZiming/p/17241013.html">Unity JobSystem使用及技巧</a></p>
+<p>JobSystem通过创建Jobs而不是线程来管理多线程代码。<br>工人线程Worker Threads由JobSystem来管理。<br>JobSystem把Jobs放到Job队列中去执行。工人线程从Job队列中取出内容并执行。</p>
+<p>Jobs：</p>
+<ol>
+<li>可以是独立的任务</li>
+<li>或者依赖其他Jobs完成后再执行。—— Job的关联性。</li>
+</ol>
+<h3 id="安全性系统"><a href="#安全性系统" class="headerlink" title="安全性系统"></a>安全性系统</h3><p>以Job使用主线程的数据引用为例子：<br>C# Job System通过给每一个需要操作数据的Job一份数据的<strong>拷贝</strong>而不是主线程中数据的引用来避免这个问题。拷贝和原本的数据独立，从而排除了资源竞争。</p>
+<p>拷贝数据的方式表明了一个Job只能访问可以位块传输的数据类型(blitable data types)。这种数据类型在托管代码和原生代码之间进行传递的时候不需要类型转换。</p>
+<h3 id="NativeContainer"><a href="#NativeContainer" class="headerlink" title="NativeContainer"></a>NativeContainer</h3><p>安全性系统中拷贝数据的缺点是单个job的计算结果是与外部隔离的。为了突破这个限制，我们需要把结果放在一种<strong>共享内存</strong>——NativeContainer中。</p>
+<p>NativeContainer是一种托管的数据类型，为原生内存提供一种相对安全的C#封装。它包括一个指向非托管分配内存的指针。当和Unity C# Job System一起使用时，一个NativeContainer使得一个Job可以<strong>访问和主线程共享的数据</strong>，而不是在一份拷贝数据上工作。</p>
+<h2 id="Unity-ECS"><a href="#Unity-ECS" class="headerlink" title="Unity ECS"></a>Unity ECS</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59879279">浅谈Unity ECS（一）Uniy ECS基础概念介绍：面向未来的ECS</a></p>
+<p>一些结合JobSystem实践的文章<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/55654892">浅谈Unity ECS结合Job System</a></p>
+<p>团结引擎的ECS优化<br><a target="_blank" rel="noopener" href="https://developer.unity.cn/projects/677ca79dedbc2a001f135aec">团结引擎高性能ECS架构</a></p>
+<h2 id="DrawCall"><a href="#DrawCall" class="headerlink" title="DrawCall"></a>DrawCall</h2><p>关于DrawCall，可以结合计算机图形学的渲染管线做基础了解。</p>
+<p>DrawCall的性能问题:<br>在调用DrawCall之前，CPU都要向GPU发送很多内容，比如数据，状态，命令等。CPU完成了准备工作，提交了命令，GPU才可以开始工作。GPU渲染能力很强，渲染100个三角形网格和10000个三角形网格，区别不大。所以，GPU渲染速度往往优于CPU提交命令的速度。</p>
+<p>手动设置渲染参数很繁琐。这就是游戏开发人员引入材质概念的原因。材质是一种包含有关如何绘制对象的信息的数据结构。它包含一个着色器及其所有参数，以及有关如何设置GPU渲染状态的信息。</p>
+<p>针对Drawcall我们主要的思路就是每个物体尽量减少渲染次数，多个物体最好一起渲染，或者叫，<strong>批处理</strong>（Batching）。</p>
+<p>Unity SetPasses:<br>SetPasses描述了一种更昂贵的操作：材质更改。更改材质很昂贵，因为我们必须设置一个新的渲染状态。其中包括着色器参数和管线设置，例如Alpha Blending，Z-Test，Z-Writing。</p>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><p>Unity Frame Debugger<br>查看Draw Call顺序</p>
+<h3 id="批处理-Batching"><a href="#批处理-Batching" class="headerlink" title="批处理 Batching"></a>批处理 Batching</h3><p>使用同一种材质的物体可以进行批处理。<br>其纹理、顶点着色器、片元着色器的代码都一致。可以把<strong>顶点数据合并成一个</strong>，仅调用一次DrawCall。</p>
+<h4 id="Unity静态批处理"><a href="#Unity静态批处理" class="headerlink" title="Unity静态批处理"></a>Unity静态批处理</h4><p>静态批处理，不限制模型的顶点数量，它只在运行开始阶段，它只在运动开始阶段，合并一次模型。这要求这些物理不能被移动！</p>
+<p>优点是，合并制作一次，后面渲染不用合并，节约性能。<br>缺点是，可能占用较多内存。比如，没用静态处理，一些物体共享了网格，比如地图有100个树木，共享一个模型。如果把这些变成静态批处理，需要100倍的顶点数据内存。</p>
+<h4 id="Unity动态批处理"><a href="#Unity动态批处理" class="headerlink" title="Unity动态批处理"></a>Unity动态批处理</h4><p>动态批处理，则每一帧渲染，都需要合并一次模型网格。</p>
+<p>优点是，这些物体可以被移动。<br>缺点是，因为每次要合并，需要有一些限制，比如，顶点数目不能超过300（不同Unity版本不一样）。</p>
+<h3 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h3><p><a target="_blank" rel="noopener" href="https://thegamedev.guru/unity-performance/draw-call-optimization/">Unity Draw Call Batching: The Ultimate Guide [2021]</a></p>
+<ol>
+<li><p>Using Same Material? -&gt; 不是的话、尝试使用same shader </p>
+</li>
+<li><p>Can Make them Static? -&gt; 尝试静态批处理</p>
+</li>
+<li><p>Same Mesh? -&gt; 尝试使用GPU Instancing</p>
+</li>
+<li><p>Can Batch Dynamically? -&gt; 尝试动态批处理</p>
+</li>
+<li><p>使用API手动创建合批 Unity Run-Time Batching API<br>StaticBatchingUtility.Combine<br>Mesh.CombineMeshes.</p>
+</li>
+</ol>
+<h4 id="SameShader-合并材质工作"><a href="#SameShader-合并材质工作" class="headerlink" title="SameShader 合并材质工作"></a>SameShader 合并材质工作</h4><ol>
+<li>第一步是使用相同的shader。</li>
+<li>第二部就是合并材质</li>
+</ol>
+<ul>
+<li>Texture的合并和处理</li>
+<li>材质参数的处理</li>
+</ul>
+<h3 id="UI图集优化"><a href="#UI图集优化" class="headerlink" title="UI图集优化"></a>UI图集优化</h3><p>图集是将多个小纹理合并到一张大纹理中的技术。通过这种方式，Unity可以减少材质切换和Draw Call数量，从而优化渲染性能。</p>
+<p>合并后的纹理尺寸会增大。而且图集用2的幂次方来处理。</p>
+<p>合批的基础是相同材质。其以Canvas(不包含子Canvas)为单位的<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/604534298">Unity合批（Batching）的限制与失败原因汇总</a></p>
+<h2 id="RenderPass"><a href="#RenderPass" class="headerlink" title="RenderPass"></a>RenderPass</h2><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/305707508">计算机图形里面的RenderingPass（渲染通道）是什么意思？</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/77340883">渲染概念：2.RenderPass-渲染通道</a></p>
+<p>一系列Drawcall的合集。</p>
+<h2 id="OverDraw"><a href="#OverDraw" class="headerlink" title="OverDraw"></a>OverDraw</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/350778355">Unity基础：性能杀手Overdraw详解</a><br><a target="_blank" rel="noopener" href="https://thegamedev.guru/unity-gpu-performance/overdraw-optimization/">Unity Overdraw: Improving the GPU Performance of Your Game</a><br>在游戏运行过程中重复绘制同一像素的问题。</p>
+<ol>
+<li><p>透明OverDraw的减少：<br>由透明度引起的OverDraw对性能特别不利，因为渲染通常伴随Alpha Blend，这需要额外的读取和算术运算。<br>更糟糕的是，透明材质通常不会写入Z-buffer，因此最终会写入更多无法丢弃的像素。</p>
+<ul>
+<li>减少绘制的透明像素的数量及其成本。</li>
+</ul>
+</li>
+<li><p>不透明OverDraw的减少：<br>Unity会尽最大努力从近到远渲染不透明元素。这就是说，我们首先渲染距离摄像机更近的元素，以便使用Z-Test剔除被遮挡的物体的像素。<br>该排序基于相机与每个对象的边界框中心之间的距离，非常有利于GPU性能。<br>但是，在某些情况下，会导致渲染队列排序混乱，这会使OverDraw增加。</p>
+<ul>
+<li>天空球 中心点和相机位置关系</li>
+<li>将对象拆分为较小的子对象，以便Unity可以获取更准确的原点来更有效地对绘图调用进行排序。</li>
+<li>Batching 导致的OverDraw</li>
+</ul>
+</li>
+</ol>
+<h3 id="分析工具"><a href="#分析工具" class="headerlink" title="分析工具"></a>分析工具</h3><p>RenderDoc</p>
+<h2 id="GPU-Instancing"><a href="#GPU-Instancing" class="headerlink" title="GPU Instancing"></a>GPU Instancing</h2><p>适用于Same Material（用同个Shader）、Same Mesh</p>
+<p>GPU实例化让你可以非常高效地绘制相同的网格几次。Unity通过向GPU传递转一个Transform列表来做到这一点。</p>
+<h2 id="YooAsset-资源管理"><a href="#YooAsset-资源管理" class="headerlink" title="YooAsset 资源管理"></a>YooAsset 资源管理</h2><p><a target="_blank" rel="noopener" href="https://www.yooasset.com/docs/Introduce">YooAsset</a></p>
+<p>使用FileHash用于确定文件是否需要更新</p>
+<p>补丁清单</p>
+<h2 id="Unity协程（Coroutines"><a href="#Unity协程（Coroutines" class="headerlink" title="Unity协程（Coroutines"></a>Unity协程（Coroutines</h2><p><a target="_blank" rel="noopener" href="https://blog.51cto.com/u_16099323/10335405">unity携程和线程的区别 unity 协程 线程</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38112703/article/details/80321407">unity 协程原理与线程的区别</a></p>
+<p>一篇比较详细的文章:<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xinzhilinger/p/14718527.html">Unity 协程(Coroutine)原理与用法详解 </a></p>
+<h3 id="线程、进程、协程的区别"><a href="#线程、进程、协程的区别" class="headerlink" title="线程、进程、协程的区别"></a>线程、进程、协程的区别</h3><p>进程拥有自己独立的堆和栈，既不共享堆，亦不共享栈，进程由操作系统调度。</p>
+<p>线程拥有自己独立的栈和共享的堆，共享堆，不共享栈，线程亦由操作系统调度(标准线程是的)。[这里说的时KLT]</p>
+<p>协程和线程一样共享堆，不共享栈，协程<strong>由程序员在协程的代码里显示调度</strong> 避免了无意义的调度，但失去了标准线程使用多CPU的能力。</p>
+<h3 id="协程的意义"><a href="#协程的意义" class="headerlink" title="协程的意义"></a>协程的意义</h3><p>非抢占式的多任务。将任务分到多个帧中去执行。<br>游戏中逻辑更新和画面更新的时间点有确定性，必须按照帧序列严格保持同步，否则就会出现游戏中对象不同步的现象。虽然多线程也能实现对象同步等效果，但是对一个大型游戏而言，游戏中的对象非常多，用多线程来实现很容易出Bug，而且往往很难找到Bug在哪，这无疑会加大开发的难度。</p>
+<p>为了开发便利，统一生命周期管理，避免多线程锁的问题，Unity采用单线程逻辑。</p>
+<p>为此，UnityEngine对其API和Componet等做出了限制，<strong>不能在主线程之外的线程中使用它们，这就确保了它们始终是在单线程中运行。</strong></p>
+<p>但是，对于一些耗时的操作（即需要较长时间才能执行完的代码块），我们不能一直等待其执行完毕再执行接下来的操作，否则游戏会出现卡顿等现象。例如，在游戏中等待1s再去执行某个操作时，如果我们让主线程等待1s，那么游戏画面就会停顿1s，这是不行的。为了解决这类问题，就需要使用协程——在主线程运行的同时开启另一段逻辑处理，来协同当前程序的执行。</p>
+<p>显然，协程的出现是为了解决单线程的问题，如同线程的出现是为了解决进程的问题一样。我们可以想象，如果程序越来越复杂，进程之上还会有xx程，协程之下还会有xx程。</p>
+<h3 id="携程的执行时间"><a href="#携程的执行时间" class="headerlink" title="携程的执行时间"></a>携程的执行时间</h3><p>在调用携程(StartCoroutine)时会立刻执行对应的逻辑处理。<br>在yield后，携程停止执行，并返回执行下一行代码。</p>
+<p>大部分协程，都是在Update和LateUpdate之间进行处理。 具体的可以参考官方API Documentation。<br>几个例外：</p>
+<ul>
+<li>yield return new WaitForFixedUpdate(); &#x2F;&#x2F;FixedUpdate和Update之间</li>
+<li>yield return new WaitForEndOfFrame();  &#x2F;&#x2F;在LateUpdate之后</li>
+</ul>
+<p>yield后如果还有逻辑需要处理，其会在下一帧的Update和LateUpdate之间进行处理。(以yield return null为例子)</p>
+<h3 id="协程调用"><a href="#协程调用" class="headerlink" title="协程调用"></a>协程调用</h3><p>StartCoroutine:</p>
+<ul>
+<li>public Coroutine StartCoroutine(string methodName)</li>
+<li>public Coroutine StartCoroutine(string methodName, [DefaultValue(“null”)] object value) &#x2F;&#x2F;这里不支持多个参数，多个参数考虑用Tuple&#x2F;ValueTuple、自定义结构体等方式处理</li>
+<li>public Coroutine StartCoroutine(IEnumerator routine) &#x2F;&#x2F;通过方法直接调用</li>
+</ul>
+<p>停止方法</p>
+<ul>
+<li>public extern void StopAllCoroutines();</li>
+<li>public void StopCoroutine(IEnumerator routine) &#x2F;&#x2F;使用methodName开始的协程无法用这种方式停止。</li>
+<li>public void StopCoroutine(Coroutine routine)</li>
+<li>public extern void StopCoroutine(string methodName);</li>
+</ul>
+<p>对于每个协程，Unity 调用迭代器的 MoveNext() 方法。</p>
+<p>如果 MoveNext() 返回 true，Unity 会查看 Current 属性（即 yield return 后面的对象）。</p>
+<p>Unity 根据 Current 的类型（是 null、WaitForSeconds 还是其他）来判断这个协程是否满足了继续执行的条件。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//通过迭代器定义一个方法</span><br><span class="line">IEnumerator Demo(int i)</span><br><span class="line">&#123;</span><br><span class="line">   //代码块</span><br><span class="line">   yield return 0; </span><br><span class="line">   //代码块 </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//在程序种调用协程</span><br><span class="line">public void Test()</span><br><span class="line">&#123;</span><br><span class="line">   //第一种与第二种调用方式,通过方法名与参数调用</span><br><span class="line">   StartCoroutine(&quot;Demo&quot;, 1);</span><br><span class="line"></span><br><span class="line">   //第三种调用方式， 通过调用方法直接调用</span><br><span class="line">   StartCoroutine(Demo(1));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">IEnumerator MyCoroutine() &#123;</span><br><span class="line">   Debug.Log(&quot;Coroutine started at: &quot; + Time.time);</span><br><span class="line"></span><br><span class="line">   // 1. 等待下一帧</span><br><span class="line">   yield return null; // 或者 yield return 0, 1, 2...(这里不管啥数值都是只等待一帧)</span><br><span class="line">   //yeild return 0 会产生装箱拆箱，可以替换为 yeild return null</span><br><span class="line"></span><br><span class="line">   // 2. 等待一段时间（秒）（受Time.timeScale影响）</span><br><span class="line">   yield return new WaitForSeconds(2.5f);</span><br><span class="line"></span><br><span class="line">   // 3. 等待一段真实时间（不受Time.timeScale影响）</span><br><span class="line">   yield return new WaitForSecondsRealtime(1f);</span><br><span class="line"></span><br><span class="line">   // 4. 等待直到某个条件为真</span><br><span class="line">   yield return new WaitUntil(() =&gt; player.IsReady); //在Update之后，LateUpdate之前</span><br><span class="line"></span><br><span class="line">   // 5. 等待物理引擎的下一个固定更新帧</span><br><span class="line">   yield return new WaitForFixedUpdate();</span><br><span class="line"></span><br><span class="line">   // 6. 等待一个异步操作完成（如场景加载）</span><br><span class="line">   yield return SceneManager.LoadSceneAsync(&quot;Level2&quot;);</span><br><span class="line"></span><br><span class="line">   // 7. 等待另一个协程执行完毕</span><br><span class="line">   yield return StartCoroutine(AnotherCoroutine());</span><br><span class="line"></span><br><span class="line">   // 8. 等待直至异步下载完成 不过WWW过时了</span><br><span class="line">   //Use UnityWebRequest</span><br><span class="line">   WWW www = WWW(&quot;http://www.baidu.com&quot;);</span><br><span class="line">   yield return www; </span><br><span class="line"></span><br><span class="line">   Debug.Log(&quot;Coroutine finished at: &quot; + Time.time);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="协程应用"><a href="#协程应用" class="headerlink" title="协程应用"></a>协程应用</h3><p>核心思想：将任务分散到多帧中去完成。处理时间、异步操作等。</p>
+<ul>
+<li>延迟 WaitForSeconds等</li>
+<li>分散昂贵的计算任务，分帧处理</li>
+<li>等待某种条件完成 WaitUntil&#x2F;WaitWhile </li>
+<li>异步操作 如</li>
+</ul>
+<h4 id="协程的销毁"><a href="#协程的销毁" class="headerlink" title="协程的销毁"></a>协程的销毁</h4><ul>
+<li>使用Coroutine（协程创建时的返回值）来停止协程 StopCoroutine。</li>
+<li>StopAllCoroutines()</li>
+<li>禁用&#x2F;销毁游戏对象 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gameObject.SetActive(false); </span><br><span class="line">Destroy(gameobject)</span><br></pre></td></tr></table></figure>
+持有Object销毁时，协程会立刻停止执行。</li>
+</ul>
+<h2 id="Unity-Mono-IL2CPP"><a href="#Unity-Mono-IL2CPP" class="headerlink" title="Unity Mono IL2CPP"></a>Unity Mono IL2CPP</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/352463394">【Unity游戏开发】Mono和IL2CPP的区别</a><br>Mono：开源项目<br>Mono的目标是在尽可能多的平台上使.net标准的东西能正常运行的一套工具，核心在于“跨平台的让.net代码能运行起来“。<br>Mono组成组件：C# 编译器，CLI(Common Language Infrastructure,CLR的子集)虚拟机，以及核心类别程序库。</p>
+<h2 id="UnityGC"><a href="#UnityGC" class="headerlink" title="UnityGC"></a>UnityGC</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/265217138">Unity GC 学习总结</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/693441602">Unity与.NET的垃圾回收（GC）</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1aJ411t7N6/">BiliBili Unity 活动-浅谈Unity内存管理</a></p>
+<h3 id="GC的策略"><a href="#GC的策略" class="headerlink" title="GC的策略"></a>GC的策略</h3><ul>
+<li>Mark-Sweep。Tracing garbage collection。通过一个RootObject，遍历该对象的引用变量，并且标记。递归该过程确认所有reachable对象，剩余为garbage。(Lua)</li>
+<li>引用计数Reference Counting。当引用为0时，则该对象为garbage。<br> 存在问题：循环引用、计数空间开销、修改引用数目带来的速度开销以及原子性要求、非实时（一个引用的变化可能递归得导致一系列引用修改，内存释放)</li>
+</ul>
+<h3 id="基于Mono的UnityGC"><a href="#基于Mono的UnityGC" class="headerlink" title="基于Mono的UnityGC"></a>基于Mono的UnityGC</h3><p>Unity的脚本后端是基于Mono的实现（当然现在多了个IL2CPP，不过也是类似的GC实现)，而Mono使用的GC是所谓的Boehm–Demers–Weiser garbage collector。是Mark-Sweep 的实现，它会在需要进行GC时占用主线程，进行遍历-标记-垃圾回收的过程，然后在归还主线程控制权。</p>
+<ul>
+<li>非压缩式的，所以卡顿现象相对较轻，但是对内存利用率进一步下降了，会有内存碎片的问题</li>
+</ul>
+<p>emmm 基于第二篇参考文章，.Net都已经到分代GC了。和Lua那边一致了。</p>
+<h3 id="优化GC"><a href="#优化GC" class="headerlink" title="优化GC"></a>优化GC</h3><p>GC优化的核心在于消除垃圾</p>
+<ul>
+<li>字符串 使用StringBuilder来优化</li>
+<li>闭包</li>
+<li>装箱</li>
+<li>返回数组的Unity API（因为返回的是拷贝），通过Cache返回数组处理。</li>
+<li>空数组</li>
+<li>主动定时GC、主动扩大托管堆等。</li>
+</ul>
+<h4 id="增量式GC"><a href="#增量式GC" class="headerlink" title="增量式GC"></a>增量式GC</h4><p>分帧执行GC。均衡负载到多帧，消除毛刺</p>
+<h3 id="内存工具"><a href="#内存工具" class="headerlink" title="内存工具"></a>内存工具</h3><p>内存分析器 Memory Profiler</p>
+<h2 id="待解决问题"><a href="#待解决问题" class="headerlink" title="待解决问题"></a>待解决问题</h2><p>UGUI怎么渲染的UI，UGUI的层级管理（怎么不打断合批），合批流程<br>Unity和android怎么交互的<br>Unity编辑器的扩展学过吗，学过哪些，新增一个窗口是继承哪个类<br>Unity里面判断两个物体的碰撞条件<br>UGUI的优化</p>
+<p>C#代码在unity里面编译跑起来的流程<br>Mono内存有什么特点因为没听懂，换成问C#创建一个对象是问谁要内存（我回答的堆内存），堆内存是谁管理的（我说是mono虚拟机）。释放一个对象的内存mono会还给操作系统吗（我说不会应该会做压缩操作吧），mono是解释性运行C#的中间代码吗（我猜的是，因为可以做C#热更新）。乱答的不知道对不对<br>Unity的GC流程<br>3d模型勾选的静态合批太多了会有什么问题<br>Unity怎么会产生GC</p>
+<!-- flag of hidden posts --></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/Mine/Unity/KnowledgeUnity/">https://mikeming126.github.io/Mine/Unity/KnowledgeUnity/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity%E7%9A%84%E5%BA%95%E5%B1%82"><span class="toc-number">1.1.</span> <span class="toc-text">Unity的底层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="toc-number">1.1.1.</span> <span class="toc-text">分层架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E5%B9%B3%E5%8F%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text">多平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity%E7%9A%84-NET%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text">Unity的.NET概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%89%A5%E7%A6%BB-%E4%BC%98%E5%8C%96%E6%9C%AA%E4%BD%BF%E7%94%A8%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">代码剥离 - 优化未使用的代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GC"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">GC</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%8F%8D%E5%B0%84%E5%BC%80%E9%94%80"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">C#反射开销</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UnityEngine-Object-%E7%89%B9%E6%AE%8A%E8%A1%8C%E4%B8%BA"><span class="toc-number">1.1.3.4.</span> <span class="toc-text">UnityEngine.Object 特殊行为</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity%E7%BB%84%E6%88%90%E5%85%83%E7%B4%A0"><span class="toc-number">1.2.</span> <span class="toc-text">Unity组成元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity%E7%9A%84Gameplay"><span class="toc-number">1.3.</span> <span class="toc-text">Unity的Gameplay</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E7%82%B9%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.1.</span> <span class="toc-text">重点概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#GameObjects-components-and-scenes"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">GameObjects, components, and scenes</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%87%8D%E7%82%B9%E7%BB%84%E4%BB%B6"><span class="toc-number">1.3.1.1.1.</span> <span class="toc-text">重点组件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Constraints-%E7%BA%A6%E6%9D%9F"><span class="toc-number">1.3.1.1.2.</span> <span class="toc-text">Constraints 约束</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Prefabs"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">Prefabs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Scripting"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">Scripting</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Rendering-Meshes"><span class="toc-number">1.3.1.4.</span> <span class="toc-text">Rendering Meshes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Materials"><span class="toc-number">1.3.1.5.</span> <span class="toc-text">Materials</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Animation"><span class="toc-number">1.3.1.6.</span> <span class="toc-text">Animation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Lighting"><span class="toc-number">1.3.1.7.</span> <span class="toc-text">Lighting</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Audio"><span class="toc-number">1.3.1.8.</span> <span class="toc-text">Audio</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Physics"><span class="toc-number">1.3.1.9.</span> <span class="toc-text">Physics</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UI-User-Interface-and-Layers"><span class="toc-number">1.3.1.10.</span> <span class="toc-text">UI User Interface and Layers</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">1.3.2.</span> <span class="toc-text">小结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity"><span class="toc-number">2.</span> <span class="toc-text">Unity</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E6%9F%A5%E6%89%BE"><span class="toc-number">2.1.</span> <span class="toc-text">对象查找</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%85%E9%80%82%E7%94%A8%E4%BA%8EActive%E7%8A%B6%E6%80%81%E7%9A%84%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.1.1.</span> <span class="toc-text">仅适用于Active状态的对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E9%80%82%E7%94%A8%E4%BA%8E%E9%9A%90%E8%97%8F%E7%8A%B6%E6%80%81%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.1.2.</span> <span class="toc-text">可适用于隐藏状态对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%AD%90%E7%BB%84%E4%BB%B6"><span class="toc-number">2.1.3.</span> <span class="toc-text">获取子组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%E9%98%85%E8%AF%BB%EF%BC%9A"><span class="toc-number">2.1.4.</span> <span class="toc-text">拓展阅读：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%A7%E6%9B%B4%E6%96%B0-FixedUpdate-Update-LateUpdate"><span class="toc-number">2.2.</span> <span class="toc-text">帧更新 FixedUpdate&#x2F;Update&#x2F;LateUpdate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B-JobSystem"><span class="toc-number">2.3.</span> <span class="toc-text">多线程编程 JobSystem</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.3.1.</span> <span class="toc-text">安全性系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NativeContainer"><span class="toc-number">2.3.2.</span> <span class="toc-text">NativeContainer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-ECS"><span class="toc-number">2.4.</span> <span class="toc-text">Unity ECS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DrawCall"><span class="toc-number">2.5.</span> <span class="toc-text">DrawCall</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">2.5.1.</span> <span class="toc-text">工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%B9%E5%A4%84%E7%90%86-Batching"><span class="toc-number">2.5.2.</span> <span class="toc-text">批处理 Batching</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Unity%E9%9D%99%E6%80%81%E6%89%B9%E5%A4%84%E7%90%86"><span class="toc-number">2.5.2.1.</span> <span class="toc-text">Unity静态批处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Unity%E5%8A%A8%E6%80%81%E6%89%B9%E5%A4%84%E7%90%86"><span class="toc-number">2.5.2.2.</span> <span class="toc-text">Unity动态批处理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88"><span class="toc-number">2.5.3.</span> <span class="toc-text">优化方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SameShader-%E5%90%88%E5%B9%B6%E6%9D%90%E8%B4%A8%E5%B7%A5%E4%BD%9C"><span class="toc-number">2.5.3.1.</span> <span class="toc-text">SameShader 合并材质工作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UI%E5%9B%BE%E9%9B%86%E4%BC%98%E5%8C%96"><span class="toc-number">2.5.4.</span> <span class="toc-text">UI图集优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RenderPass"><span class="toc-number">2.6.</span> <span class="toc-text">RenderPass</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OverDraw"><span class="toc-number">2.7.</span> <span class="toc-text">OverDraw</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7"><span class="toc-number">2.7.1.</span> <span class="toc-text">分析工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GPU-Instancing"><span class="toc-number">2.8.</span> <span class="toc-text">GPU Instancing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#YooAsset-%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86"><span class="toc-number">2.9.</span> <span class="toc-text">YooAsset 资源管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity%E5%8D%8F%E7%A8%8B%EF%BC%88Coroutines"><span class="toc-number">2.10.</span> <span class="toc-text">Unity协程（Coroutines</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E3%80%81%E8%BF%9B%E7%A8%8B%E3%80%81%E5%8D%8F%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.10.1.</span> <span class="toc-text">线程、进程、协程的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-number">2.10.2.</span> <span class="toc-text">协程的意义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%BA%E7%A8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4"><span class="toc-number">2.10.3.</span> <span class="toc-text">携程的执行时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B%E8%B0%83%E7%94%A8"><span class="toc-number">2.10.4.</span> <span class="toc-text">协程调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B%E5%BA%94%E7%94%A8"><span class="toc-number">2.10.5.</span> <span class="toc-text">协程应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B%E7%9A%84%E9%94%80%E6%AF%81"><span class="toc-number">2.10.5.1.</span> <span class="toc-text">协程的销毁</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Mono-IL2CPP"><span class="toc-number">2.11.</span> <span class="toc-text">Unity Mono IL2CPP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UnityGC"><span class="toc-number">2.12.</span> <span class="toc-text">UnityGC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GC%E7%9A%84%E7%AD%96%E7%95%A5"><span class="toc-number">2.12.1.</span> <span class="toc-text">GC的策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EMono%E7%9A%84UnityGC"><span class="toc-number">2.12.2.</span> <span class="toc-text">基于Mono的UnityGC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96GC"><span class="toc-number">2.12.3.</span> <span class="toc-text">优化GC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A2%9E%E9%87%8F%E5%BC%8FGC"><span class="toc-number">2.12.3.1.</span> <span class="toc-text">增量式GC</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%B7%A5%E5%85%B7"><span class="toc-number">2.12.4.</span> <span class="toc-text">内存工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%85%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="toc-number">2.13.</span> <span class="toc-text">待解决问题</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Shadow/" title="Unity Shadow">Unity Shadow</a><time datetime="2025-10-05T07:56:07.434Z" title="发表于 2025-10-05 15:56:07">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/SRP/" title="Unity SRP">Unity SRP</a><time datetime="2025-10-02T06:15:27.265Z" title="发表于 2025-10-02 14:15:27">2025-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/AsyncOp/" title="Unity异步操作">Unity异步操作</a><time datetime="2025-09-14T08:01:59.349Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Physics/" title="Unity Physics">Unity Physics</a><time datetime="2025-09-14T08:01:59.345Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || 'a6c6ea6bca2393849eec113410bf5e67'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

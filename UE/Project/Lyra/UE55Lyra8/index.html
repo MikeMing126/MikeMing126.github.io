@@ -1,0 +1,281 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>UE5.5-Lyra-8-Shooting | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="主要分析Lyra项目射击的完整流程。 前言深入分析的时候，GAS的调试工具就很重要了。可以参考官方GAS插件目录下的Readme文件。 命令行 &#96;基础调试命令启用GAS调试 - ShowDebug AbilitySystem 切换目录 - AbilitySystem.Debug.NextCategory Lyra射击分析主要GA分析类继承图以手枪射击为例子GA_Weapon_Fire_Pi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UE5.5-Lyra-8-Shooting">
+<meta property="og:url" content="https://mikeming126.github.io/UE/Project/Lyra/UE55Lyra8/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="主要分析Lyra项目射击的完整流程。 前言深入分析的时候，GAS的调试工具就很重要了。可以参考官方GAS插件目录下的Readme文件。 命令行 &#96;基础调试命令启用GAS调试 - ShowDebug AbilitySystem 切换目录 - AbilitySystem.Debug.NextCategory Lyra射击分析主要GA分析类继承图以手枪射击为例子GA_Weapon_Fire_Pi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2025-04-16T14:08:50.609Z">
+<meta property="article:modified_time" content="2025-04-20T13:40:21.531Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="GAS">
+<meta property="article:tag" content="Lyra">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UE5.5-Lyra-8-Shooting",
+  "url": "https://mikeming126.github.io/UE/Project/Lyra/UE55Lyra8/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2025-04-16T14:08:50.609Z",
+  "dateModified": "2025-04-20T13:40:21.531Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/UE/Project/Lyra/UE55Lyra8/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'UE5.5-Lyra-8-Shooting',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">UE5.5-Lyra-8-Shooting</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">UE5.5-Lyra-8-Shooting</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-16T14:08:50.609Z" title="发表于 2025-04-16 22:08:50">2025-04-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-04-20T13:40:21.531Z" title="更新于 2025-04-20 21:40:21">2025-04-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>主要分析Lyra项目射击的完整流程。</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>深入分析的时候，GAS的调试工具就很重要了。<br>可以参考官方GAS插件目录下的Readme文件。</p>
+<h2 id="命令行"><a href="#命令行" class="headerlink" title="命令行 &#96;"></a>命令行 &#96;</h2><h2 id="基础调试命令"><a href="#基础调试命令" class="headerlink" title="基础调试命令"></a>基础调试命令</h2><p>启用GAS调试 - ShowDebug AbilitySystem</p>
+<p>切换目录 - AbilitySystem.Debug.NextCategory</p>
+<h1 id="Lyra射击分析"><a href="#Lyra射击分析" class="headerlink" title="Lyra射击分析"></a>Lyra射击分析</h1><h2 id="主要GA分析"><a href="#主要GA分析" class="headerlink" title="主要GA分析"></a>主要GA分析</h2><h3 id="类继承图"><a href="#类继承图" class="headerlink" title="类继承图"></a>类继承图</h3><p>以手枪射击为例子<br>GA_Weapon_Fire_Pistol<br>↑<br>GA_Weapon_Fire<br>↑<br>ULyraGameplayAbility_RangedWeapon<br>↑<br>ULyraGameplayAbility_FromEquipment<br>↑<br>ULyraGameplayAbility</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>从ActivateAbility来看。<br>逻辑处理函数:</p>
+<ul>
+<li>(Locally Controlled判定) - StartRangedWeaponTargeting</li>
+</ul>
+<p>表现处理函数：</p>
+<ul>
+<li>播放蒙太奇异步任务 PlayMontageAndWait</li>
+</ul>
+<p>这里比较巧妙的一点是，由人物的蒙太奇播放，添加动画通知，驱动了武器蒙太奇动画的播放。</p>
+<p>StartRangedWeaponTargeting：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void ULyraGameplayAbility_RangedWeapon::StartRangedWeaponTargeting()</span><br><span class="line">&#123;</span><br><span class="line">  check(CurrentActorInfo);</span><br><span class="line"></span><br><span class="line">  AActor* AvatarActor = CurrentActorInfo-&gt;AvatarActor.Get();</span><br><span class="line">  check(AvatarActor);</span><br><span class="line"></span><br><span class="line">  UAbilitySystemComponent* MyAbilityComponent = CurrentActorInfo-&gt;AbilitySystemComponent.Get();</span><br><span class="line">  check(MyAbilityComponent);</span><br><span class="line"></span><br><span class="line">  AController* Controller = GetControllerFromActorInfo();</span><br><span class="line">  check(Controller);</span><br><span class="line"></span><br><span class="line">  //继承自UControllerComponent.(用于接受Controller的Events)</span><br><span class="line">  //Tracks weapon state and recent confirmed hit markers to display on screen</span><br><span class="line">  ULyraWeaponStateComponent* WeaponStateComponent = Controller-&gt;FindComponentByClass&lt;ULyraWeaponStateComponent&gt;();</span><br><span class="line"></span><br><span class="line">  //预测窗口</span><br><span class="line">  FScopedPredictionWindow ScopedPrediction(MyAbilityComponent, CurrentActivationInfo.GetActivationPredictionKey());</span><br><span class="line"></span><br><span class="line">  TArray&lt;FHitResult&gt; FoundHits;</span><br><span class="line"></span><br><span class="line">  //关键函数</span><br><span class="line">  PerformLocalTargeting(/*out*/ FoundHits);</span><br><span class="line"></span><br><span class="line">  // Fill out the target data from the hit results</span><br><span class="line">  FGameplayAbilityTargetDataHandle TargetData;</span><br><span class="line">  TargetData.UniqueId = WeaponStateComponent ? WeaponStateComponent-&gt;GetUnconfirmedServerSideHitMarkerCount() : 0;</span><br><span class="line"></span><br><span class="line">  //处理TargetData</span><br><span class="line">  if (FoundHits.Num() &gt; 0)</span><br><span class="line">  &#123;</span><br><span class="line">    const int32 CartridgeID = FMath::Rand();</span><br><span class="line"></span><br><span class="line">    for (const FHitResult&amp; FoundHit : FoundHits)</span><br><span class="line">    &#123;</span><br><span class="line">      FLyraGameplayAbilityTargetData_SingleTargetHit* NewTargetData = new FLyraGameplayAbilityTargetData_SingleTargetHit();</span><br><span class="line">      NewTargetData-&gt;HitResult = FoundHit;</span><br><span class="line">      NewTargetData-&gt;CartridgeID = CartridgeID;</span><br><span class="line"></span><br><span class="line">      TargetData.Add(NewTargetData);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // Send hit marker information</span><br><span class="line">  const bool bProjectileWeapon = false;</span><br><span class="line">  if (!bProjectileWeapon &amp;&amp; (WeaponStateComponent != nullptr))</span><br><span class="line">  &#123;</span><br><span class="line">    WeaponStateComponent-&gt;AddUnconfirmedServerSideHitMarkers(TargetData, FoundHits);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // Process the target data immediately</span><br><span class="line">  OnTargetDataReadyCallback(TargetData, FGameplayTag());</span><br><span class="line"></span><br><span class="line">  //预测窗口结束</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总体而言还是比较复杂的 一个一个来吧。</p>
+<h4 id="目标逻辑数据的获取-PerformLocalTargeting"><a href="#目标逻辑数据的获取-PerformLocalTargeting" class="headerlink" title="目标逻辑数据的获取 - PerformLocalTargeting"></a>目标逻辑数据的获取 - PerformLocalTargeting</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void ULyraGameplayAbility_RangedWeapon::PerformLocalTargeting(OUT TArray&lt;FHitResult&gt;&amp; OutHits)</span><br><span class="line">&#123;</span><br><span class="line">  APawn* const AvatarPawn = Cast&lt;APawn&gt;(GetAvatarActorFromActorInfo());</span><br><span class="line"></span><br><span class="line">  ULyraRangedWeaponInstance* WeaponData = GetWeaponInstance();</span><br><span class="line"></span><br><span class="line">  //还是一样的 IsLocallyControlled判断。</span><br><span class="line">  if (AvatarPawn &amp;&amp; AvatarPawn-&gt;IsLocallyControlled() &amp;&amp; WeaponData)</span><br><span class="line">  &#123;</span><br><span class="line">    FRangedWeaponFiringInput InputData;</span><br><span class="line">    //武器数据</span><br><span class="line">    InputData.WeaponData = WeaponData;</span><br><span class="line"></span><br><span class="line">    //非专用服务器时可以播放特效</span><br><span class="line">    InputData.bCanPlayBulletFX = (AvatarPawn-&gt;GetNetMode() != NM_DedicatedServer);</span><br><span class="line"></span><br><span class="line">    //开始做射线检测相关工作</span><br><span class="line">    //@TODO: Should do more complicated logic here when the player is close to a wall, etc...</span><br><span class="line">    //选取射线检测的位置和方向</span><br><span class="line">    const FTransform TargetTransform = GetTargetingTransform(AvatarPawn, ELyraAbilityTargetingSource::CameraTowardsFocus);</span><br><span class="line"></span><br><span class="line">    InputData.AimDir = TargetTransform.GetUnitAxis(EAxis::X);</span><br><span class="line"></span><br><span class="line">    InputData.StartTrace = TargetTransform.GetTranslation();</span><br><span class="line"></span><br><span class="line">    InputData.EndAim = InputData.StartTrace + InputData.AimDir * WeaponData-&gt;GetMaxDamageRange();</span><br><span class="line"></span><br><span class="line">  #if ENABLE_DRAW_DEBUG</span><br><span class="line">    if (LyraConsoleVariables::DrawBulletTracesDuration &gt; 0.0f)</span><br><span class="line">    &#123;</span><br><span class="line">      static float DebugThickness = 2.0f;</span><br><span class="line">      DrawDebugLine(GetWorld(), InputData.StartTrace, InputData.StartTrace + (InputData.AimDir * 100.0f), FColor::Yellow, false, LyraConsoleVariables::DrawBulletTracesDuration, 0, DebugThickness);</span><br><span class="line">    &#125;</span><br><span class="line">  #endif</span><br><span class="line">    //这里单独有一个函数出来处理逻辑</span><br><span class="line">    //主要是对于霰弹枪这种多子弹情况</span><br><span class="line">    //具体的检测函数可以看到WeaponTrace函数</span><br><span class="line">    TraceBulletsInCartridge(InputData, /*out*/ OutHits);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="数据逻辑处理-OnTargetDataReadyCallback"><a href="#数据逻辑处理-OnTargetDataReadyCallback" class="headerlink" title="数据逻辑处理 - OnTargetDataReadyCallback"></a>数据逻辑处理 - OnTargetDataReadyCallback</h4><p>通过PerformLocalTargeting，我们获取到了目标对象（如果有）。<br>即确定了GE的应用对象和本GA的效果的目标对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void ULyraGameplayAbility_RangedWeapon::OnTargetDataReadyCallback(const FGameplayAbilityTargetDataHandle&amp; InData, FGameplayTag ApplicationTag)</span><br><span class="line">&#123;</span><br><span class="line">  UAbilitySystemComponent* MyAbilityComponent = CurrentActorInfo-&gt;AbilitySystemComponent.Get();</span><br><span class="line">  check(MyAbilityComponent);</span><br><span class="line"></span><br><span class="line">  //获取当前的GASpec</span><br><span class="line">  if (const FGameplayAbilitySpec* AbilitySpec = MyAbilityComponent-&gt;FindAbilitySpecFromHandle(CurrentSpecHandle))</span><br><span class="line">  &#123;</span><br><span class="line">    //创建预测窗口</span><br><span class="line">    FScopedPredictionWindow	ScopedPrediction(MyAbilityComponent);</span><br><span class="line"></span><br><span class="line">    //确保对当前数据的掌控权</span><br><span class="line">    //考虑数据结构</span><br><span class="line">    //Take ownership of the target data to make sure no callbacks into game code invalidate it out from under us</span><br><span class="line">    FGameplayAbilityTargetDataHandle LocalTargetDataHandle(MoveTemp(const_cast&lt;FGameplayAbilityTargetDataHandle&amp;&gt;(InData)));</span><br><span class="line"></span><br><span class="line">    const bool bShouldNotifyServer = CurrentActorInfo-&gt;IsLocallyControlled() &amp;&amp; !CurrentActorInfo-&gt;IsNetAuthority();</span><br><span class="line">    if (bShouldNotifyServer)</span><br><span class="line">    &#123;</span><br><span class="line">      //传输数据给服务器</span><br><span class="line">      //这里需要进行对应事件的绑定。</span><br><span class="line">      MyAbilityComponent-&gt;CallServerSetReplicatedTargetData(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey(), LocalTargetDataHandle, ApplicationTag, MyAbilityComponent-&gt;ScopedPredictionKey);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    const bool bIsTargetDataValid = true;</span><br><span class="line"></span><br><span class="line">    bool bProjectileWeapon = false;</span><br><span class="line"></span><br><span class="line">  #if WITH_SERVER_CODE</span><br><span class="line">    if (!bProjectileWeapon)</span><br><span class="line">    &#123;</span><br><span class="line">      if (AController* Controller = GetControllerFromActorInfo())</span><br><span class="line">      &#123;</span><br><span class="line">        if (Controller-&gt;GetLocalRole() == ROLE_Authority)</span><br><span class="line">        &#123;</span><br><span class="line">          // Confirm hit markers</span><br><span class="line">          if (ULyraWeaponStateComponent* WeaponStateComponent = Controller-&gt;FindComponentByClass&lt;ULyraWeaponStateComponent&gt;())</span><br><span class="line">          &#123;</span><br><span class="line">            TArray&lt;uint8&gt; HitReplaces;</span><br><span class="line">            for (uint8 i = 0; (i &lt; LocalTargetDataHandle.Num()) &amp;&amp; (i &lt; 255); ++i)</span><br><span class="line">            &#123;</span><br><span class="line">              if (FGameplayAbilityTargetData_SingleTargetHit* SingleTargetHit = static_cast&lt;FGameplayAbilityTargetData_SingleTargetHit*&gt;(LocalTargetDataHandle.Get(i)))</span><br><span class="line">              &#123;</span><br><span class="line">                if (SingleTargetHit-&gt;bHitReplaced)</span><br><span class="line">                &#123;</span><br><span class="line">                  HitReplaces.Add(i);</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            WeaponStateComponent-&gt;ClientConfirmTargetData(LocalTargetDataHandle.UniqueId, bIsTargetDataValid, HitReplaces);</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  #endif //WITH_SERVER_CODE</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //CommitAbility在这里进行的 </span><br><span class="line">    // See if we still have ammo（弹药）</span><br><span class="line">    if (bIsTargetDataValid &amp;&amp; CommitAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo))</span><br><span class="line">    &#123;</span><br><span class="line">      // We fired the weapon, add spread</span><br><span class="line">      ULyraRangedWeaponInstance* WeaponData = GetWeaponInstance();</span><br><span class="line">      check(WeaponData);</span><br><span class="line">      </span><br><span class="line">      //表现</span><br><span class="line">      WeaponData-&gt;AddSpread();</span><br><span class="line"></span><br><span class="line">      //蓝图 - GE/GCN</span><br><span class="line">      // Let the blueprint do stuff like apply effects to the targets</span><br><span class="line">      OnRangedWeaponTargetDataReady(LocalTargetDataHandle);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">      UE_LOG(LogLyraAbilitySystem, Warning, TEXT(&quot;Weapon ability %s failed to commit (bIsTargetDataValid=%d)&quot;), *GetPathName(), bIsTargetDataValid ? 1 : 0);</span><br><span class="line">      K2_EndAbility();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // We&#x27;ve processed the data</span><br><span class="line">  MyAbilityComponent-&gt;ConsumeClientReplicatedTargetData(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="射击的伤害效果和表现-OnRangedWeaponTargetDataReady"><a href="#射击的伤害效果和表现-OnRangedWeaponTargetDataReady" class="headerlink" title="射击的伤害效果和表现 - OnRangedWeaponTargetDataReady"></a>射击的伤害效果和表现 - OnRangedWeaponTargetDataReady</h4><p>这部分逻辑Lyra项目使用蓝图来实现。</p>
+<ul>
+<li>表现部分 - GCN - 使用 ExectueGameplayCueWithParamsOnOwner来做。<ul>
+<li>攻击者GCN：音效、镜头抖动、手柄反馈。武器的Fire逻辑（粒子特效等）</li>
+<li>受击者GCN：音效、镜头抖动、手柄反馈（见ForceFeedbackEffect）</li>
+</ul>
+</li>
+<li>逻辑部分 - GE - 仅服务端执行 - ApplyGameplayEffectToTarget。<ul>
+<li>添加GE Damage。并由其处理伤害逻辑。</li>
+</ul>
+</li>
+</ul>
+<h4 id="蒙太奇表现"><a href="#蒙太奇表现" class="headerlink" title="蒙太奇表现"></a>蒙太奇表现</h4><p>使用了GATask - PlayMontageAndWait来处理蒙太奇动画播放。<br>并设置了定时器，动画播放完毕触发事件&#x2F;定时器触发事件后，EndAbility。</p>
+<p>蒙太奇内容：<br>3个Notify：<br>1.武器蒙太奇播放通知 - 通过人物蒙太奇驱动武器来播放蒙太奇，处理武器动画<br>2.骨架的动画通知 - SaveAttack<br>3.骨架的动画通知 - ResetCombo</p>
+<p>创建的自定义通知保存在骨架上，并可以用于执行自定义逻辑。如在动画蓝图进行处理。<br>目前看Lyra并没有详细用到这两个通知。</p>
+<h4 id="ULyraGameplayAbility-FromEquipment"><a href="#ULyraGameplayAbility-FromEquipment" class="headerlink" title="ULyraGameplayAbility_FromEquipment"></a>ULyraGameplayAbility_FromEquipment</h4><p>主要是处理了其中的装备类：ULyraEquipmentInstance<br>以及对应的库存Item：ULyraInventoryItemInstance</p>
+<h4 id="ULyraGameplayAbility-RangedWeapon"><a href="#ULyraGameplayAbility-RangedWeapon" class="headerlink" title="ULyraGameplayAbility_RangedWeapon"></a>ULyraGameplayAbility_RangedWeapon</h4><p>定义了对应的武器信息：ULyraRangedWeaponInstance</p>
+<p>定义了目标选择的相关数据结构（用于射线检测）:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct FRangedWeaponFiringInput</span><br><span class="line">&#123;</span><br><span class="line">    // Start of the trace</span><br><span class="line">    FVector StartTrace;</span><br><span class="line"></span><br><span class="line">    // End of the trace if aim were perfect</span><br><span class="line">    FVector EndAim;</span><br><span class="line"></span><br><span class="line">    // The direction of the trace if aim were perfect</span><br><span class="line">    FVector AimDir;</span><br><span class="line"></span><br><span class="line">    // The weapon instance / source of weapon data</span><br><span class="line">    ULyraRangedWeaponInstance* WeaponData = nullptr;</span><br><span class="line"></span><br><span class="line">    // Can we play bullet FX for hits during this trace</span><br><span class="line">    bool bCanPlayBulletFX = false;</span><br><span class="line"></span><br><span class="line">    FRangedWeaponFiringInput()</span><br><span class="line">        : StartTrace(ForceInitToZero)</span><br><span class="line">        , EndAim(ForceInitToZero)</span><br><span class="line">        , AimDir(ForceInitToZero)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h5 id="关键变量"><a href="#关键变量" class="headerlink" title="关键变量:"></a>关键变量:</h5><p>定义委托 - FDelegateHandle OnTargetDataReadyCallbackDelegateHandle</p>
+<h5 id="关键函数："><a href="#关键函数：" class="headerlink" title="关键函数："></a>关键函数：</h5><p>&#x2F;&#x2F;能力激活后的主函数<br>StartRangedWeaponTargeting</p>
+<p>&#x2F;&#x2F;GA的目标选取<br>PerformLocalTargeting</p>
+<p>&#x2F;&#x2F;射线检测，以及中间障碍物判定<br>WeaponTrace </p>
+<p>&#x2F;&#x2F;目标选取完毕后的回调函数。服务端与客户端的连接。<br>OnTargetDataReadyCallback</p>
+<p>&#x2F;&#x2F;关键蓝图事件，处理伤害判定等。<br>OnRangedWeaponTargetDataReady </p>
+<p>关于回调的注册：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void ULyraGameplayAbility_RangedWeapon::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)</span><br><span class="line">&#123;</span><br><span class="line">  //注册回调。回调的UnRegister在EndAbility部分进行。</span><br><span class="line">  // Bind target data callback</span><br><span class="line">  UAbilitySystemComponent* MyAbilityComponent = CurrentActorInfo-&gt;AbilitySystemComponent.Get();</span><br><span class="line">  check(MyAbilityComponent);</span><br><span class="line"></span><br><span class="line">  OnTargetDataReadyCallbackDelegateHandle = MyAbilityComponent-&gt;AbilityTargetDataSetDelegate(CurrentSpecHandle, CurrentActivationInfo.GetActivationPredictionKey()).AddUObject(this, &amp;ThisClass::OnTargetDataReadyCallback);</span><br><span class="line"></span><br><span class="line">  // Update the last firing time</span><br><span class="line">  ULyraRangedWeaponInstance* WeaponData = GetWeaponInstance();</span><br><span class="line">  check(WeaponData);</span><br><span class="line">  WeaponData-&gt;UpdateFiringTime();</span><br><span class="line"></span><br><span class="line">  Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="额外话题"><a href="#额外话题" class="headerlink" title="额外话题"></a>额外话题</h3><h4 id="增强输入，输入绑定和GA的触发"><a href="#增强输入，输入绑定和GA的触发" class="headerlink" title="增强输入，输入绑定和GA的触发"></a>增强输入，输入绑定和GA的触发</h4><p>LyrHeroComponent -&gt; LyraASC AbilityInputTagPressed</p>
+<p>关于输入映射关系<br>B_Hero_ShooterMannequin -&gt; B_Hero_Default<br>B_Hero_Default的LyraHeroComp 重定义了 DefaultInputMappings</p>
+<p>关于能力、增强输入设置：<br>见到数据文件：InputData_Hero<br>具体的绑定可以看到ULyraInputComponent。<br>其中进行了相关的AbilityInputActions绑定。由此，在进行对应的增强操作时，会触发对应的Tag。并由Tag去激活对应的能力。</p>
+<p>空子弹时，也会尝试触发对应的能力。但在GA的CanActivateAbility会被驳回。<br>（子类的GA写了子弹数量作为Cost）。<br>关于开销，可以看到ULyraAbilityCost_ItemTagStack。</p>
+<h4 id="Lyra中GameplayCue目录的添加："><a href="#Lyra中GameplayCue目录的添加：" class="headerlink" title="Lyra中GameplayCue目录的添加："></a>Lyra中GameplayCue目录的添加：</h4><p>正如之前所述，必须要注册GameplayCueNotfiy对应的目录，在运行时才能通过对应的Tag来触发GameplayCue。Lyra中做了对应的插件GameplayCueNotify目录注册工作。可以以插件ShotterCoreContent为例子。看到关键文件：ShooterCore。Lyra中添加了对应GameFeature的注册回调，看到类ULyraGameFeaturePolicy，内部有做对应的工作。<br>这样GameplayCueNotify的目录规划就可以比较整洁好处理了。<br>体外话：要看哪些东西使用了对应的GameplayTag,可以在蓝图中找到对应Tag后右键，点击SearchForReferences。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>Lyra射击的判定还是以LocallyControled为准。如果是专用服务器，那么射击的判定都是依赖于客户端提供的数据的。</p>
+<p>依赖于客户端提供数据的好处在于，即便有网络延迟，玩家自己本地的攻击也能够较为正常的结算。</p>
+<p>但是在竞技&#x2F;多人网络游戏中，防作弊就成了一个非常关键的话题了。虽然GAS本身的机制，确保了对应的开销判断，但是Lyra并没有对目标传来的实体对象有效性做判断。<br>比如，如果A客户端的攻击目标在服务器收到之前，A客户端的实体在服务器端由于其他玩家伤害，而被击杀，对于的GA在服务端就不会被激活。（在客户端，GA的激活和TargetData的选取是有序执行的，预测窗口和GAS的底层涉及确保了服务端的执行顺序也一致。）</p>
+<p>换言之，服务端在处理OnRangedWeaponTargetDataReady事件之前，需要对客户端传来的数据进行有效性判定。否则可能会出现比较离谱的情况。</p>
+<p>此外，从逻辑实现可以看到，Lyra本身并没有创建“实体子弹”，而是依赖于射线检测。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/UE/Project/Lyra/UE55Lyra8/">https://mikeming126.github.io/UE/Project/Lyra/UE55Lyra8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/GAS/">GAS</a><a class="post-meta__tags" href="/tags/Lyra/">Lyra</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/UE/Engine/UEModule/" title="UE-Module"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">UE-Module</div></div><div class="info-2"><div class="info-item-1">虚幻引擎模块[Module] - Doc官方参考文章地址 简介模块（Modules）是 虚幻引擎（UE）的软件架构的基本构建块。它们在独立的代码单元中封装了具体的编辑器工具、运行时功能、库或其他功能。 好处使用模块整理项目可带来以下好处：  模块会强制实施良好的代码分离，可用于封装功能并隐藏代码的内部成分。  模块编译为单独的编译单元。这意味着，只有已更改的模块才需要编译，较大项目的编译时间会显著缩短。  模块在依赖性图表中链接在一起，并且仅允许实际使用的代码包含头文件，以符合Include What You Use...</div></div></div></a><a class="pagination-related" href="/Other/RotationAndQuaternion/" title="旋转与四元数"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">旋转与四元数</div></div><div class="info-2"><div class="info-item-1">旋转与四元数旋转矩阵三维空间中的向量可以基于一组基向量来进行表示。我们可以基于一组基向量来表示另外一组基向量。由此我们可以进行空间转换。  换言之 有以下操作：  因此，在计算某个向量(全局)在某个对象局部坐标系下的值，可以用该对象的Transform去计算逆矩阵，再对该向量进行左乘操作，从而得到局部空间向量。 欧拉角为什么Roll、Pitch、Yaw的定义如此混乱？本文来讲透欧拉角的本质一般需要规定旋转的顺序，确定内旋还是外旋(前者每次围绕自己当前的坐标系，后者围绕世界坐标系)，并约定对应的坐标轴。 用三个角度表示物体在三位空间中的旋转状态。以Unity坐标轴为例： 采用 Z - X - Y ， 可以区分静态欧拉角（Space.World）和动态欧拉角（Space.Self）  绕x轴旋转的俯仰角 Pitch 绕y轴旋转的偏航角 Yaw 绕z轴旋转的翻滚角...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/UE/GAS/UE55GASGC/" title="UE5.5-GameplayCue"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-08</div><div class="info-item-2">UE5.5-GameplayCue</div></div><div class="info-2"><div class="info-item-1">GameplayCue重要的类：GameplayCueSet 但是游戏中的资源加载并不是这样进行的。 映射关系： Tag -&gt; GC GC的收集过程：将GameplayCue资产放在指定的目录下。具体的可以在.ini里面配置。以Lyra为例子   资源的加载：关键类为UAbilitySystemGlobals与UGameplayCueManager。可以看到GameplayCueManager里。 //UAbilitySystemGlobals部分//GameplayAbilitiesDeveloperSettings.h//注意宏里面Config的关键字/** Look in these paths for GameplayCueNotifies. These are your &quot;always loaded&quot; set. */UPROPERTY(Config, EditDefaultsOnly, Category=GameplayCue, meta =...</div></div></div></a><a class="pagination-related" href="/UE/Project/Lyra/UE55Lyra1/" title="UE5.5-Lyra-1-Attribute"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-16</div><div class="info-item-2">UE5.5-Lyra-1-Attribute</div></div><div class="info-2"><div class="info-item-1">基于官方Lyra的GAS学习。 综述首先就是ASC的位置。Lyra项目将ASC放置于了LyraPlayerState中。将ASC与PlayerState绑定。 此外 可以看到LyraCharacter。其也有获取ASC的接口。 从LyraCharacter获取ASC组件，依赖于其PawnExtComponent。这里可以看到ULyraPawnExtensionComponent这个类。该类会存放一个ASC指针。在函数InitializeAbilitySystem中进行设置。 LyraHeroComponent是唯一调用该方法的组件。见ULyraHeroComponent::HandleChangeInitState。这里的逻辑也是从PlayerState中拿到ASC，然后赋值给PawnExtComponent。 总而言之，该项目的ASC位于PlayerState。整体的链条大概如下：PlayerState -&gt; LyraHeroComp -&gt; PawnExtComponent -&gt; LyraCharacter。 再整理一下： LyraCharacter -...</div></div></div></a><a class="pagination-related" href="/UE/Project/Lyra/UE55Lyra3/" title="UE5.5-Lyra-3-GATask"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-27</div><div class="info-item-2">UE5.5-Lyra-3-GATask</div></div><div class="info-2"><div class="info-item-1">GamplayAbilityTask基础AbilityTask 异步任务 开始并等待结束&#x2F;打断 部分实现需要关注[K2Node_LatentAbilityCall]  基础逻辑 定义动态多播委托，并声明为BlueprintAssignable 声明静态工厂函数用于创建AbilityTask。由该函数定义输入参数。但是这个不意味着任务开始，不在其中调用广播 实现Activate函数。该函数代表着任务的激活    其他    - OnDestroy记得取消事件的侦听和注册，并调用父类的OnDestroy。   静态工厂函数的meta声明了meta &#x3D; (xxx前面忽略, BlueprintInternalUseOnly &#x3D; “TRUE”)  实际蓝图的调用走过UK2Node_LatentGameplayTaskCall的ExpandNode. WaitOverlap//定义委托DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWaitOverlapDelegate, const...</div></div></div></a><a class="pagination-related" href="/UE/Project/Lyra/UE55Lyra2/" title="UE5.5-Lyra-2-GE"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-23</div><div class="info-item-2">UE5.5-Lyra-2-GE</div></div><div class="info-2"><div class="info-item-1">GE蓝图创建的GE。基于 GameplayEffectParent_Damage_Basic 来看GE:  Gameplay效果 组件 GEComponents 包含很多个效果 可以在编辑器中细看   修饰符 Modifiers 执行 Executions   Gameplay Cue  GE的执行流程以GA的ApplyCost为例子： GA:ApplyGameplayEffectToOwner↓GA:ApplyGameplayEffectSpecToOwner↓ASC:ApplyGameplayEffectSpecToSelf 到这里可以分为两条路线了，一条是即刻执行的GE，Instant类型。第二种是有持续时间的GE（包括永久）。对于后者，会生成FActiveGameplayEffect。 在ASC:ApplyGameplayEffectSpecToSelf中就有两个关键函数了：  持续类型的 由ASC的FActiveGameplayEffectContainer调用ApplyGameplayEffectSpec处理 Intant类型...</div></div></div></a><a class="pagination-related" href="/UE/Project/Lyra/UE55Lyra4/" title="UE5.5-Lyra-4-GATask-AGameplayAbilityTargetActor"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-01</div><div class="info-item-2">UE5.5-Lyra-4-GATask-AGameplayAbilityTargetActor</div></div><div class="info-2"><div class="info-item-1">中间数据 GameplayAbilityTargetActor关于目标数据 以下是几个比较关键的类。AGameplayAbilityTargetActor委托：FAbilityTargetDataFGameplayAbilityTargetDataHandleFGameplayAbilityTargetDataFGameplayEffectContextHandleFGameplayEffectContext 总体上还是比较复杂的。从源码看起。 AGameplayAbilityTargetActor/** * TargetActors are spawned to assist with ability targeting. They are spawned by ability tasks and create/determine the outgoing targeting data passed from one task to another * * WARNING: These actors are spawned once per ability...</div></div></div></a><a class="pagination-related" href="/UE/Project/Lyra/UE55Lyra5/" title="UE5.5-Lyra-5-GATask-传输数据流程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-04</div><div class="info-item-2">UE5.5-Lyra-5-GATask-传输数据流程</div></div><div class="info-2"><div class="info-item-1">GATask_WaitTargetData以WaitTargetData为例子理解TargetActor的使用流程和逻辑 客户端传输数据情况Client侧p1  p2  p3  Server侧p4  p5   服务端自己产生数据情况这里以对应AGameplayAbilityTargetActor_Radius作为例子p6 </div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="toc-number">1.1.</span> <span class="toc-text">命令行 &#96;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%B0%83%E8%AF%95%E5%91%BD%E4%BB%A4"><span class="toc-number">1.2.</span> <span class="toc-text">基础调试命令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lyra%E5%B0%84%E5%87%BB%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">Lyra射击分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81GA%E5%88%86%E6%9E%90"><span class="toc-number">2.1.</span> <span class="toc-text">主要GA分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E7%BB%A7%E6%89%BF%E5%9B%BE"><span class="toc-number">2.1.1.</span> <span class="toc-text">类继承图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">2.1.2.</span> <span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E9%80%BB%E8%BE%91%E6%95%B0%E6%8D%AE%E7%9A%84%E8%8E%B7%E5%8F%96-PerformLocalTargeting"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">目标逻辑数据的获取 - PerformLocalTargeting</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%80%BB%E8%BE%91%E5%A4%84%E7%90%86-OnTargetDataReadyCallback"><span class="toc-number">2.1.2.2.</span> <span class="toc-text">数据逻辑处理 - OnTargetDataReadyCallback</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%84%E5%87%BB%E7%9A%84%E4%BC%A4%E5%AE%B3%E6%95%88%E6%9E%9C%E5%92%8C%E8%A1%A8%E7%8E%B0-OnRangedWeaponTargetDataReady"><span class="toc-number">2.1.2.3.</span> <span class="toc-text">射击的伤害效果和表现 - OnRangedWeaponTargetDataReady</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%92%99%E5%A4%AA%E5%A5%87%E8%A1%A8%E7%8E%B0"><span class="toc-number">2.1.2.4.</span> <span class="toc-text">蒙太奇表现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ULyraGameplayAbility-FromEquipment"><span class="toc-number">2.1.2.5.</span> <span class="toc-text">ULyraGameplayAbility_FromEquipment</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ULyraGameplayAbility-RangedWeapon"><span class="toc-number">2.1.2.6.</span> <span class="toc-text">ULyraGameplayAbility_RangedWeapon</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%8F%98%E9%87%8F"><span class="toc-number">2.1.2.6.1.</span> <span class="toc-text">关键变量:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="toc-number">2.1.2.6.2.</span> <span class="toc-text">关键函数：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%9D%E5%A4%96%E8%AF%9D%E9%A2%98"><span class="toc-number">2.1.3.</span> <span class="toc-text">额外话题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A2%9E%E5%BC%BA%E8%BE%93%E5%85%A5%EF%BC%8C%E8%BE%93%E5%85%A5%E7%BB%91%E5%AE%9A%E5%92%8CGA%E7%9A%84%E8%A7%A6%E5%8F%91"><span class="toc-number">2.1.3.1.</span> <span class="toc-text">增强输入，输入绑定和GA的触发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Lyra%E4%B8%ADGameplayCue%E7%9B%AE%E5%BD%95%E7%9A%84%E6%B7%BB%E5%8A%A0%EF%BC%9A"><span class="toc-number">2.1.3.2.</span> <span class="toc-text">Lyra中GameplayCue目录的添加：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">2.2.</span> <span class="toc-text">小结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Shadow/" title="Unity Shadow">Unity Shadow</a><time datetime="2025-10-05T07:56:07.434Z" title="发表于 2025-10-05 15:56:07">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/SRP/" title="Unity SRP">Unity SRP</a><time datetime="2025-10-02T06:15:27.265Z" title="发表于 2025-10-02 14:15:27">2025-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/AsyncOp/" title="Unity异步操作">Unity异步操作</a><time datetime="2025-09-14T08:01:59.349Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Physics/" title="Unity Physics">Unity Physics</a><time datetime="2025-09-14T08:01:59.345Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || 'c09650178961e536c80128ab5e50e67c'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

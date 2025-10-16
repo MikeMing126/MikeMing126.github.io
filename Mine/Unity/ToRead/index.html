@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>阅读目录 | Ming Blog</title><meta name="robots" content="noindex"><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="这里Mark一些文章后续有时间可以详细看看： 官方最佳实践高级最佳实践指南 UI相关UGUI[UGUI源码一]6千字带你入门UGUI源码UGUI：rebatch和rebuild源码解析UGUI合批原理笔记 层级Unity3d开发（十九）调整SortingOrder解决UGUI中粒子层级问题Unity渲染顺序RenderQueue、SortingLayer、SortingOrder关系 文本Stri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阅读目录">
+<meta property="og:url" content="https://mikeming126.github.io/Mine/Unity/ToRead/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="这里Mark一些文章后续有时间可以详细看看： 官方最佳实践高级最佳实践指南 UI相关UGUI[UGUI源码一]6千字带你入门UGUI源码UGUI：rebatch和rebuild源码解析UGUI合批原理笔记 层级Unity3d开发（十九）调整SortingOrder解决UGUI中粒子层级问题Unity渲染顺序RenderQueue、SortingLayer、SortingOrder关系 文本Stri">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2025-09-14T08:01:59.346Z">
+<meta property="article:modified_time" content="2025-10-05T09:26:40.594Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "阅读目录",
+  "url": "https://mikeming126.github.io/Mine/Unity/ToRead/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2025-09-14T08:01:59.346Z",
+  "dateModified": "2025-10-05T09:26:40.594Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/Mine/Unity/ToRead/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '阅读目录',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">阅读目录</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">阅读目录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-14T08:01:59.346Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-10-05T09:26:40.594Z" title="更新于 2025-10-05 17:26:40">2025-10-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Unity/">Unity</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">306</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>这里Mark一些文章<br>后续有时间可以详细看看：</p>
+<h1 id="官方最佳实践"><a href="#官方最佳实践" class="headerlink" title="官方最佳实践"></a>官方最佳实践</h1><p><a target="_blank" rel="noopener" href="https://docs.unity3d.org.cn/6000.0/Documentation/Manual/best-practice-guides.html">高级最佳实践指南</a></p>
+<h1 id="UI相关"><a href="#UI相关" class="headerlink" title="UI相关"></a>UI相关</h1><h2 id="UGUI"><a href="#UGUI" class="headerlink" title="UGUI"></a>UGUI</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/437704772">[UGUI源码一]6千字带你入门UGUI源码</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/3445975684">UGUI：rebatch和rebuild源码解析</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhaoqingqing/p/9658403.html">UGUI合批原理笔记</a></p>
+<h2 id="层级"><a href="#层级" class="headerlink" title="层级"></a>层级</h2><p><a target="_blank" rel="noopener" href="https://gwb.tencent.com/community/detail/113015">Unity3d开发（十九）调整SortingOrder解决UGUI中粒子层级问题</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/zengjunjie59/article/details/103252190">Unity渲染顺序RenderQueue、SortingLayer、SortingOrder关系</a></p>
+<h2 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h2><p>StringBuilder和String以及相关的内存问题<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/lcfengokok/article/details/138182707">unity TextMeshPro 与Text 比较</a></p>
+<h1 id="异步相关"><a href="#异步相关" class="headerlink" title="异步相关"></a>异步相关</h1><h2 id="UniTask"><a href="#UniTask" class="headerlink" title="UniTask"></a>UniTask</h2><p>这个作者写的其他文章感觉也挺有一读的价值的。<br><a target="_blank" rel="noopener" href="https://www.bilibili.com/opus/847408446350295046">Unity异步扩展实践（一）——以UniTask库为参考</a></p>
+<h1 id="物理"><a href="#物理" class="headerlink" title="物理"></a>物理</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_46348216/article/details/149235072">Unity物理系统由浅入深第一节：Unity 物理系统基础与应用</a></p>
+<h1 id="SRP"><a href="#SRP" class="headerlink" title="SRP"></a>SRP</h1><p>这块之前和一位面试官聊过后，如果后续要深入还是有必要多去了解看看的。</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/628395415">unity srp 学习记录一</a></p>
+<h1 id="HybridCLR"><a href="#HybridCLR" class="headerlink" title="HybridCLR"></a>HybridCLR</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/685026219">从零开始讲解HybirdCLR 热更</a></p>
+<h1 id="学习路线"><a href="#学习路线" class="headerlink" title="学习路线"></a>学习路线</h1><h1 id="开源Github库-项目-研究课题"><a href="#开源Github库-项目-研究课题" class="headerlink" title="开源Github库&#x2F;项目&#x2F;研究课题"></a>开源Github库&#x2F;项目&#x2F;研究课题</h1><h2 id="角色渲染优化"><a href="#角色渲染优化" class="headerlink" title="角色渲染优化"></a>角色渲染优化</h2><p>角色与GPU Instancing<br>解决SkeletalMesh的合批以及Animator相关的问题。</p>
+<ul>
+<li>SRPBatcher 的合批</li>
+<li>SkinnedMeshRender转为MeshRender以支持GPU Instancing<ul>
+<li>GPU Skinning</li>
+<li>知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/28159739">利用GPU实现大规模动画角色的渲染</a></li>
+<li>GitHub相关项目<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ForeverZack/Unity-Gpu-Skinning-Tool">Unity-Gpu-Skinning-Tool</a>\</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/chenjd/Render-Crowd-Of-Animated-Characters">Render-Crowd-Of-Animated-Characters</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/Animation-Instancing">Unity-Technologies&#x2F;Animation-Instancing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- flag of hidden posts --></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/Mine/Unity/ToRead/">https://mikeming126.github.io/Mine/Unity/ToRead/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Unity/">Unity</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/Mine/Unity/Animation/" title="Unity Animation"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-14</div><div class="info-item-2">Unity Animation</div></div><div class="info-2"><div class="info-item-1">Mecanim 动画系统Mecanim Animation SystemUnity6 动画系统 作用 Animate the properties of models and assets.  基础概念基于Animation Clips的概念。 Animation Clip包含对象随着事件如何改变位置、旋转或其他属性的相关信息。 外部导入或者Unity内部创建。Clip相关功能：  Transform信息 组件属性 Scripts中的属性 特定时间调用函数  Animation Event 仅支持单个参数的函数  用AnimationEvent Object来传递多个参数：支持一个int,一个float,一个string,一个GameObject引用。 Humanoid Avatar The rigged character model,has a specific configuration of bones mapped to Unity’s Avatar format.  为人形专门设定。Importing a model with humanoid...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/AsyncOp/" title="Unity异步操作"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-14</div><div class="info-item-2">Unity异步操作</div></div><div class="info-2"><div class="info-item-1">异步操作可以参考这篇文章Unity入门教程之异步篇第二节：协程 or UniTask？Unity 中异步流程到底怎么选Unity异步扩展实践（一）——以UniTask库为参考 关于临界资源问题Unity入门教程之异步篇第三节：多线程初探？理解并发与线程安全 协程 - 逻辑异步 - 单线程协程这块较为通用可以另外参考之前记录。 UniTask本质上是利用C#的Task。但是使用原生的async&#x2F;await和Task存在一些问题：  GC和性能开销(Task本身是引用类型，且async&#x2F;await产生状态机对象和闭包) 线程切换不一定对。且Unity大部分API只能在主线程使用。 任务的生命周期管理问题:任务不会因为对象被销毁而自动停止 平台多线程限制（如WebGL）  因此有UniTaskGitHub优势和注意事项：  零GC 主线程调度。默认完全在Unity的PlayerLoop上运行，因此不使用Thread。在 .NET 实现中，执行 await 语句之前和之后代码的线程是有可能不同的。虽然有线程切换，但我们不需要关心其中的细节，.NET...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/Physics/" title="Unity Physics"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-14</div><div class="info-item-2">Unity Physics</div></div><div class="info-2"><div class="info-item-1">物理 基础Unity物理系统由浅入深第一节：Unity 物理系统基础与应用 RigidBody 刚体 - 赋予物理属性 Collider 碰撞体 - 碰撞形状 Physic Material 物理材质 - 定义交互特性定义碰撞体之间的摩檫力和弹性。分配给Collider。 碰撞事件  Collision Callbacks 适用于两个非触发器（至少一个带RigidBody）之间的物理碰撞 Trigger Callbacks 至少一个Collider为Is Trigger的情况下，检测到物体进入&#x2F;离开&#x2F;停留在区域内 只有当碰撞中一个Collider附加了Rigidbody或者其为KinematicRigidbody上的Colider时，才能触发对应的回调。(对于KinematicRigidbody，不会触发CollisionCallback，需要用TriggerCallback)  射线检测 Raycast形状检测 Shape...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-05</div><div class="info-item-2">Unity PostProcessing</div></div><div class="info-2"><div class="info-item-1">Introduction to post-processingUnity 后处理 在渲染管线之后，FrameBuffer上处理。后处理和全屏效果。 效果参考和支持Post-processing effect availability reference </div></div></div></a><a class="pagination-related" href="/Mine/Unity/Shadow/" title="Unity Shadow"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-05</div><div class="info-item-2">Unity Shadow</div></div><div class="info-2"><div class="info-item-1">阴影Shadow 光源可以产生两种阴影：  Real-time Shadows 实时阴影 Unity stores the shadows cast from each Light in shadow map textures. The textures update each frame; shadows move when the lights move.   Baked Shadows 烘培阴影 The Unity lightmapper stores the shadows received by each GameObject in static lightmap textures, shadow mask textures, or Light Probes. Shadows don’t move when the lights move.    物体的阴影投射：是否生成阴影除了和光源相关还和对应MeshRenderer的设置相关。可以在Mesh Renderer的Lighting内设置。 Shadow MappingUnity实时阴影实现——Shadow...</div></div></div></a><a class="pagination-related" href="/Mine/Unity/SRP/" title="Unity SRP"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-02</div><div class="info-item-2">Unity SRP</div></div><div class="info-2"><div class="info-item-1">官方Doc Rendering paths in UnityUnity URP&#x2F;SRP 渲染管线浅入深出【匠】【Unity】SRP简单入门【Unity】SRP底层渲染流程及原理Scriptable Render Pipeline可编程渲染管线 Render Pipeline基础  A series of operations that take the contents of a scene, and displays them on a screen  在Unity的官方文档中定义为这么几个步骤：  Culling （Frustum Culling视锥体剔除 Occlusion Culling遮挡剔除） Rendering -&gt;To Pixel Buffers Post Processing -&gt;Modify Pixel Buffers  常用的  Built-in Render Pipeline： Universal Render Pipeline (URP) High Definition Render Pipeline...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.</span> <span class="toc-text">官方最佳实践</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#UI%E7%9B%B8%E5%85%B3"><span class="toc-number">2.</span> <span class="toc-text">UI相关</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UGUI"><span class="toc-number">2.1.</span> <span class="toc-text">UGUI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%82%E7%BA%A7"><span class="toc-number">2.2.</span> <span class="toc-text">层级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%9C%AC"><span class="toc-number">2.3.</span> <span class="toc-text">文本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E7%9B%B8%E5%85%B3"><span class="toc-number">3.</span> <span class="toc-text">异步相关</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UniTask"><span class="toc-number">3.1.</span> <span class="toc-text">UniTask</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%A9%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">物理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SRP"><span class="toc-number">5.</span> <span class="toc-text">SRP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HybridCLR"><span class="toc-number">6.</span> <span class="toc-text">HybridCLR</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF"><span class="toc-number">7.</span> <span class="toc-text">学习路线</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E6%BA%90Github%E5%BA%93-%E9%A1%B9%E7%9B%AE-%E7%A0%94%E7%A9%B6%E8%AF%BE%E9%A2%98"><span class="toc-number">8.</span> <span class="toc-text">开源Github库&#x2F;项目&#x2F;研究课题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%92%E8%89%B2%E6%B8%B2%E6%9F%93%E4%BC%98%E5%8C%96"><span class="toc-number">8.1.</span> <span class="toc-text">角色渲染优化</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Shadow/" title="Unity Shadow">Unity Shadow</a><time datetime="2025-10-05T07:56:07.434Z" title="发表于 2025-10-05 15:56:07">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/SRP/" title="Unity SRP">Unity SRP</a><time datetime="2025-10-02T06:15:27.265Z" title="发表于 2025-10-02 14:15:27">2025-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/AsyncOp/" title="Unity异步操作">Unity异步操作</a><time datetime="2025-09-14T08:01:59.349Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Physics/" title="Unity Physics">Unity Physics</a><time datetime="2025-09-14T08:01:59.345Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '6354e2efd3eba219ecd28ff0006758ac'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>UE-UObject | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言个人梳理和总结 本篇主要是对UObject的逻辑上进行梳理和总结。 虚幻的UObject可以说是其万物之根基。虽然UObject上面还有UObjectBaseUtility，以及UObjectBase，但正如源码所诉说，上面的都不应当直接使用。 虽然UObject是虚幻中的“一”，但虚幻中也有非继承自UObject的类。理解UObject的关键点还是很重要的。 本篇梳理基于虚幻引擎5.6源码、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UE-UObject">
+<meta property="og:url" content="https://mikeming126.github.io/UE/OfficialDocLearn/Coding/UObject/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="前言个人梳理和总结 本篇主要是对UObject的逻辑上进行梳理和总结。 虚幻的UObject可以说是其万物之根基。虽然UObject上面还有UObjectBaseUtility，以及UObjectBase，但正如源码所诉说，上面的都不应当直接使用。 虽然UObject是虚幻中的“一”，但虚幻中也有非继承自UObject的类。理解UObject的关键点还是很重要的。 本篇梳理基于虚幻引擎5.6源码、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2025-05-19T16:19:41.378Z">
+<meta property="article:modified_time" content="2025-08-25T12:36:44.068Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="C++ Coding">
+<meta property="article:tag" content="UObject">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UE-UObject",
+  "url": "https://mikeming126.github.io/UE/OfficialDocLearn/Coding/UObject/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2025-05-19T16:19:41.378Z",
+  "dateModified": "2025-08-25T12:36:44.068Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/UE/OfficialDocLearn/Coding/UObject/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'UE-UObject',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">UE-UObject</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">UE-UObject</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-05-19T16:19:41.378Z" title="发表于 2025-05-20 00:19:41">2025-05-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-25T12:36:44.068Z" title="更新于 2025-08-25 20:36:44">2025-08-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>个人梳理和总结</p>
+<p>本篇主要是对UObject的逻辑上进行梳理和总结。</p>
+<p>虚幻的UObject可以说是其万物之根基。<br>虽然UObject上面还有UObjectBaseUtility，以及UObjectBase，但正如源码所诉说，上面的都不应当直接使用。</p>
+<p>虽然UObject是虚幻中的“一”，但虚幻中也有非继承自UObject的类。理解UObject的关键点还是很重要的。</p>
+<p>本篇梳理基于虚幻引擎5.6源码、虚幻官方文档、以及大钊的《InsideUE4》UObject相关知乎文章进行。</p>
+<h1 id="统一的基类-Object"><a href="#统一的基类-Object" class="headerlink" title="统一的基类 Object"></a>统一的基类 Object</h1><p>引用一句话，”Understand the trade-off”。<br>C++本身效率很高，其有很高的自由度。而这也意味着，内存管理等功能需要用户自己去实现。<br>统一的基类，可以帮我们处理底层逻辑，上层业务不需要再操心处理。同时提供较为强大的功能。</p>
+<h2 id="UObject所提供的功能-Functionality"><a href="#UObject所提供的功能-Functionality" class="headerlink" title="UObject所提供的功能 Functionality"></a>UObject所提供的功能 Functionality</h2><ol>
+<li>垃圾回收</li>
+<li>引用更新</li>
+<li>反射</li>
+<li>序列化</li>
+<li>默认属性变化自动更新</li>
+<li>自动属性初始化</li>
+<li>自动编辑器整合</li>
+<li>运行时类型信息可用</li>
+<li>网络复制</li>
+</ol>
+<img src="/UE/OfficialDocLearn/Coding/UObject/image-3.png" class="" title="alt text">
+
+<h3 id="UObject反射分析"><a href="#UObject反射分析" class="headerlink" title="UObject反射分析"></a>UObject反射分析</h3><p>反射：指的是在运行时动态地获取对象的状态信息并对其进行操作的能力。通常用于在程序运行时动态地创建对象、调用方法和修改属性等操作。</p>
+<p>C++本身也有RTTI的支持。适用于包含虚函数的类的dynamic_cast与typeid。<br>typeid对于含虚函数的类是动态类型，否则是静态类型。而其本身也只是用来做一个区别。</p>
+<p>虚幻为了实现反射，采用的是UHT(Unreal Header Tool)来分析代码并生成对应的文件，从而实现反射。</p>
+<h4 id="反射相关结构"><a href="#反射相关结构" class="headerlink" title="反射相关结构"></a>反射相关结构</h4><p>四个源码文件</p>
+<blockquote>
+<p>Class.h: UClass definition.<br>UnrealType.h: Unreal engine base type definitions.<br>UInterface.h<br>MetaData.h</p>
+</blockquote>
+<p>处理反射数据</p>
+<ul>
+<li>UField<br>Base class of reflection data objects.</li>
+<li>UMetaData<br>An object that holds a map of key&#x2F;value pairs. </li>
+<li>UStruct<br>Base class for all UObject types that contain fields.</li>
+<li>UEnum<br>Reflection data for an enumeration.</li>
+<li>UFunction<br>Reflection data for a replicated or Kismet callable function.</li>
+<li>UClass<br>An object class.</li>
+<li>UScriptStruct<br>Reflection data for a standalone structure declared in a header or as a user defined struct</li>
+<li>UInterface<br>Base class for all interfaces</li>
+</ul>
+<p>按4.25版本后，做了优化，属性方面不再是UProperty，新加入了FField和FPropery。使用FProperty。<br>FField和UField是类似的，只是其并不继承自UObject。<br>FProperty: An UnrealScript variable.</p>
+<h4 id="UProperty-To-FProperty"><a href="#UProperty-To-FProperty" class="headerlink" title="UProperty To FProperty"></a>UProperty To FProperty</h4><p>在虚幻4.25,UPropery有一个比较大的修改。想要看到过去的ReleaseNote需要借助网页快照工具。在之后，使用FProperty而非UProperty来进行存储。</p>
+<p>主要目的还是减少不必要的开销，优化性能和内存。</p>
+<p><a target="_blank" rel="noopener" href="https://web.archive.org/web/20201224022923/https://docs.unrealengine.com/en-US/WhatsNew/Builds/ReleaseNotes/4_25/index.html">UE4.25ReleaseNote</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Core</span><br><span class="line">UProperty</span><br><span class="line">This is an API breaking change.</span><br><span class="line"></span><br><span class="line">Converted UProperties to FProperties. This means that internal Engine objects that represent member variables of UClasses will no longer be UObjects themselves. This results in memory overhead reduction (123 bytes per property on average) and improved performance when constructing, destroying property objects, when collecting garbage and iterating over all objects. Property casts and property iteration is now faster too.</span><br><span class="line"></span><br><span class="line">U*Property classes have been renamed to F*Property classes so all references to UProperties in your project code should be updated</span><br><span class="line"></span><br><span class="line">FProperties use different Cast functions (CastField / CastFieldChecked) so all property casts should be updated in your project game code.</span><br><span class="line"></span><br><span class="line">UPROPERTY() UProperty* MemberVariable; declarations should be replaced with UPROPERTY() TFieldPath&lt;FProperty&gt; MemberVariable;. It still is a Garbage Collector exposed hard reference with PendingKill support (becomes null if the owner UStruct is PendingKill) and automatically serialized with SerializeTaggedProperties with automatic conversion on load for all existing saved references to UProperties in packages.</span><br><span class="line"></span><br><span class="line">TFieldIterator&lt;UField&gt; no longer iterates properties, use TFieldIterator&lt;FProperty&gt; instead</span><br><span class="line"></span><br><span class="line">FindField has been split into two functions: FindUField and FindFProperty. The former should be used to find member Functions or Enums, the latter should be used to find member variables.</span><br><span class="line"></span><br><span class="line">FProperties are no longer constructed with NewObject, use C++ new instead</span><br><span class="line"></span><br><span class="line">UStruct::Children linked list no longer contains properties. Use UStruct::ChildProperties instead.</span><br><span class="line"></span><br><span class="line">FArchive derived classes that collect UObject references now need to override virtual FArchive&amp;amp; operator &amp;lt;&amp;lt; (FField*&amp;amp;) to catch FProperty references. All existing cases that needed it should already support it.</span><br><span class="line"></span><br><span class="line">There&#x27;s no FProperty::GetOuter(). Use FProperty::GetOwner() instead. The reason is that Outers are an UObject thing. FProperties are now owned by their parents in a more explicit way.</span><br><span class="line"></span><br><span class="line">There&#x27;s a helper structure called FFieldVariant that acts as a container that can be either UObject or FProperty. It&#x27;s used in a few places across the codebase to ease the conversion to FProperties where otherwise a separate, almost identical version of the existing function would have to be created. However, the goal is to remove it eventually as the affected system owners will be upgrading their code.</span><br><span class="line"></span><br><span class="line">In editor builds, there&#x27;s a helper UPropertyWrapper class that&#x27;s used by Details Panels to pass FProperty references around. Again, this was to prevent doing very extensive changes to systems that only actually deal with FProperties as editable objects in a handful of places.</span><br></pre></td></tr></table></figure>
+
+<p>其他参考文章:<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/380610877">UE4 FProperty</a></p>
+<h4 id="代码生成"><a href="#代码生成" class="headerlink" title="代码生成"></a>代码生成</h4><p>UHT在进行分析后遍进行对应结构的构建。<br>概念阶段：生成、收集、注册、链接</p>
+<p>收集 - 收集到数据结构里保存。利用自动注册模式来进行。<br>自动注册 - C++Static自动注册模式。通过模板、构造函数、静态变量进行自动注册</p>
+<p>整个流程需要结合UHT的相关代码以及生成代码进行学习。<br>如果需要深入了解，可以结合大钊相关InsideUE4文章和源码再看。</p>
+<h4 id="UClass对象"><a href="#UClass对象" class="headerlink" title="UClass对象"></a>UClass对象</h4><p>大钊在原文中描述UClass对象的构造比较关键。</p>
+<p>一个UClass*要经历这么几个阶段：</p>
+<ol>
+<li>内存构造。刚创建出来一块白纸一般的内存，简单的调用了UClass的构造函数。UE里一个对象的构造，构造函数的调用只是个起点而已。</li>
+<li>注册。给自己一个名字，把自己登记在对象系统中。这步是通过DeferredRegister而不是Register完成的。</li>
+<li>对象构造。往对象里填充属性、函数、接口和元数据的信息。这步我们应该记得是在gen.cpp里的那些函数完成的。</li>
+<li>绑定链接。属性函数都有了，把它们整理整理，尽量优化一下存储结构，为以后的使用提供更高性能和便利。</li>
+<li>CDO创建。既然类型已经有了，那就万事俱备只差国家包分配一个类默认对象了。每个UClass都有一个CDO（Class Default Object），有了CDO，相当于有了一个存档备份和参照，其他对象就心不慌。</li>
+<li>引用记号流构建。一个Class是怎么样有可能引用其他别的对象的，这棵引用树怎么样构建的高效，也是GC中一个非常重要的话题。有了引用记号流，就可以对一个对象高效的分析它引用了其他多少对象。</li>
+</ol>
+<p>了解了UClass*的处理后，可以更好的理解UObject的创建流程、GC的流程。这部分结合之前的文章再看就好。</p>
+<h3 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h3><img src="/UE/OfficialDocLearn/Coding/UObject/G1.png" class="" title="alt text">
+<p>这部分可以结合Level的源码来看</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Level.h</span><br><span class="line">/** Array of all actors in this level, </span><br><span class="line">used by FActorIteratorBase and derived classes */</span><br><span class="line">TArray&lt;TObjectPtr&lt;AActor&gt;&gt; Actors;</span><br><span class="line"></span><br><span class="line">/** Array of actors to be exposed to GC in this level. </span><br><span class="line">All other actors will be referenced through ULevelActorContainer */</span><br><span class="line">TArray&lt;TObjectPtr&lt;AActor&gt;&gt; ActorsForGC;</span><br><span class="line"></span><br><span class="line">UPROPERTY(Transient, DuplicateTransient, NonTransactional)</span><br><span class="line">TObjectPtr&lt;ULevelActorContainer&gt; ActorCluster;</span><br><span class="line"></span><br><span class="line">LevelActorContainer.h</span><br><span class="line">/**</span><br><span class="line"> * Root object for all level actors</span><br><span class="line"> */</span><br><span class="line">UCLASS(MinimalAPI, DefaultToInstanced)</span><br><span class="line">class ULevelActorContainer : public UObject</span><br><span class="line">&#123;</span><br><span class="line">  friend class ULevel;</span><br><span class="line"></span><br><span class="line">  GENERATED_BODY()</span><br><span class="line">public:</span><br><span class="line">  /** Array of actors in a level */</span><br><span class="line">  UPROPERTY(transient)</span><br><span class="line">  TArray&lt;TObjectPtr&lt;AActor&gt;&gt; Actors;</span><br><span class="line"></span><br><span class="line">  virtual void CreateCluster() override;</span><br><span class="line">  virtual void OnClusterMarkedAsPendingKill() override;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>算是对UE GC的结构有一个初步的了解。<br>关于RootSet可以看到UObjectBaseUtility的AddToRoot<br>非UObject的GC可以看到GCObject.h -&gt; FGCObject</p>
+<h4 id="增量垃圾回收"><a href="#增量垃圾回收" class="headerlink" title="增量垃圾回收"></a>增量垃圾回收</h4><p>见官方文档 <a target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/en-us/unreal-engine/incremental-garbage-collection-in-unreal-engine">Incremental Garbage Collection</a></p>
+<p>UE的垃圾回收基于标记<br>而对应的垃圾回收处理本身也是有开销的，可能会造成帧卡顿。<br>UObject对象池算是一个解决方法。</p>
+<p>基于自己的开发经验，可以复用，反复处理的对象常常都应当在逻辑侧做池化减少创建开销和GC开销。粒子特效、模型、调用频繁的临时对象等等……</p>
+<p>增量垃圾回收主要就是避免单帧卡顿的问题。可以认为将其逻辑开销分摊到多帧上去进行了。不过目前还是Experimental功能。</p>
+<h4 id="垃圾回收内部机制"><a href="#垃圾回收内部机制" class="headerlink" title="垃圾回收内部机制"></a>垃圾回收内部机制</h4><p>其实还是Mark - Sweep的原理。这点和Unity、Lua的GC机制算是一致的。<br>参考文章<br><a target="_blank" rel="noopener" href="https://dev.epicgames.com/community/learning/knowledge-base/ePKR/unreal-engine-garbage-collector-internals">Garbage Collector Internals</a></p>
+<h3 id="引用更新"><a href="#引用更新" class="headerlink" title="引用更新"></a>引用更新</h3><p>在GC后，相关指针的置空逻辑。可以见下面的Destroy。</p>
+<p>When an <strong>AActor</strong> or <strong>UActorComponent</strong> is destroyed or otherwise removed from play, all references to it that are visible to the reflection system (UProperty pointers and pointers stored in Unreal Engine container classes such as TArray) are automatically nulled.<br>重点：</p>
+<blockquote>
+<p>It applies only to UActorComponent or AActor <strong>references</strong> marked with <strong>UPROPERTY</strong> or stored in an UE container class.</p>
+</blockquote>
+<p>UObject指针用的是TObjectPtr。但是本身Destroy后不会立刻GC，可以的话还是用IsValid函数来判定更准确。</p>
+<h3 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h3><img src="/UE/OfficialDocLearn/Coding/UObject/S1.png" class="" title="alt text">
+<p>基于UPROPERTY的序列化。”Transient”或者是构造函数之后无变化的值无需进行序列化。<br>可能平时做游戏，在关卡中放置Actor，修改对应Instance属性，然后保存习惯了，并没有细想其是如何实现的。而UObject的序列化，就做到了仅需要UCLASS和UPROPERTY的宏声明，就默认处理了对应的序列化流程。<br>当然，也提供了对应的Serialize重写。</p>
+<blockquote>
+<p>Object.h<br>COREUOBJECT_API virtual void Serialize(FArchive&amp; Ar);<br>COREUOBJECT_API virtual void Serialize(FStructuredArchive::FRecord Record);</p>
+</blockquote>
+<h3 id="默认属性变化时-自动更新"><a href="#默认属性变化时-自动更新" class="headerlink" title="默认属性变化时 自动更新"></a>默认属性变化时 自动更新</h3><img src="/UE/OfficialDocLearn/Coding/UObject/P1.png" class="" title="alt text">
+<p>改变类的默认属性时，(CDO变化)，会将新值更新到对应实例化且属性值未改动的实体上。</p>
+<h3 id="属性初始化的自动化处理"><a href="#属性初始化的自动化处理" class="headerlink" title="属性初始化的自动化处理"></a>属性初始化的自动化处理</h3><p>  在调用构造函数之前，UObject所有属性自动归零，可以在构造函数中对对应的属性进行初始化。</p>
+<h3 id="编辑器整合"><a href="#编辑器整合" class="headerlink" title="编辑器整合"></a>编辑器整合</h3><h3 id="运行时可处理类型信息"><a href="#运行时可处理类型信息" class="headerlink" title="运行时可处理类型信息"></a>运行时可处理类型信息</h3><p>Run-Time Type Information and Casting<br>运行时动态类型转换<br>-&gt; 调用父类 Super::FunctionName()<br>-&gt; IsA()函数类判定 （见UObjectBaseUtility）<br>-&gt; Cast 基类指针转为子类对象指针 Cast&lt;ChildClass&gt;(BaseClassPtr)</p>
+<h3 id="网络复制"><a href="#网络复制" class="headerlink" title="网络复制"></a>网络复制</h3><p>UObject本身也做了网络复制的支持。<br>比如UPROPERT宏相关网络复制的设置，以及UFUNCTION对应的RPC</p>
+<h1 id="UCLASS-宏"><a href="#UCLASS-宏" class="headerlink" title="UCLASS 宏"></a>UCLASS 宏</h1><img src="/UE/OfficialDocLearn/Coding/UObject/image.png" class="" title="alt text">
+<p>使用UCLASS宏 -&gt; 给UObject提供一个UCLASS的引用。<br>UCLASS中包含着定义对应类的属性函数。并维护一个CDO。</p>
+<p>使用对应的宏来让引擎识别对应的函数和属性。<br>UFUNCTION 与 UPROPERTY</p>
+<h1 id="UObject-创建"><a href="#UObject-创建" class="headerlink" title="UObject 创建"></a>UObject 创建</h1><p>关于创建的部分，在这里详述:</p>
+<a href="/UE/OfficialDocLearn/Coding/UObjectCreation/" title="UE-UObjectCreation">UObjectCreation</a>
+
+
+<h1 id="UHT-Unreal-Header-Tool"><a href="#UHT-Unreal-Header-Tool" class="headerlink" title="UHT Unreal Header Tool"></a>UHT Unreal Header Tool</h1><img src="/UE/OfficialDocLearn/Coding/UObject/image-4.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/UObject/image-5.png" class="" title="alt text">
+<p>模块API宏的部分可以看之前模块文章，做过具体叙述了。<br>UCLASS与USTRUCT需要加上GENERATED_BODY()宏<br>关于相关宏定义，可以看到源码的ObjectMacros.h</p>
+<h1 id="Update-Tick"><a href="#Update-Tick" class="headerlink" title="Update - Tick"></a>Update - Tick</h1><img src="/UE/OfficialDocLearn/Coding/UObject/image-6.png" class="" title="alt text">
+<p>UObject本来没有对应的Tick功能，一般是AActor才有。或者是UActorComponent<br>否则的话 需要继承FTickableGameObject。这部分可以看看Tickable.h</p>
+<h1 id="Destroy"><a href="#Destroy" class="headerlink" title="Destroy"></a>Destroy</h1><img src="/UE/OfficialDocLearn/Coding/UObject/image-7.png" class="" title="alt text">
+<img src="/UE/OfficialDocLearn/Coding/UObject/image-8.png" class="" title="alt text">
+<p>标记回收的还是用MarkAsGarbage接口，这部分可以看到UObjectBaseUtility<br>也可以在UObjectBaseUtility中看到IsPendingKillEnabled接口。(5.4换为了IsGarbageEliminationEnabled接口)</p>
+<p>考虑使用弱引用，并且多用IsValid来判断UObject是否有效（在UObject），否则<br>可能会存在已经垃圾回收了但是仍然有指针引用的问题。</p>
+<p>当然，如果没有UPROPERTY宏的标记，就不会被引擎识别，也不会处理对应的GC，或者是自动置空.</p>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><p>在UObject这块，也可以看看大钊在知乎上发的InsideUE5专栏的UObject系列文章<br>当然,大钊的这系列的文章是基于UE4的较早版本编写的，在看和理解的时候，最好还是<br>结合最新的源码去理解并辨别。</p>
+<p>这里也做一些类的额外补充:</p>
+<p>UObjectBase(包含UClass) -&gt; UObjectBaseUtility -&gt; UObject</p>
+<p>UObject -&gt; UField -&gt; UStruct -&gt; UClass</p>
+<p>UObject -&gt; UInterface</p>
+<p>UObject -&gt; AActor</p>
+<p>实际上 后面单独有一个FField独立出来。<br>可以看到Field.h文件。<br>而类型FProperty则是继承自FField。可以看到UnrealType.h</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/UE/OfficialDocLearn/Coding/UObject/">https://mikeming126.github.io/UE/OfficialDocLearn/Coding/UObject/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/C-Coding/">C++ Coding</a><a class="post-meta__tags" href="/tags/UObject/">UObject</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/UE/OfficialDocLearn/Coding/UECPlusPlusReflection/" title="UE-Reflection System"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">UE-Reflection System</div></div><div class="info-2"><div class="info-item-1">反射系统 Reflection System参考文章：Reflection System in Unreal EngineUE5标识符详解 | 史上最全 - 知乎 总结：反射指程序在运行时动态检查、修改自身状态或行为的能力。C++本身并不支持反射。之前在用typescript和lua的时候，有很多写法其实就用到了反射的功能，只是没有去意识到。要实现反射功能，需要收集对应的数据，并有相应的逻辑系统进行处理。虚幻的反射便是基于宏来实现的。 关于虚幻引擎的宏 可以去看看大钊知乎的那篇符号说明的文章。部分宏：UCLASS、UFUNCTION、UPROPERTY、USTRUCT、UINTERFACE、UENUM。通过宏，虚幻的反射系统才能收集到对应的信息并进行处理。  -&gt; make UE aware of new classes,functions and varibales.-&gt; These macros are garbage collected by the engine....</div></div></div></a><a class="pagination-related" href="/UE/OfficialDocLearn/Coding/UProperty/" title="UE-Property"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">UE-Property</div></div><div class="info-2"><div class="info-item-1">属性属性宏UPROPERTY()变量说明符和元数据相关的内容还是看到大钊的那篇文章。这里不多赘述了。UE5标识符详解 | 史上最全 整型int 8,16,32,64uint 8,16,32,64整形可以额外声明作为位掩码并在编辑器中显示。(meta &#x3D; (Bitmask)) 浮点float,double,long double 字符串FString 与 FName 与 FText. TEXT()宏 For most uses, Unreal relies on the TCHAR type for characters. The TEXT() macro is available to denote TCHAR literals.MyDogPtr-&gt;DogName &#x3D; FName(TEXT(“Samson Aloysius”));TEXT宏的返回类型为TCHAR数组。为和平台无关的字符类型。  在进行日志输出时，时常需要用到TEXT宏:  FString TestString &#x3D; TEXT(“A...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/UE/OfficialDocLearn/Coding/UObjectCreation/" title="UE-UObjectCreation"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-25</div><div class="info-item-2">UE-UObjectCreation</div></div><div class="info-2"><div class="info-item-1">UObject的基础部分可以看到这里: UObject  创建概述基础的类宏声明UCLASS，以及头文件”.generated.h”的引入，和GENERATE_BODY宏就不在这详述了。  UObject并不支持带有参数的构造函数。所有C++侧UObject会在引擎StartUp时初始化。 创建UObject: [考虑UE本身的内存管理和GC系统]  运行时创建NewObject 在构造函数中创建CreateDefaultSubobject 例如一个类中组件变量的初始化流程  初始化函数和逻辑处理 -&gt; 放在BeginPlay()去处理。   构造函数 在头文件中实现构造函数的，需要在UCLASS中加上CustomConstructor声明符。不过这个在UE5已经弃用了，应该不需要太关注。有需要的话，可以去看大钊的说明符文档。 在上边提到的：...</div></div></div></a><a class="pagination-related" href="/UE/OfficialDocLearn/Coding/Asserts/" title="UE-Asserts"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-25</div><div class="info-item-2">UE-Asserts</div></div><div class="info-2"><div class="info-item-1">断言 Asserts官方文档 Assertsdetect and diagnose unexpected or invalid runtime conditions during development. C++的断言,assert 与静态断言,static_assert。   虚幻引擎的Assert:  check  -&gt; 运行时终止程序 verify  -&gt; 类似check，但发布版本中，仍然执行表达式(忽略返回结果) “保留side effect”  例如:verify((Mesh &#x3D; GetRenderMesh()) !&#x3D; nullptr); 这里内部有Mesh的赋值效果。 ensure  -&gt; 不终止程序，记录错误并继续运行。  详细可以看到：Engine&#x2F;Source&#x2F;Runtime&#x2F;Core&#x2F;Public&#x2F;Misc&#x2F;AssertionMacros.h static_assert 静态断言还是可以继续应用的。静态断言 static_assert -&gt;...</div></div></div></a><a class="pagination-related" href="/UE/OfficialDocLearn/Coding/ActorLifeTime/" title="UE-ActorLifeTime"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-18</div><div class="info-item-2">UE-ActorLifeTime</div></div><div class="info-2"><div class="info-item-1">ActorLifeTime官方有一张LifeTime的流程图官方文档    -&gt; AISystemBase的纯虚函数 InitializeActorsForPlay实际上这里也是由World调用下来的 UEngine::LoadMap  UWorld::InitializeActorsForPlay    Level-&gt;RouteActorInitialize      对Level的Actors(Array of all actors in this level.)进行处理    AISystem-&gt;InitializeActorsForPlay 默认情况下这里没有任何处理  UWorld::AddToWorld 添加Level到World      Level-&gt;RouteActorInitialize  在Actor内部存在一个bActorInitialized标志位 可以避免重复初始化。...</div></div></div></a><a class="pagination-related" href="/UE/OfficialDocLearn/Coding/CodingStandard/" title="UE-Coding Standard"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-25</div><div class="info-item-2">UE-Coding Standard</div></div><div class="info-2"><div class="info-item-1">Coding Standard 代码规范不同的项目组一般会有自己的代码规范。比如驼峰语法，小写开头的变量命名、大写函数等。在使用虚幻引擎的时候，还是有必要了解官方的代码规范，特别时各个类的命名。遵守一定的规则，让后续的代码维护和阅读起来更简单。 本篇主要列出一些相对需要注意的点。官方文档 变量命名大写开头布尔变量必须以b为前缀 类名类名需要加额外的大写字符。以下是一些默认的规则: 模板类 - T继承自UObject - U继承自AActor  - A继承自SWidget - S这部分可以进一步去了解虚幻引擎的Slate UI Framework 抽象接口Interface - I枚举Enum - E   (enum class xxx{})其他多数类均以F为前缀，部分子系统以其他字符为前缀 如FField  宏的名称应该全部大写，用下划线隔开，并以 UE_ 作为前缀使用类型的时候最好加上对应的大小(特别是int与unit对应占用的bytes数) 常量正确性编写函数的时候，可以考虑使用常量const声明。  Pass function arguments by const...</div></div></div></a><a class="pagination-related" href="/UE/OfficialDocLearn/Coding/Delegates/" title="UE-Delegates"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-04</div><div class="info-item-2">UE-Delegates</div></div><div class="info-2"><div class="info-item-1">Delegates参考源码文件:DelegateCombinations.h  UE的”事件系统”。其实很多项目，在脚本代码层，如lua或ts，会有着自己的事件管理器，用于定义事件，并注册对应的函数。事件触发时，已注册的函数都会被调用。当然，需要注意处理相应的回收逻辑。虚幻的委托在逻辑上感觉是起到同样的功能。    Binding Delegate   负载变量（Payload Variables） 定义：负载变量是委托绑定（Bind）时附加的额外数据，这些数据会在委托执行时自动传递，无需在调用时显式传入。它们通常用于传递上下文信息（如对象实例、状态变量等）。这部分可以看到DS。 // 绑定一个成员函数，并附加一个负载变量（额外参数）MyDelegate.BindUObject(MyObject, &amp;UMyClass::MyFunction, 100); // 100 是负载变量// 调用时只需传递函数参数，负载变量会自动填充MyDelegate.Broadcast(10, 20);这里，MyFunction 的实际签名可能是：void...</div></div></div></a><a class="pagination-related" href="/UE/OfficialDocLearn/Coding/GameplayTag/" title="UE-GameplayTag"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-26</div><div class="info-item-2">UE-GameplayTag</div></div><div class="info-2"><div class="info-item-1">GameplayTag最初接触GameplayTag主要还是在GAS,当然GameplayTag是一个更广的内容。  其功能正如”Tag”所代表。相关源码，可以看到GameplayTagContainer.h中。 相关比较和匹配函数:常用运算符:&#x3D;&#x3D;与!&#x3D;其他：MatchesTag MatchesTagExact。而在属性这块，FGameplayTag内部的TagName是一个FName。关于FName，可以看到UE-Property文章中字符串的相关内容或者官方文档。 GameplayTag的设置项目设置Project -&gt; ProjectSettings -&gt; GameplayTag添加方式  Directly adding or removing them in Project Settings 启用Import Tags From Config,从.ini文件导入:including Config&#x2F;DefaultGameplayTags.ini and any in...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E7%9A%84%E5%9F%BA%E7%B1%BB-Object"><span class="toc-number">2.</span> <span class="toc-text">统一的基类 Object</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UObject%E6%89%80%E6%8F%90%E4%BE%9B%E7%9A%84%E5%8A%9F%E8%83%BD-Functionality"><span class="toc-number">2.1.</span> <span class="toc-text">UObject所提供的功能 Functionality</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UObject%E5%8F%8D%E5%B0%84%E5%88%86%E6%9E%90"><span class="toc-number">2.1.1.</span> <span class="toc-text">UObject反射分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E7%9B%B8%E5%85%B3%E7%BB%93%E6%9E%84"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">反射相关结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UProperty-To-FProperty"><span class="toc-number">2.1.1.2.</span> <span class="toc-text">UProperty To FProperty</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90"><span class="toc-number">2.1.1.3.</span> <span class="toc-text">代码生成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UClass%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.1.1.4.</span> <span class="toc-text">UClass对象</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-number">2.1.2.</span> <span class="toc-text">垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A2%9E%E9%87%8F%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">增量垃圾回收</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6"><span class="toc-number">2.1.2.2.</span> <span class="toc-text">垃圾回收内部机制</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E6%9B%B4%E6%96%B0"><span class="toc-number">2.1.3.</span> <span class="toc-text">引用更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">2.1.4.</span> <span class="toc-text">序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E5%B1%9E%E6%80%A7%E5%8F%98%E5%8C%96%E6%97%B6-%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0"><span class="toc-number">2.1.5.</span> <span class="toc-text">默认属性变化时 自动更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%A4%84%E7%90%86"><span class="toc-number">2.1.6.</span> <span class="toc-text">属性初始化的自动化处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E6%95%B4%E5%90%88"><span class="toc-number">2.1.7.</span> <span class="toc-text">编辑器整合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8F%AF%E5%A4%84%E7%90%86%E7%B1%BB%E5%9E%8B%E4%BF%A1%E6%81%AF"><span class="toc-number">2.1.8.</span> <span class="toc-text">运行时可处理类型信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%A4%8D%E5%88%B6"><span class="toc-number">2.1.9.</span> <span class="toc-text">网络复制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#UCLASS-%E5%AE%8F"><span class="toc-number">3.</span> <span class="toc-text">UCLASS 宏</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#UObject-%E5%88%9B%E5%BB%BA"><span class="toc-number">4.</span> <span class="toc-text">UObject 创建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#UHT-Unreal-Header-Tool"><span class="toc-number">5.</span> <span class="toc-text">UHT Unreal Header Tool</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Update-Tick"><span class="toc-number">6.</span> <span class="toc-text">Update - Tick</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Destroy"><span class="toc-number">7.</span> <span class="toc-text">Destroy</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A5%E5%85%85"><span class="toc-number">8.</span> <span class="toc-text">补充</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Shadow/" title="Unity Shadow">Unity Shadow</a><time datetime="2025-10-05T07:56:07.434Z" title="发表于 2025-10-05 15:56:07">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/SRP/" title="Unity SRP">Unity SRP</a><time datetime="2025-10-02T06:15:27.265Z" title="发表于 2025-10-02 14:15:27">2025-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/AsyncOp/" title="Unity异步操作">Unity异步操作</a><time datetime="2025-09-14T08:01:59.349Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Physics/" title="Unity Physics">Unity Physics</a><time datetime="2025-09-14T08:01:59.345Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '26bd5ee5f7eab20c120ba047f840e522'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

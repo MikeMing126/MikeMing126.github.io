@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>UE5.5-GameplayCue | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="GameplayCue重要的类：GameplayCueSet 但是游戏中的资源加载并不是这样进行的。 映射关系： Tag -&gt; GC GC的收集过程：将GameplayCue资产放在指定的目录下。具体的可以在.ini里面配置。以Lyra为例子   资源的加载：关键类为UAbilitySystemGlobals与UGameplayCueManager。可以看到GameplayCueManage">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UE5.5-GameplayCue">
+<meta property="og:url" content="https://mikeming126.github.io/UE/GAS/UE55GASGC/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="GameplayCue重要的类：GameplayCueSet 但是游戏中的资源加载并不是这样进行的。 映射关系： Tag -&gt; GC GC的收集过程：将GameplayCue资产放在指定的目录下。具体的可以在.ini里面配置。以Lyra为例子   资源的加载：关键类为UAbilitySystemGlobals与UGameplayCueManager。可以看到GameplayCueManage">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2025-04-08T15:37:32.125Z">
+<meta property="article:modified_time" content="2025-04-16T14:03:08.906Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="GAS">
+<meta property="article:tag" content="Lyra">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UE5.5-GameplayCue",
+  "url": "https://mikeming126.github.io/UE/GAS/UE55GASGC/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2025-04-08T15:37:32.125Z",
+  "dateModified": "2025-04-16T14:03:08.906Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/UE/GAS/UE55GASGC/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'UE5.5-GameplayCue',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">UE5.5-GameplayCue</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">UE5.5-GameplayCue</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-08T15:37:32.125Z" title="发表于 2025-04-08 23:37:32">2025-04-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-04-16T14:03:08.906Z" title="更新于 2025-04-16 22:03:08">2025-04-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">816</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="GameplayCue"><a href="#GameplayCue" class="headerlink" title="GameplayCue"></a>GameplayCue</h1><p>重要的类：<br>GameplayCueSet</p>
+<p>但是游戏中的资源加载并不是这样进行的。</p>
+<p>映射关系： Tag -&gt; GC</p>
+<p>GC的收集过程：<br>将GameplayCue资产放在指定的目录下。<br>具体的可以在.ini里面配置。<br>以Lyra为例子</p>
+<img src="/UE/GAS/UE55GASGC/image.png" class="" title="alt text">
+
+<p>资源的加载：<br>关键类为UAbilitySystemGlobals与UGameplayCueManager。<br>可以看到GameplayCueManager里。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//UAbilitySystemGlobals部分</span><br><span class="line">//GameplayAbilitiesDeveloperSettings.h</span><br><span class="line">//注意宏里面Config的关键字</span><br><span class="line">/** Look in these paths for GameplayCueNotifies. These are your &quot;always loaded&quot; set. */</span><br><span class="line">UPROPERTY(Config, EditDefaultsOnly, Category=GameplayCue, meta = (ConfigRestartRequired=true))</span><br><span class="line">TArray&lt;FString&gt;	GameplayCueNotifyPaths;</span><br><span class="line">TArray&lt;FString&gt; UAbilitySystemGlobals::GetGameplayCueNotifyPaths()</span><br><span class="line">&#123;</span><br><span class="line">PRAGMA_DISABLE_DEPRECATION_WARNINGS</span><br><span class="line">    //Use set so we can append just unique paths</span><br><span class="line">    TSet&lt;FString&gt; ReturnPaths = TSet(GameplayCueNotifyPaths);</span><br><span class="line">PRAGMA_ENABLE_DEPRECATION_WARNINGS</span><br><span class="line"></span><br><span class="line">    ReturnPaths.Append(GetDefault&lt;UGameplayAbilitiesDeveloperSettings&gt;()-&gt;GameplayCueNotifyPaths);</span><br><span class="line">    return ReturnPaths.Array();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//CueManager部分</span><br><span class="line">TArray&lt;FString&gt; UGameplayCueManager::GetAlwaysLoadedGameplayCuePaths()</span><br><span class="line">&#123;</span><br><span class="line">    return UAbilitySystemGlobals::Get().GetGameplayCueNotifyPaths();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void UGameplayCueManager::InitializeRuntimeObjectLibrary()</span><br><span class="line">&#123;</span><br><span class="line">    UE_SCOPED_ENGINE_ACTIVITY(TEXT(&quot;Initializing GameplayCueManager Runtime Object Library&quot;));</span><br><span class="line"></span><br><span class="line">    RuntimeGameplayCueObjectLibrary.Paths = GetAlwaysLoadedGameplayCuePaths();</span><br><span class="line">    if (RuntimeGameplayCueObjectLibrary.CueSet == nullptr)</span><br><span class="line">    &#123;</span><br><span class="line">        RuntimeGameplayCueObjectLibrary.CueSet = NewObject&lt;UGameplayCueSet&gt;(this, TEXT(&quot;GlobalGameplayCueSet&quot;));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    RuntimeGameplayCueObjectLibrary.CueSet-&gt;Empty();</span><br><span class="line">    RuntimeGameplayCueObjectLibrary.bHasBeenInitialized = true;</span><br><span class="line"></span><br><span class="line">    RuntimeGameplayCueObjectLibrary.bShouldSyncScan = ShouldSyncScanRuntimeObjectLibraries();</span><br><span class="line">    RuntimeGameplayCueObjectLibrary.bShouldSyncLoad = ShouldSyncLoadRuntimeObjectLibraries();</span><br><span class="line">    RuntimeGameplayCueObjectLibrary.bShouldAsyncLoad = ShouldAsyncLoadRuntimeObjectLibraries();</span><br><span class="line"></span><br><span class="line">    InitObjectLibrary(RuntimeGameplayCueObjectLibrary);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Lyra项目示例"><a href="#Lyra项目示例" class="headerlink" title="Lyra项目示例"></a>Lyra项目示例</h2><p>还是看到Lyra项目<br>对应的三个例子分别为<br>GE:<br>GE_GameplayCueTest_Burst<br>GE_GameplayCueTest_BurstLatent<br>GE_GameplayCueTest_Looping</p>
+<p>GC:<br>GCN_Test_Burst<br>GCN_Test_BurstLatent<br>GCNL_Test_Looping</p>
+<p>GE的Burst与BurstLatent都是Instant类型。<br>但对应的GC不同，一个派生自GCN_Burst（即Static）,一个派生自GCN_BurstLatent(即Actor)。<br>两者都只需要在OnBurst处理自定义逻辑即可。<br>而后者由于有存在Actor，可以在逻辑中使用延迟等操作。</p>
+<p>&#x2F;&#x2F;关于Actor存在数目可以再关注一下bAllowMultipleWhileActiveEvents与bAllowMultipleWhileActiveEvents</p>
+<p>而Looping，在GE处就要处理Looping逻辑。见Period。<br>GC则会有OnLoopingStart、OnRecurring、OnRemoval对应的逻辑事件处理。</p>
+<h3 id="调用链条"><a href="#调用链条" class="headerlink" title="调用链条"></a>调用链条</h3><p>最上层的调用：<br>UAbilitySystemGlobals::Get().GetGameplayCueManager()-&gt;InvokeGameplayCueExecuted_FromSpec(Owner, SpecToUse, PredictionKey);<br>↓<br>GameplayCueManager的AddPendingCueExecuteInternal<br>↓<br>GameplayCueManager的FlushPendingCues<br>↓<br>取到ASC的GetReplicationInterface函数作为RepInterface，调用ASC的Call_InvokeGameplayCueExecuted_FromSpec<br>↓<br>ASC的NetMulticast_InvokeGameplayCueExecuted_Implementation<br>↓<br>ASC的InvokeGameplayCueEvent[这里指定了事件类型为Executed]</p>
+<h2 id="总结和部分问题"><a href="#总结和部分问题" class="headerlink" title="总结和部分问题"></a>总结和部分问题</h2><p>因为GC实际上是由GameplayTag去触发的，但是在编辑器中不是很直观。可以考虑做一个工具来直观的展示对应的Tag和GC的对应关系。</p>
+<h2 id="持续Buff的GCN"><a href="#持续Buff的GCN" class="headerlink" title="持续Buff的GCN"></a>持续Buff的GCN</h2><h3 id="问题描述和思考流程"><a href="#问题描述和思考流程" class="headerlink" title="问题描述和思考流程"></a>问题描述和思考流程</h3><p>如果应用多个GE的时候，GC表现不太对。<br>实际上，如果是单个的Buff，是要用到GE的Stacking功能来做。<br>【比如身上有中毒buff】</p>
+<p>但是有一个问题。GCN是依赖于Tag与Event来处理的。<br>如果想要做一个中毒的表现，而多个buff可能会加上不同时间&#x2F;伤害等信息的中毒。<br>-&gt; GCN应该是用同一个Tag。但是需要所有buff都结束，才移除GCN。<br>换句话说 应该是Removed要判定？<br>对于中毒这个特效，应该只需要创建一个GCN就可以了。但是，removed必须要判定为所有的毒类型Buff都移除了才能执行。</p>
+<p>这里需要关注<br>Cue的添加与WhileActive事件<br>ASC的AddGameplayCue_Internal<br>-&gt; wasInList</p>
+<p>Cue的移除<br>ASC的RemoveGameplayCue_Internal函数。</p>
+<p>这里如果移除的时候判定Tag可能会好一点。<br>可以自己重写试试。</p>
+<p>获取到对应的ASC 并判断其Cue数量。<br>这里还存在虚幻引擎的模组API宏问题。（对于GCN_Looping这部分）禁止了接口暴露。</p>
+<p>但实际上移除的时候是移除所有Tag的…</p>
+<img src="/UE/GAS/UE55GASGC/image2.png" class="" title="alt text">
+
+<img src="/UE/GAS/UE55GASGC/image3.png" class="" title="alt text">
+
+<img src="/UE/GAS/UE55GASGC/image4.png" class="" title="alt text">
+
+<img src="/UE/GAS/UE55GASGC/image5.png" class="" title="alt text">
+
+<p>目前已经基于该思路验证并实现了这种持续GCN的效果。<br>算是一种实现方案。</p>
+<p>不过，基于此，还需要考虑AOI以及ASC转移时的相关问题。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/UE/GAS/UE55GASGC/">https://mikeming126.github.io/UE/GAS/UE55GASGC/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/GAS/">GAS</a><a class="post-meta__tags" href="/tags/Lyra/">Lyra</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/UE/Engine/UEBlueprintNote/" title="UE蓝图笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">UE蓝图笔记</div></div><div class="info-2"><div class="info-item-1">蓝图断点与流程显示断点的话，右键对应的节点添加断点即可。 运行时打开对应的蓝图，并在编辑器中选中对应的对象，可以观看其运行流程。  </div></div></div></a><a class="pagination-related" href="/UE/Engine/UEModule/" title="UE-Module"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">UE-Module</div></div><div class="info-2"><div class="info-item-1">虚幻引擎模块[Module] - Doc官方参考文章地址 简介模块（Modules）是 虚幻引擎（UE）的软件架构的基本构建块。它们在独立的代码单元中封装了具体的编辑器工具、运行时功能、库或其他功能。 好处使用模块整理项目可带来以下好处：  模块会强制实施良好的代码分离，可用于封装功能并隐藏代码的内部成分。  模块编译为单独的编译单元。这意味着，只有已更改的模块才需要编译，较大项目的编译时间会显著缩短。  模块在依赖性图表中链接在一起，并且仅允许实际使用的代码包含头文件，以符合Include What You Use...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/UE/Project/Lyra/UE55Lyra1/" title="UE5.5-Lyra-1-Attribute"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-16</div><div class="info-item-2">UE5.5-Lyra-1-Attribute</div></div><div class="info-2"><div class="info-item-1">基于官方Lyra的GAS学习。 综述首先就是ASC的位置。Lyra项目将ASC放置于了LyraPlayerState中。将ASC与PlayerState绑定。 此外 可以看到LyraCharacter。其也有获取ASC的接口。 从LyraCharacter获取ASC组件，依赖于其PawnExtComponent。这里可以看到ULyraPawnExtensionComponent这个类。该类会存放一个ASC指针。在函数InitializeAbilitySystem中进行设置。 LyraHeroComponent是唯一调用该方法的组件。见ULyraHeroComponent::HandleChangeInitState。这里的逻辑也是从PlayerState中拿到ASC，然后赋值给PawnExtComponent。 总而言之，该项目的ASC位于PlayerState。整体的链条大概如下：PlayerState -&gt; LyraHeroComp -&gt; PawnExtComponent -&gt; LyraCharacter。 再整理一下： LyraCharacter -...</div></div></div></a><a class="pagination-related" href="/UE/Project/Lyra/UE55Lyra3/" title="UE5.5-Lyra-3-GATask"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-27</div><div class="info-item-2">UE5.5-Lyra-3-GATask</div></div><div class="info-2"><div class="info-item-1">GamplayAbilityTask基础AbilityTask 异步任务 开始并等待结束&#x2F;打断 部分实现需要关注[K2Node_LatentAbilityCall]  基础逻辑 定义动态多播委托，并声明为BlueprintAssignable 声明静态工厂函数用于创建AbilityTask。由该函数定义输入参数。但是这个不意味着任务开始，不在其中调用广播 实现Activate函数。该函数代表着任务的激活    其他    - OnDestroy记得取消事件的侦听和注册，并调用父类的OnDestroy。   静态工厂函数的meta声明了meta &#x3D; (xxx前面忽略, BlueprintInternalUseOnly &#x3D; “TRUE”)  实际蓝图的调用走过UK2Node_LatentGameplayTaskCall的ExpandNode. WaitOverlap//定义委托DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWaitOverlapDelegate, const...</div></div></div></a><a class="pagination-related" href="/UE/Project/Lyra/UE55Lyra2/" title="UE5.5-Lyra-2-GE"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-23</div><div class="info-item-2">UE5.5-Lyra-2-GE</div></div><div class="info-2"><div class="info-item-1">GE蓝图创建的GE。基于 GameplayEffectParent_Damage_Basic 来看GE:  Gameplay效果 组件 GEComponents 包含很多个效果 可以在编辑器中细看   修饰符 Modifiers 执行 Executions   Gameplay Cue  GE的执行流程以GA的ApplyCost为例子： GA:ApplyGameplayEffectToOwner↓GA:ApplyGameplayEffectSpecToOwner↓ASC:ApplyGameplayEffectSpecToSelf 到这里可以分为两条路线了，一条是即刻执行的GE，Instant类型。第二种是有持续时间的GE（包括永久）。对于后者，会生成FActiveGameplayEffect。 在ASC:ApplyGameplayEffectSpecToSelf中就有两个关键函数了：  持续类型的 由ASC的FActiveGameplayEffectContainer调用ApplyGameplayEffectSpec处理 Intant类型...</div></div></div></a><a class="pagination-related" href="/UE/Project/Lyra/UE55Lyra4/" title="UE5.5-Lyra-4-GATask-AGameplayAbilityTargetActor"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-01</div><div class="info-item-2">UE5.5-Lyra-4-GATask-AGameplayAbilityTargetActor</div></div><div class="info-2"><div class="info-item-1">中间数据 GameplayAbilityTargetActor关于目标数据 以下是几个比较关键的类。AGameplayAbilityTargetActor委托：FAbilityTargetDataFGameplayAbilityTargetDataHandleFGameplayAbilityTargetDataFGameplayEffectContextHandleFGameplayEffectContext 总体上还是比较复杂的。从源码看起。 AGameplayAbilityTargetActor/** * TargetActors are spawned to assist with ability targeting. They are spawned by ability tasks and create/determine the outgoing targeting data passed from one task to another * * WARNING: These actors are spawned once per ability...</div></div></div></a><a class="pagination-related" href="/UE/Project/Lyra/UE55Lyra5/" title="UE5.5-Lyra-5-GATask-传输数据流程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-04</div><div class="info-item-2">UE5.5-Lyra-5-GATask-传输数据流程</div></div><div class="info-2"><div class="info-item-1">GATask_WaitTargetData以WaitTargetData为例子理解TargetActor的使用流程和逻辑 客户端传输数据情况Client侧p1  p2  p3  Server侧p4  p5   服务端自己产生数据情况这里以对应AGameplayAbilityTargetActor_Radius作为例子p6 </div></div></div></a><a class="pagination-related" href="/UE/Project/Lyra/UE55Lyra6/" title="UE5.5-Lyra-6-MeleeAttack"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-06</div><div class="info-item-2">UE5.5-Lyra-6-MeleeAttack</div></div><div class="info-2"><div class="info-item-1">学习目标：近战攻击的实现和检测这里还是以Lyra的近战攻击行为GA_Melee作为样例来学习。同时参考项目ActionRPG。ActionRPG本来是虚幻4的项目，网上有UE5的适配版本。以此作为学习的样本。不过，GAS在虚幻4到虚幻5之间还是有较大的改动的。学习的时候还是多想想，多看看。 前言和方法GATask的静态工厂函数并不会直接在蓝图中调用。（Rider）里面可以看到显示为“没有蓝图用法”。而是会走蓝图的包一层去实现。正如宏里面meta声明的BlueprintInternalUseOnly = &quot;TRUE&quot;一样。 要搜索蓝图中的用法 可以在编辑器中使用Tools -&gt; Find in Blueprints来查找对应的应用方法。 要查找资产引用，可以右键对应的资产，看到ReferenceViewer。 GATask_PlayMontageAndWait首先还是看到蒙太奇的播放 PlayMontageAndWait源码DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMontageWaitSimpleDelegate);/**...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#GameplayCue"><span class="toc-number">1.</span> <span class="toc-text">GameplayCue</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lyra%E9%A1%B9%E7%9B%AE%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.1.</span> <span class="toc-text">Lyra项目示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E9%93%BE%E6%9D%A1"><span class="toc-number">1.1.1.</span> <span class="toc-text">调用链条</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E5%92%8C%E9%83%A8%E5%88%86%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">总结和部分问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%81%E7%BB%ADBuff%E7%9A%84GCN"><span class="toc-number">1.3.</span> <span class="toc-text">持续Buff的GCN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%80%9D%E8%80%83%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">问题描述和思考流程</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Shadow/" title="Unity Shadow">Unity Shadow</a><time datetime="2025-10-05T07:56:07.434Z" title="发表于 2025-10-05 15:56:07">2025-10-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/SRP/" title="Unity SRP">Unity SRP</a><time datetime="2025-10-02T06:15:27.265Z" title="发表于 2025-10-02 14:15:27">2025-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/AsyncOp/" title="Unity异步操作">Unity异步操作</a><time datetime="2025-09-14T08:01:59.349Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/Physics/" title="Unity Physics">Unity Physics</a><time datetime="2025-09-14T08:01:59.345Z" title="发表于 2025-09-14 16:01:59">2025-09-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '73b85006b15b7cf7c59991f935b4271b'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

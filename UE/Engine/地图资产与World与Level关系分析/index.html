@@ -1,0 +1,694 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>地图资产与World与Level关系分析 | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="虚幻引擎地图体系：从资源到运行时的完整解析 梳理虚幻引擎中 .umap 地图资源、UWorld、ULevel、AWorldSettings 之间的核心关系 传统 Level Streaming 和 World Partition 两种多关卡加载机制。   一、整体关系图磁盘 (.umap &#x2F; UPackage)││  LoadPackage▼┌───────────────────────────">
+<meta property="og:type" content="article">
+<meta property="og:title" content="地图资产与World与Level关系分析">
+<meta property="og:url" content="https://mikeming126.github.io/UE/Engine/%E5%9C%B0%E5%9B%BE%E8%B5%84%E4%BA%A7%E4%B8%8EWorld%E4%B8%8ELevel%E5%85%B3%E7%B3%BB%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="虚幻引擎地图体系：从资源到运行时的完整解析 梳理虚幻引擎中 .umap 地图资源、UWorld、ULevel、AWorldSettings 之间的核心关系 传统 Level Streaming 和 World Partition 两种多关卡加载机制。   一、整体关系图磁盘 (.umap &#x2F; UPackage)││  LoadPackage▼┌───────────────────────────">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2026-04-22T05:22:45.679Z">
+<meta property="article:modified_time" content="2026-04-22T05:37:47.772Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="Level">
+<meta property="article:tag" content="World">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "地图资产与World与Level关系分析",
+  "url": "https://mikeming126.github.io/UE/Engine/%E5%9C%B0%E5%9B%BE%E8%B5%84%E4%BA%A7%E4%B8%8EWorld%E4%B8%8ELevel%E5%85%B3%E7%B3%BB%E5%88%86%E6%9E%90/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2026-04-22T05:22:45.679Z",
+  "dateModified": "2026-04-22T05:37:47.772Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/UE/Engine/%E5%9C%B0%E5%9B%BE%E8%B5%84%E4%BA%A7%E4%B8%8EWorld%E4%B8%8ELevel%E5%85%B3%E7%B3%BB%E5%88%86%E6%9E%90/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '地图资产与World与Level关系分析',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">62</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">地图资产与World与Level关系分析</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">地图资产与World与Level关系分析</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-22T05:22:45.679Z" title="发表于 2026-04-22 13:22:45">2026-04-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-22T05:37:47.772Z" title="更新于 2026-04-22 13:37:47">2026-04-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>15分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="虚幻引擎地图体系：从资源到运行时的完整解析"><a href="#虚幻引擎地图体系：从资源到运行时的完整解析" class="headerlink" title="虚幻引擎地图体系：从资源到运行时的完整解析"></a>虚幻引擎地图体系：从资源到运行时的完整解析</h1><ol>
+<li>梳理虚幻引擎中 <code>.umap</code> 地图资源、<code>UWorld</code>、<code>ULevel</code>、<code>AWorldSettings</code> 之间的核心关系</li>
+<li>传统 Level Streaming 和 World Partition 两种多关卡加载机制。</li>
+</ol>
+<hr>
+<h2 id="一、整体关系图"><a href="#一、整体关系图" class="headerlink" title="一、整体关系图"></a>一、整体关系图</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">磁盘 (.umap / UPackage)</span><br><span class="line">│</span><br><span class="line">│  LoadPackage</span><br><span class="line">▼</span><br><span class="line">┌─────────────────────────────────────────────────────────┐</span><br><span class="line">│  UWorld                                                  │</span><br><span class="line">│  ├── PersistentLevel ──────────┐                         │</span><br><span class="line">│  │                              │                         │</span><br><span class="line">│  ├── Levels[0] ───────────────►│──► ULevel (Persistent)  │</span><br><span class="line">│  │     │                        │    ├── Actors[]         │</span><br><span class="line">│  │     │                        │    ├── WorldSettings ───┼──► AWorldSettings (Actor)</span><br><span class="line">│  │     │                        │    ├── LevelScriptActor │</span><br><span class="line">│  │     │                        │    └── OwningWorld ─────┼──► (回指 UWorld)</span><br><span class="line">│  │     │                        │                         │</span><br><span class="line">│  ├── Levels[1] ─────► ULevel (Streaming Sub-Level)       │</span><br><span class="line">│  │     ...                ├── Actors[]                    │</span><br><span class="line">│  │                        ├── WorldSettings ──► AWorldSettings</span><br><span class="line">│  │                        └── OwningWorld ────► (回指 UWorld)</span><br><span class="line">│  │                                                       │</span><br><span class="line">│  ├── StreamingLevels[]  (ULevelStreaming*)  关卡流式描述  │</span><br><span class="line">│  ├── AuthorityGameMode                                   │</span><br><span class="line">│  ├── GameState                                           │</span><br><span class="line">│  └── NavigationSystem, AISystem, PhysicsScene...         │</span><br><span class="line">└─────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>一个 .umap 地图文件在磁盘上序列化了一个 UWorld，UWorld 在运行时拥有一个 PersistentLevel（ULevel）和零到多个 StreamingLevel（ULevel），每个 ULevel 内部持有该关卡的所有 Actor 以及一个 AWorldSettings Actor 来存储关卡级别的配置。</p>
+</blockquote>
+<ul>
+<li><strong>1 .umap ↔ 1 UWorld</strong>（加载关系）</li>
+<li><strong>1 UWorld ↔ N ULevel</strong>（1 个 PersistentLevel + N 个 StreamingLevel）</li>
+<li><strong>1 ULevel ↔ 1 AWorldSettings</strong>（关卡配置）</li>
+<li><strong>ULevel.OwningWorld → UWorld</strong>，<strong>UWorld.Levels[] → ULevel[]</strong>（双向引用）</li>
+</ul>
+<hr>
+<h2 id="二、核心概念概览"><a href="#二、核心概念概览" class="headerlink" title="二、核心概念概览"></a>二、核心概念概览</h2><h3 id="地图资源（-uasset-umap）"><a href="#地图资源（-uasset-umap）" class="headerlink" title="地图资源（.uasset &#x2F; .umap）"></a>地图资源（.uasset &#x2F; .umap）</h3><p>磁盘上的 <code>.umap</code> 文件本质是一个 <code>UPackage</code>，包含 <code>PKG_ContainsMap</code> 标记，其序列化的顶层对象就是 <strong><code>UWorld</code></strong>。</p>
+<ul>
+<li><strong>1 个 .umap &#x3D; 1 个 UPackage &#x3D; 1 个 UWorld（内含 1 个 ULevel）</strong></li>
+<li>引擎通过 <code>LoadPackage</code> 加载地图时，从 Package 中反序列化出 <code>UWorld</code> 对象</li>
+</ul>
+<h3 id="UWorld-—-“世界”的运行时容器"><a href="#UWorld-—-“世界”的运行时容器" class="headerlink" title="UWorld — “世界”的运行时容器"></a>UWorld — “世界”的运行时容器</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UWorld</span> <span class="keyword">final</span> : <span class="keyword">public</span> UObject, <span class="keyword">public</span> FNetworkNotify</span><br></pre></td></tr></table></figure>
+
+<p>UWorld 是运行时的”世界”容器，负责整体的 Tick、物理场景、导航系统、网络驱动等跨 Level 的系统。整个游戏运行期间通常只有一个活动的 UWorld 实例。</p>
+<table>
+<thead>
+<tr>
+<th>核心成员</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PersistentLevel</code></td>
+<td>指向持久关卡 <code>ULevel*</code>（必须存在）</td>
+</tr>
+<tr>
+<td><code>Levels</code></td>
+<td>当前世界中所有已加载的 <code>ULevel</code> 数组（含持久关卡 + 流式关卡）</td>
+</tr>
+<tr>
+<td><code>StreamingLevels</code></td>
+<td>流式关卡描述器 <code>ULevelStreaming*</code> 数组</td>
+</tr>
+<tr>
+<td><code>AuthorityGameMode</code></td>
+<td>服务器上的 GameMode</td>
+</tr>
+<tr>
+<td><code>GameState</code></td>
+<td>游戏状态</td>
+</tr>
+</tbody></table>
+<h3 id="ULevel-—-关卡的运行时表示"><a href="#ULevel-—-关卡的运行时表示" class="headerlink" title="ULevel — 关卡的运行时表示"></a>ULevel — 关卡的运行时表示</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ULevel</span> : <span class="keyword">public</span> UObject, <span class="keyword">public</span> IInterface_AssetUserData, <span class="keyword">public</span> ITextureStreamingContainer</span><br></pre></td></tr></table></figure>
+
+<p>ULevel 是一个关卡在运行时的表示，持有该关卡的所有 Actor 和一个 <code>AWorldSettings</code>。ULevel 的 Outer 是 UWorld（在 UObject 层级体系中，Level 被 World 拥有），同时通过 <code>OwningWorld</code> 指向运行时所属的 UWorld。</p>
+<table>
+<thead>
+<tr>
+<th>核心成员</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Actors</code></td>
+<td>此关卡中的所有 Actor</td>
+</tr>
+<tr>
+<td><code>WorldSettings</code></td>
+<td>指向 <code>AWorldSettings</code></td>
+</tr>
+<tr>
+<td><code>OwningWorld</code></td>
+<td>指向所属的 <code>UWorld</code>（运行时）</td>
+</tr>
+<tr>
+<td><code>LevelScriptActor</code></td>
+<td>关卡蓝图生成的脚本 Actor</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Outer vs OwningWorld</strong>：<code>GetOuter()</code> 返回”壳” UWorld（原始 Package 中的 vestigial world），<code>OwningWorld</code> 运行时指向真正的主世界 UWorld。对于流式关卡，引擎用 <code>OwningWorld</code> 来指向实际所属的 UWorld。</p>
+</blockquote>
+<h3 id="AWorldSettings-—-关卡级别的配置"><a href="#AWorldSettings-—-关卡级别的配置" class="headerlink" title="AWorldSettings — 关卡级别的配置"></a>AWorldSettings — 关卡级别的配置</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AWorldSettings</span> : <span class="keyword">public</span> AInfo, <span class="keyword">public</span> IInterface_AssetUserData</span><br></pre></td></tr></table></figure>
+
+<p>每个 ULevel 拥有一个 AWorldSettings，作为该关卡的配置容器，包含物理边界、导航配置、AI 开关、GameMode、重力、KillZ 等环境参数。<strong>运行时只有 PersistentLevel 的 WorldSettings 生效</strong>，子关卡的 WorldSettings 被忽略（<code>UWorld::GetWorldSettings()</code> 始终返回 PersistentLevel 的配置）。</p>
+<hr>
+<h2 id="三、多关卡加载机制：Level-Streaming-与-World-Partition"><a href="#三、多关卡加载机制：Level-Streaming-与-World-Partition" class="headerlink" title="三、多关卡加载机制：Level Streaming 与 World Partition"></a>三、多关卡加载机制：Level Streaming 与 World Partition</h2><blockquote>
+<p><strong>核心区别</strong>：传统 Level Streaming 从磁盘加载完整的子地图 .umap 文件，提取其中的 ULevel；World Partition 则在运行时动态创建空的 ULevel，再按需将外部 Actor 加载进来。两者的共同点是：运行时只有一个 UWorld，子关卡都作为 ULevel 加入 <code>UWorld::Levels</code> 数组，且只有 PersistentLevel 的 WorldSettings 生效。</p>
+</blockquote>
+<h3 id="传统-Level-Streaming"><a href="#传统-Level-Streaming" class="headerlink" title="传统 Level Streaming"></a>传统 Level Streaming</h3><p>传统 Level Streaming 通过 <code>ULevelStreaming</code> 状态机管理子关卡的加载、可见性切换和卸载。每个子关卡对应一个独立的 .umap 文件。</p>
+<p><strong>状态机流转</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Removed -&gt; Unloaded -&gt; Loading -&gt; LoadedNotVisible -&gt; MakingVisible -&gt; LoadedVisible</span><br><span class="line">                        ^                                                  |</span><br><span class="line">                        |                                                  v</span><br><span class="line">                 LoadedNotVisible &lt;- MakingInvisible &lt;- LoadedVisible</span><br></pre></td></tr></table></figure>
+
+<p><strong>加载流程</strong>：</p>
+<ol>
+<li><p><code>ULevelStreaming::RequestLevel()</code> 发起加载，有三条路径：</p>
+<ul>
+<li>Package 已在内存：直接取出 <code>World-&gt;PersistentLevel</code></li>
+<li>PIE 模式：<code>DuplicateWorldForPIE</code></li>
+<li>常规路径：<code>LoadPackageAsync()</code> 异步加载</li>
+</ul>
+</li>
+<li><p><code>AsyncLevelLoadComplete()</code> 回调中，从 Package 找到 UWorld，取出 <code>World-&gt;PersistentLevel</code>（ULevel），通过 <code>SetLoadedLevel()</code> 设置 <code>OwningWorld = 主世界 UWorld</code></p>
+</li>
+<li><p><code>UWorld::AddToWorld()</code> 将 Level 集成到主世界：加入 <code>Levels</code> 数组、注册组件、初始化网络 Actor、路由生命周期</p>
+</li>
+<li><p>卸载时 <code>UWorld::RemoveFromWorld()</code> 执行逆操作：注销组件、路由 EndPlay、从 <code>Levels</code> 移除</p>
+</li>
+</ol>
+<p><strong>完整调用链</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SetShouldBeLoaded(true) + SetShouldBeVisible(true)</span><br><span class="line">        │</span><br><span class="line">        v</span><br><span class="line">UWorld::UpdateLevelStreaming() 每帧驱动</span><br><span class="line">        │</span><br><span class="line">        v</span><br><span class="line">ULevelStreaming::UpdateStreamingState()</span><br><span class="line">  │</span><br><span class="line">  ├─ [Unloaded → Loaded]  RequestLevel() → LoadPackageAsync() → AsyncLevelLoadComplete()</span><br><span class="line">  │    → 取 World-&gt;PersistentLevel → SetLoadedLevel() → 状态 LoadedNotVisible</span><br><span class="line">  │</span><br><span class="line">  ├─ [LoadedNotVisible → LoadedVisible]  UWorld::AddToWorld()</span><br><span class="line">  │    → Levels.AddUnique(Level)、注册组件、初始化网络</span><br><span class="line">  │</span><br><span class="line">  ├─ [LoadedVisible → LoadedNotVisible]  UWorld::RemoveFromWorld()</span><br><span class="line">  │    → 注销组件、Levels.Remove(Level)</span><br><span class="line">  │</span><br><span class="line">  └─ [LoadedNotVisible → Unloaded]  ClearLoadedLevel() → GC 卸载</span><br></pre></td></tr></table></figure>
+
+<p><strong>核心结论</strong>：子关卡的 .umap 文件在磁盘上包含完整的 UWorld，但加载时引擎只提取 <code>World-&gt;PersistentLevel</code>（即 ULevel），”壳” UWorld 被遗弃（仅作为 Outer 存在），ULevel 通过 <code>OwningWorld</code> 指向主世界 UWorld。</p>
+<h3 id="World-Partition"><a href="#World-Partition" class="headerlink" title="World Partition"></a>World Partition</h3><p>World Partition 是 UE5 引入的新一代关卡加载机制，将一个主地图按空间划分为多个 Cell，运行时根据玩家位置动态加载&#x2F;卸载。与传统方式最大的不同是：Cell 的 ULevel 是运行时动态创建的，不是从 .umap 文件加载的。</p>
+<p><strong>核心类层次</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>UWorldPartition</code></td>
+<td>总管理器，挂载在 WorldSettings 上</td>
+</tr>
+<tr>
+<td><code>UWorldPartitionRuntimeHash</code></td>
+<td>运行时空间哈希，决定哪些 Cell 需要加载</td>
+</tr>
+<tr>
+<td><code>UWorldPartitionRuntimeCell</code></td>
+<td>抽象 Cell 基类</td>
+</tr>
+<tr>
+<td><code>UWorldPartitionRuntimeLevelStreamingCell</code></td>
+<td>具体 Cell 实现，持有 LevelStreamingDynamic</td>
+</tr>
+<tr>
+<td><code>UWorldPartitionLevelStreamingDynamic</code></td>
+<td>继承自 ULevelStreamingDynamic，管理实际的 ULevel 创建和 Actor 加载</td>
+</tr>
+</tbody></table>
+<p><strong>加载流程</strong>：</p>
+<ol>
+<li><strong>初始化</strong>：<code>UWorldPartition::Initialize</code> 创建 <code>RuntimeHash</code>，生成所有 Cell 对象</li>
+<li><strong>每帧更新</strong>：<code>UWorldPartitionSubsystem::Tick</code> 收集 Streaming Sources（玩家位置等），通过空间哈希查询计算哪些 Cell 需要加载&#x2F;卸载</li>
+<li><strong>Cell 加载</strong>：调用 <code>Cell-&gt;Load()</code> → <code>LevelStreamingDynamic-&gt;Load()</code>，将 LevelStreaming 加入世界的 StreamingLevels</li>
+<li><strong>创建 ULevel</strong>：<code>CreateEmptyLevelForRuntimeCell()</code> 通过 <code>UWorld::CreateWorld()</code> 动态创建一个全新的 UWorld + ULevel + WorldSettings（这是与传统方式最本质的区别）</li>
+<li><strong>加载 Actor</strong>：<code>FWorldPartitionLevelHelper::LoadActors()</code> 异步加载外部 Actor 包并移入 Cell Level</li>
+<li><strong>激活</strong>：<code>Activate()</code> 设置 <code>SetShouldBeVisible(true)</code>，引擎随后通过 <code>AddToWorld()</code> 将 Level 加入主世界</li>
+</ol>
+<p><strong>完整调用链</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UWorldPartitionSubsystem::Tick</span><br><span class="line">  └─ UWorldPartition::Tick</span><br><span class="line">       └─ StreamingPolicy::UpdateStreamingState</span><br><span class="line">            ├─ 收集 Streaming Sources（玩家位置）</span><br><span class="line">            ├─ RuntimeHash 空间查询 → 决定哪些 Cell 要加载/卸载</span><br><span class="line">            └─ 执行状态转换</span><br><span class="line">                 ├─ SetCellStateToLoaded → Cell::Load → AddUniqueStreamingLevel</span><br><span class="line">                 └─ SetCellStateToActivated → Cell::Activate → SetShouldBeVisible(true)</span><br><span class="line"></span><br><span class="line">引擎 LevelStreaming 处理:</span><br><span class="line">  RequestLevel</span><br><span class="line">    ├─ CreateRuntimeLevel → CreateEmptyLevelForRuntimeCell()</span><br><span class="line">    │    └─ UWorld::CreateWorld() 创建壳 UWorld + 空 ULevel + 默认 WorldSettings</span><br><span class="line">    └─ IssueLoadRequests → LoadActors() 异步加载外部 Actor 包</span><br><span class="line">         └─ FinalizeRuntimeLevel → SetLoadedLevel(RuntimeLevel)</span><br></pre></td></tr></table></figure>
+
+<h3 id="对比总结"><a href="#对比总结" class="headerlink" title="对比总结"></a>对比总结</h3><table>
+<thead>
+<tr>
+<th>方面</th>
+<th>传统 Streaming Level</th>
+<th>World Partition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>子 Level 来源</td>
+<td>从 .umap 加载，取出 <code>PersistentLevel</code></td>
+<td>运行时 <code>CreateWorld()</code> 动态创建空 Level</td>
+</tr>
+<tr>
+<td>Actor 来源</td>
+<td>跟随 .umap 一起序列化</td>
+<td>External Actor 包异步加载</td>
+</tr>
+<tr>
+<td>空间管理</td>
+<td>手动设置 Level Transform</td>
+<td>自动基于空间哈希计算 Cell</td>
+</tr>
+<tr>
+<td>地图文件</td>
+<td>主地图 + 多个子地图 .umap</td>
+<td>只有一个主地图 .umap</td>
+</tr>
+<tr>
+<td>生效的 WorldSettings</td>
+<td>仅 PersistentLevel 的</td>
+<td>仅 PersistentLevel 的</td>
+</tr>
+<tr>
+<td>壳 UWorld</td>
+<td>存在但被遗弃</td>
+<td>存在但被遗弃</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="四、详细解析"><a href="#四、详细解析" class="headerlink" title="四、详细解析"></a>四、详细解析</h2><h3 id="4-1-地图资源与-Package-加载"><a href="#4-1-地图资源与-Package-加载" class="headerlink" title="4.1 地图资源与 Package 加载"></a>4.1 地图资源与 Package 加载</h3><p>地图在磁盘上是一个 <code>.umap</code> 文件，本质是一个 <code>UPackage</code>。Package 中包含 <code>PKG_ContainsMap</code> 标记，其序列化的顶层对象就是 <code>UWorld</code>。</p>
+<ul>
+<li><code>.umap</code> 是持久化层，<code>UWorld</code> 是运行时从 Package 加载出来的第一个对象</li>
+<li>引擎通过 <code>LoadPackage</code> 加载地图时，从 Package 中反序列化出 <code>UWorld</code> 对象</li>
+</ul>
+<h3 id="4-2-UWorld-核心成员详解"><a href="#4-2-UWorld-核心成员详解" class="headerlink" title="4.2 UWorld 核心成员详解"></a>4.2 UWorld 核心成员详解</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UWorld</span> <span class="keyword">final</span> : <span class="keyword">public</span> UObject, <span class="keyword">public</span> FNetworkNotify</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>核心成员</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PersistentLevel</code></td>
+<td>指向持久关卡 <code>ULevel*</code>（必须存在）</td>
+</tr>
+<tr>
+<td><code>Levels</code></td>
+<td>当前世界中所有已加载的 <code>ULevel</code> 数组（含持久关卡 + 流式关卡）</td>
+</tr>
+<tr>
+<td><code>StreamingLevels</code></td>
+<td>流式关卡描述器 <code>ULevelStreaming*</code> 数组</td>
+</tr>
+<tr>
+<td><code>AuthorityGameMode</code></td>
+<td>服务器上的 GameMode</td>
+</tr>
+<tr>
+<td><code>GameState</code></td>
+<td>游戏状态</td>
+</tr>
+<tr>
+<td><code>WorldType</code></td>
+<td>世界类型（Game &#x2F; Editor &#x2F; PIE 等）</td>
+</tr>
+</tbody></table>
+<p><strong>核心职责</strong>：负责整体的 Tick、物理场景（PhysicsScene）、导航系统（NavigationSystem）、AI 系统（AISystem）、网络驱动等跨 Level 的系统。</p>
+<p><strong>关键关系</strong>：</p>
+<ul>
+<li>一个 UWorld 拥有一个 PersistentLevel（必须存在）</li>
+<li>一个 UWorld 可以包含多个 ULevel（通过 <code>Levels</code> 数组，实现关卡流式加载）</li>
+<li>整个游戏运行期间通常只有一个活动的 UWorld 实例</li>
+</ul>
+<h3 id="4-3-ULevel-核心成员详解"><a href="#4-3-ULevel-核心成员详解" class="headerlink" title="4.3 ULevel 核心成员详解"></a>4.3 ULevel 核心成员详解</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ULevel</span> : <span class="keyword">public</span> UObject, <span class="keyword">public</span> IInterface_AssetUserData, <span class="keyword">public</span> ITextureStreamingContainer</span><br></pre></td></tr></table></figure>
+
+<p>源码注释明确说明：</p>
+<blockquote>
+<p><em>Every Level has a World as its Outer, however, when a Level has been streamed in the <strong>OwningWorld</strong> represents the World that it is a part of.</em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>核心成员</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Actors</code></td>
+<td>此关卡中的所有 Actor</td>
+</tr>
+<tr>
+<td><code>WorldSettings</code></td>
+<td>指向 <code>AWorldSettings</code></td>
+</tr>
+<tr>
+<td><code>OwningWorld</code></td>
+<td>指向所属的 <code>UWorld</code>（运行时）</td>
+</tr>
+<tr>
+<td><code>LevelScriptActor</code></td>
+<td>关卡蓝图生成的脚本 Actor</td>
+</tr>
+<tr>
+<td><code>Model</code></td>
+<td>BSP 模型数据</td>
+</tr>
+</tbody></table>
+<p><strong>Outer vs OwningWorld 的区别</strong>：</p>
+<ul>
+<li><code>GetOuter()</code> → 返回”壳” UWorld（原始 Package 中的，被称为 “vestigial world”）</li>
+<li><code>OwningWorld</code> → 运行时指向真正的主世界 UWorld</li>
+</ul>
+<p>对于流式关卡，<code>GetOuter()</code> 返回的是一个”遗迹 World”（vestigial world），所以引擎用 <code>OwningWorld</code> 来指向实际所属的 UWorld。</p>
+<h3 id="4-4-AWorldSettings-的生效机制"><a href="#4-4-AWorldSettings-的生效机制" class="headerlink" title="4.4 AWorldSettings 的生效机制"></a>4.4 AWorldSettings 的生效机制</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AWorldSettings</span> : <span class="keyword">public</span> AInfo, <span class="keyword">public</span> IInterface_AssetUserData</span><br></pre></td></tr></table></figure>
+
+<p><code>AWorldSettings</code> 是一个 Actor（继承自 <code>AInfo → AActor</code>），它是每个 Level 的配置容器，包含预计算可见性设置、物理世界边界检查开关、导航系统配置、AI 系统开关、光照构建参数、World Partition &#x2F; 资源合成等高级设置、DefaultGameMode、重力、KillZ 等环境参数。</p>
+<p>每个 ULevel 拥有恰好一个 AWorldSettings（通过 <code>ULevel::WorldSettings</code> 成员引用）。在 PostLoad 时，如果 <code>WorldSettings</code> 为空，会自动从 Actors 数组的第 0 个元素获取：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (WorldSettings == <span class="literal">nullptr</span>)</span><br><span class="line">&#123;</span><br><span class="line">    WorldSettings = <span class="built_in">Cast</span>&lt;AWorldSettings&gt;(Actors[<span class="number">0</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="ULevel-GetWorldSettings-vs-UWorld-GetWorldSettings"><a href="#ULevel-GetWorldSettings-vs-UWorld-GetWorldSettings" class="headerlink" title="ULevel::GetWorldSettings() vs UWorld::GetWorldSettings()"></a>ULevel::GetWorldSettings() vs UWorld::GetWorldSettings()</h4><p>这是理解子关卡配置的关键区别：</p>
+<p><strong>ULevel::GetWorldSettings()</strong> — 直接返回本关卡的 WorldSettings：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">AWorldSettings* <span class="title">ULevel::GetWorldSettings</span><span class="params">(<span class="type">bool</span> bChecked)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (bChecked)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">checkf</span>(WorldSettings != <span class="literal">nullptr</span>, <span class="built_in">TEXT</span>(<span class="string">&quot;%s&quot;</span>), *<span class="built_in">GetPathName</span>());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> WorldSettings;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>任何关卡（包括流送子关卡）调用此方法，返回的都是该关卡自己的 AWorldSettings。</p>
+<p><strong>UWorld::GetWorldSettings()</strong> — 始终返回 PersistentLevel 的 WorldSettings：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">AWorldSettings* <span class="title">UWorld::GetWorldSettings</span><span class="params">(<span class="type">bool</span> bCheckStreamingPersistent, <span class="type">bool</span> bChecked)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    AWorldSettings* WorldSettings = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">if</span> (PersistentLevel)</span><br><span class="line">    &#123;</span><br><span class="line">        WorldSettings = PersistentLevel-&gt;<span class="built_in">GetWorldSettings</span>(bChecked);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (bCheckStreamingPersistent)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (StreamingLevels.<span class="built_in">Num</span>() &gt; <span class="number">0</span> &amp;&amp;</span><br><span class="line">                StreamingLevels[<span class="number">0</span>] &amp;&amp;</span><br><span class="line">                StreamingLevels[<span class="number">0</span>]-&gt;<span class="built_in">IsA</span>&lt;ULevelStreamingPersistent&gt;())</span><br><span class="line">            &#123;</span><br><span class="line">                ULevel* Level = StreamingLevels[<span class="number">0</span>]-&gt;<span class="built_in">GetLoadedLevel</span>();</span><br><span class="line">                <span class="keyword">if</span> (Level != <span class="literal">nullptr</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    WorldSettings = Level-&gt;<span class="built_in">GetWorldSettings</span>(bChecked);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> WorldSettings;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>所有全局系统（导航、AI、物理、GameMode 等）都通过 <code>UWorld::GetWorldSettings()</code> 获取配置</strong>，所以子关卡的 WorldSettings 完全被忽略。</p>
+<h4 id="IsPersistentLevel-判断"><a href="#IsPersistentLevel-判断" class="headerlink" title="IsPersistentLevel() 判断"></a>IsPersistentLevel() 判断</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">ULevel::IsPersistentLevel</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">bool</span> bIsPersistent = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (OwningWorld)</span><br><span class="line">    &#123;</span><br><span class="line">        bIsPersistent = (<span class="keyword">this</span> == OwningWorld-&gt;PersistentLevel);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bIsPersistent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="持久关卡-vs-流送关卡对照表"><a href="#持久关卡-vs-流送关卡对照表" class="headerlink" title="持久关卡 vs 流送关卡对照表"></a>持久关卡 vs 流送关卡对照表</h4><table>
+<thead>
+<tr>
+<th>行为</th>
+<th>持久关卡 (Persistent Level)</th>
+<th>流送子关卡 (Streaming Level)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>是否有独立的 AWorldSettings</td>
+<td>有，存储在 <code>ULevel::WorldSettings</code></td>
+<td>有，每个 .umap 都有自己的</td>
+</tr>
+<tr>
+<td><code>ULevel::GetWorldSettings()</code></td>
+<td>返回自己的 WorldSettings</td>
+<td>返回自己的 WorldSettings</td>
+</tr>
+<tr>
+<td><code>UWorld::GetWorldSettings()</code></td>
+<td><strong>返回这个关卡的 WorldSettings</strong></td>
+<td><strong>不会返回子关卡的</strong>，仍返回持久关卡的</td>
+</tr>
+<tr>
+<td>WorldSettings 的实际作用</td>
+<td>控制整个 World 的全局设置（GameMode、导航、HLOD 等）</td>
+<td>主要用于序列化&#x2F;编辑器中子关卡的独立配置，运行时被忽略</td>
+</tr>
+<tr>
+<td><code>IsPersistentLevel()</code></td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>CheckForErrors()</code></td>
+<td>作为”权威”WorldSettings 通过检查</td>
+<td>被标记为 “Duplicate level info” 警告</td>
+</tr>
+<tr>
+<td>Navigation</td>
+<td>构建全局导航网格</td>
+<td>动态注入到全局导航系统中</td>
+</tr>
+<tr>
+<td>GameMode</td>
+<td>决定本局游戏的规则逻辑</td>
+<td>子关卡中的 GameMode 设置无效</td>
+</tr>
+<tr>
+<td>KillZ</td>
+<td>定义玩家被消除的高度</td>
+<td>无效</td>
+</tr>
+<tr>
+<td>重力</td>
+<td>定义全局重力</td>
+<td>无效</td>
+</tr>
+</tbody></table>
+<h4 id="为什么子关卡还需要-WorldSettings？"><a href="#为什么子关卡还需要-WorldSettings？" class="headerlink" title="为什么子关卡还需要 WorldSettings？"></a>为什么子关卡还需要 WorldSettings？</h4><ol>
+<li><strong>编辑器独立编辑</strong>：子关卡可以独立打开编辑，此时它作为 PersistentLevel，WorldSettings 生效</li>
+<li><strong>序列化需要</strong>：<code>ULevel::WorldSettings</code> 是 <code>UPROPERTY()</code>，保存时需要序列化</li>
+<li><strong>ULevel::GetWorldSettings()</strong> 直接返回自己的，某些局部逻辑会用到</li>
+<li><strong>World Partition Cell</strong>：<code>CreateWorld()</code> 自动创建，但被禁用网络复制</li>
+</ol>
+<h3 id="4-5-传统-Level-Streaming-源码级流程"><a href="#4-5-传统-Level-Streaming-源码级流程" class="headerlink" title="4.5 传统 Level Streaming 源码级流程"></a>4.5 传统 Level Streaming 源码级流程</h3><h4 id="ULevelStreaming-核心成员"><a href="#ULevelStreaming-核心成员" class="headerlink" title="ULevelStreaming 核心成员"></a>ULevelStreaming 核心成员</h4><p>ULevelStreaming 是一个抽象基类（<code>UCLASS(abstract)</code>），外层对象（Outer）必须是 UWorld（<code>Within=World</code>）。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">TSoftObjectPtr&lt;UWorld&gt; WorldAsset;           <span class="comment">// 引用要加载的关卡世界资源</span></span><br><span class="line">TObjectPtr&lt;<span class="keyword">class</span> <span class="title class_">ULevel</span>&gt; LoadedLevel;        <span class="comment">// 已加载的 ULevel 指针</span></span><br><span class="line">TObjectPtr&lt;<span class="keyword">class</span> <span class="title class_">ULevel</span>&gt; PendingUnloadLevel; <span class="comment">// LOD 切换时被替换的旧 Level</span></span><br><span class="line">ELevelStreamingState CurrentState;            <span class="comment">// 当前流式状态</span></span><br><span class="line">ELevelStreamingTargetState TargetState;       <span class="comment">// 目标状态</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="RequestLevel-—-从-Package-加载-ULevel"><a href="#RequestLevel-—-从-Package-加载-ULevel" class="headerlink" title="RequestLevel — 从 Package 加载 ULevel"></a>RequestLevel — 从 Package 加载 ULevel</h4><p>三条加载路径：</p>
+<p><strong>路径 1：Package 已在内存中（同步复用）</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">UPackage* LevelPackage = (UPackage*)<span class="built_in">StaticFindObjectFast</span>(UPackage::<span class="built_in">StaticClass</span>(), <span class="literal">nullptr</span>, DesiredPackageName, ...);</span><br><span class="line"><span class="keyword">if</span> (LevelPackage)</span><br><span class="line">&#123;</span><br><span class="line">    World = UWorld::<span class="built_in">FindWorldInPackage</span>(LevelPackage);</span><br><span class="line">    World-&gt;PersistentLevel-&gt;OwningWorld = PersistentWorld;</span><br><span class="line">    <span class="built_in">PrepareLoadedLevel</span>(World-&gt;PersistentLevel, LevelPackage, PIEInstanceID);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>路径 2：PIE 模式下的 World 复制</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">UWorld* PIELevelWorld = UWorld::<span class="built_in">DuplicateWorldForPIE</span>(NonPrefixedLevelName, PersistentWorld);</span><br><span class="line"><span class="keyword">if</span> (PIELevelWorld)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">SetLoadedLevel</span>(PIELevelWorld-&gt;PersistentLevel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>路径 3：异步加载（最常见路径）</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">SetCurrentState</span>(ELevelStreamingState::Loading);</span><br><span class="line">ULevel::StreamedLevelsOwningWorld.<span class="built_in">Add</span>(DesiredPackageName, PersistentWorld);</span><br><span class="line">UWorld::WorldTypePreLoadMap.<span class="built_in">FindOrAdd</span>(DesiredPackageName) = PersistentWorld-&gt;WorldType;</span><br><span class="line">AsyncRequestIDs.<span class="built_in">Add</span>(<span class="built_in">LoadPackageAsync</span>(PackagePath, DesiredPackageName,</span><br><span class="line">    FLoadPackageAsyncDelegate::<span class="built_in">CreateUObject</span>(<span class="keyword">this</span>, &amp;ULevelStreaming::AsyncLevelLoadComplete), ...));</span><br></pre></td></tr></table></figure>
+
+<h4 id="AsyncLevelLoadComplete-—-异步加载完成回调"><a href="#AsyncLevelLoadComplete-—-异步加载完成回调" class="headerlink" title="AsyncLevelLoadComplete — 异步加载完成回调"></a>AsyncLevelLoadComplete — 异步加载完成回调</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ULevelStreaming::AsyncLevelLoadComplete</span><span class="params">(...)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">SetCurrentState</span>(ELevelStreamingState::LoadedNotVisible);</span><br><span class="line">    UWorld* World = UWorld::<span class="built_in">FindWorldInPackage</span>(LevelPackage);</span><br><span class="line">    <span class="keyword">if</span> (World)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (ULevel* Level = World-&gt;PersistentLevel)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">PrepareLoadedLevel</span>(Level, LevelPackage, ...);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>核心要点：从 Package 中找到的始终是 <code>UWorld</code>，然后取 <code>World-&gt;PersistentLevel</code> 作为实际的 <code>ULevel</code> 对象。</p>
+<h4 id="SetLoadedLevel-—-设置已加载关卡"><a href="#SetLoadedLevel-—-设置已加载关卡" class="headerlink" title="SetLoadedLevel — 设置已加载关卡"></a>SetLoadedLevel — 设置已加载关卡</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ULevelStreaming::SetLoadedLevel</span><span class="params">(ULevel* Level)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PendingUnloadLevel = LoadedLevel;</span><br><span class="line">    LoadedLevel = Level;</span><br><span class="line"></span><br><span class="line">    UWorld* World = <span class="built_in">GetWorld</span>();</span><br><span class="line">    FLevelCollection&amp; LC = World-&gt;<span class="built_in">FindOrAddCollectionForLevelStreaming</span>(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (LoadedLevel)</span><br><span class="line">    &#123;</span><br><span class="line">        LoadedLevel-&gt;OwningWorld = World;</span><br><span class="line">        ULevelStreaming::LevelAnnotations.<span class="built_in">AddAnnotation</span>(LoadedLevel, <span class="built_in">FLevelAnnotation</span>(<span class="keyword">this</span>));</span><br><span class="line">        LC.<span class="built_in">AddLevel</span>(LoadedLevel);</span><br><span class="line">        <span class="built_in">SetCurrentState</span>(LoadedLevel-&gt;bIsVisible ? LoadedVisible : LoadedNotVisible);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="UWorld-AddToWorld-—-将-Level-加入世界"><a href="#UWorld-AddToWorld-—-将-Level-加入世界" class="headerlink" title="UWorld::AddToWorld — 将 Level 加入世界"></a>UWorld::AddToWorld — 将 Level 加入世界</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UWorld::AddToWorld</span><span class="params">(ULevel* Level, <span class="type">const</span> FTransform&amp; LevelTransform, ...)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Level-&gt;OwningWorld = <span class="keyword">this</span>;</span><br><span class="line">    Levels.<span class="built_in">AddUnique</span>(Level);</span><br><span class="line">    FLevelUtils::<span class="built_in">ApplyLevelTransform</span>(TransformParams);</span><br><span class="line">    Level-&gt;<span class="built_in">IncrementalUpdateComponents</span>(...);</span><br><span class="line">    Level-&gt;<span class="built_in">InitializeNetworkActors</span>();</span><br><span class="line">    Level-&gt;<span class="built_in">RouteActorInitialize</span>(...);</span><br><span class="line">    Level-&gt;<span class="built_in">SortActorList</span>();</span><br><span class="line">    Level-&gt;bIsVisible = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="UWorld-RemoveFromWorld-—-将-Level-从世界移除"><a href="#UWorld-RemoveFromWorld-—-将-Level-从世界移除" class="headerlink" title="UWorld::RemoveFromWorld — 将 Level 从世界移除"></a>UWorld::RemoveFromWorld — 将 Level 从世界移除</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UWorld::RemoveFromWorld</span><span class="params">(ULevel* Level, ...)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Level-&gt;bIsBeingRemoved = <span class="literal">true</span>;</span><br><span class="line">    Level-&gt;<span class="built_in">IncrementalUnregisterComponents</span>(...);</span><br><span class="line">    Level-&gt;<span class="built_in">ReleaseRenderingResources</span>();</span><br><span class="line">    IStreamingManager::<span class="built_in">Get</span>().<span class="built_in">RemoveLevel</span>(Level);</span><br><span class="line">    Level-&gt;<span class="built_in">ClearLevelComponents</span>();</span><br><span class="line">    Levels.<span class="built_in">Remove</span>(Level);</span><br><span class="line">    Level-&gt;OwningWorld = <span class="literal">nullptr</span>;</span><br><span class="line">    Level-&gt;bIsVisible = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-6-World-Partition-源码级流程"><a href="#4-6-World-Partition-源码级流程" class="headerlink" title="4.6 World Partition 源码级流程"></a>4.6 World Partition 源码级流程</h3><h4 id="核心类层次结构"><a href="#核心类层次结构" class="headerlink" title="核心类层次结构"></a>核心类层次结构</h4><table>
+<thead>
+<tr>
+<th>类名</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>UWorldPartition</code></td>
+<td>总管理器，挂载在 WorldSettings 上</td>
+</tr>
+<tr>
+<td><code>UWorldPartitionRuntimeHash</code></td>
+<td>运行时空间哈希，决定哪些 Cell 需要加载</td>
+</tr>
+<tr>
+<td><code>UWorldPartitionRuntimeCell</code></td>
+<td>抽象 Cell 基类</td>
+</tr>
+<tr>
+<td><code>UWorldPartitionRuntimeLevelStreamingCell</code></td>
+<td>具体的 Cell 实现，持有 <code>UWorldPartitionLevelStreamingDynamic</code></td>
+</tr>
+<tr>
+<td><code>UWorldPartitionLevelStreamingDynamic</code></td>
+<td>继承自 <code>ULevelStreamingDynamic</code>，管理实际的 ULevel 创建和 Actor 加载</td>
+</tr>
+<tr>
+<td><code>UWorldPartitionStreamingPolicy</code></td>
+<td>流式策略基类，驱动 Cell 的 Load&#x2F;Unload&#x2F;Activate&#x2F;Deactivate</td>
+</tr>
+<tr>
+<td><code>UWorldPartitionLevelStreamingPolicy</code></td>
+<td>默认的流式策略实现</td>
+</tr>
+<tr>
+<td><code>FWorldPartitionLevelHelper</code></td>
+<td>工具类，负责创建空的 ULevel 和加载 Actor</td>
+</tr>
+</tbody></table>
+<h4 id="阶段一：初始化-—-UWorldPartition-Initialize"><a href="#阶段一：初始化-—-UWorldPartition-Initialize" class="headerlink" title="阶段一：初始化 — UWorldPartition::Initialize"></a>阶段一：初始化 — UWorldPartition::Initialize</h4><ol>
+<li>保存对 <code>UWorld</code> 的引用</li>
+<li>在编辑器中：创建 <code>EditorHash</code>，加载 AlwaysLoaded actors</li>
+<li>在游戏&#x2F;PIE 中：调用 <code>PrepareEditorGameWorld()</code> → <code>GenerateStreaming()</code> 来生成 <code>StreamingPolicy</code></li>
+<li><code>RuntimeHash-&gt;GenerateStreaming()</code> 创建所有的 <code>UWorldPartitionRuntimeLevelStreamingCell</code> 对象</li>
+</ol>
+<h4 id="阶段二：每帧更新-—-UpdateStreamingState"><a href="#阶段二：每帧更新-—-UpdateStreamingState" class="headerlink" title="阶段二：每帧更新 — UpdateStreamingState"></a>阶段二：每帧更新 — UpdateStreamingState</h4><p>由 <code>UWorldPartitionSubsystem::Tick</code> 驱动：</p>
+<ol>
+<li><strong>收集 Streaming Sources</strong>（玩家位置、摄像机等）</li>
+<li><strong>计算哪些 Cell 需要加载&#x2F;激活</strong>（空间哈希查询 <code>ForEachStreamingCellsSources</code>）</li>
+<li><strong>执行状态转换</strong>：<ul>
+<li><code>SetCellStateToLoaded</code> → 调用 <code>Cell-&gt;Load()</code></li>
+<li><code>SetCellStateToActivated</code> → 调用 <code>Cell-&gt;Activate()</code></li>
+<li><code>SetCellsStateToUnloaded</code> → 调用 <code>Cell-&gt;Unload()</code></li>
+</ul>
+</li>
+</ol>
+<h4 id="阶段三：Cell-加载-—-Load"><a href="#阶段三：Cell-加载-—-Load" class="headerlink" title="阶段三：Cell 加载 — Load"></a>阶段三：Cell 加载 — Load</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UWorldPartitionRuntimeLevelStreamingCell::Load</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (UWorldPartitionLevelStreamingDynamic* LocalLevelStreaming = <span class="built_in">GetOrCreateLevelStreaming</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        LocalLevelStreaming-&gt;<span class="built_in">Load</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Load()</code> 内部：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UWorldPartitionLevelStreamingDynamic::Load</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">SetShouldBeLoaded</span>(<span class="literal">true</span>);</span><br><span class="line">    <span class="built_in">SetShouldBeVisible</span>(<span class="literal">false</span>);</span><br><span class="line">    <span class="built_in">SetIsRequestingUnloadAndRemoval</span>(<span class="literal">false</span>);</span><br><span class="line">    UWorld* PlayWorld = <span class="built_in">GetWorld</span>();</span><br><span class="line">    PlayWorld-&gt;<span class="built_in">AddUniqueStreamingLevel</span>(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="阶段四：创建-ULevel-—-CreateRuntimeLevel（关键步骤）"><a href="#阶段四：创建-ULevel-—-CreateRuntimeLevel（关键步骤）" class="headerlink" title="阶段四：创建 ULevel — CreateRuntimeLevel（关键步骤）"></a>阶段四：创建 ULevel — CreateRuntimeLevel（关键步骤）</h4><p>Cell 的 ULevel 是”凭空创建”的，不是从 .umap 加载的：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">ULevel* <span class="title">FWorldPartitionLevelHelper::CreateEmptyLevelForRuntimeCell</span><span class="params">(...)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    UPackage* CellPackage = <span class="built_in">CreatePackage</span>(*PackageName);</span><br><span class="line"></span><br><span class="line">    UWorld* NewWorld = UWorld::<span class="built_in">CreateWorld</span>(InWorld-&gt;WorldType, <span class="literal">false</span>, WorldName,</span><br><span class="line">        CellPackage, <span class="literal">false</span>, InWorld-&gt;<span class="built_in">GetFeatureLevel</span>(), &amp;IVS, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">check</span>(NewWorld-&gt;<span class="built_in">GetWorldSettings</span>());</span><br><span class="line">    <span class="function">FSetActorReplicates <span class="title">SetActorReplicates</span><span class="params">(NewWorld-&gt;GetWorldSettings(), <span class="literal">false</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    ULevel* NewLevel = NewWorld-&gt;PersistentLevel;</span><br><span class="line">    NewLevel-&gt;WorldPartitionRuntimeCell = <span class="built_in">const_cast</span>&lt;UWorldPartitionRuntimeCell*&gt;(Cell);</span><br><span class="line">    NewLevel-&gt;LevelBuildDataId = InWorld-&gt;PersistentLevel-&gt;LevelBuildDataId;</span><br><span class="line">    NewLevel-&gt;Model-&gt;LightingGuid = InWorld-&gt;PersistentLevel-&gt;Model-&gt;LightingGuid;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> NewLevel;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="阶段五：加载-Actor-到-Level-—-IssueLoadRequests"><a href="#阶段五：加载-Actor-到-Level-—-IssueLoadRequests" class="headerlink" title="阶段五：加载 Actor 到 Level — IssueLoadRequests"></a>阶段五：加载 Actor 到 Level — IssueLoadRequests</h4><p>通过 <code>FWorldPartitionLevelHelper::LoadActors</code> 异步加载外部 Actor 包并移入 Cell Level：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">UWorldPartitionLevelStreamingDynamic::IssueLoadRequests</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FWorldPartitionLevelHelper::FLoadActorsParams Params = ...</span><br><span class="line">        .<span class="built_in">SetDestLevel</span>(RuntimeLevel)</span><br><span class="line">        .<span class="built_in">SetActorPackages</span>(ChildPackagesToLoad)</span><br><span class="line">        .<span class="built_in">SetCompletionCallback</span>(FinalizeLoading);</span><br><span class="line">    FWorldPartitionLevelHelper::<span class="built_in">LoadActors</span>(<span class="built_in">MoveTemp</span>(Params));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加载完成后调用 <code>FinalizeRuntimeLevel()</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UWorldPartitionLevelStreamingDynamic::FinalizeRuntimeLevel</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">SetLoadedLevel</span>(RuntimeLevel);</span><br><span class="line">    OnLevelLoaded.<span class="built_in">Broadcast</span>();</span><br><span class="line">    IStreamingManager::<span class="built_in">Get</span>().<span class="built_in">AddLevel</span>(RuntimeLevel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="阶段六：激活-—-Activate"><a href="#阶段六：激活-—-Activate" class="headerlink" title="阶段六：激活 — Activate"></a>阶段六：激活 — Activate</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UWorldPartitionLevelStreamingDynamic::Activate</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">SetShouldBeLoaded</span>(<span class="literal">true</span>);</span><br><span class="line">    <span class="built_in">SetShouldBeVisible</span>(<span class="literal">true</span>);</span><br><span class="line">    PlayWorld-&gt;<span class="built_in">AddUniqueStreamingLevel</span>(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="World-Partition-的-WorldSettings-处理"><a href="#World-Partition-的-WorldSettings-处理" class="headerlink" title="World Partition 的 WorldSettings 处理"></a>World Partition 的 WorldSettings 处理</h4><ul>
+<li>每个 Cell 创建的 ULevel 都会创建自己的 UWorld 和 WorldSettings（通过 <code>UWorld::CreateWorld</code> 自动创建）</li>
+<li>Cell 的 WorldSettings <strong>不会参与网络复制</strong>（被 <code>FSetActorReplicates</code> 禁用）</li>
+<li>Cell 的 WorldSettings 是默认的，不是主世界的 WorldSettings</li>
+<li>主世界的 WorldSettings 仅存在于 PersistentLevel 中，Cell Level 不共享</li>
+<li>在嵌入模式下，子关卡中的非 OFPA Actor 会被丢弃，AWorldSettings 属于非 OFPA Actor，子关卡的 WorldSettings 在运行时根本不存在</li>
+</ul>
+<hr>
+<h2 id="五、开发实践建议"><a href="#五、开发实践建议" class="headerlink" title="五、开发实践建议"></a>五、开发实践建议</h2><ol>
+<li><strong>全局配置集中化</strong>：始终在 Persistent Level 的 World Settings 面板中设置重力、KillZ 和 GameMode</li>
+<li><strong>避免子关卡逻辑依赖</strong>：不要在子关卡的 AWorldSettings 中写任何逻辑或存储关键数据，因为在 World Partition 下它们可能被丢弃</li>
+<li><strong>局部物理覆盖</strong>：如果希望不同区域有不同重力，不要通过 World Settings，而应使用 Physics Volume 来局部覆盖</li>
+<li><strong>子关卡只是 Actor 的搬运工，主关卡才是世界的决策者</strong></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/UE/Engine/%E5%9C%B0%E5%9B%BE%E8%B5%84%E4%BA%A7%E4%B8%8EWorld%E4%B8%8ELevel%E5%85%B3%E7%B3%BB%E5%88%86%E6%9E%90/">https://mikeming126.github.io/UE/Engine/%E5%9C%B0%E5%9B%BE%E8%B5%84%E4%BA%A7%E4%B8%8EWorld%E4%B8%8ELevel%E5%85%B3%E7%B3%BB%E5%88%86%E6%9E%90/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/Level/">Level</a><a class="post-meta__tags" href="/tags/World/">World</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/UE/Engine/UE%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84/" title="虚幻引擎核心架构简要分析"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">虚幻引擎核心架构简要分析</div></div><div class="info-2"><div class="info-item-1">虚幻引擎核心架构主要对底层的Engine，GameInstance,FWorldContext,World,Level来做一个详细的说明 先来一个Gameplay的大框架图。来总体理解虚幻的这套游戏框架是怎么样的。 UGameEngine [进程生命周期]│├── FWorldContext (1:1 对应 GameInstance)                       [随 GameInstance 创建/销毁]│    ││    ├── UGameInstance(在GameEngine情况下，GameEngine也会持有GameInstanc(类型也是TObjectPtr))                    │    │    ├── UGameInstanceSubsystem│    │    └── ULocalPlayer│    │         └── UGameViewportClient│    ││    └── UWorld (ThisCurrentWorld, 切换时替换)                   [关卡生命周期]│  ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/UE/OfficialDocLearn/Levels/Level/" title="UE - Level"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-18</div><div class="info-item-2">UE - Level</div></div><div class="info-2"><div class="info-item-1">笔记内容  文本Level 或者亦可以称之为 Map   资产文件.umap  Levels &amp;&amp; World Partition结合UWorld相关的概念进行理解 World Settings (结合ULevel UWorld) 设置和Level相关的各类信息。不过这里感觉还是要留意World的概念，以及SubLevels。具体详细的还是看到官方文档。这里没必要做过多赘述。  Precomputed Visibility  -&gt; volumes reduce rendering thread time.  -&gt; For smaller level, Hardware limitation  | 移动设备  GameMode  Lightmass 光源设置  World [相关还是可以看看官方文档]  Level bounds navigation systems “World Depth”   Physics  World Gravity 重力   Broadphase  Feature of NVIDIA’s PhysX...</div></div></div></a><a class="pagination-related" href="/UE/OfficialDocLearn/Levels/LevelInstancing/" title="UE - LevelInstancing"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-18</div><div class="info-item-2">UE - LevelInstancing</div></div><div class="info-2"><div class="info-item-1">笔记内容  文本Level Instances  - 1. Level Instances -&gt; Collection of Actors, to create sublevel  - 2. Packed Level Blueprints -&gt; 静态网格体组合[渲染优化]   Creating Level Instances 小结: 两者其实都是将场景中的对象进行组合一起管理的一种方式。并且提供了复制的功能、在改动时 可以同步对应的改动。  Packed Level Blueprint 有着对应的蓝图对象可以用来操作 默认情况下使用组合节点的Data Layer,内部也可以自定义不同的Data Layer Level Steaming Modes:  Embedded Mode - 相当于仅在编辑器时，存在对应的 Level Instances. 运行时还是加载对应的Actor [这个也是推荐的模式 需要OFPA]  Level Streaming Mode - 作为一个整体。其所在的World Partition...</div></div></div></a><a class="pagination-related" href="/UE/OfficialDocLearn/Levels/WorldPartition/" title="UE - WorldPartition"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-18</div><div class="info-item-2">UE - WorldPartition</div></div><div class="info-2"><div class="info-item-1">笔记内容  文本目录和话题：  World Partition One File Per Actor Data Layers  World Partition:世界分区 结合之前Level 与 SubLevels的概念  重点在于如何处理大世界  动态的加载和卸载对应的”子地图模块”以及上面的资源 处理跨地图的寻路和Actor逻辑 子模块的单独开发[资源独立性 开发效率]  基于上述需求 - 新的解决方案： World Partition  “Cells” 的概念  由WorldPartition来控制Cells的加载与卸载  基于流送源的距离 [Based on distance from a streaming source]  Single Persistent Level  单个Level  “Grid Cells” 单元格概念   Actors - 需要了解 One File Per Actor的概念  在World Partition中设置其归属Grid 在不属于Disabled Data Layer时 依据 Is Spatially Loaded...</div></div></div></a><a class="pagination-related" href="/UE/Engine/UEGameFeature%E4%B8%8EModule%E5%AF%B9%E6%AF%94/" title="UE GameFeature 与 Module 对比"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-21</div><div class="info-item-2">UE GameFeature 与 Module 对比</div></div><div class="info-2"><div class="info-item-1">对GameFeature和Module进行分析。同时考虑其本质：程序集，探讨和Unity对应的程序集的异同和实践方案。 Module具体的内容可以看到这篇文章： UE-Module  一般Plugin，也会有对应的代码模块。 本质定义模块是编译边界，不是逻辑边界  Module 是编译期与运行期的代码组织单元，与资产（Asset）无强制绑定关系。  由 .Build.cs 定义，UBT 编译为独立共享库（.dll&#x2F;.so） 必须实现 IModuleInterface（通过 IMPLEMENT_MODULE 宏注册） 加载由 FModuleManager 管理，支持运行时动态加载  与资产的关系：  无引擎级强绑定：资产通过包路径（/Game/...）寻址，与模块名无关 工程惯例：模块根目录下创建 Content/，UBT 自动识别为关联资源（仅为打包与路径组织约定） 源码体现：UnrealBuildTool 扫描模块目录下的 Content，但资产注册&#x2F;Cook&#x2F;加载由 ContentPipeline...</div></div></div></a><a class="pagination-related" href="/UE/Engine/UE_Input/" title="UE Input输入"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-15</div><div class="info-item-2">UE Input输入</div></div><div class="info-2"><div class="info-item-1">官方文章Doc 基础输入 [Actor Input]Acotr Input响应玩家输入 启用ActorInput  将PlayerController与对应的Actor绑定在一起 启用输入 配套的禁用输入 Disable Input  使用事件来启用&#x2F;禁用输入  CollisionComp的Overlap  此外 输入是有优先级以及“消耗”这一说法的。 [见Consume Input] 增强输入 [Enhanced Input]键输入的重新映射 概念：  输入动作 Input Actions 输入映射上下文 Input Mapping Context 输入修饰器 Input Modifers 输入触发器 Input Tiggers  输入动作输入动作在概念上相当于 操作（Action） 和 轴（Axis） 映射名称，但它们是数据资产。 每个输入动作应该表示用户可以执行的某件事，例如”蹲伏”或”发射武器”。 你可以在蓝图或C++中添加 输入侦听器（Input Listeners）...</div></div></div></a><a class="pagination-related" href="/UE/Engine/UEModule/" title="UE-Module"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-13</div><div class="info-item-2">UE-Module</div></div><div class="info-2"><div class="info-item-1">虚幻引擎模块[Module] - Doc官方参考文章地址 简介模块（Modules）是 虚幻引擎（UE）的软件架构的基本构建块。它们在独立的代码单元中封装了具体的编辑器工具、运行时功能、库或其他功能。 好处使用模块整理项目可带来以下好处：  模块会强制实施良好的代码分离，可用于封装功能并隐藏代码的内部成分。  模块编译为单独的编译单元。这意味着，只有已更改的模块才需要编译，较大项目的编译时间会显著缩短。  模块在依赖性图表中链接在一起，并且仅允许实际使用的代码包含头文件，以符合Include What You Use...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">62</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%99%9A%E5%B9%BB%E5%BC%95%E6%93%8E%E5%9C%B0%E5%9B%BE%E4%BD%93%E7%B3%BB%EF%BC%9A%E4%BB%8E%E8%B5%84%E6%BA%90%E5%88%B0%E8%BF%90%E8%A1%8C%E6%97%B6%E7%9A%84%E5%AE%8C%E6%95%B4%E8%A7%A3%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">虚幻引擎地图体系：从资源到运行时的完整解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%95%B4%E4%BD%93%E5%85%B3%E7%B3%BB%E5%9B%BE"><span class="toc-number">1.1.</span> <span class="toc-text">一、整体关系图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E6%A6%82%E8%A7%88"><span class="toc-number">1.2.</span> <span class="toc-text">二、核心概念概览</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E5%9B%BE%E8%B5%84%E6%BA%90%EF%BC%88-uasset-umap%EF%BC%89"><span class="toc-number">1.2.1.</span> <span class="toc-text">地图资源（.uasset &#x2F; .umap）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UWorld-%E2%80%94-%E2%80%9C%E4%B8%96%E7%95%8C%E2%80%9D%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E5%AE%B9%E5%99%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text">UWorld — “世界”的运行时容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ULevel-%E2%80%94-%E5%85%B3%E5%8D%A1%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.2.3.</span> <span class="toc-text">ULevel — 关卡的运行时表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AWorldSettings-%E2%80%94-%E5%85%B3%E5%8D%A1%E7%BA%A7%E5%88%AB%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.4.</span> <span class="toc-text">AWorldSettings — 关卡级别的配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%A4%9A%E5%85%B3%E5%8D%A1%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%EF%BC%9ALevel-Streaming-%E4%B8%8E-World-Partition"><span class="toc-number">1.3.</span> <span class="toc-text">三、多关卡加载机制：Level Streaming 与 World Partition</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F-Level-Streaming"><span class="toc-number">1.3.1.</span> <span class="toc-text">传统 Level Streaming</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#World-Partition"><span class="toc-number">1.3.2.</span> <span class="toc-text">World Partition</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93"><span class="toc-number">1.3.3.</span> <span class="toc-text">对比总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%AF%A6%E7%BB%86%E8%A7%A3%E6%9E%90"><span class="toc-number">1.4.</span> <span class="toc-text">四、详细解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%9C%B0%E5%9B%BE%E8%B5%84%E6%BA%90%E4%B8%8E-Package-%E5%8A%A0%E8%BD%BD"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 地图资源与 Package 加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-UWorld-%E6%A0%B8%E5%BF%83%E6%88%90%E5%91%98%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 UWorld 核心成员详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-ULevel-%E6%A0%B8%E5%BF%83%E6%88%90%E5%91%98%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 ULevel 核心成员详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-AWorldSettings-%E7%9A%84%E7%94%9F%E6%95%88%E6%9C%BA%E5%88%B6"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 AWorldSettings 的生效机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ULevel-GetWorldSettings-vs-UWorld-GetWorldSettings"><span class="toc-number">1.4.4.1.</span> <span class="toc-text">ULevel::GetWorldSettings() vs UWorld::GetWorldSettings()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IsPersistentLevel-%E5%88%A4%E6%96%AD"><span class="toc-number">1.4.4.2.</span> <span class="toc-text">IsPersistentLevel() 判断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%81%E4%B9%85%E5%85%B3%E5%8D%A1-vs-%E6%B5%81%E9%80%81%E5%85%B3%E5%8D%A1%E5%AF%B9%E7%85%A7%E8%A1%A8"><span class="toc-number">1.4.4.3.</span> <span class="toc-text">持久关卡 vs 流送关卡对照表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AD%90%E5%85%B3%E5%8D%A1%E8%BF%98%E9%9C%80%E8%A6%81-WorldSettings%EF%BC%9F"><span class="toc-number">1.4.4.4.</span> <span class="toc-text">为什么子关卡还需要 WorldSettings？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E4%BC%A0%E7%BB%9F-Level-Streaming-%E6%BA%90%E7%A0%81%E7%BA%A7%E6%B5%81%E7%A8%8B"><span class="toc-number">1.4.5.</span> <span class="toc-text">4.5 传统 Level Streaming 源码级流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ULevelStreaming-%E6%A0%B8%E5%BF%83%E6%88%90%E5%91%98"><span class="toc-number">1.4.5.1.</span> <span class="toc-text">ULevelStreaming 核心成员</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RequestLevel-%E2%80%94-%E4%BB%8E-Package-%E5%8A%A0%E8%BD%BD-ULevel"><span class="toc-number">1.4.5.2.</span> <span class="toc-text">RequestLevel — 从 Package 加载 ULevel</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AsyncLevelLoadComplete-%E2%80%94-%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E5%AE%8C%E6%88%90%E5%9B%9E%E8%B0%83"><span class="toc-number">1.4.5.3.</span> <span class="toc-text">AsyncLevelLoadComplete — 异步加载完成回调</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SetLoadedLevel-%E2%80%94-%E8%AE%BE%E7%BD%AE%E5%B7%B2%E5%8A%A0%E8%BD%BD%E5%85%B3%E5%8D%A1"><span class="toc-number">1.4.5.4.</span> <span class="toc-text">SetLoadedLevel — 设置已加载关卡</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UWorld-AddToWorld-%E2%80%94-%E5%B0%86-Level-%E5%8A%A0%E5%85%A5%E4%B8%96%E7%95%8C"><span class="toc-number">1.4.5.5.</span> <span class="toc-text">UWorld::AddToWorld — 将 Level 加入世界</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UWorld-RemoveFromWorld-%E2%80%94-%E5%B0%86-Level-%E4%BB%8E%E4%B8%96%E7%95%8C%E7%A7%BB%E9%99%A4"><span class="toc-number">1.4.5.6.</span> <span class="toc-text">UWorld::RemoveFromWorld — 将 Level 从世界移除</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-World-Partition-%E6%BA%90%E7%A0%81%E7%BA%A7%E6%B5%81%E7%A8%8B"><span class="toc-number">1.4.6.</span> <span class="toc-text">4.6 World Partition 源码级流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.6.1.</span> <span class="toc-text">核心类层次结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E4%B8%80%EF%BC%9A%E5%88%9D%E5%A7%8B%E5%8C%96-%E2%80%94-UWorldPartition-Initialize"><span class="toc-number">1.4.6.2.</span> <span class="toc-text">阶段一：初始化 — UWorldPartition::Initialize</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E4%BA%8C%EF%BC%9A%E6%AF%8F%E5%B8%A7%E6%9B%B4%E6%96%B0-%E2%80%94-UpdateStreamingState"><span class="toc-number">1.4.6.3.</span> <span class="toc-text">阶段二：每帧更新 — UpdateStreamingState</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E4%B8%89%EF%BC%9ACell-%E5%8A%A0%E8%BD%BD-%E2%80%94-Load"><span class="toc-number">1.4.6.4.</span> <span class="toc-text">阶段三：Cell 加载 — Load</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E5%9B%9B%EF%BC%9A%E5%88%9B%E5%BB%BA-ULevel-%E2%80%94-CreateRuntimeLevel%EF%BC%88%E5%85%B3%E9%94%AE%E6%AD%A5%E9%AA%A4%EF%BC%89"><span class="toc-number">1.4.6.5.</span> <span class="toc-text">阶段四：创建 ULevel — CreateRuntimeLevel（关键步骤）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E4%BA%94%EF%BC%9A%E5%8A%A0%E8%BD%BD-Actor-%E5%88%B0-Level-%E2%80%94-IssueLoadRequests"><span class="toc-number">1.4.6.6.</span> <span class="toc-text">阶段五：加载 Actor 到 Level — IssueLoadRequests</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E5%85%AD%EF%BC%9A%E6%BF%80%E6%B4%BB-%E2%80%94-Activate"><span class="toc-number">1.4.6.7.</span> <span class="toc-text">阶段六：激活 — Activate</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#World-Partition-%E7%9A%84-WorldSettings-%E5%A4%84%E7%90%86"><span class="toc-number">1.4.6.8.</span> <span class="toc-text">World Partition 的 WorldSettings 处理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.5.</span> <span class="toc-text">五、开发实践建议</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/UE/Engine/%E5%9C%B0%E5%9B%BE%E8%B5%84%E4%BA%A7%E4%B8%8EWorld%E4%B8%8ELevel%E5%85%B3%E7%B3%BB%E5%88%86%E6%9E%90/" title="地图资产与World与Level关系分析">地图资产与World与Level关系分析</a><time datetime="2026-04-22T05:22:45.679Z" title="发表于 2026-04-22 13:22:45">2026-04-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/UE/Engine/UE%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84/" title="虚幻引擎核心架构简要分析">虚幻引擎核心架构简要分析</a><time datetime="2026-04-21T15:43:20.407Z" title="发表于 2026-04-21 23:43:20">2026-04-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/UE/Engine/UEGameFeature%E4%B8%8EModule%E5%AF%B9%E6%AF%94/" title="UE GameFeature 与 Module 对比">UE GameFeature 与 Module 对比</a><time datetime="2026-04-21T05:16:29.651Z" title="发表于 2026-04-21 13:16:29">2026-04-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/UE/Engine/%E5%8F%8D%E5%B0%84%E4%B8%8EFProperty%E4%B8%8EFField/" title="反射 —— FProperty与FField">反射 —— FProperty与FField</a><time datetime="2026-04-20T15:54:51.364Z" title="发表于 2026-04-20 23:54:51">2026-04-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/Mine/Unity/PostProcessing/" title="Unity PostProcessing">Unity PostProcessing</a><time datetime="2025-10-05T09:10:14.356Z" title="发表于 2025-10-05 17:10:14">2025-10-05</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '55524074b4bb004a9599ff4e839ab166'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

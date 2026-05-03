@@ -1,0 +1,336 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SWidget与UWidget关系及UMG Tick机制 | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本文梳理 Unreal Engine 中 Slate 与 UMG 两层 UI 框架的核心关系，以及 UMG Tick 的完整驱动链。主要回答以下问题：  SWidget 和 UWidget 是什么关系？ —— UWidget 是对底层 SWidget 的 UObject 封装 UMG 的 Tick 是怎么驱动的？ —— Tick 嵌在 Paint 过程中，由 Slate 层自顶向下递归触发 Tic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SWidget与UWidget关系及UMG Tick机制">
+<meta property="og:url" content="https://mikeming126.github.io/ToOpt/SWidget%E4%B8%8EUWidget%E5%85%B3%E7%B3%BB%E5%8F%8AUMG%20Tick%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="本文梳理 Unreal Engine 中 Slate 与 UMG 两层 UI 框架的核心关系，以及 UMG Tick 的完整驱动链。主要回答以下问题：  SWidget 和 UWidget 是什么关系？ —— UWidget 是对底层 SWidget 的 UObject 封装 UMG 的 Tick 是怎么驱动的？ —— Tick 嵌在 Paint 过程中，由 Slate 层自顶向下递归触发 Tic">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2026-05-03T15:11:07.214Z">
+<meta property="article:modified_time" content="2026-05-03T15:18:08.220Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="ToOpt">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SWidget与UWidget关系及UMG Tick机制",
+  "url": "https://mikeming126.github.io/ToOpt/SWidget%E4%B8%8EUWidget%E5%85%B3%E7%B3%BB%E5%8F%8AUMG%20Tick%E6%9C%BA%E5%88%B6/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2026-05-03T15:11:07.214Z",
+  "dateModified": "2026-05-03T15:18:08.220Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/ToOpt/SWidget%E4%B8%8EUWidget%E5%85%B3%E7%B3%BB%E5%8F%8AUMG%20Tick%E6%9C%BA%E5%88%B6/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'SWidget与UWidget关系及UMG Tick机制',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">SWidget与UWidget关系及UMG Tick机制</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">SWidget与UWidget关系及UMG Tick机制</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-03T15:11:07.214Z" title="发表于 2026-05-03 23:11:07">2026-05-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-03T15:18:08.220Z" title="更新于 2026-05-03 23:18:08">2026-05-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>本文梳理 Unreal Engine 中 Slate 与 UMG 两层 UI 框架的核心关系，以及 UMG Tick 的完整驱动链。主要回答以下问题：</p>
+<ul>
+<li><strong>SWidget 和 UWidget 是什么关系？</strong> —— UWidget 是对底层 SWidget 的 UObject 封装</li>
+<li><strong>UMG 的 Tick 是怎么驱动的？</strong> —— Tick 嵌在 Paint 过程中，由 Slate 层自顶向下递归触发</li>
+<li><strong>Tick 和 Paint 是先 Tick 全部再 Paint 全部吗？</strong> —— 不是，每个 Widget 先 Tick 再 Paint，然后递归处理子控件</li>
+<li><strong>开发时有什么需要注意的？</strong> —— Collapsed 不 Tick、NativeTick 必须调 Super、属性不会自动同步等</li>
+</ul>
+<p><strong>核心结论：Slate 的 Tick 和 Paint 不是两个独立阶段，而是在同一个 <code>Paint()</code> 调用中紧密耦合执行——先 Tick 再 OnPaint，然后递归子控件。这意味着父控件一定先于子控件 Tick，且不可见的控件可能不会 Tick。</strong></p>
+<hr>
+<h2 id="SWidget-与-UWidget-的关系"><a href="#SWidget-与-UWidget-的关系" class="headerlink" title="SWidget 与 UWidget 的关系"></a>SWidget 与 UWidget 的关系</h2><blockquote>
+<p>TL;DR: SWidget 是 Slate 层的 C++ 原生 UI 控件，UWidget 是 UMG 层对其的 UObject 封装，两者通过 Wrapper Pattern 关联，由 SObjectWidget 作为桥梁处理 GC 和事件转发。</p>
+</blockquote>
+<h3 id="本质定位"><a href="#本质定位" class="headerlink" title="本质定位"></a>本质定位</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>SWidget</th>
+<th>UWidget</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>层级</strong></td>
+<td>Slate 层（C++ 原生 UI 框架）</td>
+<td>UMG 层（UObject 反射系统封装）</td>
+</tr>
+<tr>
+<td><strong>基类</strong></td>
+<td><code>FSlateControlledConstruction</code> + <code>TSharedFromThis&lt;SWidget&gt;</code></td>
+<td><code>UVisual</code> + <code>INotifyFieldValueChanged</code></td>
+</tr>
+<tr>
+<td><strong>生命周期</strong></td>
+<td><code>TSharedRef</code>&#x2F;<code>TSharedPtr</code> 智能指针管理</td>
+<td>UE GC（垃圾回收）管理</td>
+</tr>
+<tr>
+<td><strong>设计目的</strong></td>
+<td>底层渲染、布局、输入处理</td>
+<td>暴露给蓝图&#x2F;设计师的高层抽象</td>
+</tr>
+</tbody></table>
+<h3 id="包装关系（Wrapper-Pattern）"><a href="#包装关系（Wrapper-Pattern）" class="headerlink" title="包装关系（Wrapper Pattern）"></a>包装关系（Wrapper Pattern）</h3><p><strong>UWidget 持有 SWidget 的弱引用</strong>，作为对底层 Slate 控件的包装：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">TWeakPtr&lt;SWidget&gt; MyWidget;           <span class="comment">// 底层 SWidget</span></span><br><span class="line">TWeakPtr&lt;SWidget&gt; ComponentWrapperWidget;</span><br><span class="line">TWeakPtr&lt;SObjectWidget&gt; MyGCWidget;   <span class="comment">// GC 安全包装</span></span><br></pre></td></tr></table></figure>
+
+<p>每个 UWidget 通过 <code>RebuildWidget()</code> 创建对应的 SWidget，子类必须重写此方法。例如 <code>UButton</code> 创建 <code>SButton</code>，<code>UImage</code> 创建 <code>SImage</code>。</p>
+<h3 id="SObjectWidget-——-关键桥梁"><a href="#SObjectWidget-——-关键桥梁" class="headerlink" title="SObjectWidget —— 关键桥梁"></a>SObjectWidget —— 关键桥梁</h3><p>对于 <code>UUserWidget</code>，创建出的 SWidget 会被进一步包装到 <code>SObjectWidget</code> 中：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UUserWidget (UObject, GC管理)</span><br><span class="line">    └─ MyGCWidget → SObjectWidget (SWidget, 持有UObject强引用防GC)</span><br><span class="line">                       └─ ChildSlot → [实际的SWidget子树]</span><br></pre></td></tr></table></figure>
+
+<p><code>SObjectWidget</code> 同时继承自 <code>SCompoundWidget</code> 和 <code>FGCObject</code>，它：</p>
+<ul>
+<li>持有 <code>UUserWidget</code> 的强引用，防止被 GC 回收</li>
+<li>将 Slate 事件（Tick、Paint、Input 等）转发到 UMG 层的 <code>Native*</code> 方法</li>
+</ul>
+<h3 id="属性同步机制"><a href="#属性同步机制" class="headerlink" title="属性同步机制"></a>属性同步机制</h3><p>UWidget 的属性通过 <code>SynchronizeProperties()</code> 推送到底层 SWidget，调用链为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">TakeWidget_Private() → RebuildWidget() → SynchronizeProperties() → OnWidgetRebuilt()</span><br></pre></td></tr></table></figure>
+
+<p><code>SynchronizeProperties()</code> <strong>只在 SWidget 首次创建时调用一次</strong>，运行时修改 UPROPERTY 不会自动同步到 SWidget，需要通过 Setter 手动更新。</p>
+<hr>
+<h2 id="UMG-Tick-驱动链"><a href="#UMG-Tick-驱动链" class="headerlink" title="UMG Tick 驱动链"></a>UMG Tick 驱动链</h2><blockquote>
+<p>TL;DR: Tick 的驱动从引擎主循环开始，经由 FSlateApplication 到 SWidget::Paint()，在 Paint 过程中触发 Tick，再通过 SObjectWidget 转发到 UMG 层的 NativeTick。</p>
+</blockquote>
+<h3 id="完整调用链"><a href="#完整调用链" class="headerlink" title="完整调用链"></a>完整调用链</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FEngineLoop::Tick()</span><br><span class="line"> │</span><br><span class="line"> └─ FSlateApplication::Tick(ESlateTickType::TimeAndWidgets)</span><br><span class="line">     │</span><br><span class="line">     └─ FSlateApplication::TickAndDrawWidgets()</span><br><span class="line">         │</span><br><span class="line">         └─ DrawWindows()</span><br><span class="line">             │</span><br><span class="line">             ├─ DrawPrepass()                                   [计算期望大小]</span><br><span class="line">             │</span><br><span class="line">             └─ PrivateDrawWindows()</span><br><span class="line">                 │</span><br><span class="line">                 └─ DrawWindowAndChildren()</span><br><span class="line">                     │</span><br><span class="line">                     └─ SWindow::PaintWindow()                  [遍历入口]</span><br><span class="line">                         │</span><br><span class="line">                         └─ SWidget::Paint()</span><br><span class="line">                             │</span><br><span class="line">                             ├─ [1] ExecuteActiveTimers()       (if NeedsActiveTimerUpdate)</span><br><span class="line">                             ├─ [2] SWidget::Tick()             (if NeedsTick)     ★ 关键</span><br><span class="line">                             └─ [3] OnPaint()                   (实际绘制)</span><br></pre></td></tr></table></figure>
+
+<p><strong>关键发现：Slate 中 Tick 是在 Paint 过程中执行的，不是独立的 Tick 阶段。</strong></p>
+<p>对于 UMG 来说，链路继续延伸：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SWidget::Paint()</span><br><span class="line"> └─ SObjectWidget::Tick()</span><br><span class="line">     │</span><br><span class="line">     └─ UUserWidget::NativeTick()</span><br><span class="line">         │</span><br><span class="line">         ├─ [1] Extensions[].Tick()                            (Widget扩展)</span><br><span class="line">         ├─ [2] AnimationTickManager-&gt;OnWidgetTicked()         (UMG动画)</span><br><span class="line">         ├─ [3] LatentActionManager-&gt;ProcessLatentActions()    (延迟动作)</span><br><span class="line">         └─ [4] Blueprint Tick (if bHasScriptImplementedTick)  (蓝图EventTick)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Tick-开关控制"><a href="#Tick-开关控制" class="headerlink" title="Tick 开关控制"></a>Tick 开关控制</h3><p><code>SObjectWidget</code> 构造时默认 <code>SetCanTick(false)</code>，由 <code>UUserWidget::UpdateCanTick()</code> 决定是否启用：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">bool</span> bCanTick = <span class="literal">false</span>;</span><br><span class="line">bCanTick |= WidgetBPClass-&gt;<span class="built_in">ClassRequiresNativeTick</span>();    <span class="comment">// C++ NativeTick重写</span></span><br><span class="line">bCanTick |= bHasScriptImplementedTick;                   <span class="comment">// 蓝图实现了Tick事件</span></span><br><span class="line">bCanTick |= <span class="built_in">GetNumActionsForObject</span>(<span class="keyword">this</span>) != <span class="number">0</span>;           <span class="comment">// 有延迟动作</span></span><br><span class="line">bCanTick |= ActiveAnimations.<span class="built_in">Num</span>() &gt; <span class="number">0</span>;                  <span class="comment">// 有播放中的动画</span></span><br><span class="line">bCanTick |= QueuedWidgetAnimationTransitions.<span class="built_in">Num</span>() &gt; <span class="number">0</span>;  <span class="comment">// 有排队动画</span></span><br><span class="line">bCanTick |= Extension-&gt;<span class="built_in">RequiresTick</span>();                   <span class="comment">// 扩展需要Tick</span></span><br><span class="line">SafeGCWidget-&gt;<span class="built_in">SetCanTick</span>(bCanTick);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="UMG-Widget-的-Paint-顺序与-Tick-Paint-耦合"><a href="#UMG-Widget-的-Paint-顺序与-Tick-Paint-耦合" class="headerlink" title="UMG Widget 的 Paint 顺序与 Tick-Paint 耦合"></a>UMG Widget 的 Paint 顺序与 Tick-Paint 耦合</h2><blockquote>
+<p>TL;DR: Paint 遍历是深度优先的，每个 Widget 在同一次调用中先 Tick 再 OnPaint，然后递归子控件。不存在”先 Tick 全部再 Paint 全部”的阶段。</p>
+</blockquote>
+<h3 id="深度优先的执行顺序"><a href="#深度优先的执行顺序" class="headerlink" title="深度优先的执行顺序"></a>深度优先的执行顺序</h3><p>用一棵简单的控件树来说明：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Root</span><br><span class="line">├── ChildA</span><br><span class="line">│   ├── GrandChildA1</span><br><span class="line">│   └── GrandChildA2</span><br><span class="line">└── ChildB</span><br></pre></td></tr></table></figure>
+
+<p>实际执行顺序：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Root.Tick()          ← Root 的 Tick</span><br><span class="line">Root.OnPaint()       ← Root 开始绘制并遍历子控件</span><br><span class="line">  ChildA.Tick()      ← ChildA 的 Tick</span><br><span class="line">  ChildA.OnPaint()   ← ChildA 绘制并遍历子控件</span><br><span class="line">    GrandChildA1.Tick()</span><br><span class="line">    GrandChildA1.OnPaint()</span><br><span class="line">    GrandChildA2.Tick()</span><br><span class="line">    GrandChildA2.OnPaint()</span><br><span class="line">  ChildB.Tick()      ← ChildB 的 Tick</span><br><span class="line">  ChildB.OnPaint()   ← ChildB 绘制</span><br></pre></td></tr></table></figure>
+
+<p>关键代码在 <code>SWidget::Paint()</code> 中：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">HasAnyUpdateFlags</span>(EWidgetUpdateFlags::NeedsTick))</span><br><span class="line">&#123;</span><br><span class="line">    MutableThis-&gt;<span class="built_in">Tick</span>(DesktopSpaceGeometry, Args.<span class="built_in">GetCurrentTime</span>(), Args.<span class="built_in">GetDeltaTime</span>());</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ... 中间处理裁剪、命中测试等 ...</span></span><br><span class="line">NewLayerId = <span class="built_in">OnPaint</span>(UpdatedArgs, AllottedGeometry, CullingBounds, ...);</span><br></pre></td></tr></table></figure>
+
+<p><strong>这意味着：</strong></p>
+<ul>
+<li>父控件的 Tick <strong>先于</strong>所有子控件的 Tick 和 Paint</li>
+<li>兄弟控件之间，先 Tick+Paint 排在前面的，再处理后面的</li>
+<li>不存在”所有控件先 Tick 一遍，再统一 Paint”的阶段</li>
+</ul>
+<h3 id="不同类型控件的遍历方式"><a href="#不同类型控件的遍历方式" class="headerlink" title="不同类型控件的遍历方式"></a>不同类型控件的遍历方式</h3><p><strong>SPanel（多子控件面板，如 SOverlay、SConstraintCanvas）：</strong> 按数组顺序逐个递归调用子控件的 <code>Paint()</code>。</p>
+<p><strong>SCompoundWidget（单子控件，如 SObjectWidget）：</strong> 只有一个子控件，直接递归。</p>
+<p><strong>UMG 层面的两阶段绘制：</strong> <code>SObjectWidget::OnPaint()</code> 先绘制子控件树（WidgetTree 的全部内容），再执行蓝图的 OnPaint 自定义绘制——所以蓝图中 <code>DrawLine</code>、<code>DrawText</code> 等画出的内容<strong>始终在子控件之上</strong>。</p>
+<p><strong>ZOrder 控制：</strong> <code>SConstraintCanvas</code> 根据 <code>ZOrder</code> 属性对子控件排序后按序绘制，ZOrder 大的绘制在上层。</p>
+<hr>
+<h2 id="开发注意事项"><a href="#开发注意事项" class="headerlink" title="开发注意事项"></a>开发注意事项</h2><h3 id="1-基础-UWidget-不参与-Tick"><a href="#1-基础-UWidget-不参与-Tick" class="headerlink" title="1. 基础 UWidget 不参与 Tick"></a>1. 基础 UWidget 不参与 Tick</h3><p><code>UWidget</code> 基类本身没有 Tick 方法，只有 <code>UUserWidget</code> 通过 <code>NativeTick</code> 参与 Tick。自定义的 <code>UButton</code>、<code>UImage</code> 等子类不会收到 Tick 调用。如果需要 Tick 能力，应使用 <code>UUserWidget</code>。</p>
+<h3 id="2-不可见的控件可能不-Tick"><a href="#2-不可见的控件可能不-Tick" class="headerlink" title="2. 不可见的控件可能不 Tick"></a>2. 不可见的控件可能不 Tick</h3><p>因为 Tick 在 Paint 内部递归触发，如果父控件的 <code>OnPaint()</code> 没有遍历到某个子控件，该子控件就<strong>不会 Tick</strong>：</p>
+<ul>
+<li><strong>Collapsed</strong>：不参与布局、不被遍历，<strong>不会 Tick</strong></li>
+<li><strong>Hidden</strong>：参与布局但不绘制，行为取决于具体 Panel 实现</li>
+<li>被裁剪矩形裁掉的控件：不会 Paint，因此<strong>也不会 Tick</strong></li>
+</ul>
+<p>如果有一个需要持续 Tick 但可能不可见的控件，需要特别注意这一点。</p>
+<h3 id="3-NativeTick-中必须调用-Super"><a href="#3-NativeTick-中必须调用-Super" class="headerlink" title="3. NativeTick 中必须调用 Super"></a>3. NativeTick 中必须调用 Super</h3><p>在 C++ 中重写 <code>UUserWidget::NativeTick</code> 时<strong>必须调用 <code>Super::NativeTick</code></strong>，否则动画、延迟动作、扩展和蓝图 Tick 都不会执行：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UMyUserWidget::NativeTick</span><span class="params">(<span class="type">const</span> FGeometry&amp; MyGeometry, <span class="type">float</span> InDeltaTime)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Super::<span class="built_in">NativeTick</span>(MyGeometry, InDeltaTime);  <span class="comment">// 必须！</span></span><br><span class="line">    <span class="comment">// 你的逻辑...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-Tick-中修改的状态在同一帧立即可见"><a href="#4-Tick-中修改的状态在同一帧立即可见" class="headerlink" title="4. Tick 中修改的状态在同一帧立即可见"></a>4. Tick 中修改的状态在同一帧立即可见</h3><p>Tick 和 Paint 在同一函数调用中紧邻执行，父控件 Tick 中修改的属性，子控件的 OnPaint 中<strong>已经能看到</strong>。这不同于 Actor 的 Tick 组件之间可能有不确定的先后顺序。</p>
+<h3 id="5-父子-Tick-顺序确定，兄弟间取决于排列顺序"><a href="#5-父子-Tick-顺序确定，兄弟间取决于排列顺序" class="headerlink" title="5. 父子 Tick 顺序确定，兄弟间取决于排列顺序"></a>5. 父子 Tick 顺序确定，兄弟间取决于排列顺序</h3><p>深度优先遍历保证了父控件一定先于子控件 Tick，可以在父控件 Tick 中设置状态、子控件 Tick 中安全读取。但<strong>兄弟控件之间</strong>的 Tick 顺序取决于它们在 Panel 中的排列顺序（ZOrder &#x2F; 添加顺序），如果兄弟控件之间有依赖关系需要小心。</p>
+<h3 id="6-不要在-Tick-中执行耗时操作"><a href="#6-不要在-Tick-中执行耗时操作" class="headerlink" title="6. 不要在 Tick 中执行耗时操作"></a>6. 不要在 Tick 中执行耗时操作</h3><p>Slate 的 Tick+Paint 在主线程上一次性完成，任何一个控件的 Tick 阻塞都会影响整帧所有控件的绘制。避免在 <code>NativeTick</code> 中做同步文件 I&#x2F;O、复杂计算或大量对象遍历。</p>
+<h3 id="7-运行时属性修改需手动同步到-SWidget"><a href="#7-运行时属性修改需手动同步到-SWidget" class="headerlink" title="7. 运行时属性修改需手动同步到 SWidget"></a>7. 运行时属性修改需手动同步到 SWidget</h3><p><code>SynchronizeProperties()</code> 只在 SWidget 首次创建时调用一次。运行时通过 Setter（如 <code>SetVisibility</code>、<code>SetIsEnabled</code>）修改属性时，这些 Setter 内部会直接调用底层 SWidget 的对应方法。但如果添加了自定义 UPROPERTY，需要确保 Setter 中同步更新了底层 SWidget，否则修改不会反映到渲染。</p>
+<h3 id="8-利用-Auto-Tick-Frequency-减少不必要的-Tick"><a href="#8-利用-Auto-Tick-Frequency-减少不必要的-Tick" class="headerlink" title="8. 利用 Auto Tick Frequency 减少不必要的 Tick"></a>8. 利用 Auto Tick Frequency 减少不必要的 Tick</h3><p><code>EWidgetTickFrequency::Auto</code>（默认值）会在不需要时自动关闭 Tick。如果确定永远不需要 Tick，设置 <code>TickFrequency = EWidgetTickFrequency::Never</code>。如果重写了 <code>NativeTick</code> 但只在特定条件下需要逻辑，可以调用 <code>UpdateCanTick()</code> 让系统重新评估。</p>
+<h3 id="9-不要跨层混淆"><a href="#9-不要跨层混淆" class="headerlink" title="9. 不要跨层混淆"></a>9. 不要跨层混淆</h3><ul>
+<li><strong>SWidget 的 Tick</strong> 接收 <code>(FGeometry, double CurrentTime, float DeltaTime)</code></li>
+<li><strong>UUserWidget 的 NativeTick</strong> 接收 <code>(FGeometry, float DeltaTime)</code> —— 没有 <code>CurrentTime</code></li>
+<li>UMG 使用 GC 管理生命周期，Slate 使用智能指针。<code>SObjectWidget</code> 持有 <code>UUserWidget</code> 强引用防止 GC，但 UWidget 持有的是 SWidget 的<strong>弱引用</strong>（<code>TWeakPtr</code>），SWidget 可能比 UWidget 先失效。</li>
+</ul>
+<h3 id="10-Active-Timer-机制"><a href="#10-Active-Timer-机制" class="headerlink" title="10. Active Timer 机制"></a>10. Active Timer 机制</h3><p>如果需要 SWidget 在没有用户交互时也保持”活跃”（持续 Tick），可以使用 <code>RegisterActiveTimer()</code>。UMG 的动画系统内部就利用了此机制来确保动画播放期间 Slate 不会”休眠”。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/ToOpt/SWidget%E4%B8%8EUWidget%E5%85%B3%E7%B3%BB%E5%8F%8AUMG%20Tick%E6%9C%BA%E5%88%B6/">https://mikeming126.github.io/ToOpt/SWidget%E4%B8%8EUWidget%E5%85%B3%E7%B3%BB%E5%8F%8AUMG%20Tick%E6%9C%BA%E5%88%B6/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/ToOpt/">ToOpt</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/ToOpt/UE5%20C++%20%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F%E4%B8%8E%E7%BC%96%E6%8E%92%E8%A7%84%E5%88%99/" title="UE5 C++ 代码组织方式与编排规则"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">UE5 C++ 代码组织方式与编排规则</div></div><div class="info-2"><div class="info-item-1">UE5 C++ 代码组织方式与编排规则本文探讨 UE5 引擎源码中的代码组织风格，主要回答以下问题：  UE 引擎源码中 public&#x2F;protected&#x2F;private 是如何排列的？ C++ 没有类似 C# #region 的语法，引擎用什么方式做代码分区？ 一个标准的 UE 类头文件应该怎么编排？ #pragma region 在 UE 中是否可用、是否应该用？  核心结论： UE 的代码编排哲学是 “按功能分组” 而非 “按访问级别分组”，属性和操作它的方法就近放置，通过注释分隔符提供可读性。#pragma region 虽然可用但不是引擎主流风格。  访问控制的布局规则 TL;DR: 引擎源码不拘泥于”所有 public 放一起”的教科书式排列，而是 按功能分组，频繁切换访问控制。  以 AActor 为例，仅这一个类就有 87 次 public:&#x2F;protected:&#x2F;private: 切换： public:    ENGINE_API AActor();    ENGINE_API AActor(const...</div></div></div></a><a class="pagination-related" href="/ToOpt/%E8%99%9A%E5%B9%BB%E5%BC%95%E6%93%8E%E7%9A%84Tick%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/" title="虚幻引擎 Tick 流程全解析（基于 UE5.7 源码）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">虚幻引擎 Tick 流程全解析（基于 UE5.7 源码）</div></div><div class="info-2"><div class="info-item-1">虚幻引擎 Tick 流程全解析（基于 UE5.7 源码）本文基于 UE5.7 本地源码，全面梳理虚幻引擎一帧中所有 Tick 系统的执行流程，涵盖以下核心问题：  引擎主循环如何驱动到 Actor&#x2F;Component 的 Tick？ 从 FEngineLoop::Tick 到 UWorld::Tick，再到单个 Actor 的 Tick()，完整的调用链是什么？ Tick Group 是如何划分的？ 物理前、物理中、物理后、后更新……各阶段的执行顺序和阻塞行为是什么？ 除了 Actor&#x2F;Component，还有哪些独立的 Tick 系统？ Slate&#x2F;UMG、FTickableGameObject、FTSTicker、渲染线程 Tick 各自的驱动方式和时机。 FTickFunction 机制的设计考量是什么？ 为什么 Actor&#x2F;Component&#x2F;物理&#x2F;骨骼动画用 FTickFunction，而 FTickableGameObject、FTSTicker、Slate Widget 不用？ 如何在游戏项目中自定义...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/ToOpt/UE5%20RPG%E4%B8%8E%E5%BC%80%E6%94%BE%E4%B8%96%E7%95%8C%E6%B8%B8%E6%88%8F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%85%B3%E5%8D%A1%E5%88%87%E6%8D%A2%E4%B8%8E%E6%A1%86%E6%9E%B6%E8%A7%84%E5%88%92%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="UE5 RPG 与开放世界游戏架构设计：关卡切换与框架规划最佳实践"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-03</div><div class="info-item-2">UE5 RPG 与开放世界游戏架构设计：关卡切换与框架规划最佳实践</div></div><div class="info-2"><div class="info-item-1">UE5 RPG 与开放世界游戏架构设计：关卡切换与框架规划最佳实践基于 UE5.7 源码，本文系统探讨一个核心问题：对于 RPG、箱庭、开放世界等非 FPS 类型的游戏，如何规划关卡切换与基础游戏框架？ 具体回答以下问题：  UWorld 的定位是什么？ GameMode &#x2F; GameState &#x2F; PlayerState &#x2F; PlayerController 各自的职责边界在哪？ LevelStreaming 和 WorldPartition 有什么区别？ 底层架构有何异同？怎么选？ World 切换（Travel）时数据怎么活下来？ Seamless Travel 和 Hard Travel 有什么区别？ 小房间频繁进出、小游戏玩法切换、副本实例化，这些 RPG 常见场景怎么处理？ 多人联机下，A 玩家和 B 玩家在不同关卡，服务器怎么管理？ 团队多人协作编辑地图时，两种方案对工作流有什么影响？  核心结论：对于这类游戏，尽量避免 UWorld 的物理切换，改为在同一个 UWorld 下通过 LevelStreaming &#x2F;...</div></div></div></a><a class="pagination-related" href="/ToOpt/Lyra%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9AGameplay%E6%A1%86%E6%9E%B6%E7%B1%BB%E9%87%8D%E6%9E%84%E4%B8%8E%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87/" title="Lyra 项目架构分析：Gameplay 框架类重构与代码组织"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-03</div><div class="info-item-2">Lyra 项目架构分析：Gameplay 框架类重构与代码组织</div></div><div class="info-2"><div class="info-item-1">Lyra 项目架构分析：Gameplay 框架类重构与代码组织这篇文章围绕 Lyra 示例项目的代码架构展开，讨论以下问题：  Lyra 重写了哪些 Gameplay Framework 基础类？继承体系是什么样的？ Lyra 的文件夹组织遵循什么原则？ UE 模块内部是否需要分 Public&#x2F;Private？Lyra 为什么不分？ GameFeature 插件与主模块的依赖关系是怎样的？ 实际项目中应该怎么规划代码结构？  核心结论：Lyra 的架构体现了 Epic 对 UE5 项目组织的最佳实践——按功能领域内聚、极简模块划分、通过 GameFeature 插件实现内容扩展。对于大多数中小型项目，Lyra 的组织方式可以直接参考。  Gameplay 框架类的重写与继承体系Lyra 重写了 UE 全部 8 个核心 Gameplay 框架类，外加 GameEngine、GameSession、HUD，共 11 个类。重写的核心目的有两个：一是通过 Modular 中间基类 使框架类支持组件化扩展（GameFeature 插件可向其注入组件），二是集成...</div></div></div></a><a class="pagination-related" href="/ToOpt/%E8%99%9A%E5%B9%BB%E5%BC%95%E6%93%8E%E7%9A%84Tick%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/" title="虚幻引擎 Tick 流程全解析（基于 UE5.7 源码）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-03</div><div class="info-item-2">虚幻引擎 Tick 流程全解析（基于 UE5.7 源码）</div></div><div class="info-2"><div class="info-item-1">虚幻引擎 Tick 流程全解析（基于 UE5.7 源码）本文基于 UE5.7 本地源码，全面梳理虚幻引擎一帧中所有 Tick 系统的执行流程，涵盖以下核心问题：  引擎主循环如何驱动到 Actor&#x2F;Component 的 Tick？ 从 FEngineLoop::Tick 到 UWorld::Tick，再到单个 Actor 的 Tick()，完整的调用链是什么？ Tick Group 是如何划分的？ 物理前、物理中、物理后、后更新……各阶段的执行顺序和阻塞行为是什么？ 除了 Actor&#x2F;Component，还有哪些独立的 Tick 系统？ Slate&#x2F;UMG、FTickableGameObject、FTSTicker、渲染线程 Tick 各自的驱动方式和时机。 FTickFunction 机制的设计考量是什么？ 为什么 Actor&#x2F;Component&#x2F;物理&#x2F;骨骼动画用 FTickFunction，而 FTickableGameObject、FTSTicker、Slate Widget 不用？ 如何在游戏项目中自定义...</div></div></div></a><a class="pagination-related" href="/ToOpt/UE5%20C++%20%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F%E4%B8%8E%E7%BC%96%E6%8E%92%E8%A7%84%E5%88%99/" title="UE5 C++ 代码组织方式与编排规则"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-03</div><div class="info-item-2">UE5 C++ 代码组织方式与编排规则</div></div><div class="info-2"><div class="info-item-1">UE5 C++ 代码组织方式与编排规则本文探讨 UE5 引擎源码中的代码组织风格，主要回答以下问题：  UE 引擎源码中 public&#x2F;protected&#x2F;private 是如何排列的？ C++ 没有类似 C# #region 的语法，引擎用什么方式做代码分区？ 一个标准的 UE 类头文件应该怎么编排？ #pragma region 在 UE 中是否可用、是否应该用？  核心结论： UE 的代码编排哲学是 “按功能分组” 而非 “按访问级别分组”，属性和操作它的方法就近放置，通过注释分隔符提供可读性。#pragma region 虽然可用但不是引擎主流风格。  访问控制的布局规则 TL;DR: 引擎源码不拘泥于”所有 public 放一起”的教科书式排列，而是 按功能分组，频繁切换访问控制。  以 AActor 为例，仅这一个类就有 87 次 public:&#x2F;protected:&#x2F;private: 切换： public:    ENGINE_API AActor();    ENGINE_API AActor(const...</div></div></div></a><a class="pagination-related" href="/UE/GAS/UE55GAS/" title="UE5.5-GAS-ReadMe"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-04</div><div class="info-item-2">UE5.5-GAS-ReadMe</div></div><div class="info-2"><div class="info-item-1">  GASPurpose of this DocumentationThis documentation is meant to support and enhance the official Gameplay Ability System Unreal Developer Community documentation.  In particular, this document lives in the code repository under Gameplay Ability System plug-in folder and thus any user reading this documentation can submit a pull request to clarify functionality, update inaccurate information, or work with the community to flesh out areas that are missing. It is worth noting there are...</div></div></div></a><a class="pagination-related" href="/UE/GAS/UE55GASModifierInfos/" title="UE GAS Modifier相关信息"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-23</div><div class="info-item-2">UE GAS Modifier相关信息</div></div><div class="info-2"><div class="info-item-1">总列举各个Modifier相关的信息 FGameplayModifierInfo用于定义修改器的规则关键数据   目标属性 修改方式 修改值 生效条件(Tags)  /** * FGameplayModifierInfo *	Tells us &quot;Who/What we&quot; modify *	Does not tell us how exactly */USTRUCT(BlueprintType)struct GAMEPLAYABILITIES_API FGameplayModifierInfo&#123;	GENERATED_USTRUCT_BODY()		/** The Attribute we modify or the GE we modify modifies. */	UPROPERTY(EditDefaultsOnly, Category=GameplayModifier, meta=(FilterMetaTag=&quot;HideFromModifiers&quot;))	FGameplayAttribute Attribute;	/**	 *...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SWidget-%E4%B8%8E-UWidget-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.</span> <span class="toc-text">SWidget 与 UWidget 的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E8%B4%A8%E5%AE%9A%E4%BD%8D"><span class="toc-number">1.1.</span> <span class="toc-text">本质定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E8%A3%85%E5%85%B3%E7%B3%BB%EF%BC%88Wrapper-Pattern%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">包装关系（Wrapper Pattern）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SObjectWidget-%E2%80%94%E2%80%94-%E5%85%B3%E9%94%AE%E6%A1%A5%E6%A2%81"><span class="toc-number">1.3.</span> <span class="toc-text">SObjectWidget —— 关键桥梁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6"><span class="toc-number">1.4.</span> <span class="toc-text">属性同步机制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UMG-Tick-%E9%A9%B1%E5%8A%A8%E9%93%BE"><span class="toc-number">2.</span> <span class="toc-text">UMG Tick 驱动链</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E8%B0%83%E7%94%A8%E9%93%BE"><span class="toc-number">2.1.</span> <span class="toc-text">完整调用链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tick-%E5%BC%80%E5%85%B3%E6%8E%A7%E5%88%B6"><span class="toc-number">2.2.</span> <span class="toc-text">Tick 开关控制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UMG-Widget-%E7%9A%84-Paint-%E9%A1%BA%E5%BA%8F%E4%B8%8E-Tick-Paint-%E8%80%A6%E5%90%88"><span class="toc-number">3.</span> <span class="toc-text">UMG Widget 的 Paint 顺序与 Tick-Paint 耦合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="toc-number">3.1.</span> <span class="toc-text">深度优先的执行顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E7%B1%BB%E5%9E%8B%E6%8E%A7%E4%BB%B6%E7%9A%84%E9%81%8D%E5%8E%86%E6%96%B9%E5%BC%8F"><span class="toc-number">3.2.</span> <span class="toc-text">不同类型控件的遍历方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">4.</span> <span class="toc-text">开发注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80-UWidget-%E4%B8%8D%E5%8F%82%E4%B8%8E-Tick"><span class="toc-number">4.1.</span> <span class="toc-text">1. 基础 UWidget 不参与 Tick</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%B8%8D%E5%8F%AF%E8%A7%81%E7%9A%84%E6%8E%A7%E4%BB%B6%E5%8F%AF%E8%83%BD%E4%B8%8D-Tick"><span class="toc-number">4.2.</span> <span class="toc-text">2. 不可见的控件可能不 Tick</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-NativeTick-%E4%B8%AD%E5%BF%85%E9%A1%BB%E8%B0%83%E7%94%A8-Super"><span class="toc-number">4.3.</span> <span class="toc-text">3. NativeTick 中必须调用 Super</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Tick-%E4%B8%AD%E4%BF%AE%E6%94%B9%E7%9A%84%E7%8A%B6%E6%80%81%E5%9C%A8%E5%90%8C%E4%B8%80%E5%B8%A7%E7%AB%8B%E5%8D%B3%E5%8F%AF%E8%A7%81"><span class="toc-number">4.4.</span> <span class="toc-text">4. Tick 中修改的状态在同一帧立即可见</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%88%B6%E5%AD%90-Tick-%E9%A1%BA%E5%BA%8F%E7%A1%AE%E5%AE%9A%EF%BC%8C%E5%85%84%E5%BC%9F%E9%97%B4%E5%8F%96%E5%86%B3%E4%BA%8E%E6%8E%92%E5%88%97%E9%A1%BA%E5%BA%8F"><span class="toc-number">4.5.</span> <span class="toc-text">5. 父子 Tick 顺序确定，兄弟间取决于排列顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E4%B8%8D%E8%A6%81%E5%9C%A8-Tick-%E4%B8%AD%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6%E6%93%8D%E4%BD%9C"><span class="toc-number">4.6.</span> <span class="toc-text">6. 不要在 Tick 中执行耗时操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B1%9E%E6%80%A7%E4%BF%AE%E6%94%B9%E9%9C%80%E6%89%8B%E5%8A%A8%E5%90%8C%E6%AD%A5%E5%88%B0-SWidget"><span class="toc-number">4.7.</span> <span class="toc-text">7. 运行时属性修改需手动同步到 SWidget</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E5%88%A9%E7%94%A8-Auto-Tick-Frequency-%E5%87%8F%E5%B0%91%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84-Tick"><span class="toc-number">4.8.</span> <span class="toc-text">8. 利用 Auto Tick Frequency 减少不必要的 Tick</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E4%B8%8D%E8%A6%81%E8%B7%A8%E5%B1%82%E6%B7%B7%E6%B7%86"><span class="toc-number">4.9.</span> <span class="toc-text">9. 不要跨层混淆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-Active-Timer-%E6%9C%BA%E5%88%B6"><span class="toc-number">4.10.</span> <span class="toc-text">10. Active Timer 机制</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ToOpt/Lyra%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90%EF%BC%9AGameplay%E6%A1%86%E6%9E%B6%E7%B1%BB%E9%87%8D%E6%9E%84%E4%B8%8E%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87/" title="Lyra 项目架构分析：Gameplay 框架类重构与代码组织">Lyra 项目架构分析：Gameplay 框架类重构与代码组织</a><time datetime="2026-05-03T15:14:18.202Z" title="发表于 2026-05-03 23:14:18">2026-05-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ToOpt/%E8%99%9A%E5%B9%BB%E5%BC%95%E6%93%8E%E7%9A%84Tick%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/" title="虚幻引擎 Tick 流程全解析（基于 UE5.7 源码）">虚幻引擎 Tick 流程全解析（基于 UE5.7 源码）</a><time datetime="2026-05-03T15:11:25.578Z" title="发表于 2026-05-03 23:11:25">2026-05-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ToOpt/SWidget%E4%B8%8EUWidget%E5%85%B3%E7%B3%BB%E5%8F%8AUMG%20Tick%E6%9C%BA%E5%88%B6/" title="SWidget与UWidget关系及UMG Tick机制">SWidget与UWidget关系及UMG Tick机制</a><time datetime="2026-05-03T15:11:07.214Z" title="发表于 2026-05-03 23:11:07">2026-05-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ToOpt/UE5%20C++%20%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F%E4%B8%8E%E7%BC%96%E6%8E%92%E8%A7%84%E5%88%99/" title="UE5 C++ 代码组织方式与编排规则">UE5 C++ 代码组织方式与编排规则</a><time datetime="2026-05-03T15:09:37.753Z" title="发表于 2026-05-03 23:09:37">2026-05-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ToOpt/UE5%20RPG%E4%B8%8E%E5%BC%80%E6%94%BE%E4%B8%96%E7%95%8C%E6%B8%B8%E6%88%8F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%85%B3%E5%8D%A1%E5%88%87%E6%8D%A2%E4%B8%8E%E6%A1%86%E6%9E%B6%E8%A7%84%E5%88%92%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="UE5 RPG 与开放世界游戏架构设计：关卡切换与框架规划最佳实践">UE5 RPG 与开放世界游戏架构设计：关卡切换与框架规划最佳实践</a><time datetime="2026-05-03T15:06:24.951Z" title="发表于 2026-05-03 23:06:24">2026-05-03</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || 'ed3c1dd8a8e43850a14e2b9716c0ce25'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://unpkg.com/gitalk/dist/gitalk.css')
+      await btf.getScript('https://unpkg.com/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script>var meting_api="https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r"</script><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script><script src="https://unpkg.com/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

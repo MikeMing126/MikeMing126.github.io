@@ -1,0 +1,427 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>实战应用与最佳实践 | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="07 - 实战应用与最佳实践 基于 UE 5.7 源码和官方文档，提供 World Partition 的实战应用指导  一、项目配置1.1 创建 World Partition 地图在 UE5 中创建新地图时选择”Open World”模板即可自动启用 World Partition。 手动启用：  打开地图 → World Settings 面板 勾选 “Enable World Partit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实战应用与最佳实践">
+<meta property="og:url" content="https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/07_%E5%AE%9E%E6%88%98%E5%BA%94%E7%94%A8%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="07 - 实战应用与最佳实践 基于 UE 5.7 源码和官方文档，提供 World Partition 的实战应用指导  一、项目配置1.1 创建 World Partition 地图在 UE5 中创建新地图时选择”Open World”模板即可自动启用 World Partition。 手动启用：  打开地图 → World Settings 面板 勾选 “Enable World Partit">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2026-05-07T17:19:16.233Z">
+<meta property="article:modified_time" content="2026-05-07T17:20:00.387Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="AIGen">
+<meta property="article:tag" content="WorldPartition">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "实战应用与最佳实践",
+  "url": "https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/07_%E5%AE%9E%E6%88%98%E5%BA%94%E7%94%A8%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2026-05-07T17:19:16.233Z",
+  "dateModified": "2026-05-07T17:20:00.387Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/07_%E5%AE%9E%E6%88%98%E5%BA%94%E7%94%A8%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '实战应用与最佳实践',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">实战应用与最佳实践</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">实战应用与最佳实践</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-07T17:19:16.233Z" title="发表于 2026-05-08 01:19:16">2026-05-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-07T17:20:00.387Z" title="更新于 2026-05-08 01:20:00">2026-05-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="07-实战应用与最佳实践"><a href="#07-实战应用与最佳实践" class="headerlink" title="07 - 实战应用与最佳实践"></a>07 - 实战应用与最佳实践</h1><blockquote>
+<p>基于 UE 5.7 源码和官方文档，提供 World Partition 的实战应用指导</p>
+</blockquote>
+<h2 id="一、项目配置"><a href="#一、项目配置" class="headerlink" title="一、项目配置"></a>一、项目配置</h2><h3 id="1-1-创建-World-Partition-地图"><a href="#1-1-创建-World-Partition-地图" class="headerlink" title="1.1 创建 World Partition 地图"></a>1.1 创建 World Partition 地图</h3><p>在 UE5 中创建新地图时选择”Open World”模板即可自动启用 World Partition。</p>
+<p>手动启用：</p>
+<ol>
+<li>打开地图 → World Settings 面板</li>
+<li>勾选 “Enable World Partition”</li>
+<li>选择 Runtime Hash 类型（推荐 RuntimeHashSet）</li>
+</ol>
+<h3 id="1-2-Grid-配置建议"><a href="#1-2-Grid-配置建议" class="headerlink" title="1.2 Grid 配置建议"></a>1.2 Grid 配置建议</h3><h4 id="开放世界典型配置"><a href="#开放世界典型配置" class="headerlink" title="开放世界典型配置"></a>开放世界典型配置</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在 World Partition 的 Runtime Settings 中配置</span></span><br><span class="line">Grid <span class="number">1</span>（主 Grid）:</span><br><span class="line">  - GridName: <span class="string">&quot;MainGrid&quot;</span></span><br><span class="line">  - CellSize: <span class="number">25600</span> (<span class="number">256</span>米)</span><br><span class="line">  - LoadingRange: <span class="number">51200</span> (<span class="number">512</span>米)</span><br><span class="line">  - bBlockOnSlowStreaming: <span class="literal">true</span></span><br><span class="line">  - Priority: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">Grid <span class="number">2</span>（近景 Grid）:</span><br><span class="line">  - GridName: <span class="string">&quot;NearGrid&quot;</span></span><br><span class="line">  - CellSize: <span class="number">6400</span> (<span class="number">64</span>米)</span><br><span class="line">  - LoadingRange: <span class="number">12800</span> (<span class="number">128</span>米)</span><br><span class="line">  - bBlockOnSlowStreaming: <span class="literal">false</span></span><br><span class="line">  - Priority: <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="室内-室外混合配置"><a href="#室内-室外混合配置" class="headerlink" title="室内+室外混合配置"></a>室内+室外混合配置</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">Grid <span class="number">1</span>（室外）:</span><br><span class="line">  - GridName: <span class="string">&quot;Outdoor&quot;</span></span><br><span class="line">  - CellSize: <span class="number">25600</span></span><br><span class="line">  - LoadingRange: <span class="number">51200</span></span><br><span class="line"></span><br><span class="line">Grid <span class="number">2</span>（室内细节）:</span><br><span class="line">  - GridName: <span class="string">&quot;Indoor&quot;</span></span><br><span class="line">  - CellSize: <span class="number">3200</span></span><br><span class="line">  - LoadingRange: <span class="number">6400</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-Actor-的-Grid-分配"><a href="#1-3-Actor-的-Grid-分配" class="headerlink" title="1.3 Actor 的 Grid 分配"></a>1.3 Actor 的 Grid 分配</h3><p>在 Actor 的 Details 面板中设置 <code>Runtime Grid</code> 属性：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Actor → Details → World Partition → Runtime Grid = &quot;MainGrid&quot;</span><br></pre></td></tr></table></figure>
+
+<p>C++ 中设置：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在 Actor 的构造函数中</span></span><br><span class="line">AMyActor::<span class="built_in">AMyActor</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 设置 Runtime Grid</span></span><br><span class="line">    <span class="built_in">SetRuntimeGrid</span>(<span class="built_in">FName</span>(<span class="string">&quot;MainGrid&quot;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置是否空间加载</span></span><br><span class="line">    <span class="built_in">SetIsSpatiallyLoaded</span>(<span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、Data-Layer-实战"><a href="#二、Data-Layer-实战" class="headerlink" title="二、Data Layer 实战"></a>二、Data Layer 实战</h2><h3 id="2-1-创建-Data-Layer"><a href="#2-1-创建-Data-Layer" class="headerlink" title="2.1 创建 Data Layer"></a>2.1 创建 Data Layer</h3><ol>
+<li>在 Data Layer 浏览器中点击 “Add Data Layer”</li>
+<li>设置名称和类型（Runtime&#x2F;Editor）</li>
+<li>选择需要关联的 Actor，拖拽到 Data Layer</li>
+</ol>
+<h3 id="2-2-运行时控制-Data-Layer"><a href="#2-2-运行时控制-Data-Layer" class="headerlink" title="2.2 运行时控制 Data Layer"></a>2.2 运行时控制 Data Layer</h3><h4 id="蓝图方式"><a href="#蓝图方式" class="headerlink" title="蓝图方式"></a>蓝图方式</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. Get Data Layer Manager → Set Data Layer State</span><br><span class="line">2. 传入 Data Layer Asset 和目标状态</span><br><span class="line">3. 等待 IsStreamingCompleted 返回 true</span><br></pre></td></tr></table></figure>
+
+<h4 id="C-方式"><a href="#C-方式" class="headerlink" title="C++ 方式"></a>C++ 方式</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;WorldPartition/DataLayer/DataLayerManager.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AMyGameMode::ActivateQuestLayer</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    UWorldPartition* WP = <span class="built_in">GetWorld</span>()-&gt;<span class="built_in">GetWorldPartition</span>();</span><br><span class="line">    <span class="keyword">if</span> (!WP) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    UDataLayerManager* DLM = WP-&gt;<span class="built_in">GetDataLayerManager</span>();</span><br><span class="line">    <span class="keyword">if</span> (!DLM) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 加载并激活 Data Layer</span></span><br><span class="line">    DLM-&gt;<span class="built_in">SetDataLayerStateActivated</span>(QuestDataLayerAsset);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待流式加载完成</span></span><br><span class="line">    <span class="comment">// 可以通过 UWorldPartitionSubsystem::IsStreamingCompleted 检查</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-任务系统中的-Data-Layer"><a href="#2-3-任务系统中的-Data-Layer" class="headerlink" title="2.3 任务系统中的 Data Layer"></a>2.3 任务系统中的 Data Layer</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">任务 A 区域 → DataLayer_QuestA (初始 Activated)</span><br><span class="line">任务 B 区域 → DataLayer_QuestB (初始 Unloaded)</span><br><span class="line">任务 C 区域 → DataLayer_QuestC (初始 Unloaded)</span><br><span class="line"></span><br><span class="line">任务 A 完成时:</span><br><span class="line">  1. SetDataLayerStateUnloaded(DataLayer_QuestA)</span><br><span class="line">  2. SetDataLayerStateActivated(DataLayer_QuestB)</span><br><span class="line">  3. 等待 IsStreamingCompleted</span><br><span class="line">  4. 开始任务 B 逻辑</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-季节系统"><a href="#2-4-季节系统" class="headerlink" title="2.4 季节系统"></a>2.4 季节系统</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ASeasonManager::SetSeason</span><span class="params">(ESeason Season)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    UWorldPartition* WP = <span class="built_in">GetWorld</span>()-&gt;<span class="built_in">GetWorldPartition</span>();</span><br><span class="line">    UDataLayerManager* DLM = WP-&gt;<span class="built_in">GetDataLayerManager</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 卸载当前季节</span></span><br><span class="line">    DLM-&gt;<span class="built_in">SetDataLayerStateUnloaded</span>(CurrentSeasonLayer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 加载新季节</span></span><br><span class="line">    <span class="keyword">switch</span> (Season)</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="keyword">case</span> ESeason::Summer:</span><br><span class="line">        DLM-&gt;<span class="built_in">SetDataLayerStateActivated</span>(SummerLayer);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> ESeason::Winter:</span><br><span class="line">        DLM-&gt;<span class="built_in">SetDataLayerStateActivated</span>(WinterLayer);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    CurrentSeasonLayer = <span class="built_in">GetLayerForSeason</span>(Season);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、自定义-Streaming-Source"><a href="#三、自定义-Streaming-Source" class="headerlink" title="三、自定义 Streaming Source"></a>三、自定义 Streaming Source</h2><h3 id="3-1-基本实现"><a href="#3-1-基本实现" class="headerlink" title="3.1 基本实现"></a>3.1 基本实现</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;WorldPartition/WorldPartitionStreamingSource.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UMyStreamingSourceComponent</span> : <span class="keyword">public</span> UActorComponent,</span><br><span class="line">    <span class="keyword">public</span> IWorldPartitionStreamingSourceProvider</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">GetStreamingSource</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        FWorldPartitionStreamingSource&amp; StreamingSource)</span> <span class="type">const</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        StreamingSource.Name = <span class="built_in">GetOwner</span>()-&gt;<span class="built_in">GetFName</span>();</span><br><span class="line">        StreamingSource.Location = <span class="built_in">GetOwner</span>()-&gt;<span class="built_in">GetActorLocation</span>();</span><br><span class="line">        StreamingSource.Rotation = <span class="built_in">GetOwner</span>()-&gt;<span class="built_in">GetActorRotation</span>();</span><br><span class="line">        StreamingSource.TargetState = EStreamingSourceTargetState::Activated;</span><br><span class="line">        StreamingSource.bBlockOnSlowLoading = bBlockOnSlowLoading;</span><br><span class="line">        StreamingSource.Priority = Priority;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 可选：指定影响的 Grid</span></span><br><span class="line">        <span class="keyword">if</span> (!TargetGrids.<span class="built_in">IsEmpty</span>())</span><br><span class="line">        &#123;</span><br><span class="line">            StreamingSource.TargetBehavior = EStreamingSourceTargetBehavior::Include;</span><br><span class="line">            StreamingSource.TargetGrids = TargetGrids;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">const</span> UObject* <span class="title">GetStreamingSourceOwner</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">GetOwner</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere)</span><br><span class="line">    <span class="type">bool</span> bBlockOnSlowLoading = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere)</span><br><span class="line">    EStreamingSourcePriority Priority = EStreamingSourcePriority::Normal;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere)</span><br><span class="line">    TSet&lt;FName&gt; TargetGrids;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-注册-取消注册"><a href="#3-2-注册-取消注册" class="headerlink" title="3.2 注册&#x2F;取消注册"></a>3.2 注册&#x2F;取消注册</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UMyStreamingSourceComponent::BeginPlay</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Super::<span class="built_in">BeginPlay</span>();</span><br><span class="line"></span><br><span class="line">    UWorldPartitionSubsystem* WPSubsystem =</span><br><span class="line">        <span class="built_in">GetWorld</span>()-&gt;<span class="built_in">GetSubsystem</span>&lt;UWorldPartitionSubsystem&gt;();</span><br><span class="line">    <span class="keyword">if</span> (WPSubsystem)</span><br><span class="line">    &#123;</span><br><span class="line">        WPSubsystem-&gt;<span class="built_in">RegisterStreamingSourceProvider</span>(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UMyStreamingSourceComponent::EndPlay</span><span class="params">(<span class="type">const</span> EEndPlayReason::Type EndPlayReason)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Super::<span class="built_in">EndPlay</span>(EndPlayReason);</span><br><span class="line"></span><br><span class="line">    UWorldPartitionSubsystem* WPSubsystem =</span><br><span class="line">        <span class="built_in">GetWorld</span>()-&gt;<span class="built_in">GetSubsystem</span>&lt;UWorldPartitionSubsystem&gt;();</span><br><span class="line">    <span class="keyword">if</span> (WPSubsystem)</span><br><span class="line">    &#123;</span><br><span class="line">        WPSubsystem-&gt;<span class="built_in">UnregisterStreamingSourceProvider</span>(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-使用场景"><a href="#3-3-使用场景" class="headerlink" title="3.3 使用场景"></a>3.3 使用场景</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>传送点预加载</strong></td>
+<td>在传送点放置 Streaming Source，玩家靠近时预加载目标区域</td>
+</tr>
+<tr>
+<td><strong>摄像机远景加载</strong></td>
+<td>为远景摄像机配置独立的 Streaming Source 和更大的 LoadingRange</td>
+</tr>
+<tr>
+<td><strong>AI 视野预加载</strong></td>
+<td>AI Agent 的视野方向用于预加载前方内容</td>
+</tr>
+<tr>
+<td><strong>分屏多人</strong></td>
+<td>每个玩家是独立的 Streaming Source</td>
+</tr>
+</tbody></table>
+<h2 id="四、流式加载完成检测"><a href="#四、流式加载完成检测" class="headerlink" title="四、流式加载完成检测"></a>四、流式加载完成检测</h2><h3 id="4-1-蓝图"><a href="#4-1-蓝图" class="headerlink" title="4.1 蓝图"></a>4.1 蓝图</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Get World Partition Subsystem → Is Streaming Completed</span><br><span class="line">  - Query State: Activated</span><br><span class="line">  - Query Sources: [位置、半径等]</span><br><span class="line">  - Exact State: true</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-C"><a href="#4-2-C" class="headerlink" title="4.2 C++"></a>4.2 C++</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;WorldPartition/WorldPartitionSubsystem.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">AMyGameMode::IsAreaLoaded</span><span class="params">(<span class="type">const</span> FVector&amp; Location, <span class="type">float</span> Radius)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    UWorldPartitionSubsystem* WPSubsystem =</span><br><span class="line">        <span class="built_in">GetWorld</span>()-&gt;<span class="built_in">GetSubsystem</span>&lt;UWorldPartitionSubsystem&gt;();</span><br><span class="line"></span><br><span class="line">    FWorldPartitionStreamingQuerySource QuerySource;</span><br><span class="line">    QuerySource.Location = Location;</span><br><span class="line">    QuerySource.Radius = Radius;</span><br><span class="line">    QuerySource.bUseGridLoadingRange = <span class="literal">false</span>;</span><br><span class="line">    QuerySource.bSpatialQuery = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> WPSubsystem-&gt;<span class="built_in">IsStreamingCompleted</span>(</span><br><span class="line">        EWorldPartitionRuntimeCellState::Activated,</span><br><span class="line">        &#123;QuerySource&#125;,</span><br><span class="line">        <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、HLOD-最佳实践"><a href="#五、HLOD-最佳实践" class="headerlink" title="五、HLOD 最佳实践"></a>五、HLOD 最佳实践</h2><h3 id="5-1-配置-HLOD-Layer"><a href="#5-1-配置-HLOD-Layer" class="headerlink" title="5.1 配置 HLOD Layer"></a>5.1 配置 HLOD Layer</h3><ol>
+<li>创建 HLODLayer 资产（右键 → World Partition → HLOD Layer）</li>
+<li>选择构建模式（推荐 MeshSimplify）</li>
+<li>在 Grid 配置中关联 HLOD Layer</li>
+<li>构建完成后，远处区域会自动使用 HLOD</li>
+</ol>
+<h3 id="5-2-HLOD-层级"><a href="#5-2-HLOD-层级" class="headerlink" title="5.2 HLOD 层级"></a>5.2 HLOD 层级</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HLOD Level 0: 距离最近，最详细的 HLOD</span><br><span class="line">HLOD Level 1: 中等距离</span><br><span class="line">HLOD Level 2: 最远距离，最简化的 HLOD</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-构建命令"><a href="#5-3-构建命令" class="headerlink" title="5.3 构建命令"></a>5.3 构建命令</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 命令行构建 HLOD</span></span><br><span class="line">UE5Editor.exe ProjectName MapName -run=WorldPartitionBuilder -AllowCmdletRendering -BuildHLOD</span><br></pre></td></tr></table></figure>
+
+<h2 id="六、性能优化"><a href="#六、性能优化" class="headerlink" title="六、性能优化"></a>六、性能优化</h2><h3 id="6-1-Loading-Range-优化"><a href="#6-1-Loading-Range-优化" class="headerlink" title="6.1 Loading Range 优化"></a>6.1 Loading Range 优化</h3><ul>
+<li>不要设置过大的 LoadingRange（内存和加载压力）</li>
+<li>根据实际可见距离调整</li>
+<li>不同 Grid 可以有不同的 LoadingRange</li>
+</ul>
+<h3 id="6-2-Cell-Size-优化"><a href="#6-2-Cell-Size-优化" class="headerlink" title="6.2 Cell Size 优化"></a>6.2 Cell Size 优化</h3><ul>
+<li>CellSize 太小 → Cell 数量过多，管理开销大</li>
+<li>CellSize 太大 → 加载不必要的内容</li>
+<li>建议：CellSize &#x3D; LoadingRange &#x2F; 2</li>
+</ul>
+<h3 id="6-3-异步更新"><a href="#6-3-异步更新" class="headerlink" title="6.3 异步更新"></a>6.3 异步更新</h3><p>确保启用异步流式更新（默认启用）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wp.AsyncUpdateStreamingState 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-4-服务器流式加载优化"><a href="#6-4-服务器流式加载优化" class="headerlink" title="6.4 服务器流式加载优化"></a>6.4 服务器流式加载优化</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 服务器端只加载玩家附近的区域</span></span><br><span class="line"><span class="comment">// 在 World Settings 中配置：</span></span><br><span class="line">ServerStreamingMode = Enabled</span><br><span class="line">ServerStreamingOutMode = Enabled</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-5-Streaming-Performance-监控"><a href="#6-5-Streaming-Performance-监控" class="headerlink" title="6.5 Streaming Performance 监控"></a>6.5 Streaming Performance 监控</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 在运行时查看流式性能</span><br><span class="line">stat Streaming</span><br><span class="line">wp.DebugDraw 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="七、常见问题与解决方案"><a href="#七、常见问题与解决方案" class="headerlink" title="七、常见问题与解决方案"></a>七、常见问题与解决方案</h2><h3 id="7-1-Cell-加载卡顿"><a href="#7-1-Cell-加载卡顿" class="headerlink" title="7.1 Cell 加载卡顿"></a>7.1 Cell 加载卡顿</h3><p><strong>原因</strong>：LoadingRange 过大，Cell 过多</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>减小 LoadingRange</li>
+<li>增大 CellSize</li>
+<li>启用 bBlockOnSlowStreaming</li>
+<li>使用异步更新</li>
+</ol>
+<h3 id="7-2-Actor-不在预期的-Cell-中"><a href="#7-2-Actor-不在预期的-Cell-中" class="headerlink" title="7.2 Actor 不在预期的 Cell 中"></a>7.2 Actor 不在预期的 Cell 中</h3><p><strong>原因</strong>：Actor 的 Bounds 超出了 CellSize</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>设置 Actor 的 <code>Runtime Grid</code> 到更大 CellSize 的 Grid</li>
+<li>勾选 <code>bIsSpatiallyLoaded = false</code> 使其始终加载</li>
+</ol>
+<h3 id="7-3-Data-Layer-切换时卡顿"><a href="#7-3-Data-Layer-切换时卡顿" class="headerlink" title="7.3 Data Layer 切换时卡顿"></a>7.3 Data Layer 切换时卡顿</h3><p><strong>原因</strong>：需要加载的 Cell 过多</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>预加载（提前将 Data Layer 设为 Loaded 状态）</li>
+<li>使用 Loading Range 预加载范围</li>
+<li>分步激活</li>
+</ol>
+<h3 id="7-4-编辑器中性能差"><a href="#7-4-编辑器中性能差" class="headerlink" title="7.4 编辑器中性能差"></a>7.4 编辑器中性能差</h3><p><strong>解决方案</strong>：</p>
+<ol>
+<li>启用编辑器流式加载（World Settings → Enable Streaming in Editor）</li>
+<li>只加载当前编辑区域</li>
+<li>使用 Minimap 辅助导航</li>
+</ol>
+<h3 id="7-5-多人协作冲突"><a href="#7-5-多人协作冲突" class="headerlink" title="7.5 多人协作冲突"></a>7.5 多人协作冲突</h3><p><strong>解决方案</strong>：</p>
+<ol>
+<li>确保使用 OFPA（World Partition 自动使用）</li>
+<li>不同编辑者编辑不同区域</li>
+<li>使用 Data Layer 分离不同人的工作</li>
+</ol>
+<h2 id="八、Lyra-项目中的-World-Partition-使用"><a href="#八、Lyra-项目中的-World-Partition-使用" class="headerlink" title="八、Lyra 项目中的 World Partition 使用"></a>八、Lyra 项目中的 World Partition 使用</h2><p>Lyra Starter Game 是 Epic 提供的示例项目，其中使用了 World Partition：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Samples/Games/Lyra/</span><br></pre></td></tr></table></figure>
+
+<p>Lyra 中的 World Partition 使用方式：</p>
+<ol>
+<li>使用 Data Layer 控制不同的游戏模式内容</li>
+<li>使用 RuntimeHashSet 作为 Runtime Hash</li>
+<li>配置了多个 Grid 用于不同的内容密度区域</li>
+</ol>
+<h2 id="九、相关源码快速参考"><a href="#九、相关源码快速参考" class="headerlink" title="九、相关源码快速参考"></a>九、相关源码快速参考</h2><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>源码位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Streaming Source 组件</td>
+<td><code>Engine/Source/Runtime/Engine/Public/WorldPartition/WorldPartitionStreamingSource.h</code></td>
+</tr>
+<tr>
+<td>Data Layer Manager API</td>
+<td><code>Engine/Source/Runtime/Engine/Public/WorldPartition/DataLayer/DataLayerManager.h</code></td>
+</tr>
+<tr>
+<td>World Partition Subsystem</td>
+<td><code>Engine/Source/Runtime/Engine/Public/WorldPartition/WorldPartitionSubsystem.h</code></td>
+</tr>
+<tr>
+<td>Cell 查询 API</td>
+<td><code>Engine/Source/Runtime/Engine/Public/WorldPartition/WorldPartitionRuntimeHash.h</code></td>
+</tr>
+<tr>
+<td>HLOD Layer</td>
+<td><code>Engine/Source/Runtime/Engine/Public/WorldPartition/HLOD/HLODLayer.h</code></td>
+</tr>
+<tr>
+<td>Actor 过滤</td>
+<td><code>Engine/Source/Runtime/Engine/Public/WorldPartition/Filter/WorldPartitionActorFilter.h</code></td>
+</tr>
+<tr>
+<td>Blueprint Library</td>
+<td><code>Engine/Source/Runtime/Engine/Public/WorldPartition/WorldPartitionBlueprintLibrary.h</code></td>
+</tr>
+</tbody></table>
+<h2 id="十、小结"><a href="#十、小结" class="headerlink" title="十、小结"></a>十、小结</h2><table>
+<thead>
+<tr>
+<th>实践</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Grid 配置</strong></td>
+<td>根据内容密度选择合适的 CellSize 和 LoadingRange</td>
+</tr>
+<tr>
+<td><strong>Data Layer</strong></td>
+<td>用于任务、季节、DLC 等逻辑分层</td>
+</tr>
+<tr>
+<td><strong>HLOD</strong></td>
+<td>必须构建，否则远处性能极差</td>
+</tr>
+<tr>
+<td><strong>Streaming Source</strong></td>
+<td>自定义传送点、AI 等场景</td>
+</tr>
+<tr>
+<td><strong>性能监控</strong></td>
+<td>使用 stat Streaming 和调试视图</td>
+</tr>
+<tr>
+<td><strong>服务器配置</strong></td>
+<td>大世界必须启用服务器流式加载</td>
+</tr>
+<tr>
+<td><strong>协作</strong></td>
+<td>利用 OFPA 和 Data Layer 分离工作</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/07_%E5%AE%9E%E6%88%98%E5%BA%94%E7%94%A8%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/07_%E5%AE%9E%E6%88%98%E5%BA%94%E7%94%A8%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/AIGen/">AIGen</a><a class="post-meta__tags" href="/tags/WorldPartition/">WorldPartition</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/06_Editor%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="Editor 工具与工作流"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Editor 工具与工作流</div></div><div class="info-2"><div class="info-item-1">06 - Editor 工具与工作流 基于 UE 5.7 源码 Engine/Source/Editor/WorldPartitionEditor/ 和相关模块  一、World Partition 编辑器模块1.1 模块结构World Partition 的编辑器功能分布在以下模块中：    模块 路径 作用    WorldPartitionEditor Engine/Source/Editor/WorldPartitionEditor/ 编辑器面板、Grid 可视化、HLOD 构建   DataLayerEditor Engine/Source/Editor/DataLayerEditor/ Data Layer 浏览器、编辑器状态   WorldPartitionHLODUtilities Engine/Plugins/Editor/WorldPartitionHLODUtilities/ HLOD 构建器   1.2 模块依赖WorldPartitionEditor.Build.cs 依赖：  - Engine, Core, CoreUObject  -...</div></div></div></a><a class="pagination-related" href="/AIGen/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E5%88%86%E6%9E%90/05_%E8%93%9D%E5%9B%BE%E5%BC%82%E6%AD%A5%E4%B8%8E%E5%AE%9E%E6%88%98%E5%AF%B9%E6%AF%94/" title="蓝图异步与实战对比"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">蓝图异步与实战对比</div></div><div class="info-2"><div class="info-item-1">UE5 蓝图异步与实战对比 基于 UE 5.7.4 源码分析  目录 1. 蓝图异步节点系统 2. Latent Action 详解 3. Blueprint Async Action 详解 4. 自定义蓝图异步节点 5. 与 Unity 异步系统全面对比 6. 商业项目中的异步编程实践 7. 异步编程优势与最佳实践   1. 蓝图异步节点系统UE5 蓝图中有两类异步节点：    节点类型 外观 特点 例子    Latent Action ⏱ 时钟图标 有执行引脚，暂停蓝图直到完成 Delay, MoveTo, LoadAsset   Async Action ⏰ 时钟图标 无执行引脚，通过委托输出结果 DownloadImage, LoadAssetByName   1.1 Latent Action 节点Latent Action 节点会暂停蓝图执行，直到操作完成才继续： [Begin] → [Delay 2.0s] → [Print &quot;Done&quot;] → [End]              ↑          暂停2秒后继续  1.2 Async...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/00_WorldPartition%E6%80%BB%E8%A7%88/" title="World Partition 总览"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">World Partition 总览</div></div><div class="info-2"><div class="info-item-1">World Partition 总览 基于 UE 5.7 源码分析 | 面向游戏开发人员  一、什么是 World PartitionWorld Partition（世界分区）是虚幻引擎从 UE5 开始引入的大世界地图管理与流式加载系统。它将一个完整的大世界地图自动划分为多个网格单元（Cell），在运行时根据玩家位置等流式加载源（Streaming Source）按需加载和卸载这些 Cell，从而实现无缝大世界体验。 核心价值   能力 说明    单一大地图 美术和策划只需在一个统一的世界中工作，无需手动拆分关卡   自动空间分区 引擎根据配置的 Grid 自动将世界空间划分为 Cell   按需流式加载 运行时只加载玩家附近的 Cell，内存占用可控   多人协作 基于 One File Per Actor（OFPA）机制，多人可同时编辑同一地图的不同区域   Data Layer 集成 支持逻辑分层的流式加载控制（如季节切换、任务状态等）   HLOD 支持 自动为远处区域生成 HLOD，降低渲染开销   二、核心架构概览2.1 模块分布Engine/Source/├──...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/01_%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87/" title="核心架构与设计目标"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">核心架构与设计目标</div></div><div class="info-2"><div class="info-item-1">01 - 核心架构与设计目标 基于 UE 5.7 源码 Engine/Source/Runtime/Engine/Public/WorldPartition/WorldPartition.h  一、设计目标World Partition 的设计目标是解决传统关卡系统在大世界游戏开发中的核心痛点： 1.1 传统方案的痛点   痛点 说明    手动关卡拆分 美术需要手动将大世界拆分为多个子关卡，工作量大且易出错   关卡边界问题 子关卡之间的光照、碰撞、LOD 等在边界处容易出现接缝   协作困难 多人编辑同一关卡文件会产生严重的版本控制冲突   内存不可控 传统关卡需要整关卡加载，无法按需加载小区域   流式加载不灵活 Level Streaming Volume 的触发式加载无法适应开放世界的自由移动   1.2 World Partition 的设计目标 统一的编辑体验 — 整个大世界就是一个地图，无需手动拆分 自动空间分区 — 引擎根据配置自动将世界划分为可管理的 Cell 按需流式加载 — 运行时根据 StreamingSource 动态加载&#x2F;卸载...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/02_Cell%E4%B8%8EGrid%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/" title="Cell 与 Grid 系统详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">Cell 与 Grid 系统详解</div></div><div class="info-2"><div class="info-item-1">02 - Cell 与 Grid 系统详解 基于 UE 5.7 源码深入分析 Cell 和 Grid 的实现  一、Cell 的概念Cell（单元）是 World Partition 中流式加载的基本单位。一个 Cell 包含一组空间上相邻的 Actor，在运行时作为一个整体被加载或卸载。每个 Cell 对应一个独立的 Level Package。 1.1 UWorldPartitionRuntimeCell// WorldPartitionRuntimeCell.h:234UCLASS(Abstract, MinimalAPI)class UWorldPartitionRuntimeCell : public UObject,    public IWorldPartitionCell,    public IWorldPartitionCookPackageObject  Cell 的核心接口： virtual void Load() const;            // 加载 Cellvirtual void Unload() const;          //...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/03_%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8D%B8%E8%BD%BD%E6%9C%BA%E5%88%B6/" title="运行时加载与卸载机制"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">运行时加载与卸载机制</div></div><div class="info-2"><div class="info-item-1">03 - 运行时加载与卸载机制 基于 UE 5.7 源码深入分析 World Partition 的运行时流式加载流程  一、Streaming Source（流式加载源）Streaming Source 是驱动 Cell 加载&#x2F;卸载的核心概念。它描述了一个空间中的观察者（通常是玩家），引擎根据其位置和方向来决定需要加载哪些 Cell。 1.1 FWorldPartitionStreamingSource// WorldPartitionStreamingSource.h:343struct FWorldPartitionStreamingSource&#123;    FName Name;                              // 唯一名称    FVector Location;                        // 位置    FRotator Rotation;                       // 朝向    EStreamingSourceTargetState TargetState;  //...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/04_DataLayer%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/" title="Data Layer 系统详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">Data Layer 系统详解</div></div><div class="info-2"><div class="info-item-1">04 - Data Layer 系统详解 基于 UE 5.7 源码 Engine/Source/Runtime/Engine/Public/WorldPartition/DataLayer/  一、Data Layer 概述Data Layer（数据层）是 World Partition 的逻辑分层系统。它允许开发者将世界内容按逻辑分组，并在运行时动态控制这些分组的加载&#x2F;卸载状态。 1.1 典型应用场景   场景 示例    任务系统 任务 A 完成后加载任务 B 的场景内容   季节系统 夏天&#x2F;冬天场景切换   日夜系统 白天&#x2F;夜晚不同的 NPC 和物件   难度选择 困难模式下增加额外的障碍物   DLC 内容 安装 DLC 后加载额外内容   平台差异化 高端平台加载额外细节   1.2 Data Layer 的类型// DataLayerType.h:8enum class EDataLayerType : uint8&#123;    Runtime,  // 运行时类型 — 可在游戏中动态切换    Editor,   // 编辑器类型...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/05_%E4%B8%8E%E4%BC%A0%E7%BB%9F%E5%85%B3%E5%8D%A1%E7%AE%A1%E7%90%86%E5%AF%B9%E6%AF%94/" title="与传统关卡管理对比"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">与传统关卡管理对比</div></div><div class="info-2"><div class="info-item-1">05 - 与传统关卡管理对比 基于 UE 5.7 源码对比 World Partition、Level Streaming 和传统 Sub-level 方案  一、传统关卡管理方案1.1 单一 Persistent Level最简单的方案：所有内容放在一个关卡中。    优点 缺点    简单直接 内存占用不可控   无加载边界问题 不适合大世界   无版本控制冲突（单人） 无法按需加载   1.2 Sub-levels（子关卡）将世界拆分为一个 Persistent Level + 多个 Sub-level。 UWorld├── PersistentLevel (ULevel)       ← 始终加载│   └── ULevelStreamingPersistent│└── StreamingLevels (TArray&lt;ULevelStreaming*&gt;)    ├── ULevelStreamingAlwaysLoaded   ← 始终加载的子关卡    ├── ULevelStreaming (base)        ← 手动控制的子关卡    └──...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#07-%E5%AE%9E%E6%88%98%E5%BA%94%E7%94%A8%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.</span> <span class="toc-text">07 - 实战应用与最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">一、项目配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%88%9B%E5%BB%BA-World-Partition-%E5%9C%B0%E5%9B%BE"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 创建 World Partition 地图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Grid-%E9%85%8D%E7%BD%AE%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 Grid 配置建议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%80%E6%94%BE%E4%B8%96%E7%95%8C%E5%85%B8%E5%9E%8B%E9%85%8D%E7%BD%AE"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">开放世界典型配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%A4%E5%86%85-%E5%AE%A4%E5%A4%96%E6%B7%B7%E5%90%88%E9%85%8D%E7%BD%AE"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">室内+室外混合配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-Actor-%E7%9A%84-Grid-%E5%88%86%E9%85%8D"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 Actor 的 Grid 分配</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Data-Layer-%E5%AE%9E%E6%88%98"><span class="toc-number">1.2.</span> <span class="toc-text">二、Data Layer 实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%88%9B%E5%BB%BA-Data-Layer"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 创建 Data Layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E8%BF%90%E8%A1%8C%E6%97%B6%E6%8E%A7%E5%88%B6-Data-Layer"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 运行时控制 Data Layer</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%93%9D%E5%9B%BE%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">蓝图方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">C++ 方式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E4%BB%BB%E5%8A%A1%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84-Data-Layer"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 任务系统中的 Data Layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%AD%A3%E8%8A%82%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 季节系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%87%AA%E5%AE%9A%E4%B9%89-Streaming-Source"><span class="toc-number">1.3.</span> <span class="toc-text">三、自定义 Streaming Source</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 基本实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%B3%A8%E5%86%8C-%E5%8F%96%E6%B6%88%E6%B3%A8%E5%86%8C"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 注册&#x2F;取消注册</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 使用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%B5%81%E5%BC%8F%E5%8A%A0%E8%BD%BD%E5%AE%8C%E6%88%90%E6%A3%80%E6%B5%8B"><span class="toc-number">1.4.</span> <span class="toc-text">四、流式加载完成检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E8%93%9D%E5%9B%BE"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 蓝图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-C"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 C++</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81HLOD-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.5.</span> <span class="toc-text">五、HLOD 最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E9%85%8D%E7%BD%AE-HLOD-Layer"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 配置 HLOD Layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-HLOD-%E5%B1%82%E7%BA%A7"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 HLOD 层级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%9E%84%E5%BB%BA%E5%91%BD%E4%BB%A4"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 构建命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">1.6.</span> <span class="toc-text">六、性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-Loading-Range-%E4%BC%98%E5%8C%96"><span class="toc-number">1.6.1.</span> <span class="toc-text">6.1 Loading Range 优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-Cell-Size-%E4%BC%98%E5%8C%96"><span class="toc-number">1.6.2.</span> <span class="toc-text">6.2 Cell Size 优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0"><span class="toc-number">1.6.3.</span> <span class="toc-text">6.3 异步更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%B5%81%E5%BC%8F%E5%8A%A0%E8%BD%BD%E4%BC%98%E5%8C%96"><span class="toc-number">1.6.4.</span> <span class="toc-text">6.4 服务器流式加载优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-5-Streaming-Performance-%E7%9B%91%E6%8E%A7"><span class="toc-number">1.6.5.</span> <span class="toc-text">6.5 Streaming Performance 监控</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">1.7.</span> <span class="toc-text">七、常见问题与解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-Cell-%E5%8A%A0%E8%BD%BD%E5%8D%A1%E9%A1%BF"><span class="toc-number">1.7.1.</span> <span class="toc-text">7.1 Cell 加载卡顿</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-Actor-%E4%B8%8D%E5%9C%A8%E9%A2%84%E6%9C%9F%E7%9A%84-Cell-%E4%B8%AD"><span class="toc-number">1.7.2.</span> <span class="toc-text">7.2 Actor 不在预期的 Cell 中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-Data-Layer-%E5%88%87%E6%8D%A2%E6%97%B6%E5%8D%A1%E9%A1%BF"><span class="toc-number">1.7.3.</span> <span class="toc-text">7.3 Data Layer 切换时卡顿</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-4-%E7%BC%96%E8%BE%91%E5%99%A8%E4%B8%AD%E6%80%A7%E8%83%BD%E5%B7%AE"><span class="toc-number">1.7.4.</span> <span class="toc-text">7.4 编辑器中性能差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C%E5%86%B2%E7%AA%81"><span class="toc-number">1.7.5.</span> <span class="toc-text">7.5 多人协作冲突</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81Lyra-%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84-World-Partition-%E4%BD%BF%E7%94%A8"><span class="toc-number">1.8.</span> <span class="toc-text">八、Lyra 项目中的 World Partition 使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E7%9B%B8%E5%85%B3%E6%BA%90%E7%A0%81%E5%BF%AB%E9%80%9F%E5%8F%82%E8%80%83"><span class="toc-number">1.9.</span> <span class="toc-text">九、相关源码快速参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E5%B0%8F%E7%BB%93"><span class="toc-number">1.10.</span> <span class="toc-text">十、小结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/06_%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="实战示例与最佳实践">实战示例与最佳实践</a><time datetime="2026-05-07T17:27:26.099Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/04_%E9%85%8D%E5%A5%97%E5%AD%90%E7%B3%BB%E7%BB%9F/" title="配套子系统">配套子系统</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/05_MassEntity%E4%B8%8EUnityECS%E5%AF%B9%E6%AF%94/" title="MassEntity 与 Unity DOTS/ECS 对比">MassEntity 与 Unity DOTS/ECS 对比</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/03_Processor%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="Processor 执行系统与多线程">Processor 执行系统与多线程</a><time datetime="2026-05-07T17:27:26.094Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/02_Entity%E7%AE%A1%E7%90%86%E5%99%A8%E4%B8%8EArchetype/" title="Entity 管理器与 Archetype">Entity 管理器与 Archetype</a><time datetime="2026-05-07T17:27:26.092Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '59d25da91c5acc1b8ecf62ef86fc7df1'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://unpkg.com/gitalk/dist/gitalk.css')
+      await btf.getScript('https://unpkg.com/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script>var meting_api="https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r"</script><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script><script src="https://unpkg.com/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

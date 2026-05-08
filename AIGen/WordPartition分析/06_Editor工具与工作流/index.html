@@ -1,0 +1,436 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Editor 工具与工作流 | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="06 - Editor 工具与工作流 基于 UE 5.7 源码 Engine&#x2F;Source&#x2F;Editor&#x2F;WorldPartitionEditor&#x2F; 和相关模块  一、World Partition 编辑器模块1.1 模块结构World Partition 的编辑器功能分布在以下模块中：    模块 路径 作用    WorldPartitionEditor Engine&#x2F;Source&#x2F;Edito">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Editor 工具与工作流">
+<meta property="og:url" content="https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/06_Editor%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="06 - Editor 工具与工作流 基于 UE 5.7 源码 Engine&#x2F;Source&#x2F;Editor&#x2F;WorldPartitionEditor&#x2F; 和相关模块  一、World Partition 编辑器模块1.1 模块结构World Partition 的编辑器功能分布在以下模块中：    模块 路径 作用    WorldPartitionEditor Engine&#x2F;Source&#x2F;Edito">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2026-05-07T17:19:16.233Z">
+<meta property="article:modified_time" content="2026-05-07T17:20:00.318Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="AIGen">
+<meta property="article:tag" content="WorldPartition">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Editor 工具与工作流",
+  "url": "https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/06_Editor%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2026-05-07T17:19:16.233Z",
+  "dateModified": "2026-05-07T17:20:00.318Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/06_Editor%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Editor 工具与工作流',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">Editor 工具与工作流</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Editor 工具与工作流</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-07T17:19:16.233Z" title="发表于 2026-05-08 01:19:16">2026-05-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-07T17:20:00.318Z" title="更新于 2026-05-08 01:20:00">2026-05-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="06-Editor-工具与工作流"><a href="#06-Editor-工具与工作流" class="headerlink" title="06 - Editor 工具与工作流"></a>06 - Editor 工具与工作流</h1><blockquote>
+<p>基于 UE 5.7 源码 <code>Engine/Source/Editor/WorldPartitionEditor/</code> 和相关模块</p>
+</blockquote>
+<h2 id="一、World-Partition-编辑器模块"><a href="#一、World-Partition-编辑器模块" class="headerlink" title="一、World Partition 编辑器模块"></a>一、World Partition 编辑器模块</h2><h3 id="1-1-模块结构"><a href="#1-1-模块结构" class="headerlink" title="1.1 模块结构"></a>1.1 模块结构</h3><p>World Partition 的编辑器功能分布在以下模块中：</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>路径</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>WorldPartitionEditor</strong></td>
+<td><code>Engine/Source/Editor/WorldPartitionEditor/</code></td>
+<td>编辑器面板、Grid 可视化、HLOD 构建</td>
+</tr>
+<tr>
+<td><strong>DataLayerEditor</strong></td>
+<td><code>Engine/Source/Editor/DataLayerEditor/</code></td>
+<td>Data Layer 浏览器、编辑器状态</td>
+</tr>
+<tr>
+<td><strong>WorldPartitionHLODUtilities</strong></td>
+<td><code>Engine/Plugins/Editor/WorldPartitionHLODUtilities/</code></td>
+<td>HLOD 构建器</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-模块依赖"><a href="#1-2-模块依赖" class="headerlink" title="1.2 模块依赖"></a>1.2 模块依赖</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">WorldPartitionEditor.Build.cs 依赖：</span><br><span class="line">  - Engine, Core, CoreUObject</span><br><span class="line">  - UnrealEd（编辑器框架）</span><br><span class="line">  - ContentBrowser, ContentBrowserData（内容浏览器）</span><br><span class="line">  - SceneOutliner（场景大纲）</span><br><span class="line">  - PropertyEditor（属性编辑器）</span><br><span class="line">  - DataLayerEditor（Data Layer 编辑）</span><br><span class="line">  - EditorFramework, EditorWidgets, EditorSubsystem</span><br><span class="line">  - LevelEditor（关卡编辑器）</span><br><span class="line">  - Slate, SlateCore（UI 框架）</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、World-Partition-编辑器面板"><a href="#二、World-Partition-编辑器面板" class="headerlink" title="二、World Partition 编辑器面板"></a>二、World Partition 编辑器面板</h2><h3 id="2-1-SWorldPartitionEditor"><a href="#2-1-SWorldPartitionEditor" class="headerlink" title="2.1 SWorldPartitionEditor"></a>2.1 SWorldPartitionEditor</h3><p>主编辑器面板，提供 World Partition 的可视化和交互：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartitionEditor/Public/WorldPartition/SWorldPartitionEditor.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SWorldPartitionEditor</span> : <span class="keyword">public</span> SCompoundWidget</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 显示 World Partition 的 Grid 预览</span></span><br><span class="line">    <span class="comment">// 允许手动加载/卸载区域</span></span><br><span class="line">    <span class="comment">// 显示 Cell 状态</span></span><br><span class="line">    <span class="comment">// 显示 Streaming Source 位置</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-SWorldPartitionEditorGrid"><a href="#2-2-SWorldPartitionEditorGrid" class="headerlink" title="2.2 SWorldPartitionEditorGrid"></a>2.2 SWorldPartitionEditorGrid</h3><p>Grid 的 2D 可视化组件：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartitionEditor/Public/WorldPartition/SWorldPartitionEditorGrid.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SWorldPartitionEditorGrid</span> : <span class="keyword">public</span> SCompoundWidget</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 绘制 Grid 的 Cell 边界</span></span><br><span class="line">    <span class="comment">// 高亮已加载的 Cell</span></span><br><span class="line">    <span class="comment">// 显示 Cell 名称和状态</span></span><br><span class="line">    <span class="comment">// 支持框选加载/卸载</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-编辑器面板功能"><a href="#2-3-编辑器面板功能" class="headerlink" title="2.3 编辑器面板功能"></a>2.3 编辑器面板功能</h3><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Grid 预览</strong></td>
+<td>显示所有 Grid 的 Cell 划分</td>
+</tr>
+<tr>
+<td><strong>区域加载</strong></td>
+<td>框选区域手动加载 Cell</td>
+</tr>
+<tr>
+<td><strong>区域卸载</strong></td>
+<td>框选区域手动卸载 Cell</td>
+</tr>
+<tr>
+<td><strong>Cell 信息</strong></td>
+<td>查看 Cell 中的 Actor 列表</td>
+</tr>
+<tr>
+<td><strong>Streaming Source 显示</strong></td>
+<td>显示当前 Streaming Source 位置</td>
+</tr>
+<tr>
+<td><strong>HLOD 预览</strong></td>
+<td>显示 HLOD Cell</td>
+</tr>
+<tr>
+<td><strong>Data Layer 过滤</strong></td>
+<td>按 Data Layer 过滤显示</td>
+</tr>
+</tbody></table>
+<h2 id="三、OFPA（One-File-Per-Actor）"><a href="#三、OFPA（One-File-Per-Actor）" class="headerlink" title="三、OFPA（One File Per Actor）"></a>三、OFPA（One File Per Actor）</h2><h3 id="3-1-概念"><a href="#3-1-概念" class="headerlink" title="3.1 概念"></a>3.1 概念</h3><p>OFPA 是 World Partition 的核心编辑器机制。每个 Actor 存储在独立的包文件中，而非全部放在一个关卡文件中。</p>
+<h3 id="3-2-优势"><a href="#3-2-优势" class="headerlink" title="3.2 优势"></a>3.2 优势</h3><table>
+<thead>
+<tr>
+<th>优势</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>版本控制友好</strong></td>
+<td>多人编辑同一地图时，只锁定修改的 Actor 文件</td>
+</tr>
+<tr>
+<td><strong>按需加载</strong></td>
+<td>编辑器只需加载当前区域的 Actor</td>
+</tr>
+<tr>
+<td><strong>外部引用</strong></td>
+<td>Actor 可以被其他关卡引用</td>
+</tr>
+<tr>
+<td><strong>增量保存</strong></td>
+<td>只保存修改的 Actor</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-文件结构"><a href="#3-3-文件结构" class="headerlink" title="3.3 文件结构"></a>3.3 文件结构</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Content/</span><br><span class="line">└── Maps/</span><br><span class="line">    └── OpenWorld/</span><br><span class="line">        ├── OpenWorld.umap              ← 地图文件（不含 Actor 数据）</span><br><span class="line">        └── OpenWorld/</span><br><span class="line">            ├── _WorldPartition/        ← World Partition 数据</span><br><span class="line">            │   └── WP/</span><br><span class="line">            │       └── [GridName]/</span><br><span class="line">            │           └── [CellCoord]/</span><br><span class="line">            │               └── [CellName].umap  ← Cell 的 Level Package</span><br><span class="line">            └── [ActorGUID].uasset      ← 单个 Actor 的文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-ActorDescContainer"><a href="#3-4-ActorDescContainer" class="headerlink" title="3.4 ActorDescContainer"></a>3.4 ActorDescContainer</h3><p>在编辑时，World Partition 使用 <code>UActorDescContainerInstance</code> 来管理 ActorDesc：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartition.h:688</span></span><br><span class="line">TObjectPtr&lt;UActorDescContainerInstance&gt; ActorDescContainerInstance;</span><br></pre></td></tr></table></figure>
+
+<p>ActorDescContainer 维护了一个包中所有 Actor 的描述符索引，支持：</p>
+<ul>
+<li>快速空间查询（不加载 Actor 对象）</li>
+<li>Actor 的增删改查通知</li>
+<li>多 ContainerInstance 的组合</li>
+</ul>
+<h2 id="四、传统关卡转换为-World-Partition"><a href="#四、传统关卡转换为-World-Partition" class="headerlink" title="四、传统关卡转换为 World Partition"></a>四、传统关卡转换为 World Partition</h2><h3 id="4-1-转换流程"><a href="#4-1-转换流程" class="headerlink" title="4.1 转换流程"></a>4.1 转换流程</h3><p>UE 提供了 <code>FWorldPartitionConverter</code> 来将传统关卡转换为 World Partition：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartitionConverter.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FWorldPartitionConverter</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 1. 读取原始关卡的所有 Actor</span></span><br><span class="line">    <span class="comment">// 2. 创建 World Partition 对象</span></span><br><span class="line">    <span class="comment">// 3. 将 Actor 转为 OFPA 格式</span></span><br><span class="line">    <span class="comment">// 4. 生成 EditorHash</span></span><br><span class="line">    <span class="comment">// 5. 保存转换后的地图</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-命令行工具"><a href="#4-2-命令行工具" class="headerlink" title="4.2 命令行工具"></a>4.2 命令行工具</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 通过命令行转换</span></span><br><span class="line">UE5Editor.exe ProjectName MapName -run=WorldPartitionConvert</span><br></pre></td></tr></table></figure>
+
+<p>对应的 Commandlet：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartitionConvertCommandlet</span></span><br><span class="line"><span class="comment">// 位于 Engine/Source/Editor/UnrealEd/Private/Commandlets/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="五、HLOD-构建工作流"><a href="#五、HLOD-构建工作流" class="headerlink" title="五、HLOD 构建工作流"></a>五、HLOD 构建工作流</h2><h3 id="5-1-HLOD-系统"><a href="#5-1-HLOD-系统" class="headerlink" title="5.1 HLOD 系统"></a>5.1 HLOD 系统</h3><p>HLOD（Hierarchical Level of Detail）为远处的 Cell 生成简化模型，减少渲染开销。</p>
+<h3 id="5-2-核心类"><a href="#5-2-核心类" class="headerlink" title="5.2 核心类"></a>5.2 核心类</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HLOD Layer 定义</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UHLODLayer</span> : <span class="keyword">public</span> UDataAsset</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// HLOD 的构建设置（合并/简化/实例化等）</span></span><br><span class="line">    <span class="comment">// 关联的 Grid</span></span><br><span class="line">    <span class="comment">// LOD 级别</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// HLOD Builder（插件提供）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UHLODBuilder</span> : <span class="keyword">public</span> UObject</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 构建 HLOD 网格</span></span><br><span class="line">    <span class="comment">// 支持多种构建模式：MeshMerge、MeshSimplify、Instancing、Custom</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// HLOD Editor Subsystem</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FHLODEditorSubsystem</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 管理HLOD 构建</span></span><br><span class="line">    <span class="comment">// Build HLODs / Rebuild HLODs</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-HLOD-构建流程"><a href="#5-3-HLOD-构建流程" class="headerlink" title="5.3 HLOD 构建流程"></a>5.3 HLOD 构建流程</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 配置 Grid 的 HLODLayer</span><br><span class="line">   │</span><br><span class="line">2. 在编辑器中点击 &quot;Build HLODs&quot;</span><br><span class="line">   │</span><br><span class="line">3. UWorldPartition::SetupHLODActors(Params)</span><br><span class="line">   │</span><br><span class="line">4. RuntimeHash-&gt;SetupHLODActors()</span><br><span class="line">   │   ├─ 对每个需要 HLOD 的 Cell：</span><br><span class="line">   │   ├─ 收集 Cell 中的源 Actor</span><br><span class="line">   │   ├─ 调用 HLODBuilder 构建 HLOD 网格</span><br><span class="line">   │   └─ 创建 HLODActor 并放入 HLOD Cell</span><br><span class="line">   │</span><br><span class="line">5. 保存 HLOD Cell 的 Package</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-4-HLOD-Builder-类型"><a href="#5-4-HLOD-Builder-类型" class="headerlink" title="5.4 HLOD Builder 类型"></a>5.4 HLOD Builder 类型</h3><table>
+<thead>
+<tr>
+<th>Builder</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MeshMerge</strong></td>
+<td>将多个静态网格合并为一个</td>
+</tr>
+<tr>
+<td><strong>MeshSimplify</strong></td>
+<td>合并并简化网格</td>
+</tr>
+<tr>
+<td><strong>Instancing</strong></td>
+<td>使用 InstancedStaticMesh</td>
+</tr>
+<tr>
+<td><strong>Custom</strong></td>
+<td>自定义 HLOD Actor</td>
+</tr>
+</tbody></table>
+<h3 id="5-5-Standalone-HLOD"><a href="#5-5-Standalone-HLOD" class="headerlink" title="5.5 Standalone HLOD"></a>5.5 Standalone HLOD</h3><p>UE 5.7 支持 Standalone HLOD World，即独立的 HLOD 世界：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartition.h:484</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">HasStandaloneHLOD</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> bHasStandaloneHLOD; &#125;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">IsStandaloneHLODWorld</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> bIsStandaloneHLODWorld; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>Standalone HLOD 创建一个独立的 World，只包含 HLOD 内容，用于极远距离的渲染。</p>
+<h2 id="六、Data-Layer-编辑器"><a href="#六、Data-Layer-编辑器" class="headerlink" title="六、Data Layer 编辑器"></a>六、Data Layer 编辑器</h2><h3 id="6-1-Data-Layer-浏览器"><a href="#6-1-Data-Layer-浏览器" class="headerlink" title="6.1 Data Layer 浏览器"></a>6.1 Data Layer 浏览器</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// DataLayerEditor/Public/DataLayer/SDataLayerBrowser.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SDataLayerBrowser</span> : <span class="keyword">public</span> SCompoundWidget</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 列出所有 Data Layer</span></span><br><span class="line">    <span class="comment">// 显示当前状态（加载/激活/卸载）</span></span><br><span class="line">    <span class="comment">// 支持拖拽分配 Actor 到 Data Layer</span></span><br><span class="line">    <span class="comment">// 支持创建/删除 Data Layer</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-Data-Layer-大纲"><a href="#6-2-Data-Layer-大纲" class="headerlink" title="6.2 Data Layer 大纲"></a>6.2 Data Layer 大纲</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// DataLayerEditor 中的 Outliner</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SDataLayerOutliner</span> : <span class="keyword">public</span> SCompoundWidget</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 按 Data Layer 分组显示 Actor</span></span><br><span class="line">    <span class="comment">// 支持过滤和搜索</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-3-Data-Layer-编辑器状态"><a href="#6-3-Data-Layer-编辑器状态" class="headerlink" title="6.3 Data Layer 编辑器状态"></a>6.3 Data Layer 编辑器状态</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// DataLayerEditor/Public/DataLayer/DataLayerEditorState.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FDataLayerEditorState</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 跟踪编辑器中 Data Layer 的当前状态</span></span><br><span class="line">    <span class="comment">// 控制编辑器中哪些 Data Layer 是可见的</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="七、World-Partition-编辑器设置"><a href="#七、World-Partition-编辑器设置" class="headerlink" title="七、World Partition 编辑器设置"></a>七、World Partition 编辑器设置</h2><h3 id="7-1-WorldPartitionEditorSettings"><a href="#7-1-WorldPartitionEditorSettings" class="headerlink" title="7.1 WorldPartitionEditorSettings"></a>7.1 WorldPartitionEditorSettings</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartitionEditorSettings.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UWorldPartitionEditorSettings</span> : <span class="keyword">public</span> UDeveloperSettings</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 编辑器默认设置</span></span><br><span class="line">    <span class="comment">// Cell 大小、加载范围等默认值</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-WorldPartitionEditorPerProjectUserSettings"><a href="#7-2-WorldPartitionEditorPerProjectUserSettings" class="headerlink" title="7.2 WorldPartitionEditorPerProjectUserSettings"></a>7.2 WorldPartitionEditorPerProjectUserSettings</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartitionEditorPerProjectUserSettings.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UWorldPartitionEditorPerProjectUserSettings</span> : <span class="keyword">public</span> UPerProjectUserSettings</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 用户级别的设置</span></span><br><span class="line">    <span class="comment">// 最近加载的区域</span></span><br><span class="line">    <span class="comment">// 编辑器面板布局</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="八、烘焙（Cook）工作流"><a href="#八、烘焙（Cook）工作流" class="headerlink" title="八、烘焙（Cook）工作流"></a>八、烘焙（Cook）工作流</h2><h3 id="8-1-烘焙流程"><a href="#8-1-烘焙流程" class="headerlink" title="8.1 烘焙流程"></a>8.1 烘焙流程</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UWorldPartition::BeginCook(CookContext)</span><br><span class="line">  │</span><br><span class="line">  ├─ GatherPackagesToCook()</span><br><span class="line">  │   └─ 收集所有需要烘焙的 Cell Package</span><br><span class="line">  │</span><br><span class="line">  ├─ PrepareGeneratorPackageForCook()</span><br><span class="line">  │   └─ 准备生成器包</span><br><span class="line">  │</span><br><span class="line">  ├─ PopulateGeneratorPackageForCook()</span><br><span class="line">  │   └─ 填充生成器包内容</span><br><span class="line">  │</span><br><span class="line">  └─ PopulateGeneratedPackageForCook()</span><br><span class="line">      └─ 对每个 Cell：</span><br><span class="line">          ├─ 将 Actor 数据写入 Cell Package</span><br><span class="line">          ├─ 应用 RuntimeCellTransformer（如有）</span><br><span class="line">          └─ 保存 Cell Package</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-2-RuntimeCellTransformer"><a href="#8-2-RuntimeCellTransformer" class="headerlink" title="8.2 RuntimeCellTransformer"></a>8.2 RuntimeCellTransformer</h3><p>烘焙时可以对 Cell 内容进行变换：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartition.h:120</span></span><br><span class="line"><span class="built_in">USTRUCT</span>()</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FRuntimeCellTransformerInstance</span></span><br><span class="line">&#123;</span><br><span class="line">    TSubclassOf&lt;UWorldPartitionRuntimeCellTransformer&gt; Class;</span><br><span class="line">    TObjectPtr&lt;UWorldPartitionRuntimeCellTransformer&gt; Instance;</span><br><span class="line">    <span class="comment">// PreTransform → Transform → PostTransform</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这允许在烘焙时对 Cell 进行自定义处理，如：</p>
+<ul>
+<li>合并静态网格</li>
+<li>优化材质</li>
+<li>添加自定义数据</li>
+</ul>
+<h2 id="九、调试工具"><a href="#九、调试工具" class="headerlink" title="九、调试工具"></a>九、调试工具</h2><h3 id="9-1-控制台命令"><a href="#9-1-控制台命令" class="headerlink" title="9.1 控制台命令"></a>9.1 控制台命令</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wp.Runtime.EnableServerStreaming 1        // 启用服务器流式加载</span><br><span class="line">wp.Runtime.EnableServerStreamingOut 1     // 启用服务器流式卸载</span><br><span class="line">wp.DebugDedicatedServerStreaming 1        // 调试服务器流式加载</span><br><span class="line">wp.Runtime.DrawRuntimeHash2D 1            // 绘制 2D 运行时哈希</span><br><span class="line">wp.Runtime.DrawRuntimeHash3D 1            // 绘制 3D 运行时哈希</span><br><span class="line">wp.Runtime.LoadingRangeBugItGo 1          // BugItGo 时更新加载范围</span><br><span class="line">wp.Runtime.EnableSimulationStreamingSource 1 // 编辑器中模拟 Streaming Source</span><br><span class="line">wp.Runtime.WorldExtentToEnableStreaming 500000 // 自动启用流式加载的世界大小阈值</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-2-调试视图模式"><a href="#9-2-调试视图模式" class="headerlink" title="9.2 调试视图模式"></a>9.2 调试视图模式</h3><p>编辑器中可以通过 View Mode 查看：</p>
+<ul>
+<li>Cell 边界</li>
+<li>加载&#x2F;卸载状态</li>
+<li>Streaming Source 位置和范围</li>
+<li>HLOD Cell</li>
+</ul>
+<h2 id="十、小结"><a href="#十、小结" class="headerlink" title="十、小结"></a>十、小结</h2><table>
+<thead>
+<tr>
+<th>工具&#x2F;功能</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>World Partition 编辑器面板</td>
+<td>Grid 可视化、区域加载&#x2F;卸载</td>
+</tr>
+<tr>
+<td>OFPA</td>
+<td>One File Per Actor，支持多人协作</td>
+</tr>
+<tr>
+<td>Data Layer 浏览器</td>
+<td>管理和编辑 Data Layer</td>
+</tr>
+<tr>
+<td>HLOD 构建工具</td>
+<td>生成远处区域的简化模型</td>
+</tr>
+<tr>
+<td>转换工具</td>
+<td>将传统关卡转换为 World Partition</td>
+</tr>
+<tr>
+<td>烘焙流程</td>
+<td>生成运行时 Cell Package</td>
+</tr>
+<tr>
+<td>调试命令</td>
+<td>控制台命令和视图模式</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/06_Editor%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81/">https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/06_Editor%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/AIGen/">AIGen</a><a class="post-meta__tags" href="/tags/WorldPartition/">WorldPartition</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/05_%E4%B8%8E%E4%BC%A0%E7%BB%9F%E5%85%B3%E5%8D%A1%E7%AE%A1%E7%90%86%E5%AF%B9%E6%AF%94/" title="与传统关卡管理对比"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">与传统关卡管理对比</div></div><div class="info-2"><div class="info-item-1">05 - 与传统关卡管理对比 基于 UE 5.7 源码对比 World Partition、Level Streaming 和传统 Sub-level 方案  一、传统关卡管理方案1.1 单一 Persistent Level最简单的方案：所有内容放在一个关卡中。    优点 缺点    简单直接 内存占用不可控   无加载边界问题 不适合大世界   无版本控制冲突（单人） 无法按需加载   1.2 Sub-levels（子关卡）将世界拆分为一个 Persistent Level + 多个 Sub-level。 UWorld├── PersistentLevel (ULevel)       ← 始终加载│   └── ULevelStreamingPersistent│└── StreamingLevels (TArray&lt;ULevelStreaming*&gt;)    ├── ULevelStreamingAlwaysLoaded   ← 始终加载的子关卡    ├── ULevelStreaming (base)        ← 手动控制的子关卡    └──...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/07_%E5%AE%9E%E6%88%98%E5%BA%94%E7%94%A8%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="实战应用与最佳实践"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">实战应用与最佳实践</div></div><div class="info-2"><div class="info-item-1">07 - 实战应用与最佳实践 基于 UE 5.7 源码和官方文档，提供 World Partition 的实战应用指导  一、项目配置1.1 创建 World Partition 地图在 UE5 中创建新地图时选择”Open World”模板即可自动启用 World Partition。 手动启用：  打开地图 → World Settings 面板 勾选 “Enable World Partition” 选择 Runtime Hash 类型（推荐 RuntimeHashSet）  1.2 Grid 配置建议开放世界典型配置// 在 World Partition 的 Runtime Settings 中配置Grid 1（主 Grid）:  - GridName: &quot;MainGrid&quot;  - CellSize: 25600 (256米)  - LoadingRange: 51200 (512米)  - bBlockOnSlowStreaming: true  - Priority: 0Grid 2（近景 Grid）:  - GridName:...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/00_WorldPartition%E6%80%BB%E8%A7%88/" title="World Partition 总览"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">World Partition 总览</div></div><div class="info-2"><div class="info-item-1">World Partition 总览 基于 UE 5.7 源码分析 | 面向游戏开发人员  一、什么是 World PartitionWorld Partition（世界分区）是虚幻引擎从 UE5 开始引入的大世界地图管理与流式加载系统。它将一个完整的大世界地图自动划分为多个网格单元（Cell），在运行时根据玩家位置等流式加载源（Streaming Source）按需加载和卸载这些 Cell，从而实现无缝大世界体验。 核心价值   能力 说明    单一大地图 美术和策划只需在一个统一的世界中工作，无需手动拆分关卡   自动空间分区 引擎根据配置的 Grid 自动将世界空间划分为 Cell   按需流式加载 运行时只加载玩家附近的 Cell，内存占用可控   多人协作 基于 One File Per Actor（OFPA）机制，多人可同时编辑同一地图的不同区域   Data Layer 集成 支持逻辑分层的流式加载控制（如季节切换、任务状态等）   HLOD 支持 自动为远处区域生成 HLOD，降低渲染开销   二、核心架构概览2.1 模块分布Engine/Source/├──...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/01_%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87/" title="核心架构与设计目标"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">核心架构与设计目标</div></div><div class="info-2"><div class="info-item-1">01 - 核心架构与设计目标 基于 UE 5.7 源码 Engine/Source/Runtime/Engine/Public/WorldPartition/WorldPartition.h  一、设计目标World Partition 的设计目标是解决传统关卡系统在大世界游戏开发中的核心痛点： 1.1 传统方案的痛点   痛点 说明    手动关卡拆分 美术需要手动将大世界拆分为多个子关卡，工作量大且易出错   关卡边界问题 子关卡之间的光照、碰撞、LOD 等在边界处容易出现接缝   协作困难 多人编辑同一关卡文件会产生严重的版本控制冲突   内存不可控 传统关卡需要整关卡加载，无法按需加载小区域   流式加载不灵活 Level Streaming Volume 的触发式加载无法适应开放世界的自由移动   1.2 World Partition 的设计目标 统一的编辑体验 — 整个大世界就是一个地图，无需手动拆分 自动空间分区 — 引擎根据配置自动将世界划分为可管理的 Cell 按需流式加载 — 运行时根据 StreamingSource 动态加载&#x2F;卸载...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/02_Cell%E4%B8%8EGrid%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/" title="Cell 与 Grid 系统详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">Cell 与 Grid 系统详解</div></div><div class="info-2"><div class="info-item-1">02 - Cell 与 Grid 系统详解 基于 UE 5.7 源码深入分析 Cell 和 Grid 的实现  一、Cell 的概念Cell（单元）是 World Partition 中流式加载的基本单位。一个 Cell 包含一组空间上相邻的 Actor，在运行时作为一个整体被加载或卸载。每个 Cell 对应一个独立的 Level Package。 1.1 UWorldPartitionRuntimeCell// WorldPartitionRuntimeCell.h:234UCLASS(Abstract, MinimalAPI)class UWorldPartitionRuntimeCell : public UObject,    public IWorldPartitionCell,    public IWorldPartitionCookPackageObject  Cell 的核心接口： virtual void Load() const;            // 加载 Cellvirtual void Unload() const;          //...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/03_%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8D%B8%E8%BD%BD%E6%9C%BA%E5%88%B6/" title="运行时加载与卸载机制"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">运行时加载与卸载机制</div></div><div class="info-2"><div class="info-item-1">03 - 运行时加载与卸载机制 基于 UE 5.7 源码深入分析 World Partition 的运行时流式加载流程  一、Streaming Source（流式加载源）Streaming Source 是驱动 Cell 加载&#x2F;卸载的核心概念。它描述了一个空间中的观察者（通常是玩家），引擎根据其位置和方向来决定需要加载哪些 Cell。 1.1 FWorldPartitionStreamingSource// WorldPartitionStreamingSource.h:343struct FWorldPartitionStreamingSource&#123;    FName Name;                              // 唯一名称    FVector Location;                        // 位置    FRotator Rotation;                       // 朝向    EStreamingSourceTargetState TargetState;  //...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/04_DataLayer%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/" title="Data Layer 系统详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">Data Layer 系统详解</div></div><div class="info-2"><div class="info-item-1">04 - Data Layer 系统详解 基于 UE 5.7 源码 Engine/Source/Runtime/Engine/Public/WorldPartition/DataLayer/  一、Data Layer 概述Data Layer（数据层）是 World Partition 的逻辑分层系统。它允许开发者将世界内容按逻辑分组，并在运行时动态控制这些分组的加载&#x2F;卸载状态。 1.1 典型应用场景   场景 示例    任务系统 任务 A 完成后加载任务 B 的场景内容   季节系统 夏天&#x2F;冬天场景切换   日夜系统 白天&#x2F;夜晚不同的 NPC 和物件   难度选择 困难模式下增加额外的障碍物   DLC 内容 安装 DLC 后加载额外内容   平台差异化 高端平台加载额外细节   1.2 Data Layer 的类型// DataLayerType.h:8enum class EDataLayerType : uint8&#123;    Runtime,  // 运行时类型 — 可在游戏中动态切换    Editor,   // 编辑器类型...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/05_%E4%B8%8E%E4%BC%A0%E7%BB%9F%E5%85%B3%E5%8D%A1%E7%AE%A1%E7%90%86%E5%AF%B9%E6%AF%94/" title="与传统关卡管理对比"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">与传统关卡管理对比</div></div><div class="info-2"><div class="info-item-1">05 - 与传统关卡管理对比 基于 UE 5.7 源码对比 World Partition、Level Streaming 和传统 Sub-level 方案  一、传统关卡管理方案1.1 单一 Persistent Level最简单的方案：所有内容放在一个关卡中。    优点 缺点    简单直接 内存占用不可控   无加载边界问题 不适合大世界   无版本控制冲突（单人） 无法按需加载   1.2 Sub-levels（子关卡）将世界拆分为一个 Persistent Level + 多个 Sub-level。 UWorld├── PersistentLevel (ULevel)       ← 始终加载│   └── ULevelStreamingPersistent│└── StreamingLevels (TArray&lt;ULevelStreaming*&gt;)    ├── ULevelStreamingAlwaysLoaded   ← 始终加载的子关卡    ├── ULevelStreaming (base)        ← 手动控制的子关卡    └──...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#06-Editor-%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-number">1.</span> <span class="toc-text">06 - Editor 工具与工作流</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81World-Partition-%E7%BC%96%E8%BE%91%E5%99%A8%E6%A8%A1%E5%9D%97"><span class="toc-number">1.1.</span> <span class="toc-text">一、World Partition 编辑器模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%A8%A1%E5%9D%97%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 模块结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%A8%A1%E5%9D%97%E4%BE%9D%E8%B5%96"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 模块依赖</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81World-Partition-%E7%BC%96%E8%BE%91%E5%99%A8%E9%9D%A2%E6%9D%BF"><span class="toc-number">1.2.</span> <span class="toc-text">二、World Partition 编辑器面板</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-SWorldPartitionEditor"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 SWorldPartitionEditor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-SWorldPartitionEditorGrid"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 SWorldPartitionEditorGrid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%BC%96%E8%BE%91%E5%99%A8%E9%9D%A2%E6%9D%BF%E5%8A%9F%E8%83%BD"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 编辑器面板功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81OFPA%EF%BC%88One-File-Per-Actor%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">三、OFPA（One File Per Actor）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%BC%98%E5%8A%BF"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 文件结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-ActorDescContainer"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 ActorDescContainer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%BC%A0%E7%BB%9F%E5%85%B3%E5%8D%A1%E8%BD%AC%E6%8D%A2%E4%B8%BA-World-Partition"><span class="toc-number">1.4.</span> <span class="toc-text">四、传统关卡转换为 World Partition</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E8%BD%AC%E6%8D%A2%E6%B5%81%E7%A8%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 转换流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 命令行工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81HLOD-%E6%9E%84%E5%BB%BA%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-number">1.5.</span> <span class="toc-text">五、HLOD 构建工作流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-HLOD-%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 HLOD 系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%A0%B8%E5%BF%83%E7%B1%BB"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 核心类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-HLOD-%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 HLOD 构建流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-HLOD-Builder-%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.5.4.</span> <span class="toc-text">5.4 HLOD Builder 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-Standalone-HLOD"><span class="toc-number">1.5.5.</span> <span class="toc-text">5.5 Standalone HLOD</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81Data-Layer-%E7%BC%96%E8%BE%91%E5%99%A8"><span class="toc-number">1.6.</span> <span class="toc-text">六、Data Layer 编辑器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-Data-Layer-%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="toc-number">1.6.1.</span> <span class="toc-text">6.1 Data Layer 浏览器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-Data-Layer-%E5%A4%A7%E7%BA%B2"><span class="toc-number">1.6.2.</span> <span class="toc-text">6.2 Data Layer 大纲</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-Data-Layer-%E7%BC%96%E8%BE%91%E5%99%A8%E7%8A%B6%E6%80%81"><span class="toc-number">1.6.3.</span> <span class="toc-text">6.3 Data Layer 编辑器状态</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81World-Partition-%E7%BC%96%E8%BE%91%E5%99%A8%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.7.</span> <span class="toc-text">七、World Partition 编辑器设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-WorldPartitionEditorSettings"><span class="toc-number">1.7.1.</span> <span class="toc-text">7.1 WorldPartitionEditorSettings</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-WorldPartitionEditorPerProjectUserSettings"><span class="toc-number">1.7.2.</span> <span class="toc-text">7.2 WorldPartitionEditorPerProjectUserSettings</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E7%83%98%E7%84%99%EF%BC%88Cook%EF%BC%89%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-number">1.8.</span> <span class="toc-text">八、烘焙（Cook）工作流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-%E7%83%98%E7%84%99%E6%B5%81%E7%A8%8B"><span class="toc-number">1.8.1.</span> <span class="toc-text">8.1 烘焙流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-RuntimeCellTransformer"><span class="toc-number">1.8.2.</span> <span class="toc-text">8.2 RuntimeCellTransformer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7"><span class="toc-number">1.9.</span> <span class="toc-text">九、调试工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-1-%E6%8E%A7%E5%88%B6%E5%8F%B0%E5%91%BD%E4%BB%A4"><span class="toc-number">1.9.1.</span> <span class="toc-text">9.1 控制台命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-2-%E8%B0%83%E8%AF%95%E8%A7%86%E5%9B%BE%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.9.2.</span> <span class="toc-text">9.2 调试视图模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E5%B0%8F%E7%BB%93"><span class="toc-number">1.10.</span> <span class="toc-text">十、小结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/06_%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="实战示例与最佳实践">实战示例与最佳实践</a><time datetime="2026-05-07T17:27:26.099Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/04_%E9%85%8D%E5%A5%97%E5%AD%90%E7%B3%BB%E7%BB%9F/" title="配套子系统">配套子系统</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/05_MassEntity%E4%B8%8EUnityECS%E5%AF%B9%E6%AF%94/" title="MassEntity 与 Unity DOTS/ECS 对比">MassEntity 与 Unity DOTS/ECS 对比</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/03_Processor%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="Processor 执行系统与多线程">Processor 执行系统与多线程</a><time datetime="2026-05-07T17:27:26.094Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/02_Entity%E7%AE%A1%E7%90%86%E5%99%A8%E4%B8%8EArchetype/" title="Entity 管理器与 Archetype">Entity 管理器与 Archetype</a><time datetime="2026-05-07T17:27:26.092Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '7777beb4fa6310ac3e4e045bfc863d51'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://unpkg.com/gitalk/dist/gitalk.css')
+      await btf.getScript('https://unpkg.com/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script>var meting_api="https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r"</script><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script><script src="https://unpkg.com/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

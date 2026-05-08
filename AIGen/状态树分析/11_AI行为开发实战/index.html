@@ -1,0 +1,349 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>StateTree AI行为开发实战 | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="11 AI行为开发实战 基于 UE 5.7.4 官方模板源码分析   一、官方模板概览UE 5.7 提供了四个使用 StateTree 的 C++ 模板变体：    模板 变体 复杂度 AI行为    TP_FirstPerson Variant_Shooter ★★★★ 射击AI：感知、追踪、射击   TP_ThirdPerson Variant_Combat ★★★★★ 近战AI：连击、蓄力、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="StateTree AI行为开发实战">
+<meta property="og:url" content="https://mikeming126.github.io/AIGen/%E7%8A%B6%E6%80%81%E6%A0%91%E5%88%86%E6%9E%90/11_AI%E8%A1%8C%E4%B8%BA%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="11 AI行为开发实战 基于 UE 5.7.4 官方模板源码分析   一、官方模板概览UE 5.7 提供了四个使用 StateTree 的 C++ 模板变体：    模板 变体 复杂度 AI行为    TP_FirstPerson Variant_Shooter ★★★★ 射击AI：感知、追踪、射击   TP_ThirdPerson Variant_Combat ★★★★★ 近战AI：连击、蓄力、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2026-05-07T17:20:10.853Z">
+<meta property="article:modified_time" content="2026-05-07T17:20:10.884Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="AIGen">
+<meta property="article:tag" content="UE底层">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "StateTree AI行为开发实战",
+  "url": "https://mikeming126.github.io/AIGen/%E7%8A%B6%E6%80%81%E6%A0%91%E5%88%86%E6%9E%90/11_AI%E8%A1%8C%E4%B8%BA%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2026-05-07T17:20:10.853Z",
+  "dateModified": "2026-05-07T17:20:10.884Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/AIGen/%E7%8A%B6%E6%80%81%E6%A0%91%E5%88%86%E6%9E%90/11_AI%E8%A1%8C%E4%B8%BA%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'StateTree AI行为开发实战',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">StateTree AI行为开发实战</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">StateTree AI行为开发实战</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-07T17:20:10.853Z" title="发表于 2026-05-08 01:20:10">2026-05-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-07T17:20:10.884Z" title="更新于 2026-05-08 01:20:10">2026-05-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="11-AI行为开发实战"><a href="#11-AI行为开发实战" class="headerlink" title="11 AI行为开发实战"></a>11 AI行为开发实战</h1><blockquote>
+<p>基于 UE 5.7.4 官方模板源码分析</p>
+</blockquote>
+<hr>
+<h2 id="一、官方模板概览"><a href="#一、官方模板概览" class="headerlink" title="一、官方模板概览"></a>一、官方模板概览</h2><p>UE 5.7 提供了四个使用 StateTree 的 C++ 模板变体：</p>
+<table>
+<thead>
+<tr>
+<th>模板</th>
+<th>变体</th>
+<th>复杂度</th>
+<th>AI行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TP_FirstPerson</td>
+<td>Variant_Shooter</td>
+<td>★★★★</td>
+<td>射击AI：感知、追踪、射击</td>
+</tr>
+<tr>
+<td>TP_ThirdPerson</td>
+<td>Variant_Combat</td>
+<td>★★★★★</td>
+<td>近战AI：连击、蓄力、闪避</td>
+</tr>
+<tr>
+<td>TP_ThirdPerson</td>
+<td>Variant_SideScrolling</td>
+<td>★★</td>
+<td>简单追踪AI</td>
+</tr>
+<tr>
+<td>TP_TopDown</td>
+<td>Variant_TwinStick</td>
+<td>★★</td>
+<td>简单追踪AI</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="二、Shooter-AI-分析（TP-FirstPerson）"><a href="#二、Shooter-AI-分析（TP-FirstPerson）" class="headerlink" title="二、Shooter AI 分析（TP_FirstPerson）"></a>二、Shooter AI 分析（TP_FirstPerson）</h2><h3 id="2-1-架构"><a href="#2-1-架构" class="headerlink" title="2.1 架构"></a>2.1 架构</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ShooterNPC</span><br><span class="line">    │</span><br><span class="line">    └── ShooterAIController</span><br><span class="line">            │</span><br><span class="line">            ├── UStateTreeAIComponent (StateTreeAI)</span><br><span class="line">            │       ├── SetStartLogicAutomatically(false)</span><br><span class="line">            │       ├── OnPossess → StartLogic()</span><br><span class="line">            │       └── NPC死亡 → StopLogic()</span><br><span class="line">            │</span><br><span class="line">            ├── UAIPerceptionComponent</span><br><span class="line">            │       └── OnTargetPerceptionUpdated → 桥接到StateTree</span><br><span class="line">            │</span><br><span class="line">            └── 自定义StateTree Task/Condition</span><br><span class="line">                    ├── FStateTreeSenseEnemiesTask     (感知敌人)</span><br><span class="line">                    ├── FStateTreeShootAtTargetTask     (射击)</span><br><span class="line">                    ├── FStateTreeFaceActorTask         (面向目标)</span><br><span class="line">                    ├── FStateTreeFaceLocationTask      (面向位置)</span><br><span class="line">                    ├── FStateTreeSetRandomFloatTask    (随机值)</span><br><span class="line">                    ├── FStateTreeLineOfSightToTargetCondition (视线检测)</span><br><span class="line">                    └── ...</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-ShooterAIController"><a href="#2-2-ShooterAIController" class="headerlink" title="2.2 ShooterAIController"></a>2.2 ShooterAIController</h3><p><strong>源码</strong>: <a href="file:///d:/Unreal/SourceCode/UnrealEngine-5.7.4-release/Templates/TP_FirstPerson/Source/TP_FirstPerson/Variant_Shooter/AI/ShooterAIController.h">ShooterAIController.h</a></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">AShooterAIController::<span class="built_in">AShooterAIController</span>()</span><br><span class="line">&#123;</span><br><span class="line">    StateTreeAI = <span class="built_in">CreateDefaultSubobject</span>&lt;UStateTreeAIComponent&gt;(<span class="built_in">TEXT</span>(<span class="string">&quot;StateTreeAI&quot;</span>));</span><br><span class="line">    StateTreeAI-&gt;<span class="built_in">SetStartLogicAutomatically</span>(<span class="literal">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AShooterAIController::OnPossess</span><span class="params">(APawn* InPawn)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Super::<span class="built_in">OnPossess</span>(InPawn);</span><br><span class="line">    StateTreeAI-&gt;<span class="built_in">StartLogic</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AShooterAIController::OnNPCDied</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    StateTreeAI-&gt;<span class="built_in">StopLogic</span>(<span class="built_in">FString</span>(<span class="string">&quot;&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-推断的StateTree结构"><a href="#2-3-推断的StateTree结构" class="headerlink" title="2.3 推断的StateTree结构"></a>2.3 推断的StateTree结构</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Root (Group, TrySelectChildrenInOrder)</span><br><span class="line">    │</span><br><span class="line">    ├── Idle (State)</span><br><span class="line">    │       ├── Task: SenseEnemies</span><br><span class="line">    │       ├── Transition: OnEvent(EnemySpotted) → Chase</span><br><span class="line">    │       └── Task: SetRandomFloat(WaitTime)</span><br><span class="line">    │</span><br><span class="line">    ├── Chase (State)</span><br><span class="line">    │       ├── Task: SenseEnemies</span><br><span class="line">    │       ├── Task: FaceActor(Target)</span><br><span class="line">    │       ├── Condition: LineOfSightToTarget</span><br><span class="line">    │       ├── Transition: OnTick (Distance &lt; AttackRange) → Attack</span><br><span class="line">    │       └── Transition: OnEvent(LostSight) → Investigate</span><br><span class="line">    │</span><br><span class="line">    ├── Attack (State)</span><br><span class="line">    │       ├── Task: SenseEnemies</span><br><span class="line">    │       ├── Task: ShootAtTarget</span><br><span class="line">    │       ├── Task: FaceActor(Target)</span><br><span class="line">    │       ├── Transition: OnTick (Distance &gt; AttackRange) → Chase</span><br><span class="line">    │       └── Transition: OnEvent(LostSight) → Investigate</span><br><span class="line">    │</span><br><span class="line">    └── Investigate (State)</span><br><span class="line">            ├── Task: FaceLocation(LastKnownLocation)</span><br><span class="line">            ├── Task: SetRandomFloat(InvestigateTime)</span><br><span class="line">            ├── Transition: OnStateCompleted → Idle</span><br><span class="line">            └── Transition: OnEvent(EnemySpotted) → Chase</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-SenseEnemiesTask-详解"><a href="#2-4-SenseEnemiesTask-详解" class="headerlink" title="2.4 SenseEnemiesTask 详解"></a>2.4 SenseEnemiesTask 详解</h3><p><strong>源码</strong>: <a href="file:///d:/Unreal/SourceCode/UnrealEngine-5.7.4-release/Templates/TP_FirstPerson/Source/TP_FirstPerson/Variant_Shooter/AI/ShooterStateTreeUtility.h">ShooterStateTreeUtility.h</a></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">USTRUCT</span>()</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FSenseEnemiesTaskInstanceData</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, Category = Context)</span><br><span class="line">    TObjectPtr&lt;AShooterAIController&gt; AIController;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, Category = Output)</span><br><span class="line">    TObjectPtr&lt;AActor&gt; TargetActor;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, Category = Output)</span><br><span class="line">    FVector LastKnownLocation = FVector::ZeroVector;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, Category = Output)</span><br><span class="line">    <span class="type">bool</span> bHasDirectSight = <span class="literal">false</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">USTRUCT</span>()</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FStateTreeSenseEnemiesTask</span> : <span class="keyword">public</span> FStateTreeTaskCommonBase</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">using</span> FInstanceDataType = FSenseEnemiesTaskInstanceData;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> EStateTreeRunStatus <span class="title">EnterState</span><span class="params">(FStateTreeExecutionContext&amp; Context, ...)</span> <span class="type">const</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span>&amp; Instance = Context.<span class="built_in">GetInstanceData</span>&lt;FSenseEnemiesTaskInstanceData&gt;(*<span class="keyword">this</span>);</span><br><span class="line">        FStateTreeWeakExecutionContext WeakContext = Context.<span class="built_in">MakeWeakExecutionContext</span>();</span><br><span class="line"></span><br><span class="line">        Instance.AIController-&gt;OnShooterPerceptionUpdated.<span class="built_in">BindLambda</span>(</span><br><span class="line">            [WeakContext, &amp;InstanceData = Instance]</span><br><span class="line">            (AActor* Actor, FAIStimulus Stimulus)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (!WeakContext.<span class="built_in">IsValid</span>()) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (Stimulus.<span class="built_in">WasSuccessfullySensed</span>())</span><br><span class="line">                &#123;</span><br><span class="line">                    InstanceData.TargetActor = Actor;</span><br><span class="line">                    InstanceData.LastKnownLocation = Stimulus.StimulusLocation;</span><br><span class="line">                    InstanceData.bHasDirectSight = <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">if</span> (InstanceData.TargetActor == Actor)</span><br><span class="line">                    &#123;</span><br><span class="line">                        InstanceData.bHasDirectSight = <span class="literal">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> EStateTreeRunStatus::Running;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">ExitState</span><span class="params">(FStateTreeExecutionContext&amp; Context, ...)</span> <span class="type">const</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span>&amp; Instance = Context.<span class="built_in">GetInstanceData</span>&lt;FSenseEnemiesTaskInstanceData&gt;(*<span class="keyword">this</span>);</span><br><span class="line">        Instance.AIController-&gt;OnShooterPerceptionUpdated.<span class="built_in">Unbind</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、Combat-AI-分析（TP-ThirdPerson）"><a href="#三、Combat-AI-分析（TP-ThirdPerson）" class="headerlink" title="三、Combat AI 分析（TP_ThirdPerson）"></a>三、Combat AI 分析（TP_ThirdPerson）</h2><h3 id="3-1-架构特点"><a href="#3-1-架构特点" class="headerlink" title="3.1 架构特点"></a>3.1 架构特点</h3><p>Combat变体是最复杂的示例，展示了：</p>
+<ul>
+<li>异步动画完成等待</li>
+<li>连击攻击系统</li>
+<li>蓄力攻击</li>
+<li>闪避行为</li>
+<li>着地等待</li>
+</ul>
+<h3 id="3-2-CombatStateTreeUtility-自定义节点"><a href="#3-2-CombatStateTreeUtility-自定义节点" class="headerlink" title="3.2 CombatStateTreeUtility 自定义节点"></a>3.2 CombatStateTreeUtility 自定义节点</h3><table>
+<thead>
+<tr>
+<th>节点</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FStateTreeCharacterGroundedCondition</td>
+<td>Condition</td>
+<td>角色是否着地</td>
+</tr>
+<tr>
+<td>FStateTreeIsInDangerCondition</td>
+<td>Condition</td>
+<td>是否正在被攻击</td>
+</tr>
+<tr>
+<td>FStateTreeComboAttackTask</td>
+<td>Task</td>
+<td>连击攻击（异步完成）</td>
+</tr>
+<tr>
+<td>FStateTreeChargedAttackTask</td>
+<td>Task</td>
+<td>蓄力攻击（异步完成）</td>
+</tr>
+<tr>
+<td>FStateTreeWaitForLandingTask</td>
+<td>Task</td>
+<td>等等着地（异步完成）</td>
+</tr>
+<tr>
+<td>FStateTreeFaceActorTask</td>
+<td>Task</td>
+<td>面向Actor</td>
+</tr>
+<tr>
+<td>FStateTreeFaceLocationTask</td>
+<td>Task</td>
+<td>面向位置</td>
+</tr>
+<tr>
+<td>FStateTreeSetCharacterSpeedTask</td>
+<td>Task</td>
+<td>设置移动速度</td>
+</tr>
+<tr>
+<td>FStateTreeGetPlayerInfoTask</td>
+<td>Task</td>
+<td>获取玩家信息</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-异步任务完成模式详解"><a href="#3-3-异步任务完成模式详解" class="headerlink" title="3.3 异步任务完成模式详解"></a>3.3 异步任务完成模式详解</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ComboAttackTask - 连击攻击</span></span><br><span class="line"><span class="built_in">USTRUCT</span>()</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FStateTreeComboAttackTask</span> : <span class="keyword">public</span> FStateTreeTaskCommonBase</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">using</span> FInstanceDataType = FComboAttackTaskInstanceData;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> EStateTreeRunStatus <span class="title">EnterState</span><span class="params">(FStateTreeExecutionContext&amp; Context, ...)</span> <span class="type">const</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span>&amp; Instance = Context.<span class="built_in">GetInstanceData</span>&lt;FComboAttackTaskInstanceData&gt;(*<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        FStateTreeWeakExecutionContext WeakContext = Context.<span class="built_in">MakeWeakExecutionContext</span>();</span><br><span class="line"></span><br><span class="line">        Instance.Character-&gt;OnAttackCompleted.<span class="built_in">BindLambda</span>(</span><br><span class="line">            [WeakContext]()</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (WeakContext.<span class="built_in">IsValid</span>())</span><br><span class="line">                &#123;</span><br><span class="line">                    WeakContext.<span class="built_in">FinishTask</span>(EStateTreeFinishTaskType::Succeeded);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        Instance.Character-&gt;<span class="built_in">DoAIComboAttack</span>();</span><br><span class="line">        <span class="keyword">return</span> EStateTreeRunStatus::Running;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">ExitState</span><span class="params">(FStateTreeExecutionContext&amp; Context, ...)</span> <span class="type">const</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span>&amp; Instance = Context.<span class="built_in">GetInstanceData</span>&lt;FComboAttackTaskInstanceData&gt;(*<span class="keyword">this</span>);</span><br><span class="line">        Instance.Character-&gt;OnAttackCompleted.<span class="built_in">Unbind</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-推断的Combat-StateTree结构"><a href="#3-4-推断的Combat-StateTree结构" class="headerlink" title="3.4 推断的Combat StateTree结构"></a>3.4 推断的Combat StateTree结构</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Root (Group, TrySelectChildrenInOrder)</span><br><span class="line">    │</span><br><span class="line">    ├── GetPlayerInfo (State)</span><br><span class="line">    │       ├── Task: GetPlayerInfo (每Tick更新)</span><br><span class="line">    │       └── Transition: OnTick (ValidTarget) → Combat</span><br><span class="line">    │</span><br><span class="line">    ├── Combat (Group, TrySelectChildrenInOrder)</span><br><span class="line">    │       │</span><br><span class="line">    │       ├── Approach (State)</span><br><span class="line">    │       │       ├── Task: SetCharacterSpeed(WalkSpeed)</span><br><span class="line">    │       │       ├── Task: FaceActor(Target)</span><br><span class="line">    │       │       ├── Transition: OnTick (InAttackRange) → Attack</span><br><span class="line">    │       │       └── Transition: OnTick (InDanger) → Dodge</span><br><span class="line">    │       │</span><br><span class="line">    │       ├── Attack (State)</span><br><span class="line">    │       │       ├── Task: SetCharacterSpeed(0)</span><br><span class="line">    │       │       ├── Task: FaceActor(Target)</span><br><span class="line">    │       │       ├── Task: ComboAttack (异步等待完成)</span><br><span class="line">    │       │       ├── Transition: OnStateSucceeded → Approach</span><br><span class="line">    │       │       └── Transition: OnStateFailed → Approach</span><br><span class="line">    │       │</span><br><span class="line">    │       ├── ChargedAttack (State)</span><br><span class="line">    │       │       ├── Task: SetCharacterSpeed(0)</span><br><span class="line">    │       │       ├── Task: FaceActor(Target)</span><br><span class="line">    │       │       ├── Task: ChargedAttack (异步等待完成)</span><br><span class="line">    │       │       └── Transition: OnStateCompleted → Approach</span><br><span class="line">    │       │</span><br><span class="line">    │       └── Dodge (State)</span><br><span class="line">    │               ├── Condition: IsInDanger</span><br><span class="line">    │               ├── Task: Jump/Dodge</span><br><span class="line">    │               ├── Task: WaitForLanding (异步等待着地)</span><br><span class="line">    │               └── Transition: OnStateCompleted → Combat</span><br><span class="line">    │</span><br><span class="line">    └── Idle (State)</span><br><span class="line">            ├── Task: SetCharacterSpeed(0)</span><br><span class="line">            └── Transition: OnEvent(TargetAcquired) → GetPlayerInfo</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、简单追踪AI（SideScrolling-TwinStick）"><a href="#四、简单追踪AI（SideScrolling-TwinStick）" class="headerlink" title="四、简单追踪AI（SideScrolling &#x2F; TwinStick）"></a>四、简单追踪AI（SideScrolling &#x2F; TwinStick）</h2><h3 id="4-1-GetPlayerTask"><a href="#4-1-GetPlayerTask" class="headerlink" title="4.1 GetPlayerTask"></a>4.1 GetPlayerTask</h3><p>这是最简单的StateTree Task，展示了基本模式：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// SideScrolling变体</span></span><br><span class="line"><span class="built_in">USTRUCT</span>()</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FStateTreeGetPlayerTask</span> : <span class="keyword">public</span> FStateTreeTaskCommonBase</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">using</span> FInstanceDataType = FGetPlayerTaskInstanceData;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> EStateTreeRunStatus <span class="title">Tick</span><span class="params">(FStateTreeExecutionContext&amp; Context,</span></span></span><br><span class="line"><span class="params"><span class="function">                                      <span class="type">const</span> <span class="type">float</span> DeltaTime)</span> <span class="type">const</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span>&amp; Instance = Context.<span class="built_in">GetInstanceData</span>&lt;FGetPlayerTaskInstanceData&gt;(*<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        Instance.TargetPlayer = UGameplayStatics::<span class="built_in">GetPlayerPawn</span>(Context.<span class="built_in">GetWorld</span>(), <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (Instance.TargetPlayer)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">const</span> <span class="type">float</span> Distance = FVector::<span class="built_in">Distance</span>(</span><br><span class="line">                Context.<span class="built_in">GetOwner</span>()-&gt;<span class="built_in">GetActorLocation</span>(),</span><br><span class="line">                Instance.TargetPlayer-&gt;<span class="built_in">GetActorLocation</span>());</span><br><span class="line">            Instance.bValidTarget = Distance &lt; Instance.RangeMax;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            Instance.bValidTarget = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> EStateTreeRunStatus::Running;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-TwinStick-NPC中的属性暴露"><a href="#4-2-TwinStick-NPC中的属性暴露" class="headerlink" title="4.2 TwinStick NPC中的属性暴露"></a>4.2 TwinStick NPC中的属性暴露</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// NPC中暴露属性给StateTree</span></span><br><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ATwinStickNPC</span> : <span class="keyword">public</span> ACharacter</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 暴露给蓝图以便StateTree读取</span></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(VisibleAnywhere, BlueprintReadOnly, Category = Status)</span><br><span class="line">    <span class="type">bool</span> bHit = <span class="literal">false</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、设计模式总结"><a href="#五、设计模式总结" class="headerlink" title="五、设计模式总结"></a>五、设计模式总结</h2><h3 id="5-1-控制器集成模式"><a href="#5-1-控制器集成模式" class="headerlink" title="5.1 控制器集成模式"></a>5.1 控制器集成模式</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────┐</span><br><span class="line">│ 推荐模式：                                       │</span><br><span class="line">│                                                   │</span><br><span class="line">│ AIController                                     │</span><br><span class="line">│   ├── UStateTreeAIComponent                      │</span><br><span class="line">│   │       ├── SetStartLogicAutomatically(false)  │</span><br><span class="line">│   │       └── 手动控制 Start/Stop                │</span><br><span class="line">│   │                                               │</span><br><span class="line">│   └── 外部系统桥接                                │</span><br><span class="line">│           ├── AI Perception → 委托 → Task         │</span><br><span class="line">│           ├── 动画事件 → 委托 → Task              │</span><br><span class="line">│           └── 游戏事件 → SendEvent → 转换         │</span><br><span class="line">└─────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-数据流模式"><a href="#5-2-数据流模式" class="headerlink" title="5.2 数据流模式"></a>5.2 数据流模式</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">External System → AIController → Delegate → Task Instance Data → StateTree Transition</span><br><span class="line">                                        │</span><br><span class="line">                                        ├── Perception Events</span><br><span class="line">                                        ├── Animation Events</span><br><span class="line">                                        └── Gameplay Events</span><br><span class="line"></span><br><span class="line">StateTree Task → Context.SendEvent() → EventQueue → Transition Trigger</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-异步任务生命周期"><a href="#5-3-异步任务生命周期" class="headerlink" title="5.3 异步任务生命周期"></a>5.3 异步任务生命周期</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">EnterState()</span><br><span class="line">    │</span><br><span class="line">    ├── 绑定异步回调</span><br><span class="line">    │       └── Lambda捕获 WeakExecutionContext</span><br><span class="line">    │</span><br><span class="line">    ├── 启动异步操作</span><br><span class="line">    │</span><br><span class="line">    └── return Running</span><br><span class="line"></span><br><span class="line">[等待异步操作完成]</span><br><span class="line"></span><br><span class="line">Async Callback:</span><br><span class="line">    │</span><br><span class="line">    ├── 检查 WeakContext.IsValid()</span><br><span class="line">    │</span><br><span class="line">    └── WeakContext.FinishTask(Succeeded/Failed)</span><br><span class="line"></span><br><span class="line">ExitState()</span><br><span class="line">    │</span><br><span class="line">    └── 解绑异步回调</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/AIGen/%E7%8A%B6%E6%80%81%E6%A0%91%E5%88%86%E6%9E%90/11_AI%E8%A1%8C%E4%B8%BA%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98/">https://mikeming126.github.io/AIGen/%E7%8A%B6%E6%80%81%E6%A0%91%E5%88%86%E6%9E%90/11_AI%E8%A1%8C%E4%B8%BA%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/AIGen/">AIGen</a><a class="post-meta__tags" href="/tags/UE%E5%BA%95%E5%B1%82/">UE底层</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/AIGen/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E5%88%86%E6%9E%90/05_%E8%93%9D%E5%9B%BE%E5%BC%82%E6%AD%A5%E4%B8%8E%E5%AE%9E%E6%88%98%E5%AF%B9%E6%AF%94/" title="蓝图异步与实战对比"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">蓝图异步与实战对比</div></div><div class="info-2"><div class="info-item-1">UE5 蓝图异步与实战对比 基于 UE 5.7.4 源码分析  目录 1. 蓝图异步节点系统 2. Latent Action 详解 3. Blueprint Async Action 详解 4. 自定义蓝图异步节点 5. 与 Unity 异步系统全面对比 6. 商业项目中的异步编程实践 7. 异步编程优势与最佳实践   1. 蓝图异步节点系统UE5 蓝图中有两类异步节点：    节点类型 外观 特点 例子    Latent Action ⏱ 时钟图标 有执行引脚，暂停蓝图直到完成 Delay, MoveTo, LoadAsset   Async Action ⏰ 时钟图标 无执行引脚，通过委托输出结果 DownloadImage, LoadAssetByName   1.1 Latent Action 节点Latent Action 节点会暂停蓝图执行，直到操作完成才继续： [Begin] → [Delay 2.0s] → [Print &quot;Done&quot;] → [End]              ↑          暂停2秒后继续  1.2 Async...</div></div></div></a><a class="pagination-related" href="/AIGen/%E7%8A%B6%E6%80%81%E6%A0%91%E5%88%86%E6%9E%90/12_%E7%8A%B6%E6%80%81%E6%A0%91%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E4%B8%8E%E9%99%B7%E9%98%B1/" title="StateTree最佳实践与陷阱"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">StateTree最佳实践与陷阱</div></div><div class="info-2"><div class="info-item-1">12 状态树最佳实践与陷阱 基于 UE 5.7.4 源码和官方模板分析   一、设计最佳实践1.1 状态树结构设计✅ 推荐做法Root (Group, TrySelectChildrenInOrder)    │    ├── 高优先级行为（逃跑、闪避）    │       └── Transition Priority: High/Critical    │    ├── 中等优先级行为（攻击、追踪）    │       └── Transition Priority: Normal    │    └── 低优先级行为（巡逻、空闲）            └── Transition Priority: Low  ❌ 避免做法Root (State, 50+ Transitions)    ├── 大量平级状态，转换关系复杂    └── 难以维护和调试  原则：  使用分组状态组织行为层次 每个状态的任务数量保持在3-5个以内 转换优先级明确分层 状态深度控制在4层以内（FStateTreeActiveStates::MaxStates = 8）  1.2...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/01_%E9%BB%91%E6%9D%BF%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/" title="黑板系统详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">黑板系统详解</div></div><div class="info-2"><div class="info-item-1">黑板系统详解 基于 UE 5.7.4 源码，深入分析行为树的黑板（Blackboard）系统实现。   一、黑板系统概述黑板（Blackboard）是 UE 行为树系统的数据存储层，充当 AI 的”世界知识库”。它以键值对的形式存储 AI 感知到的环境信息、决策中间状态和通信数据。 1.1 设计理念黑板系统遵循以下设计原则：  集中存储：所有 AI 相关数据集中在一个组件中管理 类型安全：通过 UBlackboardKeyType 体系实现编译期类型检查 观察者模式：值变化时自动通知注册的观察者 高效内存：使用连续内存块存储所有值，避免频繁内存分配 可继承：黑板数据支持父子继承链  1.2 核心类关系UBlackboardData (UDataAsset)         # 数据资产：定义键的结构  │  ├── FBlackboardEntry[]             # 键定义（名称、类型、同步标记）  │     └── UBlackboardKeyType       # 键类型对象  │  └── Parent (UBlackboardData*)      #...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/00_%E8%A1%8C%E4%B8%BA%E6%A0%91%E6%A6%82%E8%A7%88%E4%B8%8E%E6%9E%B6%E6%9E%84%E6%80%BB%E8%A7%88/" title="行为树系统概览与架构总览"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">行为树系统概览与架构总览</div></div><div class="info-2"><div class="info-item-1">虚幻引擎 5.7 行为树系统概览与架构总览 基于 UE 5.7.4 源码分析，面向游戏开发人员的技术文档。   一、什么是行为树行为树（Behavior Tree, BT）是一种用于控制 AI 行为的层次化决策模型。它以树形结构组织 AI 的决策逻辑，通过从根节点开始递归遍历子节点来决定 AI 应该执行什么动作。 与传统的状态机（FSM）相比，行为树具有以下优势：  模块化与可复用：每个节点是独立的功能单元，可以跨项目复用 可组合性：通过复合节点（Selector、Sequence）灵活组合简单行为形成复杂行为 可读性：树形结构直观，便于策划和程序员协作 可扩展性：通过继承 UBTTaskNode、UBTDecorator、UBTService 创建自定义节点   二、UE5 行为树系统架构2.1 模块结构行为树系统位于引擎的 AIModule 中，核心源码路径： Engine/Source/Runtime/AIModule/├── Classes/BehaviorTree/           # 公开头文件│   ├── BehaviorTree.h            ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/02_%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/" title="节点类型与执行流程详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">节点类型与执行流程详解</div></div><div class="info-2"><div class="info-item-1">节点类型与执行流程详解 基于 UE 5.7.4 源码，深入分析行为树的节点类型和执行流程。   一、节点基类（UBTNode）1.1 核心属性class UBTNode : public UObject, public IGameplayTaskOwnerInterface&#123;    FString NodeName;                    // 节点名称    UBehaviorTree* TreeAsset;            // 所属行为树资产    UBTCompositeNode* ParentNode;        // 父复合节点    uint16 ExecutionIndex;               // 深度优先执行索引    uint16 MemoryOffset;                 // 实例内存偏移    uint8 TreeDepth;                     // 树深度    uint8 bCreateNodeInstance : 1;       // 是否需要实例化   ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/04_%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B/" title="实际项目应用示例"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">实际项目应用示例</div></div><div class="info-2"><div class="info-item-1">实际项目应用示例 基于 UE 5.7 源码和官方文档，提供行为树在商业项目中的实际应用示例。   一、AI 控制器与行为树的集成1.1 基础 AI 控制器设置// MyAIController.h#pragma once#include &quot;CoreMinimal.h&quot;#include &quot;AIController.h&quot;#include &quot;MyAIController.generated.h&quot;UCLASS()class AMyAIController : public AAIController&#123;    GENERATED_BODY()public:    AMyAIController();    virtual void BeginPlay() override;    virtual void OnPossess(APawn* InPawn) override;    UPROPERTY(EditDefaultsOnly, Category = &quot;AI&quot;)   ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E5%88%86%E6%9E%90/01_%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E6%A6%82%E8%A7%88%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6/" title="异步编程概览与核心机制"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">异步编程概览与核心机制</div></div><div class="info-2"><div class="info-item-1">UE5 异步编程概览与核心机制 基于 UE 5.7.4 源码分析  目录 1. 为什么需要异步编程 2. UE5 异步编程全景图 3. 与 Unity 异步编程对比 4. 核心异步类总览 5. Async() 全局函数 6. FAsyncTask &#x2F; FAutoDeleteAsyncTask 7. 选择指南：何时用哪种方式 8. 线程安全注意事项   1. 为什么需要异步编程在游戏开发中，异步编程是解决以下问题的关键手段：    问题场景 同步方式的问题 异步解决方案    资源加载 大资源加载阻塞主线程，导致卡顿 后台线程加载，主线程继续渲染   网络请求 等待HTTP响应期间游戏冻结 异步回调，游戏正常运行   文件I&#x2F;O 读写存档文件阻塞帧 后台线程处理I&#x2F;O   AI计算 复杂寻路&#x2F;决策计算耗时 多线程并行计算   大规模运算 仅用单核，浪费多核CPU ParallelFor...</div></div></div></a><a class="pagination-related" href="/AIGen/%E7%8A%B6%E6%80%81%E6%A0%91%E5%88%86%E6%9E%90/00_%E7%8A%B6%E6%80%81%E6%A0%91%E6%80%BB%E8%A7%88/" title="状态树（StateTree）系统总览"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">状态树（StateTree）系统总览</div></div><div class="info-2"><div class="info-item-1">虚幻引擎 5.7 状态树（StateTree）系统总览 基于虚幻引擎 5.7.4 源码分析，面向游戏开发人员   一、什么是状态树（StateTree）StateTree 是虚幻引擎 5 引入的通用分层状态机与行为树混合系统。它结合了状态机的清晰状态管理和行为树的灵活性，专门用于构建游戏中的 AI 行为、游戏逻辑流程和决策系统。 核心定位   特性 说明    类型 分层状态机（HFSM）+ 行为树混合体   插件位置 Engine/Plugins/Runtime/StateTree/（核心）   扩展插件 Engine/Plugins/Runtime/GameplayStateTree/（AI集成）   模块数量 4个运行时&#x2F;编辑器模块 + 1个Gameplay扩展模块   资产类型 UStateTree（继承自...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#11-AI%E8%A1%8C%E4%B8%BA%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98"><span class="toc-number">1.</span> <span class="toc-text">11 AI行为开发实战</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AE%98%E6%96%B9%E6%A8%A1%E6%9D%BF%E6%A6%82%E8%A7%88"><span class="toc-number">1.1.</span> <span class="toc-text">一、官方模板概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Shooter-AI-%E5%88%86%E6%9E%90%EF%BC%88TP-FirstPerson%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">二、Shooter AI 分析（TP_FirstPerson）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-ShooterAIController"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 ShooterAIController</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%8E%A8%E6%96%AD%E7%9A%84StateTree%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 推断的StateTree结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-SenseEnemiesTask-%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 SenseEnemiesTask 详解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Combat-AI-%E5%88%86%E6%9E%90%EF%BC%88TP-ThirdPerson%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">三、Combat AI 分析（TP_ThirdPerson）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%9E%B6%E6%9E%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 架构特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-CombatStateTreeUtility-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8A%82%E7%82%B9"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 CombatStateTreeUtility 自定义节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E5%AE%8C%E6%88%90%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 异步任务完成模式详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%8E%A8%E6%96%AD%E7%9A%84Combat-StateTree%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 推断的Combat StateTree结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%AE%80%E5%8D%95%E8%BF%BD%E8%B8%AAAI%EF%BC%88SideScrolling-TwinStick%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">四、简单追踪AI（SideScrolling &#x2F; TwinStick）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-GetPlayerTask"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 GetPlayerTask</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-TwinStick-NPC%E4%B8%AD%E7%9A%84%E5%B1%9E%E6%80%A7%E6%9A%B4%E9%9C%B2"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 TwinStick NPC中的属性暴露</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text">五、设计模式总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%8E%A7%E5%88%B6%E5%99%A8%E9%9B%86%E6%88%90%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 控制器集成模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%95%B0%E6%8D%AE%E6%B5%81%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 数据流模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 异步任务生命周期</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/06_%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="实战示例与最佳实践">实战示例与最佳实践</a><time datetime="2026-05-07T17:27:26.099Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/04_%E9%85%8D%E5%A5%97%E5%AD%90%E7%B3%BB%E7%BB%9F/" title="配套子系统">配套子系统</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/05_MassEntity%E4%B8%8EUnityECS%E5%AF%B9%E6%AF%94/" title="MassEntity 与 Unity DOTS/ECS 对比">MassEntity 与 Unity DOTS/ECS 对比</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/03_Processor%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="Processor 执行系统与多线程">Processor 执行系统与多线程</a><time datetime="2026-05-07T17:27:26.094Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/02_Entity%E7%AE%A1%E7%90%86%E5%99%A8%E4%B8%8EArchetype/" title="Entity 管理器与 Archetype">Entity 管理器与 Archetype</a><time datetime="2026-05-07T17:27:26.092Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || 'ce9e06d9bc566828d2a65383a6bb28f5'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://unpkg.com/gitalk/dist/gitalk.css')
+      await btf.getScript('https://unpkg.com/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script>var meting_api="https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r"</script><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script><script src="https://unpkg.com/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

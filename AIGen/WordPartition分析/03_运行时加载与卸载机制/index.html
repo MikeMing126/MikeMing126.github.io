@@ -1,0 +1,331 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>运行时加载与卸载机制 | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="03 - 运行时加载与卸载机制 基于 UE 5.7 源码深入分析 World Partition 的运行时流式加载流程  一、Streaming Source（流式加载源）Streaming Source 是驱动 Cell 加载&#x2F;卸载的核心概念。它描述了一个空间中的观察者（通常是玩家），引擎根据其位置和方向来决定需要加载哪些 Cell。 1.1 FWorldPartitionStream">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运行时加载与卸载机制">
+<meta property="og:url" content="https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/03_%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8D%B8%E8%BD%BD%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="03 - 运行时加载与卸载机制 基于 UE 5.7 源码深入分析 World Partition 的运行时流式加载流程  一、Streaming Source（流式加载源）Streaming Source 是驱动 Cell 加载&#x2F;卸载的核心概念。它描述了一个空间中的观察者（通常是玩家），引擎根据其位置和方向来决定需要加载哪些 Cell。 1.1 FWorldPartitionStream">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2026-05-07T17:19:16.230Z">
+<meta property="article:modified_time" content="2026-05-07T17:19:58.272Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="AIGen">
+<meta property="article:tag" content="WorldPartition">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "运行时加载与卸载机制",
+  "url": "https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/03_%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8D%B8%E8%BD%BD%E6%9C%BA%E5%88%B6/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2026-05-07T17:19:16.230Z",
+  "dateModified": "2026-05-07T17:19:58.272Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/03_%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8D%B8%E8%BD%BD%E6%9C%BA%E5%88%B6/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '运行时加载与卸载机制',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">运行时加载与卸载机制</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">运行时加载与卸载机制</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-07T17:19:16.230Z" title="发表于 2026-05-08 01:19:16">2026-05-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-07T17:19:58.272Z" title="更新于 2026-05-08 01:19:58">2026-05-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="03-运行时加载与卸载机制"><a href="#03-运行时加载与卸载机制" class="headerlink" title="03 - 运行时加载与卸载机制"></a>03 - 运行时加载与卸载机制</h1><blockquote>
+<p>基于 UE 5.7 源码深入分析 World Partition 的运行时流式加载流程</p>
+</blockquote>
+<h2 id="一、Streaming-Source（流式加载源）"><a href="#一、Streaming-Source（流式加载源）" class="headerlink" title="一、Streaming Source（流式加载源）"></a>一、Streaming Source（流式加载源）</h2><p>Streaming Source 是驱动 Cell 加载&#x2F;卸载的核心概念。它描述了一个空间中的观察者（通常是玩家），引擎根据其位置和方向来决定需要加载哪些 Cell。</p>
+<h3 id="1-1-FWorldPartitionStreamingSource"><a href="#1-1-FWorldPartitionStreamingSource" class="headerlink" title="1.1 FWorldPartitionStreamingSource"></a>1.1 FWorldPartitionStreamingSource</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartitionStreamingSource.h:343</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FWorldPartitionStreamingSource</span></span><br><span class="line">&#123;</span><br><span class="line">    FName Name;                              <span class="comment">// 唯一名称</span></span><br><span class="line">    FVector Location;                        <span class="comment">// 位置</span></span><br><span class="line">    FRotator Rotation;                       <span class="comment">// 朝向</span></span><br><span class="line">    EStreamingSourceTargetState TargetState;  <span class="comment">// 目标状态（Loaded/Activated）</span></span><br><span class="line">    <span class="type">bool</span> bBlockOnSlowLoading;                <span class="comment">// 慢速加载时是否阻塞</span></span><br><span class="line">    EStreamingSourcePriority Priority;       <span class="comment">// 优先级</span></span><br><span class="line">    FVector Velocity;                        <span class="comment">// 速度（影响加载优先级）</span></span><br><span class="line">    EStreamingSourceTargetBehavior TargetBehavior;  <span class="comment">// 对 Grid 的影响方式</span></span><br><span class="line">    TSet&lt;FName&gt; TargetGrids;                 <span class="comment">// 影响的目标 Grid</span></span><br><span class="line">    TArray&lt;FStreamingSourceShape&gt; Shapes;    <span class="comment">// 自定义形状</span></span><br><span class="line">    <span class="type">bool</span> bReplay;                            <span class="comment">// 是否来自回放</span></span><br><span class="line">    <span class="type">bool</span> bRemote;                            <span class="comment">// 是否来自远程（服务器）</span></span><br><span class="line">    <span class="type">bool</span> bForce2D;                           <span class="comment">// 是否强制 2D 投影</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-Streaming-Source-的形状"><a href="#1-2-Streaming-Source-的形状" class="headerlink" title="1.2 Streaming Source 的形状"></a>1.2 Streaming Source 的形状</h3><p>Streaming Source 支持自定义形状，通过 <code>FStreamingSourceShape</code> 配置：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartitionStreamingSource.h:93</span></span><br><span class="line"><span class="built_in">USTRUCT</span>(BlueprintType)</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FStreamingSourceShape</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">bool</span> bUseGridLoadingRange;    <span class="comment">// 是否使用 Grid 的加载范围</span></span><br><span class="line">    <span class="type">float</span> LoadingRangeScale;      <span class="comment">// 加载范围缩放</span></span><br><span class="line">    <span class="type">float</span> Radius;                 <span class="comment">// 自定义半径</span></span><br><span class="line">    <span class="type">bool</span> bIsSector;               <span class="comment">// 是否是扇形</span></span><br><span class="line">    <span class="type">float</span> SectorAngle;            <span class="comment">// 扇形角度</span></span><br><span class="line">    FVector Location;             <span class="comment">// 局部位置偏移</span></span><br><span class="line">    FRotator Rotation;            <span class="comment">// 局部旋转偏移</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>形状最终被转换为 <code>FSphericalSector</code>（球形扇区）用于空间查询：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartitionStreamingSource.h:10</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FSphericalSector</span></span><br><span class="line">&#123;</span><br><span class="line">    FVector Center;    <span class="comment">// 球心</span></span><br><span class="line">    FReal Radius;      <span class="comment">// 半径</span></span><br><span class="line">    FVector Axis;      <span class="comment">// 扇形轴线方向</span></span><br><span class="line">    FReal Angle;       <span class="comment">// 扇形角度（360 = 完整球体）</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-Streaming-Source-优先级"><a href="#1-3-Streaming-Source-优先级" class="headerlink" title="1.3 Streaming Source 优先级"></a>1.3 Streaming Source 优先级</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum class</span> <span class="title class_">EStreamingSourcePriority</span> : uint8</span><br><span class="line">&#123;</span><br><span class="line">    Highest = <span class="number">0</span>,</span><br><span class="line">    High = <span class="number">64</span>,</span><br><span class="line">    Normal = <span class="number">128</span>,</span><br><span class="line">    Low = <span class="number">192</span>,</span><br><span class="line">    Lowest = <span class="number">255</span>,</span><br><span class="line">    Default = Normal</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>优先级影响 Cell 的加载顺序——高优先级 Source 需要的 Cell 会先加载。</p>
+<h3 id="1-4-IWorldPartitionStreamingSourceProvider"><a href="#1-4-IWorldPartitionStreamingSourceProvider" class="headerlink" title="1.4 IWorldPartitionStreamingSourceProvider"></a>1.4 IWorldPartitionStreamingSourceProvider</h3><p>组件通过实现此接口来注册为 Streaming Source：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartitionStreamingSource.h:545</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">IWorldPartitionStreamingSourceProvider</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">GetStreamingSource</span><span class="params">(FWorldPartitionStreamingSource&amp; StreamingSource)</span> <span class="type">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">GetStreamingSources</span><span class="params">(TArray&lt;FWorldPartitionStreamingSource&gt;&amp; StreamingSources)</span> <span class="type">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">const</span> UObject* <span class="title">GetStreamingSourceOwner</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>常见的 Streaming Source 提供者：</p>
+<ul>
+<li><strong>PlayerController</strong> — 本地玩家</li>
+<li><strong>AI Agent</strong> — 需要 GameThread 同步的 AI</li>
+<li><strong>自定义组件</strong> — 如摄像机、传送点等</li>
+</ul>
+<h2 id="二、UWorldPartitionSubsystem-的驱动"><a href="#二、UWorldPartitionSubsystem-的驱动" class="headerlink" title="二、UWorldPartitionSubsystem 的驱动"></a>二、UWorldPartitionSubsystem 的驱动</h2><p><code>UWorldPartitionSubsystem</code> 是整个流式加载系统的调度中心。</p>
+<h3 id="2-1-注册流程"><a href="#2-1-注册流程" class="headerlink" title="2.1 注册流程"></a>2.1 注册流程</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UWorldPartitionSubsystem::Initialize()</span><br><span class="line">  │</span><br><span class="line">  ├─ 注册 WorldPartition 初始化/反初始化回调</span><br><span class="line">  ├─ 注册 Level Streaming 状态变更回调</span><br><span class="line">  └─ 准备 Streaming Source 管理器</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-Tick-流程"><a href="#2-2-Tick-流程" class="headerlink" title="2.2 Tick 流程"></a>2.2 Tick 流程</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UWorldPartitionSubsystem::Tick(DeltaSeconds)</span><br><span class="line">  │</span><br><span class="line">  ├─ UpdateStreamingSources()</span><br><span class="line">  │   ├─ 收集所有注册的 StreamingSourceProvider</span><br><span class="line">  │   ├─ 调用 GetStreamingSources() 获取 Source 列表</span><br><span class="line">  │   ├─ 计算速度（Velocity）用于优先级排序</span><br><span class="line">  │   └─ 计算 StreamingSourcesHash</span><br><span class="line">  │</span><br><span class="line">  ├─ IncrementalUpdateStreamingState()</span><br><span class="line">  │   └─ 对每个需要更新的 WorldPartition 调用：</span><br><span class="line">  │       UWorldPartition::Tick(DeltaSeconds)</span><br><span class="line">  │         └─ StreamingPolicy-&gt;UpdateStreamingState()</span><br><span class="line">  │</span><br><span class="line">  └─ Draw() — 调试绘制</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-Streaming-Source-注册"><a href="#2-3-Streaming-Source-注册" class="headerlink" title="2.3 Streaming Source 注册"></a>2.3 Streaming Source 注册</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注册</span></span><br><span class="line">Subsystem-&gt;<span class="built_in">RegisterStreamingSourceProvider</span>(MyProvider);</span><br><span class="line"><span class="comment">// 取消注册</span></span><br><span class="line">Subsystem-&gt;<span class="built_in">UnregisterStreamingSourceProvider</span>(MyProvider);</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、StreamingPolicy-的更新流程"><a href="#三、StreamingPolicy-的更新流程" class="headerlink" title="三、StreamingPolicy 的更新流程"></a>三、StreamingPolicy 的更新流程</h2><p><code>UWorldPartitionStreamingPolicy</code> 是实际执行流式加载决策的核心类。</p>
+<h3 id="3-1-UpdateStreamingState-主流程"><a href="#3-1-UpdateStreamingState-主流程" class="headerlink" title="3.1 UpdateStreamingState 主流程"></a>3.1 UpdateStreamingState 主流程</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UWorldPartitionStreamingPolicy::UpdateStreamingState()</span><br><span class="line">  │</span><br><span class="line">  ├─ UpdateStreamingSources(bCanOptimizeUpdate)</span><br><span class="line">  │   └─ 收集最新的 Streaming Sources</span><br><span class="line">  │</span><br><span class="line">  ├─ 检查是否可以跳过更新（优化）</span><br><span class="line">  │   └─ ComputeUpdateStreamingHash() — 比较哈希值</span><br><span class="line">  │</span><br><span class="line">  ├─ 如果启用异步更新：</span><br><span class="line">  │   ├─ 启动 AsyncUpdateStreamingStateTask（后台线程）</span><br><span class="line">  │   │   └─ UpdateStreamingStateInternal(Params, OutTargetState)</span><br><span class="line">  │   └─ WaitForAsyncUpdateStreamingState() — 等待后台任务完成</span><br><span class="line">  │</span><br><span class="line">  ├─ PostUpdateStreamingStateInternal_GameThread(TargetState)</span><br><span class="line">  │   ├─ 应用 TargetState 中的变更</span><br><span class="line">  │   ├─ SetCellStateToLoaded()    — 加载 Cell</span><br><span class="line">  │   ├─ SetCellStateToActivated() — 激活 Cell</span><br><span class="line">  │   └─ SetCellsStateToUnloaded() — 卸载 Cell</span><br><span class="line">  │</span><br><span class="line">  └─ 更新 StreamingPerformance</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-UpdateStreamingStateInternal（核心决策逻辑）"><a href="#3-2-UpdateStreamingStateInternal（核心决策逻辑）" class="headerlink" title="3.2 UpdateStreamingStateInternal（核心决策逻辑）"></a>3.2 UpdateStreamingStateInternal（核心决策逻辑）</h3><p>这是在后台线程执行的决策逻辑：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UpdateStreamingStateInternal(Params, OutTargetState)</span><br><span class="line">  │</span><br><span class="line">  ├─ 创建 FWorldPartitionStreamingContext（包含 Data Layer 状态）</span><br><span class="line">  │</span><br><span class="line">  ├─ 调用 RuntimeHash-&gt;ForEachStreamingCellsSources()</span><br><span class="line">  │   │</span><br><span class="line">  │   ├─ 对每个 StreamingSource：</span><br><span class="line">  │   │   ├─ 构建 FSphericalSector</span><br><span class="line">  │   │   ├─ 使用空间索引查找相交的 Cell</span><br><span class="line">  │   │   └─ 根据距离和 Data Layer 状态分类为 Activate 或 Load</span><br><span class="line">  │   │</span><br><span class="line">  │   └─ 输出到 FrameActivateCells / FrameLoadCells</span><br><span class="line">  │</span><br><span class="line">  ├─ 对比当前状态和目标状态：</span><br><span class="line">  │   ├─ CurrentState.LoadedCells vs 新的 LoadCells → 确定需要加载/卸载的 Cell</span><br><span class="line">  │   ├─ CurrentState.ActivatedCells vs 新的 ActivateCells → 确定需要激活/去激活的 Cell</span><br><span class="line">  │   └─ 考虑 Data Layer 状态对 Cell 的影响</span><br><span class="line">  │</span><br><span class="line">  ├─ 填充 OutTargetState：</span><br><span class="line">  │   ├─ ToLoadCells — 需要加载的 Cell</span><br><span class="line">  │   ├─ ToActivateCells — 需要激活的 Cell</span><br><span class="line">  │   ├─ ToDeactivateCells — 需要去激活的 Cell</span><br><span class="line">  │   ├─ ToUnloadCells — 需要卸载的 Cell</span><br><span class="line">  │   └─ StreamingPerformance — 流式性能评估</span><br><span class="line">  │</span><br><span class="line">  └─ 返回</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-异步更新优化"><a href="#3-3-异步更新优化" class="headerlink" title="3.3 异步更新优化"></a>3.3 异步更新优化</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// StreamingPolicy.h 中的异步任务相关成员</span></span><br><span class="line">EAsyncUpdateTaskState AsyncUpdateTaskState;</span><br><span class="line">UE::Tasks::TTask&lt;<span class="type">void</span>&gt; AsyncUpdateStreamingStateTask;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 控制开关</span></span><br><span class="line"><span class="type">static</span> <span class="type">bool</span> IsAsyncUpdateStreamingStateEnabled;  <span class="comment">// CVar: wp.AsyncUpdateStreamingState</span></span><br></pre></td></tr></table></figure>
+
+<p>异步更新的好处：</p>
+<ul>
+<li>将 Cell 查询和决策逻辑放到后台线程</li>
+<li>减少游戏线程的阻塞</li>
+<li>在大世界场景中显著提升性能</li>
+</ul>
+<h2 id="四、Cell-的加载与卸载"><a href="#四、Cell-的加载与卸载" class="headerlink" title="四、Cell 的加载与卸载"></a>四、Cell 的加载与卸载</h2><h3 id="4-1-SetCellStateToLoaded"><a href="#4-1-SetCellStateToLoaded" class="headerlink" title="4.1 SetCellStateToLoaded"></a>4.1 SetCellStateToLoaded</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">StreamingPolicy::SetCellStateToLoaded(Cell, MaxCellsToLoad)</span><br><span class="line">  │</span><br><span class="line">  ├─ 调用 Cell-&gt;Load()</span><br><span class="line">  │   └─ UWorldPartitionRuntimeLevelStreamingCell::Load()</span><br><span class="line">  │       └─ 创建/请求 UWorldPartitionLevelStreamingDynamic</span><br><span class="line">  │           └─ ULevelStreamingDynamic::LoadLevelInstance()</span><br><span class="line">  │</span><br><span class="line">  ├─ 将 Cell 添加到 CurrentState.LoadedCells</span><br><span class="line">  └─ 更新 MaxCellsToLoad（控制每帧加载数量）</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-SetCellStateToActivated"><a href="#4-2-SetCellStateToActivated" class="headerlink" title="4.2 SetCellStateToActivated"></a>4.2 SetCellStateToActivated</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">StreamingPolicy::SetCellStateToActivated(Cell, MaxCellsToLoad)</span><br><span class="line">  │</span><br><span class="line">  ├─ 调用 Cell-&gt;Activate()</span><br><span class="line">  │   └─ UWorldPartitionRuntimeLevelStreamingCell::Activate()</span><br><span class="line">  │       └─ 设置 ULevelStreaming 的可见性</span><br><span class="line">  │           └─ ULevelStreaming::SetShouldBeVisible(true)</span><br><span class="line">  │</span><br><span class="line">  ├─ 将 Cell 添加到 CurrentState.ActivatedCells</span><br><span class="line">  └─ 触发 OnCellShown 回调</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-SetCellsStateToUnloaded"><a href="#4-3-SetCellsStateToUnloaded" class="headerlink" title="4.3 SetCellsStateToUnloaded"></a>4.3 SetCellsStateToUnloaded</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">StreamingPolicy::SetCellsStateToUnloaded(ToUnloadCells)</span><br><span class="line">  │</span><br><span class="line">  ├─ 对每个 Cell：</span><br><span class="line">  │   ├─ 如果当前是 Activated：</span><br><span class="line">  │   │   ├─ Cell-&gt;Deactivate()</span><br><span class="line">  │   │   └─ 触发 OnCellHidden 回调</span><br><span class="line">  │   │</span><br><span class="line">  │   └─ Cell-&gt;Unload()</span><br><span class="line">  │       └─ UWorldPartitionRuntimeLevelStreamingCell::Unload()</span><br><span class="line">  │           └─ ULevelStreamingDynamic::UnloadLevelFromWorld()</span><br><span class="line">  │</span><br><span class="line">  └─ 从 CurrentState 中移除</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、流式性能监控"><a href="#五、流式性能监控" class="headerlink" title="五、流式性能监控"></a>五、流式性能监控</h2><h3 id="5-1-EWorldPartitionStreamingPerformance"><a href="#5-1-EWorldPartitionStreamingPerformance" class="headerlink" title="5.1 EWorldPartitionStreamingPerformance"></a>5.1 EWorldPartitionStreamingPerformance</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartitionRuntimeHash.h:38</span></span><br><span class="line"><span class="keyword">enum class</span> <span class="title class_">EWorldPartitionStreamingPerformance</span> : uint8</span><br><span class="line">&#123;</span><br><span class="line">    Good,       <span class="comment">// 良好</span></span><br><span class="line">    Slow,       <span class="comment">// 较慢</span></span><br><span class="line">    Critical,   <span class="comment">// 严重</span></span><br><span class="line">    Immediate   <span class="comment">// 立即（不需要等待）</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-慢速加载处理"><a href="#5-2-慢速加载处理" class="headerlink" title="5.2 慢速加载处理"></a>5.2 慢速加载处理</h3><p>当流式性能为 Slow 或 Critical 时：</p>
+<ol>
+<li>可以选择<strong>阻塞游戏线程</strong>等待加载完成（<code>bBlockOnSlowStreaming</code>）</li>
+<li>通过 <code>bBlockOnSlowLoading</code> 在 Streaming Source 级别控制</li>
+<li>Grid 级别可通过 <code>bBlockOnSlowStreaming</code> 配置</li>
+</ol>
+<h3 id="5-3-相关-CVar"><a href="#5-3-相关-CVar" class="headerlink" title="5.3 相关 CVar"></a>5.3 相关 CVar</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wp.Runtime.UpdateOptimEnabled          // 启用更新优化</span><br><span class="line">wp.Runtime.AsyncUpdateStreamingState   // 启用异步更新</span><br><span class="line">wp.Runtime.ForceUpdateFrameCount       // 强制更新的帧数</span><br><span class="line">wp.SlowStreamingRatio                  // 慢速加载比率阈值</span><br><span class="line">wp.BlockOnSlowStreamingRatio           // 阻塞慢速加载比率阈值</span><br></pre></td></tr></table></figure>
+
+<h2 id="六、服务器端流式加载"><a href="#六、服务器端流式加载" class="headerlink" title="六、服务器端流式加载"></a>六、服务器端流式加载</h2><h3 id="6-1-服务器流式加载的作用"><a href="#6-1-服务器流式加载的作用" class="headerlink" title="6.1 服务器流式加载的作用"></a>6.1 服务器流式加载的作用</h3><p>在多人游戏中，服务器也需要流式加载来：</p>
+<ol>
+<li>只加载玩家附近的 Cell，减少服务器内存</li>
+<li>正确处理跨 Cell 的游戏逻辑</li>
+<li>同步玩家的可见性信息</li>
+</ol>
+<h3 id="6-2-服务器流式加载流程"><a href="#6-2-服务器流式加载流程" class="headerlink" title="6.2 服务器流式加载流程"></a>6.2 服务器流式加载流程</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">服务器端:</span><br><span class="line">  UWorldPartitionSubsystem::Tick()</span><br><span class="line">    │</span><br><span class="line">    ├─ UpdateStreamingSources()</span><br><span class="line">    │   └─ 收集所有连接的 PlayerController 作为 Remote Streaming Source</span><br><span class="line">    │</span><br><span class="line">    ├─ UpdateServerClientsVisibleLevelNames()</span><br><span class="line">    │   └─ 收集所有客户端可见的 Level 名称</span><br><span class="line">    │</span><br><span class="line">    └─ IncrementalUpdateStreamingState()</span><br><span class="line">        └─ 服务器端的 StreamingPolicy 更新</span><br><span class="line">            └─ 考虑 ExtraRadius（为所有客户端增加加载范围）</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-3-服务器端的-Extra-Radius"><a href="#6-3-服务器端的-Extra-Radius" class="headerlink" title="6.3 服务器端的 Extra Radius"></a>6.3 服务器端的 Extra Radius</h3><p>服务器端的 Streaming Source 会添加 ExtraRadius，确保覆盖所有可能的客户端位置：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 通过 FSetStreamingSourceExtraRadius 设置</span></span><br><span class="line"><span class="comment">// 由 UWorldPartitionSubsystem 内部管理</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="七、流式加载查询-API"><a href="#七、流式加载查询-API" class="headerlink" title="七、流式加载查询 API"></a>七、流式加载查询 API</h2><h3 id="7-1-IsStreamingCompleted"><a href="#7-1-IsStreamingCompleted" class="headerlink" title="7.1 IsStreamingCompleted"></a>7.1 IsStreamingCompleted</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 蓝图可调用</span></span><br><span class="line"><span class="built_in">UFUNCTION</span>(BlueprintCallable, Category = Streaming)</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">IsStreamingCompleted</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    EWorldPartitionRuntimeCellState QueryState,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> TArray&lt;FWorldPartitionStreamingQuerySource&gt;&amp; QuerySources,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">bool</span> bExactState)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-查询特定位置的-Cell"><a href="#7-2-查询特定位置的-Cell" class="headerlink" title="7.2 查询特定位置的 Cell"></a>7.2 查询特定位置的 Cell</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartition.h:513</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">GetIntersectingCells</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> TArray&lt;FWorldPartitionStreamingQuerySource&gt;&amp; InSources,</span></span></span><br><span class="line"><span class="params"><span class="function">    TArray&lt;<span class="type">const</span> IWorldPartitionCell*&gt;&amp; OutCells)</span> <span class="type">const</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-3-FWorldPartitionStreamingQuerySource"><a href="#7-3-FWorldPartitionStreamingQuerySource" class="headerlink" title="7.3 FWorldPartitionStreamingQuerySource"></a>7.3 FWorldPartitionStreamingQuerySource</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WorldPartitionStreamingSource.h:238</span></span><br><span class="line"><span class="built_in">USTRUCT</span>(BlueprintType)</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FWorldPartitionStreamingQuerySource</span></span><br><span class="line">&#123;</span><br><span class="line">    FVector Location;                   <span class="comment">// 查询位置</span></span><br><span class="line">    <span class="type">float</span> Radius;                       <span class="comment">// 查询半径</span></span><br><span class="line">    <span class="type">bool</span> bUseGridLoadingRange;          <span class="comment">// 使用 Grid 的加载范围</span></span><br><span class="line">    TArray&lt;FName&gt; DataLayers;           <span class="comment">// 指定 Data Layer</span></span><br><span class="line">    <span class="type">bool</span> bDataLayersOnly;               <span class="comment">// 仅查询 Data Layer Cell</span></span><br><span class="line">    <span class="type">bool</span> bSpatialQuery;                 <span class="comment">// 是否执行空间查询</span></span><br><span class="line">    TSet&lt;FName&gt; TargetGrids;            <span class="comment">// 目标 Grid</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="八、小结"><a href="#八、小结" class="headerlink" title="八、小结"></a>八、小结</h2><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>UWorldPartitionSubsystem</code></td>
+<td>调度中心，Tick 驱动，管理 Streaming Source</td>
+</tr>
+<tr>
+<td><code>UWorldPartitionStreamingPolicy</code></td>
+<td>决策引擎，计算需要加载&#x2F;卸载的 Cell</td>
+</tr>
+<tr>
+<td><code>FWorldPartitionStreamingSource</code></td>
+<td>描述流式加载源的位置、方向、形状</td>
+</tr>
+<tr>
+<td><code>IWorldPartitionStreamingSourceProvider</code></td>
+<td>组件接口，注册为 Streaming Source</td>
+</tr>
+<tr>
+<td><code>UWorldPartitionRuntimeCell</code></td>
+<td>Cell 的加载&#x2F;卸载&#x2F;激活&#x2F;去激活</td>
+</tr>
+<tr>
+<td><code>FWorldPartitionStreamingContext</code></td>
+<td>流式上下文，包含 Data Layer 状态</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/03_%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8D%B8%E8%BD%BD%E6%9C%BA%E5%88%B6/">https://mikeming126.github.io/AIGen/WordPartition%E5%88%86%E6%9E%90/03_%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8D%B8%E8%BD%BD%E6%9C%BA%E5%88%B6/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/AIGen/">AIGen</a><a class="post-meta__tags" href="/tags/WorldPartition/">WorldPartition</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/02_Cell%E4%B8%8EGrid%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/" title="Cell 与 Grid 系统详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Cell 与 Grid 系统详解</div></div><div class="info-2"><div class="info-item-1">02 - Cell 与 Grid 系统详解 基于 UE 5.7 源码深入分析 Cell 和 Grid 的实现  一、Cell 的概念Cell（单元）是 World Partition 中流式加载的基本单位。一个 Cell 包含一组空间上相邻的 Actor，在运行时作为一个整体被加载或卸载。每个 Cell 对应一个独立的 Level Package。 1.1 UWorldPartitionRuntimeCell// WorldPartitionRuntimeCell.h:234UCLASS(Abstract, MinimalAPI)class UWorldPartitionRuntimeCell : public UObject,    public IWorldPartitionCell,    public IWorldPartitionCookPackageObject  Cell 的核心接口： virtual void Load() const;            // 加载 Cellvirtual void Unload() const;          //...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/04_DataLayer%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/" title="Data Layer 系统详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Data Layer 系统详解</div></div><div class="info-2"><div class="info-item-1">04 - Data Layer 系统详解 基于 UE 5.7 源码 Engine/Source/Runtime/Engine/Public/WorldPartition/DataLayer/  一、Data Layer 概述Data Layer（数据层）是 World Partition 的逻辑分层系统。它允许开发者将世界内容按逻辑分组，并在运行时动态控制这些分组的加载&#x2F;卸载状态。 1.1 典型应用场景   场景 示例    任务系统 任务 A 完成后加载任务 B 的场景内容   季节系统 夏天&#x2F;冬天场景切换   日夜系统 白天&#x2F;夜晚不同的 NPC 和物件   难度选择 困难模式下增加额外的障碍物   DLC 内容 安装 DLC 后加载额外内容   平台差异化 高端平台加载额外细节   1.2 Data Layer 的类型// DataLayerType.h:8enum class EDataLayerType : uint8&#123;    Runtime,  // 运行时类型 — 可在游戏中动态切换    Editor,   // 编辑器类型...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/00_WorldPartition%E6%80%BB%E8%A7%88/" title="World Partition 总览"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">World Partition 总览</div></div><div class="info-2"><div class="info-item-1">World Partition 总览 基于 UE 5.7 源码分析 | 面向游戏开发人员  一、什么是 World PartitionWorld Partition（世界分区）是虚幻引擎从 UE5 开始引入的大世界地图管理与流式加载系统。它将一个完整的大世界地图自动划分为多个网格单元（Cell），在运行时根据玩家位置等流式加载源（Streaming Source）按需加载和卸载这些 Cell，从而实现无缝大世界体验。 核心价值   能力 说明    单一大地图 美术和策划只需在一个统一的世界中工作，无需手动拆分关卡   自动空间分区 引擎根据配置的 Grid 自动将世界空间划分为 Cell   按需流式加载 运行时只加载玩家附近的 Cell，内存占用可控   多人协作 基于 One File Per Actor（OFPA）机制，多人可同时编辑同一地图的不同区域   Data Layer 集成 支持逻辑分层的流式加载控制（如季节切换、任务状态等）   HLOD 支持 自动为远处区域生成 HLOD，降低渲染开销   二、核心架构概览2.1 模块分布Engine/Source/├──...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/01_%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87/" title="核心架构与设计目标"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">核心架构与设计目标</div></div><div class="info-2"><div class="info-item-1">01 - 核心架构与设计目标 基于 UE 5.7 源码 Engine/Source/Runtime/Engine/Public/WorldPartition/WorldPartition.h  一、设计目标World Partition 的设计目标是解决传统关卡系统在大世界游戏开发中的核心痛点： 1.1 传统方案的痛点   痛点 说明    手动关卡拆分 美术需要手动将大世界拆分为多个子关卡，工作量大且易出错   关卡边界问题 子关卡之间的光照、碰撞、LOD 等在边界处容易出现接缝   协作困难 多人编辑同一关卡文件会产生严重的版本控制冲突   内存不可控 传统关卡需要整关卡加载，无法按需加载小区域   流式加载不灵活 Level Streaming Volume 的触发式加载无法适应开放世界的自由移动   1.2 World Partition 的设计目标 统一的编辑体验 — 整个大世界就是一个地图，无需手动拆分 自动空间分区 — 引擎根据配置自动将世界划分为可管理的 Cell 按需流式加载 — 运行时根据 StreamingSource 动态加载&#x2F;卸载...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/02_Cell%E4%B8%8EGrid%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/" title="Cell 与 Grid 系统详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">Cell 与 Grid 系统详解</div></div><div class="info-2"><div class="info-item-1">02 - Cell 与 Grid 系统详解 基于 UE 5.7 源码深入分析 Cell 和 Grid 的实现  一、Cell 的概念Cell（单元）是 World Partition 中流式加载的基本单位。一个 Cell 包含一组空间上相邻的 Actor，在运行时作为一个整体被加载或卸载。每个 Cell 对应一个独立的 Level Package。 1.1 UWorldPartitionRuntimeCell// WorldPartitionRuntimeCell.h:234UCLASS(Abstract, MinimalAPI)class UWorldPartitionRuntimeCell : public UObject,    public IWorldPartitionCell,    public IWorldPartitionCookPackageObject  Cell 的核心接口： virtual void Load() const;            // 加载 Cellvirtual void Unload() const;          //...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/04_DataLayer%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/" title="Data Layer 系统详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">Data Layer 系统详解</div></div><div class="info-2"><div class="info-item-1">04 - Data Layer 系统详解 基于 UE 5.7 源码 Engine/Source/Runtime/Engine/Public/WorldPartition/DataLayer/  一、Data Layer 概述Data Layer（数据层）是 World Partition 的逻辑分层系统。它允许开发者将世界内容按逻辑分组，并在运行时动态控制这些分组的加载&#x2F;卸载状态。 1.1 典型应用场景   场景 示例    任务系统 任务 A 完成后加载任务 B 的场景内容   季节系统 夏天&#x2F;冬天场景切换   日夜系统 白天&#x2F;夜晚不同的 NPC 和物件   难度选择 困难模式下增加额外的障碍物   DLC 内容 安装 DLC 后加载额外内容   平台差异化 高端平台加载额外细节   1.2 Data Layer 的类型// DataLayerType.h:8enum class EDataLayerType : uint8&#123;    Runtime,  // 运行时类型 — 可在游戏中动态切换    Editor,   // 编辑器类型...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/05_%E4%B8%8E%E4%BC%A0%E7%BB%9F%E5%85%B3%E5%8D%A1%E7%AE%A1%E7%90%86%E5%AF%B9%E6%AF%94/" title="与传统关卡管理对比"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">与传统关卡管理对比</div></div><div class="info-2"><div class="info-item-1">05 - 与传统关卡管理对比 基于 UE 5.7 源码对比 World Partition、Level Streaming 和传统 Sub-level 方案  一、传统关卡管理方案1.1 单一 Persistent Level最简单的方案：所有内容放在一个关卡中。    优点 缺点    简单直接 内存占用不可控   无加载边界问题 不适合大世界   无版本控制冲突（单人） 无法按需加载   1.2 Sub-levels（子关卡）将世界拆分为一个 Persistent Level + 多个 Sub-level。 UWorld├── PersistentLevel (ULevel)       ← 始终加载│   └── ULevelStreamingPersistent│└── StreamingLevels (TArray&lt;ULevelStreaming*&gt;)    ├── ULevelStreamingAlwaysLoaded   ← 始终加载的子关卡    ├── ULevelStreaming (base)        ← 手动控制的子关卡    └──...</div></div></div></a><a class="pagination-related" href="/AIGen/WordPartition%E5%88%86%E6%9E%90/06_Editor%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="Editor 工具与工作流"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">Editor 工具与工作流</div></div><div class="info-2"><div class="info-item-1">06 - Editor 工具与工作流 基于 UE 5.7 源码 Engine/Source/Editor/WorldPartitionEditor/ 和相关模块  一、World Partition 编辑器模块1.1 模块结构World Partition 的编辑器功能分布在以下模块中：    模块 路径 作用    WorldPartitionEditor Engine/Source/Editor/WorldPartitionEditor/ 编辑器面板、Grid 可视化、HLOD 构建   DataLayerEditor Engine/Source/Editor/DataLayerEditor/ Data Layer 浏览器、编辑器状态   WorldPartitionHLODUtilities Engine/Plugins/Editor/WorldPartitionHLODUtilities/ HLOD 构建器   1.2 模块依赖WorldPartitionEditor.Build.cs 依赖：  - Engine, Core, CoreUObject  -...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#03-%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8D%B8%E8%BD%BD%E6%9C%BA%E5%88%B6"><span class="toc-number">1.</span> <span class="toc-text">03 - 运行时加载与卸载机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Streaming-Source%EF%BC%88%E6%B5%81%E5%BC%8F%E5%8A%A0%E8%BD%BD%E6%BA%90%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">一、Streaming Source（流式加载源）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-FWorldPartitionStreamingSource"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 FWorldPartitionStreamingSource</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Streaming-Source-%E7%9A%84%E5%BD%A2%E7%8A%B6"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 Streaming Source 的形状</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-Streaming-Source-%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 Streaming Source 优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-IWorldPartitionStreamingSourceProvider"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4 IWorldPartitionStreamingSourceProvider</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81UWorldPartitionSubsystem-%E7%9A%84%E9%A9%B1%E5%8A%A8"><span class="toc-number">1.2.</span> <span class="toc-text">二、UWorldPartitionSubsystem 的驱动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%B3%A8%E5%86%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 注册流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Tick-%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 Tick 流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Streaming-Source-%E6%B3%A8%E5%86%8C"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 Streaming Source 注册</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81StreamingPolicy-%E7%9A%84%E6%9B%B4%E6%96%B0%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">三、StreamingPolicy 的更新流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-UpdateStreamingState-%E4%B8%BB%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 UpdateStreamingState 主流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-UpdateStreamingStateInternal%EF%BC%88%E6%A0%B8%E5%BF%83%E5%86%B3%E7%AD%96%E9%80%BB%E8%BE%91%EF%BC%89"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 UpdateStreamingStateInternal（核心决策逻辑）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E4%BC%98%E5%8C%96"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 异步更新优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81Cell-%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8D%B8%E8%BD%BD"><span class="toc-number">1.4.</span> <span class="toc-text">四、Cell 的加载与卸载</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-SetCellStateToLoaded"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 SetCellStateToLoaded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-SetCellStateToActivated"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 SetCellStateToActivated</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-SetCellsStateToUnloaded"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 SetCellsStateToUnloaded</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%B5%81%E5%BC%8F%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7"><span class="toc-number">1.5.</span> <span class="toc-text">五、流式性能监控</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-EWorldPartitionStreamingPerformance"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 EWorldPartitionStreamingPerformance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%85%A2%E9%80%9F%E5%8A%A0%E8%BD%BD%E5%A4%84%E7%90%86"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 慢速加载处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E7%9B%B8%E5%85%B3-CVar"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 相关 CVar</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%B5%81%E5%BC%8F%E5%8A%A0%E8%BD%BD"><span class="toc-number">1.6.</span> <span class="toc-text">六、服务器端流式加载</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%B5%81%E5%BC%8F%E5%8A%A0%E8%BD%BD%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.6.1.</span> <span class="toc-text">6.1 服务器流式加载的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%B5%81%E5%BC%8F%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B"><span class="toc-number">1.6.2.</span> <span class="toc-text">6.2 服务器流式加载流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%9A%84-Extra-Radius"><span class="toc-number">1.6.3.</span> <span class="toc-text">6.3 服务器端的 Extra Radius</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%B5%81%E5%BC%8F%E5%8A%A0%E8%BD%BD%E6%9F%A5%E8%AF%A2-API"><span class="toc-number">1.7.</span> <span class="toc-text">七、流式加载查询 API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-IsStreamingCompleted"><span class="toc-number">1.7.1.</span> <span class="toc-text">7.1 IsStreamingCompleted</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E6%9F%A5%E8%AF%A2%E7%89%B9%E5%AE%9A%E4%BD%8D%E7%BD%AE%E7%9A%84-Cell"><span class="toc-number">1.7.2.</span> <span class="toc-text">7.2 查询特定位置的 Cell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-FWorldPartitionStreamingQuerySource"><span class="toc-number">1.7.3.</span> <span class="toc-text">7.3 FWorldPartitionStreamingQuerySource</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%B0%8F%E7%BB%93"><span class="toc-number">1.8.</span> <span class="toc-text">八、小结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/06_%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="实战示例与最佳实践">实战示例与最佳实践</a><time datetime="2026-05-07T17:27:26.099Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/04_%E9%85%8D%E5%A5%97%E5%AD%90%E7%B3%BB%E7%BB%9F/" title="配套子系统">配套子系统</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/05_MassEntity%E4%B8%8EUnityECS%E5%AF%B9%E6%AF%94/" title="MassEntity 与 Unity DOTS/ECS 对比">MassEntity 与 Unity DOTS/ECS 对比</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/03_Processor%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="Processor 执行系统与多线程">Processor 执行系统与多线程</a><time datetime="2026-05-07T17:27:26.094Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/02_Entity%E7%AE%A1%E7%90%86%E5%99%A8%E4%B8%8EArchetype/" title="Entity 管理器与 Archetype">Entity 管理器与 Archetype</a><time datetime="2026-05-07T17:27:26.092Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || 'b3dbb9321f74d1cab864f3e2304cf57b'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://unpkg.com/gitalk/dist/gitalk.css')
+      await btf.getScript('https://unpkg.com/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script>var meting_api="https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r"</script><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script><script src="https://unpkg.com/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

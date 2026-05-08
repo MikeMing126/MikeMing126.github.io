@@ -1,0 +1,425 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>MassEntity 总览 | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="MassEntity 总览 基于虚幻引擎 5.7 源码分析  一、什么是 MassEntityMassEntity 是虚幻引擎 5 中的 ECS（Entity-Component-System）框架，专为处理海量实体（数万至数十万级别）而设计。它采用数据导向设计（Data-Oriented Design），通过 Archetype（原型）将相同组件组合的实体数据在内存中连续排列，以最大化 CPU">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MassEntity 总览">
+<meta property="og:url" content="https://mikeming126.github.io/AIGen/MassEntity%E5%88%86%E6%9E%90/00_MassEntity%E6%80%BB%E8%A7%88/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="MassEntity 总览 基于虚幻引擎 5.7 源码分析  一、什么是 MassEntityMassEntity 是虚幻引擎 5 中的 ECS（Entity-Component-System）框架，专为处理海量实体（数万至数十万级别）而设计。它采用数据导向设计（Data-Oriented Design），通过 Archetype（原型）将相同组件组合的实体数据在内存中连续排列，以最大化 CPU">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2026-05-07T17:27:26.088Z">
+<meta property="article:modified_time" content="2026-05-07T17:27:56.743Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="AIGen">
+<meta property="article:tag" content="MassEntity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "MassEntity 总览",
+  "url": "https://mikeming126.github.io/AIGen/MassEntity%E5%88%86%E6%9E%90/00_MassEntity%E6%80%BB%E8%A7%88/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2026-05-07T17:27:26.088Z",
+  "dateModified": "2026-05-07T17:27:56.743Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/AIGen/MassEntity%E5%88%86%E6%9E%90/00_MassEntity%E6%80%BB%E8%A7%88/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'MassEntity 总览',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">MassEntity 总览</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">MassEntity 总览</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-07T17:27:26.088Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-07T17:27:56.743Z" title="更新于 2026-05-08 01:27:56">2026-05-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="MassEntity-总览"><a href="#MassEntity-总览" class="headerlink" title="MassEntity 总览"></a>MassEntity 总览</h1><blockquote>
+<p>基于虚幻引擎 5.7 源码分析</p>
+</blockquote>
+<h2 id="一、什么是-MassEntity"><a href="#一、什么是-MassEntity" class="headerlink" title="一、什么是 MassEntity"></a>一、什么是 MassEntity</h2><p>MassEntity 是虚幻引擎 5 中的 <strong>ECS（Entity-Component-System）框架</strong>，专为处理海量实体（数万至数十万级别）而设计。它采用数据导向设计（Data-Oriented Design），通过 Archetype（原型）将相同组件组合的实体数据在内存中连续排列，以最大化 CPU 缓存命中率。</p>
+<p>MassEntity 的核心理念：</p>
+<ul>
+<li><strong>Entity（实体）</strong>：轻量级标识符（仅 8 字节：Index + SerialNumber），不包含任何逻辑和数据</li>
+<li><strong>Fragment（片段）</strong>：纯数据的 POD 结构体，存储实体的属性（位置、速度、生命值等）</li>
+<li><strong>Processor（处理器）</strong>：无状态的逻辑执行单元，批量处理匹配特定 Fragment 组合的实体</li>
+<li><strong>Tag（标签）</strong>：零大小的标记类型，用于快速筛选实体，不占内存</li>
+</ul>
+<h2 id="二、源码目录结构"><a href="#二、源码目录结构" class="headerlink" title="二、源码目录结构"></a>二、源码目录结构</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Engine/Source/Runtime/MassEntity/          ← 核心框架</span><br><span class="line">├── Public/                                ← 公共头文件</span><br><span class="line">│   ├── MassEntityManager.h                ← 实体管理器（核心）</span><br><span class="line">│   ├── MassEntityTypes.h                  ← 类型定义（位集、组合描述符等）</span><br><span class="line">│   ├── MassEntityElementTypes.h           ← 基础元素类型（Fragment/Tag/SharedFragment等）</span><br><span class="line">│   ├── MassEntityHandle.h                 ← 实体句柄（8字节轻量标识）</span><br><span class="line">│   ├── MassEntityQuery.h                  ← 实体查询系统</span><br><span class="line">│   ├── MassProcessor.h                    ← 处理器框架</span><br><span class="line">│   ├── MassExecutionContext.h             ← 执行上下文</span><br><span class="line">│   ├── MassCommandBuffer.h                ← 命令缓冲区（延迟操作）</span><br><span class="line">│   ├── MassRequirements.h                 ← 需求声明系统</span><br><span class="line">│   ├── MassArchetypeTypes.h               ← Archetype 句柄和集合</span><br><span class="line">│   ├── MassProcessingTypes.h              ← 处理阶段、运行时管线</span><br><span class="line">│   ├── MassProcessingPhaseManager.h       ← 阶段管理器</span><br><span class="line">│   ├── MassObserverManager.h              ← 观察者管理器</span><br><span class="line">│   ├── MassObserverProcessor.h            ← 观察者处理器</span><br><span class="line">│   ├── MassExecutor.h                     ← 执行器（并行调度）</span><br><span class="line">│   └── ...</span><br><span class="line">├── Internal/</span><br><span class="line">│   └── MassArchetypeData.h                ← Archetype 内部数据布局</span><br><span class="line">└── Private/                               ← 实现文件</span><br><span class="line"></span><br><span class="line">Engine/Plugins/Runtime/MassGameplay/       ← 游戏玩法子系统</span><br><span class="line">├── Source/MassCommon/                     ← 公共 Fragment（Transform、Radius等）</span><br><span class="line">├── Source/MassSpawner/                    ← 实体生成系统（Spawner、Trait、Template）</span><br><span class="line">├── Source/MassMovement/                   ← 移动系统</span><br><span class="line">├── Source/MassRepresentation/             ← 视觉表现（ISM、Actor代理）</span><br><span class="line">├── Source/MassLOD/                        ← LOD 系统</span><br><span class="line">├── Source/MassSignals/                    ← 信号/事件系统</span><br><span class="line">├── Source/MassActors/                     ← Actor 桥接层</span><br><span class="line">├── Source/MassSmartObjects/               ← SmartObject 集成</span><br><span class="line">├── Source/MassSimulation/                 ← 模拟调度</span><br><span class="line">├── Source/MassReplication/                ← 网络复制</span><br><span class="line">├── Source/MassEQS/                        ← 环境查询集成</span><br><span class="line">└── Source/MassGameplayDebug/              ← 调试可视化</span><br><span class="line"></span><br><span class="line">Engine/Plugins/AI/MassAI/                  ← AI 相关模块</span><br><span class="line">├── Source/MassNavigation/                 ← 导航（转向、避障）</span><br><span class="line">├── Source/MassNavMeshNavigation/          ← NavMesh 寻路</span><br><span class="line">├── Source/MassZoneGraphNavigation/        ← ZoneGraph 寻路</span><br><span class="line">└── Source/MassAIBehavior/                 ← 行为系统（StateTree集成）</span><br><span class="line"></span><br><span class="line">Engine/Plugins/AI/MassCrowd/               ← 群体模拟</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、核心架构概览"><a href="#三、核心架构概览" class="headerlink" title="三、核心架构概览"></a>三、核心架构概览</h2><h3 id="3-1-五种元素类型"><a href="#3-1-五种元素类型" class="headerlink" title="3.1 五种元素类型"></a>3.1 五种元素类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>基类</th>
+<th>作用</th>
+<th>生命周期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Fragment</strong></td>
+<td><code>FMassFragment</code></td>
+<td>每实体数据，如位置、速度</td>
+<td>随实体创建&#x2F;销毁</td>
+</tr>
+<tr>
+<td><strong>Tag</strong></td>
+<td><code>FMassTag</code></td>
+<td>零大小标记，用于筛选</td>
+<td>随实体创建&#x2F;销毁</td>
+</tr>
+<tr>
+<td><strong>ChunkFragment</strong></td>
+<td><code>FMassChunkFragment</code></td>
+<td>每 Chunk 数据（如 LOD 状态）</td>
+<td>随 Chunk 分配</td>
+</tr>
+<tr>
+<td><strong>SharedFragment</strong></td>
+<td><code>FMassSharedFragment</code></td>
+<td>跨实体可变共享数据</td>
+<td>引用计数管理</td>
+</tr>
+<tr>
+<td><strong>ConstSharedFragment</strong></td>
+<td><code>FMassConstSharedFragment</code></td>
+<td>跨实体不可变共享数据</td>
+<td>引用计数管理</td>
+</tr>
+</tbody></table>
+<h3 id="3-2-核心类关系"><a href="#3-2-核心类关系" class="headerlink" title="3.2 核心类关系"></a>3.2 核心类关系</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FMassEntityManager（实体管理器）</span><br><span class="line">  ├── 拥有所有 Archetype（FMassArchetypeData）</span><br><span class="line">  ├── 管理实体生命周期（创建/销毁/移动）</span><br><span class="line">  ├── 维护 SharedFragment 容器</span><br><span class="line">  ├── 托管 ObserverManager（观察者通知）</span><br><span class="line">  ├── 托管 TypeManager（类型注册）</span><br><span class="line">  ├── 托管 RelationManager（实体关系）</span><br><span class="line">  └── 提供命令缓冲区（双缓冲机制）</span><br><span class="line"></span><br><span class="line">UMassEntitySubsystem（世界子系统）</span><br><span class="line">  └── 包装 FMassEntityManager 为 UWorldSubsystem</span><br><span class="line"></span><br><span class="line">FMassEntityQuery（实体查询）</span><br><span class="line">  ├── 继承 FMassFragmentRequirements（Fragment/Tag 需求）</span><br><span class="line">  ├── 继承 FMassSubsystemRequirements（子系统需求）</span><br><span class="line">  ├── 缓存匹配的 Archetype 列表</span><br><span class="line">  ├── 提供 ForEachEntityChunk / ParallelForEachEntityChunk</span><br><span class="line">  └── 支持分组（GroupBy）和过滤（ChunkFilter）</span><br><span class="line"></span><br><span class="line">UMassProcessor（处理器）</span><br><span class="line">  ├── 拥有 FMassEntityQuery 实例</span><br><span class="line">  ├── Execute() 在处理阶段被调用</span><br><span class="line">  └── 支持依赖排序和多线程调度</span><br><span class="line"></span><br><span class="line">UMassCompositeProcessor（组合处理器）</span><br><span class="line">  ├── 包含子处理器管线（ChildPipeline）</span><br><span class="line">  ├── 构建扁平依赖图（FlatProcessingGraph）</span><br><span class="line">  └── 通过 TaskGraph 调度并行执行</span><br><span class="line"></span><br><span class="line">FMassProcessingPhaseManager（阶段管理器）</span><br><span class="line">  ├── 管理 6 个处理阶段（PrePhysics ~ FrameEnd）</span><br><span class="line">  ├── 每个阶段是一个 FTickFunction</span><br><span class="line">  └── 动态处理器注册/注销</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-数据存储模型"><a href="#3-3-数据存储模型" class="headerlink" title="3.3 数据存储模型"></a>3.3 数据存储模型</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FMassArchetypeData（Archetype）</span><br><span class="line">  └── Chunks[]（固定大小的内存块）</span><br><span class="line">        ├── EntityArray: FMassEntityHandle[]    ← 实体句柄数组</span><br><span class="line">        ├── FragmentA[]: FMassFragmentA[]       ← Fragment A 的连续数组</span><br><span class="line">        ├── FragmentB[]: FMassFragmentB[]       ← Fragment B 的连续数组</span><br><span class="line">        ├── ...                                  ← 更多 Fragment 的连续数组</span><br><span class="line">        └── ChunkFragmentData[]: InstancedStruct ← Chunk 级别的 Fragment</span><br></pre></td></tr></table></figure>
+
+<p>所有具有相同 Fragment 组合的实体共享同一个 Archetype，其数据在 Chunk 中按 SoA（Structure of Arrays）方式连续排列。</p>
+<h3 id="3-4-执行管线"><a href="#3-4-执行管线" class="headerlink" title="3.4 执行管线"></a>3.4 执行管线</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">每帧 Tick 流程：</span><br><span class="line">  PrePhysics 阶段（FTickFunction）</span><br><span class="line">    └── UMassCompositeProcessor::Execute()</span><br><span class="line">          ├── 依赖排序 → 构建执行图</span><br><span class="line">          ├── TaskGraph 并行调度</span><br><span class="line">          │     ├── Processor A（TaskGraph 任务）</span><br><span class="line">          │     ├── Processor B（依赖 A 完成后执行）</span><br><span class="line">          │     └── Processor C（与 B 并行）</span><br><span class="line">          └── 等待所有任务完成 → 刷新命令缓冲区</span><br><span class="line"></span><br><span class="line">  StartPhysics / DuringPhysics / EndPhysics / PostPhysics / FrameEnd</span><br><span class="line">    └── 同上结构</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、关键设计特性"><a href="#四、关键设计特性" class="headerlink" title="四、关键设计特性"></a>四、关键设计特性</h2><h3 id="4-1-命令缓冲区（Deferred-Execution）"><a href="#4-1-命令缓冲区（Deferred-Execution）" class="headerlink" title="4.1 命令缓冲区（Deferred Execution）"></a>4.1 命令缓冲区（Deferred Execution）</h3><ul>
+<li>所有实体结构变更通过 <code>Defer()</code> 获取命令缓冲区</li>
+<li>双缓冲机制（<code>NumCommandBuffers = 2</code>）支持在刷新期间推送新命令</li>
+<li>支持并行命令缓冲区（<code>bAllowParallelCommands</code>）</li>
+</ul>
+<h3 id="4-2-观察者系统（Observer）"><a href="#4-2-观察者系统（Observer）" class="headerlink" title="4.2 观察者系统（Observer）"></a>4.2 观察者系统（Observer）</h3><ul>
+<li>监听 Fragment&#x2F;Tag 的添加、移除、实体创建&#x2F;销毁</li>
+<li>支持锁定机制（<code>FObserverLock</code>），批量操作完成后统一通知</li>
+<li>创建上下文（<code>FEntityCreationContext</code>）优化批量创建场景</li>
+</ul>
+<h3 id="4-3-Archetype-分组（Grouping）"><a href="#4-3-Archetype-分组（Grouping）" class="headerlink" title="4.3 Archetype 分组（Grouping）"></a>4.3 Archetype 分组（Grouping）</h3><ul>
+<li>5.6+ 新增功能，支持按自定义维度对 Archetype 分组</li>
+<li>查询可按分组排序处理（<code>GroupBy</code>）</li>
+<li>用于实现分队、分区域等批量处理</li>
+</ul>
+<h3 id="4-4-多线程支持"><a href="#4-4-多线程支持" class="headerlink" title="4.4 多线程支持"></a>4.4 多线程支持</h3><ul>
+<li>通过 UE TaskGraph 系统实现并行执行</li>
+<li><code>ParallelForEachEntityChunk</code> 将 Chunk 分配到不同线程</li>
+<li>支持自动负载均衡（<code>EParallelExecutionFlags::AutoBalance</code>）</li>
+<li>并发实体存储（<code>FConcurrentEntityStorage</code>）支持多线程实体预留</li>
+</ul>
+<h3 id="4-5-模板与-Trait-系统"><a href="#4-5-模板与-Trait-系统" class="headerlink" title="4.5 模板与 Trait 系统"></a>4.5 模板与 Trait 系统</h3><ul>
+<li><strong>Trait</strong>：可组合的实体功能单元（如移动、视觉表现、LOD）</li>
+<li><strong>Template</strong>：由多个 Trait 组合而成的实体模板</li>
+<li><strong>EntityConfig</strong>：可在编辑器中配置的数据资产</li>
+<li><strong>Spawner</strong>：放置在关卡中的生成器 Actor</li>
+</ul>
+<h2 id="五、配套子系统一览"><a href="#五、配套子系统一览" class="headerlink" title="五、配套子系统一览"></a>五、配套子系统一览</h2><table>
+<thead>
+<tr>
+<th>子系统</th>
+<th>模块</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LOD</td>
+<td>MassLOD</td>
+<td>距离&#x2F;视锥体 LOD，可变 Tick 频率</td>
+</tr>
+<tr>
+<td>视觉表现</td>
+<td>MassRepresentation</td>
+<td>ISM 渲染、Actor 代理、LOD 切换</td>
+</tr>
+<tr>
+<td>信号</td>
+<td>MassSignals</td>
+<td>命名事件系统，延迟信号，委托广播</td>
+</tr>
+<tr>
+<td>移动</td>
+<td>MassMovement</td>
+<td>移动 Fragment、移动 Processor</td>
+</tr>
+<tr>
+<td>导航</td>
+<td>MassNavigation&#x2F;MassNavMesh&#x2F;MassZoneGraph</td>
+<td>寻路、转向、避障</td>
+</tr>
+<tr>
+<td>SmartObject</td>
+<td>MassSmartObjects</td>
+<td>SmartObject 交互</td>
+</tr>
+<tr>
+<td>Actor 桥接</td>
+<td>MassActors</td>
+<td>Mass 实体与 Actor 世界互操作</td>
+</tr>
+<tr>
+<td>网络复制</td>
+<td>MassReplication</td>
+<td>网络同步</td>
+</tr>
+<tr>
+<td>群体</td>
+<td>MassCrowd</td>
+<td>基于 ZoneGraph 的群体模拟</td>
+</tr>
+<tr>
+<td>EQS</td>
+<td>MassEQS</td>
+<td>环境查询系统集成</td>
+</tr>
+<tr>
+<td>调试</td>
+<td>MassEntityDebugger</td>
+<td>Archetype&#x2F;Entity&#x2F;Processor 运行时检查器</td>
+</tr>
+</tbody></table>
+<h2 id="六、典型应用场景"><a href="#六、典型应用场景" class="headerlink" title="六、典型应用场景"></a>六、典型应用场景</h2><ol>
+<li><strong>大规模 NPC&#x2F;人群模拟</strong>：城市中的数千名行人（MassCrowd）</li>
+<li><strong>植被和装饰物渲染</strong>：通过 ISM 渲染大量植被</li>
+<li><strong>Foliege&#x2F;环境实体</strong>：草地、石头等环境装饰</li>
+<li><strong>粒子&#x2F;弹幕系统</strong>：大量投射物的数据驱动模拟</li>
+<li><strong>RTS 单位管理</strong>：大规模单位的选择、移动、战斗</li>
+</ol>
+<h2 id="七、优缺点分析"><a href="#七、优缺点分析" class="headerlink" title="七、优缺点分析"></a>七、优缺点分析</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li><strong>极高吞吐量</strong>：数据连续排列，缓存友好，单帧可处理数十万实体</li>
+<li><strong>自动并行化</strong>：基于 TaskGraph 的自动依赖调度和多线程执行</li>
+<li><strong>灵活组合</strong>：Trait 系统支持编辑器内可视化组合实体功能</li>
+<li><strong>编辑器集成</strong>：完整的调试器、可视化工具</li>
+<li><strong>UE 生态集成</strong>：与 NavMesh、SmartObject、EQS、StateTree 深度集成</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li><strong>学习曲线陡峭</strong>：概念繁多（Fragment、Tag、SharedFragment、ChunkFragment、Observer等）</li>
+<li><strong>不适合复杂单个实体</strong>：ECS 模型在处理少量复杂实体时不如传统 Actor</li>
+<li><strong>调试困难</strong>：数据分散在各个 Fragment 中，难以追踪单个实体的完整状态</li>
+<li><strong>Fragment 必须可平凡复制</strong>：限制了可存储的数据类型</li>
+<li><strong>与 Actor 世界交互有开销</strong>：需要 Translator 进行数据桥接</li>
+</ul>
+<h2 id="八、文档导航"><a href="#八、文档导航" class="headerlink" title="八、文档导航"></a>八、文档导航</h2><table>
+<thead>
+<tr>
+<th>文档</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="01_%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B.md">01_核心架构与数据模型</a></td>
+<td>五种元素类型、EntityHandle、组合描述符、C++20 Concepts</td>
+</tr>
+<tr>
+<td><a href="02_Entity%E7%AE%A1%E7%90%86%E5%99%A8%E4%B8%8EArchetype.md">02_Entity管理器与Archetype</a></td>
+<td>EntityManager、ArchetypeData、Chunk 布局、实体生命周期</td>
+</tr>
+<tr>
+<td><a href="03_Processor%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B.md">03_Processor执行系统与多线程</a></td>
+<td>Processor、Query、执行上下文、阶段管理、TaskGraph 调度</td>
+</tr>
+<tr>
+<td><a href="04_%E9%85%8D%E5%A5%97%E5%AD%90%E7%B3%BB%E7%BB%9F.md">04_配套子系统</a></td>
+<td>LOD、视觉表现、信号、Spawner、Trait 模板、Observer</td>
+</tr>
+<tr>
+<td><a href="05_MassEntity%E4%B8%8EUnityECS%E5%AF%B9%E6%AF%94.md">05_MassEntity与Unity ECS对比</a></td>
+<td>架构对比、性能对比、API 对比、优劣势分析</td>
+</tr>
+<tr>
+<td><a href="06_%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.md">06_实战示例与最佳实践</a></td>
+<td>自定义 Fragment&#x2F;Processor、Trait 开发、Spawner 使用、调试技巧</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/AIGen/MassEntity%E5%88%86%E6%9E%90/00_MassEntity%E6%80%BB%E8%A7%88/">https://mikeming126.github.io/AIGen/MassEntity%E5%88%86%E6%9E%90/00_MassEntity%E6%80%BB%E8%A7%88/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/AIGen/">AIGen</a><a class="post-meta__tags" href="/tags/MassEntity/">MassEntity</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/AIGen/%E7%8A%B6%E6%80%81%E6%A0%91%E5%88%86%E6%9E%90/12_%E7%8A%B6%E6%80%81%E6%A0%91%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E4%B8%8E%E9%99%B7%E9%98%B1/" title="StateTree最佳实践与陷阱"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">StateTree最佳实践与陷阱</div></div><div class="info-2"><div class="info-item-1">12 状态树最佳实践与陷阱 基于 UE 5.7.4 源码和官方模板分析   一、设计最佳实践1.1 状态树结构设计✅ 推荐做法Root (Group, TrySelectChildrenInOrder)    │    ├── 高优先级行为（逃跑、闪避）    │       └── Transition Priority: High/Critical    │    ├── 中等优先级行为（攻击、追踪）    │       └── Transition Priority: Normal    │    └── 低优先级行为（巡逻、空闲）            └── Transition Priority: Low  ❌ 避免做法Root (State, 50+ Transitions)    ├── 大量平级状态，转换关系复杂    └── 难以维护和调试  原则：  使用分组状态组织行为层次 每个状态的任务数量保持在3-5个以内 转换优先级明确分层 状态深度控制在4层以内（FStateTreeActiveStates::MaxStates = 8）  1.2...</div></div></div></a><a class="pagination-related" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/01_%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" title="核心架构与数据模型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">核心架构与数据模型</div></div><div class="info-2"><div class="info-item-1">01 核心架构与数据模型 源码位置：Engine/Source/Runtime/MassEntity/Public/  一、五种基础元素类型MassEntity 定义了五种基础元素类型，它们构成了整个 ECS 的数据基石。所有类型声明在 MassEntityElementTypes.h 中。 1.1 FMassFragment — 每实体数据USTRUCT()struct FMassFragment&#123;    GENERATED_BODY()&#125;;  Fragment 是最核心的数据载体，每个实体拥有的 Fragment 实例独立存储。Fragment 必须满足以下约束：  继承自 FMassFragment 必须是可平凡复制的（Trivially Copyable），这是为了支持高效的内存搬移和批量操作 如需使用非平凡复制类型，需通过 TMassFragmentTraits 显式选择退出  常见 Fragment 示例（来自 MassCommonFragments.h）： USTRUCT()struct FTransformFragment : public...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/01_%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/" title="核心架构与数据模型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">核心架构与数据模型</div></div><div class="info-2"><div class="info-item-1">01 核心架构与数据模型 源码位置：Engine/Source/Runtime/MassEntity/Public/  一、五种基础元素类型MassEntity 定义了五种基础元素类型，它们构成了整个 ECS 的数据基石。所有类型声明在 MassEntityElementTypes.h 中。 1.1 FMassFragment — 每实体数据USTRUCT()struct FMassFragment&#123;    GENERATED_BODY()&#125;;  Fragment 是最核心的数据载体，每个实体拥有的 Fragment 实例独立存储。Fragment 必须满足以下约束：  继承自 FMassFragment 必须是可平凡复制的（Trivially Copyable），这是为了支持高效的内存搬移和批量操作 如需使用非平凡复制类型，需通过 TMassFragmentTraits 显式选择退出  常见 Fragment 示例（来自 MassCommonFragments.h）： USTRUCT()struct FTransformFragment : public...</div></div></div></a><a class="pagination-related" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/03_Processor%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="Processor 执行系统与多线程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">Processor 执行系统与多线程</div></div><div class="info-2"><div class="info-item-1">03 Processor 执行系统与多线程 核心源码：  MassProcessor.h MassEntityQuery.h MassExecutionContext.h MassProcessingPhaseManager.h MassExecutor.h   一、UMassProcessor — 处理器基类UCLASS(abstract, EditInlineNew, CollapseCategories, config = Mass, defaultconfig)class UMassProcessor : public UObject&#123;    // 生命周期    virtual void InitializeInternal(UObject&amp; Owner, const TSharedRef&lt;FMassEntityManager&gt;&amp;);    virtual void ConfigureQueries(const TSharedRef&lt;FMassEntityManager&gt;&amp;);    virtual void...</div></div></div></a><a class="pagination-related" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/02_Entity%E7%AE%A1%E7%90%86%E5%99%A8%E4%B8%8EArchetype/" title="Entity 管理器与 Archetype"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">Entity 管理器与 Archetype</div></div><div class="info-2"><div class="info-item-1">02 Entity 管理器与 Archetype 核心源码：  MassEntityManager.h MassArchetypeData.h MassArchetypeTypes.h   一、FMassEntityManager — 核心管理器FMassEntityManager 是 MassEntity 框架的核心，负责管理所有实体和 Archetype 的生命周期。它不是 UObject，而是继承自 TSharedFromThis 和 FGCObject 的原生 C++ 结构体。 struct FMassEntityManager : public TSharedFromThis&lt;FMassEntityManager&gt;, public FGCObject&#123;    // 关键成员    TArray&lt;TSharedPtr&lt;FMassArchetypeData&gt;&gt; AllArchetypes;    TMap&lt;uint32,...</div></div></div></a><a class="pagination-related" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/04_%E9%85%8D%E5%A5%97%E5%AD%90%E7%B3%BB%E7%BB%9F/" title="配套子系统"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">配套子系统</div></div><div class="info-2"><div class="info-item-1">04 配套子系统 本文档介绍 MassEntity 框架之上的各个配套子系统，涵盖实体生成、视觉表现、LOD、信号、观察者等。  一、Spawner 与 Trait 模板系统1.1 AMassSpawner — 实体生成器源码位置：MassSpawner.h UCLASS()class AMassSpawner : public AActor&#123;    UPROPERTY(EditAnywhere)    int32 Count;  // 生成数量    UPROPERTY(EditAnywhere)    TArray&lt;FMassSpawnedEntityType&gt; EntityTypes;  // 实体类型配置    UPROPERTY(EditAnywhere)    TArray&lt;FMassSpawnDataGenerator&gt; SpawnDataGenerators;  // 位置生成器    UPROPERTY(EditAnywhere)    bool bAutoSpawnOnBeginPlay;  // 自动生成   ...</div></div></div></a><a class="pagination-related" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/05_MassEntity%E4%B8%8EUnityECS%E5%AF%B9%E6%AF%94/" title="MassEntity 与 Unity DOTS&#x2F;ECS 对比"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">MassEntity 与 Unity DOTS&#x2F;ECS 对比</div></div><div class="info-2"><div class="info-item-1">05 MassEntity 与 Unity DOTS&#x2F;ECS 对比一、架构理念对比   维度 UE MassEntity Unity DOTS&#x2F;ECS    设计哲学 实用主义，与 UE 生态深度融合 纯粹的数据导向设计，独立子系统   类型系统 UE 反射（UScriptStruct） C# Source Generator（代码生成）   内存模型 Archetype + Chunk（SoA） Archetype + Chunk（AoS&#x2F;SoS）   语言 C++（模板 + 宏 + 反射） C#（Job System + Burst 编译）   多线程 UE TaskGraph C# Job System + Burst   集成度 与 UE 引擎深度集成 与 Unity 引擎部分集成   二、核心概念映射2.1 实体（Entity）    UE MassEntity Unity...</div></div></div></a><a class="pagination-related" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/06_%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="实战示例与最佳实践"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">实战示例与最佳实践</div></div><div class="info-2"><div class="info-item-1">06 实战示例与最佳实践 基于虚幻引擎 5.7 源码和官方示例  一、自定义 Fragment1.1 基本 Fragment 定义#pragma once#include &quot;MassEntityElementTypes.h&quot;#include &quot;MyFragments.generated.h&quot;USTRUCT()struct FHealthFragment : public FMassFragment&#123;    GENERATED_BODY()    UPROPERTY()    float CurrentHealth = 100.0f;    UPROPERTY()    float MaxHealth = 100.0f;&#125;;USTRUCT()struct FDamageFragment : public FMassFragment&#123;    GENERATED_BODY()    UPROPERTY()    float DamageAmount = 0.0f;    UPROPERTY()    float...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MassEntity-%E6%80%BB%E8%A7%88"><span class="toc-number">1.</span> <span class="toc-text">MassEntity 总览</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF-MassEntity"><span class="toc-number">1.1.</span> <span class="toc-text">一、什么是 MassEntity</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%BA%90%E7%A0%81%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">二、源码目录结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E6%A6%82%E8%A7%88"><span class="toc-number">1.3.</span> <span class="toc-text">三、核心架构概览</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BA%94%E7%A7%8D%E5%85%83%E7%B4%A0%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 五种元素类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%A0%B8%E5%BF%83%E7%B1%BB%E5%85%B3%E7%B3%BB"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 核心类关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 数据存储模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%89%A7%E8%A1%8C%E7%AE%A1%E7%BA%BF"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 执行管线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%85%B3%E9%94%AE%E8%AE%BE%E8%AE%A1%E7%89%B9%E6%80%A7"><span class="toc-number">1.4.</span> <span class="toc-text">四、关键设计特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%91%BD%E4%BB%A4%E7%BC%93%E5%86%B2%E5%8C%BA%EF%BC%88Deferred-Execution%EF%BC%89"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 命令缓冲区（Deferred Execution）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E8%A7%82%E5%AF%9F%E8%80%85%E7%B3%BB%E7%BB%9F%EF%BC%88Observer%EF%BC%89"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 观察者系统（Observer）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Archetype-%E5%88%86%E7%BB%84%EF%BC%88Grouping%EF%BC%89"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 Archetype 分组（Grouping）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%94%AF%E6%8C%81"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 多线程支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E6%A8%A1%E6%9D%BF%E4%B8%8E-Trait-%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.4.5.</span> <span class="toc-text">4.5 模板与 Trait 系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E9%85%8D%E5%A5%97%E5%AD%90%E7%B3%BB%E7%BB%9F%E4%B8%80%E8%A7%88"><span class="toc-number">1.5.</span> <span class="toc-text">五、配套子系统一览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.6.</span> <span class="toc-text">六、典型应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E4%BC%98%E7%BC%BA%E7%82%B9%E5%88%86%E6%9E%90"><span class="toc-number">1.7.</span> <span class="toc-text">七、优缺点分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-number">1.7.1.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-number">1.7.2.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E6%96%87%E6%A1%A3%E5%AF%BC%E8%88%AA"><span class="toc-number">1.8.</span> <span class="toc-text">八、文档导航</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/06_%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="实战示例与最佳实践">实战示例与最佳实践</a><time datetime="2026-05-07T17:27:26.099Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/04_%E9%85%8D%E5%A5%97%E5%AD%90%E7%B3%BB%E7%BB%9F/" title="配套子系统">配套子系统</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/05_MassEntity%E4%B8%8EUnityECS%E5%AF%B9%E6%AF%94/" title="MassEntity 与 Unity DOTS/ECS 对比">MassEntity 与 Unity DOTS/ECS 对比</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/03_Processor%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="Processor 执行系统与多线程">Processor 执行系统与多线程</a><time datetime="2026-05-07T17:27:26.094Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/02_Entity%E7%AE%A1%E7%90%86%E5%99%A8%E4%B8%8EArchetype/" title="Entity 管理器与 Archetype">Entity 管理器与 Archetype</a><time datetime="2026-05-07T17:27:26.092Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '6505b440a7807b0dabe2f558f999504d'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://unpkg.com/gitalk/dist/gitalk.css')
+      await btf.getScript('https://unpkg.com/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script>var meting_api="https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r"</script><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script><script src="https://unpkg.com/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

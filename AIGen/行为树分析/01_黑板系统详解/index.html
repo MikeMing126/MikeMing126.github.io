@@ -1,0 +1,378 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>黑板系统详解 | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="黑板系统详解 基于 UE 5.7.4 源码，深入分析行为树的黑板（Blackboard）系统实现。   一、黑板系统概述黑板（Blackboard）是 UE 行为树系统的数据存储层，充当 AI 的”世界知识库”。它以键值对的形式存储 AI 感知到的环境信息、决策中间状态和通信数据。 1.1 设计理念黑板系统遵循以下设计原则：  集中存储：所有 AI 相关数据集中在一个组件中管理 类型安全：通过 U">
+<meta property="og:type" content="article">
+<meta property="og:title" content="黑板系统详解">
+<meta property="og:url" content="https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/01_%E9%BB%91%E6%9D%BF%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="黑板系统详解 基于 UE 5.7.4 源码，深入分析行为树的黑板（Blackboard）系统实现。   一、黑板系统概述黑板（Blackboard）是 UE 行为树系统的数据存储层，充当 AI 的”世界知识库”。它以键值对的形式存储 AI 感知到的环境信息、决策中间状态和通信数据。 1.1 设计理念黑板系统遵循以下设计原则：  集中存储：所有 AI 相关数据集中在一个组件中管理 类型安全：通过 U">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2026-05-07T17:15:16.351Z">
+<meta property="article:modified_time" content="2026-05-07T17:15:16.389Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="AIGen">
+<meta property="article:tag" content="UE底层">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "黑板系统详解",
+  "url": "https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/01_%E9%BB%91%E6%9D%BF%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2026-05-07T17:15:16.351Z",
+  "dateModified": "2026-05-07T17:15:16.389Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/01_%E9%BB%91%E6%9D%BF%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '黑板系统详解',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">黑板系统详解</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">黑板系统详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-07T17:15:16.351Z" title="发表于 2026-05-08 01:15:16">2026-05-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-07T17:15:16.389Z" title="更新于 2026-05-08 01:15:16">2026-05-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="黑板系统详解"><a href="#黑板系统详解" class="headerlink" title="黑板系统详解"></a>黑板系统详解</h1><blockquote>
+<p>基于 UE 5.7.4 源码，深入分析行为树的黑板（Blackboard）系统实现。</p>
+</blockquote>
+<hr>
+<h2 id="一、黑板系统概述"><a href="#一、黑板系统概述" class="headerlink" title="一、黑板系统概述"></a>一、黑板系统概述</h2><p>黑板（Blackboard）是 UE 行为树系统的数据存储层，充当 AI 的”世界知识库”。它以键值对的形式存储 AI 感知到的环境信息、决策中间状态和通信数据。</p>
+<h3 id="1-1-设计理念"><a href="#1-1-设计理念" class="headerlink" title="1.1 设计理念"></a>1.1 设计理念</h3><p>黑板系统遵循以下设计原则：</p>
+<ul>
+<li><strong>集中存储</strong>：所有 AI 相关数据集中在一个组件中管理</li>
+<li><strong>类型安全</strong>：通过 <code>UBlackboardKeyType</code> 体系实现编译期类型检查</li>
+<li><strong>观察者模式</strong>：值变化时自动通知注册的观察者</li>
+<li><strong>高效内存</strong>：使用连续内存块存储所有值，避免频繁内存分配</li>
+<li><strong>可继承</strong>：黑板数据支持父子继承链</li>
+</ul>
+<h3 id="1-2-核心类关系"><a href="#1-2-核心类关系" class="headerlink" title="1.2 核心类关系"></a>1.2 核心类关系</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UBlackboardData (UDataAsset)         # 数据资产：定义键的结构</span><br><span class="line">  │</span><br><span class="line">  ├── FBlackboardEntry[]             # 键定义（名称、类型、同步标记）</span><br><span class="line">  │     └── UBlackboardKeyType       # 键类型对象</span><br><span class="line">  │</span><br><span class="line">  └── Parent (UBlackboardData*)      # 父黑板（支持继承）</span><br><span class="line"></span><br><span class="line">UBlackboardComponent (UActorComponent) # 运行时组件：存储实际值</span><br><span class="line">  │</span><br><span class="line">  ├── ValueMemory (TArray&lt;uint8&gt;)    # 连续内存块</span><br><span class="line">  ├── ValueOffsets (TArray&lt;uint16&gt;)  # 每个键的偏移量</span><br><span class="line">  ├── KeyInstances[]                 # 实例化键类型对象</span><br><span class="line">  └── Observers (TMultiMap)          # 键 -&gt; 观察者委托映射</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="二、黑板数据资产（UBlackboardData）"><a href="#二、黑板数据资产（UBlackboardData）" class="headerlink" title="二、黑板数据资产（UBlackboardData）"></a>二、黑板数据资产（UBlackboardData）</h2><h3 id="2-1-类定义"><a href="#2-1-类定义" class="headerlink" title="2.1 类定义"></a>2.1 类定义</h3><p><code>UBlackboardData</code> 继承自 <code>UDataAsset</code>，定义于 <code>BlackboardData.h</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">USTRUCT</span>()</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FBlackboardEntry</span></span><br><span class="line">&#123;</span><br><span class="line">    FName EntryName;                          <span class="comment">// 键名</span></span><br><span class="line">    FString EntryDescription;                 <span class="comment">// 编辑器描述</span></span><br><span class="line">    FName EntryCategory;                      <span class="comment">// 编辑器分类</span></span><br><span class="line">    TObjectPtr&lt;UBlackboardKeyType&gt; KeyType;   <span class="comment">// 键类型及属性</span></span><br><span class="line">    uint32 bInstanceSynced : <span class="number">1</span>;               <span class="comment">// 是否跨实例同步</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">UCLASS</span>(BlueprintType)</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UBlackboardData</span> : <span class="keyword">public</span> UDataAsset</span><br><span class="line">&#123;</span><br><span class="line">    TObjectPtr&lt;UBlackboardData&gt; Parent;       <span class="comment">// 父黑板</span></span><br><span class="line">    TArray&lt;FBlackboardEntry&gt; Keys;            <span class="comment">// 键定义数组</span></span><br><span class="line">    FBlackboard::FKey FirstKeyID;             <span class="comment">// 本资产键的起始ID</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-继承机制"><a href="#2-2-继承机制" class="headerlink" title="2.2 继承机制"></a>2.2 继承机制</h3><p>黑板数据支持父子继承：</p>
+<ul>
+<li>父黑板的键排在前面（<code>FirstKeyID</code> 标记本资产键的起始位置）</li>
+<li>子黑板可以覆盖父黑板的键定义</li>
+<li><code>IsChildOf()</code> 和 <code>IsRelatedTo()</code> 用于检查继承关系</li>
+</ul>
+<h3 id="2-3-实例同步（Instance-Synced）"><a href="#2-3-实例同步（Instance-Synced）" class="headerlink" title="2.3 实例同步（Instance Synced）"></a>2.3 实例同步（Instance Synced）</h3><p>当 <code>bInstanceSynced = true</code> 时，该键的值会在所有使用同一 <code>UBlackboardData</code> 资产的 <code>UBlackboardComponent</code> 之间自动同步。适用于多个 AI 共享的全局状态，如”警报状态”。</p>
+<hr>
+<h2 id="三、黑板组件（UBlackboardComponent）"><a href="#三、黑板组件（UBlackboardComponent）" class="headerlink" title="三、黑板组件（UBlackboardComponent）"></a>三、黑板组件（UBlackboardComponent）</h2><h3 id="3-1-内存布局"><a href="#3-1-内存布局" class="headerlink" title="3.1 内存布局"></a>3.1 内存布局</h3><p>黑板组件使用一块连续的 <code>TArray&lt;uint8&gt;</code> 内存存储所有键值：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ValueMemory:</span><br><span class="line">┌──────────┬──────────┬──────────┬──────────┬─────────┐</span><br><span class="line">│ Key 0    │ Key 1    │ Key 2    │ Key 3    │ ...     │</span><br><span class="line">│ (4 bytes)│ (12 bytes)│ (1 byte)│ (8 bytes)│         │</span><br><span class="line">└──────────┴──────────┴──────────┴──────────┴─────────┘</span><br><span class="line">  Offset 0   Offset 4   Offset 16  Offset 17</span><br><span class="line"></span><br><span class="line">ValueOffsets: [0, 4, 16, 17, ...]</span><br></pre></td></tr></table></figure>
+
+<p>每个键的大小由其 <code>UBlackboardKeyType</code> 的 <code>ValueSize</code> 决定。实例化的键额外分配 <code>FBlackboardInstancedKeyMemory</code> 大小的头部空间。</p>
+<h3 id="3-2-初始化流程"><a href="#3-2-初始化流程" class="headerlink" title="3.2 初始化流程"></a>3.2 初始化流程</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">UBlackboardComponent::InitializeBlackboard</span><span class="params">(UBlackboardData&amp; NewAsset)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 1. 设置黑板资产</span></span><br><span class="line">    BlackboardAsset = &amp;NewAsset;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 计算总内存大小</span></span><br><span class="line">    int32 TotalSize = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (FBlackboardEntry&amp; Entry : NewAsset.Keys)</span><br><span class="line">    &#123;</span><br><span class="line">        ValueOffsets.<span class="built_in">Add</span>(TotalSize);</span><br><span class="line">        <span class="keyword">if</span> (Entry.KeyType-&gt;<span class="built_in">HasInstance</span>())</span><br><span class="line">            TotalSize += <span class="built_in">sizeof</span>(FBlackboardInstancedKeyMemory);</span><br><span class="line">        TotalSize += Entry.KeyType-&gt;<span class="built_in">GetValueSize</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 分配内存块</span></span><br><span class="line">    ValueMemory.<span class="built_in">AddZeroed</span>(TotalSize);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 初始化每个键的内存</span></span><br><span class="line">    <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; NewAsset.Keys.<span class="built_in">Num</span>(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        NewAsset.Keys[i].KeyType-&gt;<span class="built_in">InitializeKey</span>(*<span class="keyword">this</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-值读写机制"><a href="#3-3-值读写机制" class="headerlink" title="3.3 值读写机制"></a>3.3 值读写机制</h3><h4 id="模板化的类型安全读写"><a href="#模板化的类型安全读写" class="headerlink" title="模板化的类型安全读写"></a>模板化的类型安全读写</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 写入值</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span> TDataClass&gt;</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">UBlackboardComponent::SetValue</span><span class="params">(FBlackboard::FKey KeyID, <span class="keyword">typename</span> TDataClass::FDataType Value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 1. 验证 KeyID 和类型</span></span><br><span class="line">    <span class="type">const</span> FBlackboardEntry* EntryInfo = BlackboardAsset-&gt;<span class="built_in">GetKey</span>(KeyID);</span><br><span class="line">    <span class="keyword">if</span> (!EntryInfo || EntryInfo-&gt;KeyType-&gt;<span class="built_in">GetClass</span>() != TDataClass::<span class="built_in">StaticClass</span>())</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 获取原始数据指针</span></span><br><span class="line">    uint8* RawData = <span class="built_in">GetKeyRawData</span>(KeyID) + DataOffset;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 调用具体 KeyType 的 SetValue</span></span><br><span class="line">    <span class="type">const</span> <span class="type">bool</span> bChanged = TDataClass::<span class="built_in">SetValue</span>((TDataClass*)KeyOb, RawData, Value);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 值变化时通知观察者</span></span><br><span class="line">    <span class="keyword">if</span> (bChanged)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">NotifyObservers</span>(KeyID);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 5. 如果标记为实例同步，传播到其他黑板组件</span></span><br><span class="line">        <span class="keyword">if</span> (BlackboardAsset-&gt;<span class="built_in">IsKeyInstanceSynced</span>(KeyID))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 遍历所有使用同一资产的组件，复制值并通知</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读取值</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span> TDataClass&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">typename</span> TDataClass::FDataType <span class="title">UBlackboardComponent::GetValue</span><span class="params">(FBlackboard::FKey KeyID)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">const</span> FBlackboardEntry* EntryInfo = BlackboardAsset-&gt;<span class="built_in">GetKey</span>(KeyID);</span><br><span class="line">    <span class="keyword">if</span> (!EntryInfo || EntryInfo-&gt;KeyType-&gt;<span class="built_in">GetClass</span>() != TDataClass::<span class="built_in">StaticClass</span>())</span><br><span class="line">        <span class="keyword">return</span> TDataClass::InvalidValue;</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> uint8* RawData = <span class="built_in">GetKeyRawData</span>(KeyID) + DataOffset;</span><br><span class="line">    <span class="keyword">return</span> TDataClass::<span class="built_in">GetValue</span>((TDataClass*)KeyOb, RawData);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Blueprint-可调用的接口"><a href="#Blueprint-可调用的接口" class="headerlink" title="Blueprint 可调用的接口"></a>Blueprint 可调用的接口</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 所有 Blueprint 可调用的 GetValue/SetValue 函数</span></span><br><span class="line"><span class="function">UObject* <span class="title">GetValueAsObject</span><span class="params">(FName KeyName)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function">UClass* <span class="title">GetValueAsClass</span><span class="params">(FName KeyName)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function">uint8 <span class="title">GetValueAsEnum</span><span class="params">(FName KeyName)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function">int32 <span class="title">GetValueAsInt</span><span class="params">(FName KeyName)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">GetValueAsFloat</span><span class="params">(FName KeyName)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">GetValueAsBool</span><span class="params">(FName KeyName)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function">FString <span class="title">GetValueAsString</span><span class="params">(FName KeyName)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function">FName <span class="title">GetValueAsName</span><span class="params">(FName KeyName)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function">FVector <span class="title">GetValueAsVector</span><span class="params">(FName KeyName)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="function">FRotator <span class="title">GetValueAsRotator</span><span class="params">(FName KeyName)</span> <span class="type">const</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetValueAsObject</span><span class="params">(FName KeyName, UObject* ObjectValue)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetValueAsClass</span><span class="params">(FName KeyName, UClass* ClassValue)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetValueAsEnum</span><span class="params">(FName KeyName, uint8 EnumValue)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetValueAsInt</span><span class="params">(FName KeyName, int32 IntValue)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetValueAsFloat</span><span class="params">(FName KeyName, <span class="type">float</span> FloatValue)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetValueAsBool</span><span class="params">(FName KeyName, <span class="type">bool</span> BoolValue)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetValueAsString</span><span class="params">(FName KeyName, FString StringValue)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetValueAsName</span><span class="params">(FName KeyName, FName NameValue)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetValueAsVector</span><span class="params">(FName KeyName, FVector VectorValue)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetValueAsRotator</span><span class="params">(FName KeyName, FRotator RotatorValue)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="高性能缓存访问器"><a href="#高性能缓存访问器" class="headerlink" title="高性能缓存访问器"></a>高性能缓存访问器</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// FBBKeyCachedAccessor&lt;TBlackboardKey&gt; 用于高性能场景</span></span><br><span class="line"><span class="comment">// 缓存 KeyID 避免每次按名称查找</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">TBlackboardKey</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FBBKeyCachedAccessor</span></span><br><span class="line">&#123;</span><br><span class="line">    FBlackboard::FKey CachedKeyID = FBlackboard::InvalidKey;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 自动缓存并读取</span></span><br><span class="line">    <span class="function"><span class="keyword">auto</span> <span class="title">Get</span><span class="params">(UBlackboardComponent&amp; BBComp, <span class="type">const</span> UBlackboardData&amp; BBAsset)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (CachedKeyID == FBlackboard::InvalidKey)</span><br><span class="line">            CachedKeyID = BBAsset.<span class="built_in">GetKeyID</span>(TBlackboardKey::KeyName);</span><br><span class="line">        <span class="keyword">return</span> BBComp.<span class="built_in">GetValue</span>&lt;TBlackboardKey&gt;(CachedKeyID);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、黑板键类型（UBlackboardKeyType）"><a href="#四、黑板键类型（UBlackboardKeyType）" class="headerlink" title="四、黑板键类型（UBlackboardKeyType）"></a>四、黑板键类型（UBlackboardKeyType）</h2><h3 id="4-1-键类型体系"><a href="#4-1-键类型体系" class="headerlink" title="4.1 键类型体系"></a>4.1 键类型体系</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UBlackboardKeyType (基类)</span><br><span class="line">├── UBlackboardKeyType_Bool      # bool</span><br><span class="line">├── UBlackboardKeyType_Int       # int32</span><br><span class="line">├── UBlackboardKeyType_Float     # float</span><br><span class="line">├── UBlackboardKeyType_String    # FString</span><br><span class="line">├── UBlackboardKeyType_Name      # FName</span><br><span class="line">├── UBlackboardKeyType_Vector    # FVector</span><br><span class="line">├── UBlackboardKeyType_Rotator   # FRotator</span><br><span class="line">├── UBlackboardKeyType_Object    # UObject*</span><br><span class="line">├── UBlackboardKeyType_Class     # UClass*</span><br><span class="line">├── UBlackboardKeyType_Enum      # uint8 (枚举)</span><br><span class="line">├── UBlackboardKeyType_NativeEnum # uint8 (已废弃)</span><br><span class="line">└── UBlackboardKeyType_Struct    # FConstStructView (任意结构体)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-键类型接口"><a href="#4-2-键类型接口" class="headerlink" title="4.2 键类型接口"></a>4.2 键类型接口</h3><p>每个键类型需要定义：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBlackboardKeyType</span> : <span class="keyword">public</span> UObject</span><br><span class="line">&#123;</span><br><span class="line">    uint16 ValueSize;                          <span class="comment">// 值的内存大小</span></span><br><span class="line">    TEnumAsByte&lt;EBlackboardKeyOperation::Type&gt; SupportedOp; <span class="comment">// 支持的操作类型</span></span><br><span class="line">    uint8 bIsInstanced : <span class="number">1</span>;                    <span class="comment">// 是否需要实例化</span></span><br><span class="line">    uint8 bCreateKeyInstance : <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 子类需重写的虚函数</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">InitializeMemory</span><span class="params">(UBlackboardComponent&amp; OwnerComp, uint8* MemoryBlock)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Clear</span><span class="params">(UBlackboardComponent&amp; OwnerComp, uint8* MemoryBlock)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">IsEmpty</span><span class="params">(<span class="type">const</span> UBlackboardComponent&amp; OwnerComp, <span class="type">const</span> uint8* MemoryBlock)</span> <span class="type">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">TestBasicOperation</span><span class="params">(<span class="type">const</span> UBlackboardComponent&amp; OwnerComp, ...)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">TestArithmeticOperation</span><span class="params">(<span class="type">const</span> UBlackboardComponent&amp; OwnerComp, ...)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">TestTextOperation</span><span class="params">(<span class="type">const</span> UBlackboardComponent&amp; OwnerComp, ...)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> EBlackboardCompare::Type <span class="title">CompareValues</span><span class="params">(...)</span> <span class="type">const</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-操作类型"><a href="#4-3-操作类型" class="headerlink" title="4.3 操作类型"></a>4.3 操作类型</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> EBlackboardKeyOperation</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">Type</span> &#123; Basic, Arithmetic, Text &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 基础操作（Bool、Vector、Object、Class 等）</span></span><br><span class="line"><span class="keyword">namespace</span> EBasicKeyOperation &#123; Set, NotSet &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 算术操作（Int、Float、Enum 等）</span></span><br><span class="line"><span class="keyword">namespace</span> EArithmeticKeyOperation &#123; Equal, NotEqual, Less, LessOrEqual, Greater, GreaterOrEqual &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 文本操作（String、Name 等）</span></span><br><span class="line"><span class="keyword">namespace</span> ETextKeyOperation &#123; Equal, NotEqual, Contain, NotContain &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-键类型与操作对应关系"><a href="#4-4-键类型与操作对应关系" class="headerlink" title="4.4 键类型与操作对应关系"></a>4.4 键类型与操作对应关系</h3><table>
+<thead>
+<tr>
+<th>键类型</th>
+<th>FDataType</th>
+<th>支持的操作</th>
+<th>InvalidValue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bool</td>
+<td><code>bool</code></td>
+<td>Basic (Set&#x2F;NotSet)</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td>Int</td>
+<td><code>int32</code></td>
+<td>Arithmetic</td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td>Float</td>
+<td><code>float</code></td>
+<td>Arithmetic</td>
+<td><code>0.0f</code></td>
+</tr>
+<tr>
+<td>String</td>
+<td><code>FString</code></td>
+<td>Text</td>
+<td><code>&quot;&quot;</code></td>
+</tr>
+<tr>
+<td>Name</td>
+<td><code>FName</code></td>
+<td>Text</td>
+<td><code>NAME_None</code></td>
+</tr>
+<tr>
+<td>Vector</td>
+<td><code>FVector</code></td>
+<td>Basic</td>
+<td><code>FAISystem::InvalidLocation</code></td>
+</tr>
+<tr>
+<td>Rotator</td>
+<td><code>FRotator</code></td>
+<td>Basic</td>
+<td><code>FAISystem::InvalidRotation</code></td>
+</tr>
+<tr>
+<td>Object</td>
+<td><code>UObject*</code></td>
+<td>Basic</td>
+<td><code>nullptr</code></td>
+</tr>
+<tr>
+<td>Class</td>
+<td><code>UClass*</code></td>
+<td>Basic</td>
+<td><code>nullptr</code></td>
+</tr>
+<tr>
+<td>Enum</td>
+<td><code>uint8</code></td>
+<td>Arithmetic</td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td>Struct</td>
+<td><code>FConstStructView</code></td>
+<td>Basic</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五、观察者机制"><a href="#五、观察者机制" class="headerlink" title="五、观察者机制"></a>五、观察者机制</h2><h3 id="5-1-注册观察者"><a href="#5-1-注册观察者" class="headerlink" title="5.1 注册观察者"></a>5.1 注册观察者</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注册观察者</span></span><br><span class="line"><span class="function">FDelegateHandle <span class="title">RegisterObserver</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    FBlackboard::FKey KeyID,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> UObject* NotifyOwner,</span></span></span><br><span class="line"><span class="params"><span class="function">    FOnBlackboardChangeNotification ObserverDelegate</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注销观察者</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UnregisterObserver</span><span class="params">(FBlackboard::FKey KeyID, FDelegateHandle ObserverHandle)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UnregisterObserversFrom</span><span class="params">(<span class="type">const</span> UObject* NotifyOwner)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-通知流程"><a href="#5-2-通知流程" class="headerlink" title="5.2 通知流程"></a>5.2 通知流程</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SetValue()</span><br><span class="line">  → bChanged = TDataClass::SetValue(...)</span><br><span class="line">  → NotifyObservers(KeyID)</span><br><span class="line">      ├── 如果通知暂停：加入 QueuedUpdates 队列</span><br><span class="line">      └── 如果通知正常：</span><br><span class="line">          ├── 递增 NotifyObserversRecursionCount</span><br><span class="line">          ├── 遍历所有注册的观察者委托</span><br><span class="line">          ├── 执行回调，返回值：</span><br><span class="line">          │   ├── ContinueObserving: 继续观察</span><br><span class="line">          │   └── RemoveObserver: 移除该观察者</span><br><span class="line">          └── 递归保护：外层递归退出后统一清理待删除观察者</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-通知暂停与恢复"><a href="#5-3-通知暂停与恢复" class="headerlink" title="5.3 通知暂停与恢复"></a>5.3 通知暂停与恢复</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">PauseObserverNotifications</span><span class="params">()</span></span>;    <span class="comment">// 暂停通知，变更入队</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ResumeObserverNotifications</span><span class="params">(<span class="type">bool</span> bSendQueuedObserverNotifications)</span></span>;  <span class="comment">// 恢复并发送队列</span></span><br></pre></td></tr></table></figure>
+
+<p>这在行为树搜索过程中非常有用——搜索期间可能有大量黑板变更，但不希望中途触发条件重评估。</p>
+<h3 id="5-4-装饰器如何使用观察者"><a href="#5-4-装饰器如何使用观察者" class="headerlink" title="5.4 装饰器如何使用观察者"></a>5.4 装饰器如何使用观察者</h3><p><code>UBTDecorator_Blackboard</code> 在激活时注册黑板观察者：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 简化的流程</span></span><br><span class="line"><span class="built_in">OnBecomeRelevant</span>()</span><br><span class="line">&#123;</span><br><span class="line">    BlackboardComp-&gt;<span class="built_in">RegisterObserver</span>(</span><br><span class="line">        BlackboardKey.<span class="built_in">GetSelectedKeyID</span>(),</span><br><span class="line">        <span class="keyword">this</span>,</span><br><span class="line">        UBTDecorator_Blackboard::OnBlackboardKeyValueChange</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">EBlackboardNotificationResult <span class="title">OnBlackboardKeyValueChange</span><span class="params">(...)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 根据 NotifyObserver 模式决定是否请求流程中止</span></span><br><span class="line">    <span class="keyword">if</span> (NotifyObserver == ValueChange || ResultChanged)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">ConditionalFlowAbort</span>(OwnerComp, RequestMode);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> EBlackboardNotificationResult::ContinueObserving;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、FBlackboardKeySelector"><a href="#六、FBlackboardKeySelector" class="headerlink" title="六、FBlackboardKeySelector"></a>六、FBlackboardKeySelector</h2><p><code>FBlackboardKeySelector</code> 是行为树节点中引用黑板键的标准方式：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">USTRUCT</span>()</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FBlackboardKeySelector</span></span><br><span class="line">&#123;</span><br><span class="line">    TArray&lt;TObjectPtr&lt;UBlackboardKeyType&gt;&gt; AllowedTypes;  <span class="comment">// 允许的键类型</span></span><br><span class="line">    FName SelectedKeyName;                                 <span class="comment">// 选中键名</span></span><br><span class="line">    TSubclassOf&lt;UBlackboardKeyType&gt; SelectedKeyType;       <span class="comment">// 选中键类型</span></span><br><span class="line">    int32 SelectedKeyID;                                   <span class="comment">// 选中键 ID</span></span><br><span class="line">    uint32 bNoneIsAllowedValue : <span class="number">1</span>;                        <span class="comment">// 是否允许 None</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在编辑器中，<code>AllowedTypes</code> 控制下拉列表中显示哪些键类型。例如，<code>BTTask_MoveTo</code> 只允许选择 Vector 和 Object 类型的键。</p>
+<hr>
+<h2 id="七、最佳实践"><a href="#七、最佳实践" class="headerlink" title="七、最佳实践"></a>七、最佳实践</h2><h3 id="7-1-黑板键设计"><a href="#7-1-黑板键设计" class="headerlink" title="7.1 黑板键设计"></a>7.1 黑板键设计</h3><ol>
+<li><strong>命名规范</strong>：使用有意义的名称，如 <code>TargetEnemy</code>、<code>PatrolLocation</code>、<code>bIsInCombat</code></li>
+<li><strong>分类管理</strong>：利用 <code>EntryCategory</code> 对键进行分组</li>
+<li><strong>避免过度使用</strong>：只在黑板中存储 AI 真正需要的数据</li>
+<li><strong>使用正确的类型</strong>：选择最小够用的类型（如用 Bool 而非 Int 表示开关状态）</li>
+</ol>
+<h3 id="7-2-性能优化"><a href="#7-2-性能优化" class="headerlink" title="7.2 性能优化"></a>7.2 性能优化</h3><ol>
+<li><strong>减少观察者数量</strong>：只在需要实时响应的键上注册观察者</li>
+<li><strong>使用缓存访问器</strong>：<code>FBBKeyCachedAccessor&lt;T&gt;</code> 避免按名称查找</li>
+<li><strong>批量操作时暂停通知</strong>：<code>PauseObserverNotifications()</code> &#x2F; <code>ResumeObserverNotifications()</code></li>
+<li><strong>避免频繁 SetValue</strong>：先检查值是否变化再设置</li>
+</ol>
+<h3 id="7-3-实例同步"><a href="#7-3-实例同步" class="headerlink" title="7.3 实例同步"></a>7.3 实例同步</h3><ul>
+<li>只对真正需要跨 AI 共享的键启用 <code>bInstanceSynced</code></li>
+<li>实例同步通过 <code>UAISystem</code> 遍历所有使用同一资产的组件，有额外开销</li>
+<li>适用于”全局警报”、”团队目标”等场景</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/01_%E9%BB%91%E6%9D%BF%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/">https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/01_%E9%BB%91%E6%9D%BF%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/AIGen/">AIGen</a><a class="post-meta__tags" href="/tags/UE%E5%BA%95%E5%B1%82/">UE底层</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/03_%E8%A3%85%E9%A5%B0%E5%99%A8%E4%B8%8E%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%A6%E8%A7%A3/" title="装饰器与条件判断详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">装饰器与条件判断详解</div></div><div class="info-2"><div class="info-item-1">装饰器与条件判断详解 基于 UE 5.7.4 源码，深入分析行为树的装饰器机制和条件判断系统。   一、装饰器概述装饰器（Decorator）是行为树中的条件判断节点，挂载在复合节点与子节点的连线上，用于控制子节点是否可以执行。装饰器不仅提供静态条件判断，还支持动态的流程中止（Flow Abort），是实现响应式 AI 的关键机制。 1.1 装饰器的角色Selector├── [装饰器: HasEnemy?] → Sequence: 战斗│     ├── [装饰器: InRange?] → Task: 攻击│     └── Task: 追击敌人├── [装饰器: HeardNoise?] → Task: 调查噪声└── Task: 巡逻  装饰器的作用：  条件守卫：决定子节点是否可执行 流程中止：条件变化时动态切换执行分支 状态通知：感知分支的激活&#x2F;失活事件  1.2 继承体系UBTNode└── UBTAuxiliaryNode    └── UBTDecorator        ├── UBTDecorator_BlackboardBase...</div></div></div></a><a class="pagination-related" href="/AIGen/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E5%88%86%E6%9E%90/04_%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8ETaskGraph%E8%AF%A6%E8%A7%A3/" title="多线程与TaskGraph详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">多线程与TaskGraph详解</div></div><div class="info-2"><div class="info-item-1">UE5 多线程与 TaskGraph 详解 基于 UE 5.7.4 源码分析  目录 1. 多线程基础架构 2. FRunnable — 线程执行接口 3. FQueuedThreadPool — 线程池 4. TaskGraph 系统详解 5. UE5 新 Task 系统 6. ParallelFor — 并行循环 7. 实战示例 8. 新旧系统对比与迁移   1. 多线程基础架构UE5 的多线程系统分为三层： ┌─────────────────────────────────────────────────────┐│  高层API                                            ││  ParallelFor()  |  Async()  |  UE::Tasks::Launch()  │├─────────────────────────────────────────────────────┤│  中间层                                             ││  TaskGraph  | ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/00_%E8%A1%8C%E4%B8%BA%E6%A0%91%E6%A6%82%E8%A7%88%E4%B8%8E%E6%9E%B6%E6%9E%84%E6%80%BB%E8%A7%88/" title="行为树系统概览与架构总览"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">行为树系统概览与架构总览</div></div><div class="info-2"><div class="info-item-1">虚幻引擎 5.7 行为树系统概览与架构总览 基于 UE 5.7.4 源码分析，面向游戏开发人员的技术文档。   一、什么是行为树行为树（Behavior Tree, BT）是一种用于控制 AI 行为的层次化决策模型。它以树形结构组织 AI 的决策逻辑，通过从根节点开始递归遍历子节点来决定 AI 应该执行什么动作。 与传统的状态机（FSM）相比，行为树具有以下优势：  模块化与可复用：每个节点是独立的功能单元，可以跨项目复用 可组合性：通过复合节点（Selector、Sequence）灵活组合简单行为形成复杂行为 可读性：树形结构直观，便于策划和程序员协作 可扩展性：通过继承 UBTTaskNode、UBTDecorator、UBTService 创建自定义节点   二、UE5 行为树系统架构2.1 模块结构行为树系统位于引擎的 AIModule 中，核心源码路径： Engine/Source/Runtime/AIModule/├── Classes/BehaviorTree/           # 公开头文件│   ├── BehaviorTree.h            ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/02_%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/" title="节点类型与执行流程详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">节点类型与执行流程详解</div></div><div class="info-2"><div class="info-item-1">节点类型与执行流程详解 基于 UE 5.7.4 源码，深入分析行为树的节点类型和执行流程。   一、节点基类（UBTNode）1.1 核心属性class UBTNode : public UObject, public IGameplayTaskOwnerInterface&#123;    FString NodeName;                    // 节点名称    UBehaviorTree* TreeAsset;            // 所属行为树资产    UBTCompositeNode* ParentNode;        // 父复合节点    uint16 ExecutionIndex;               // 深度优先执行索引    uint16 MemoryOffset;                 // 实例内存偏移    uint8 TreeDepth;                     // 树深度    uint8 bCreateNodeInstance : 1;       // 是否需要实例化   ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/04_%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B/" title="实际项目应用示例"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">实际项目应用示例</div></div><div class="info-2"><div class="info-item-1">实际项目应用示例 基于 UE 5.7 源码和官方文档，提供行为树在商业项目中的实际应用示例。   一、AI 控制器与行为树的集成1.1 基础 AI 控制器设置// MyAIController.h#pragma once#include &quot;CoreMinimal.h&quot;#include &quot;AIController.h&quot;#include &quot;MyAIController.generated.h&quot;UCLASS()class AMyAIController : public AAIController&#123;    GENERATED_BODY()public:    AMyAIController();    virtual void BeginPlay() override;    virtual void OnPossess(APawn* InPawn) override;    UPROPERTY(EditDefaultsOnly, Category = &quot;AI&quot;)   ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E5%88%86%E6%9E%90/01_%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E6%A6%82%E8%A7%88%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6/" title="异步编程概览与核心机制"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">异步编程概览与核心机制</div></div><div class="info-2"><div class="info-item-1">UE5 异步编程概览与核心机制 基于 UE 5.7.4 源码分析  目录 1. 为什么需要异步编程 2. UE5 异步编程全景图 3. 与 Unity 异步编程对比 4. 核心异步类总览 5. Async() 全局函数 6. FAsyncTask &#x2F; FAutoDeleteAsyncTask 7. 选择指南：何时用哪种方式 8. 线程安全注意事项   1. 为什么需要异步编程在游戏开发中，异步编程是解决以下问题的关键手段：    问题场景 同步方式的问题 异步解决方案    资源加载 大资源加载阻塞主线程，导致卡顿 后台线程加载，主线程继续渲染   网络请求 等待HTTP响应期间游戏冻结 异步回调，游戏正常运行   文件I&#x2F;O 读写存档文件阻塞帧 后台线程处理I&#x2F;O   AI计算 复杂寻路&#x2F;决策计算耗时 多线程并行计算   大规模运算 仅用单核，浪费多核CPU ParallelFor...</div></div></div></a><a class="pagination-related" href="/AIGen/%E7%8A%B6%E6%80%81%E6%A0%91%E5%88%86%E6%9E%90/00_%E7%8A%B6%E6%80%81%E6%A0%91%E6%80%BB%E8%A7%88/" title="状态树（StateTree）系统总览"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">状态树（StateTree）系统总览</div></div><div class="info-2"><div class="info-item-1">虚幻引擎 5.7 状态树（StateTree）系统总览 基于虚幻引擎 5.7.4 源码分析，面向游戏开发人员   一、什么是状态树（StateTree）StateTree 是虚幻引擎 5 引入的通用分层状态机与行为树混合系统。它结合了状态机的清晰状态管理和行为树的灵活性，专门用于构建游戏中的 AI 行为、游戏逻辑流程和决策系统。 核心定位   特性 说明    类型 分层状态机（HFSM）+ 行为树混合体   插件位置 Engine/Plugins/Runtime/StateTree/（核心）   扩展插件 Engine/Plugins/Runtime/GameplayStateTree/（AI集成）   模块数量 4个运行时&#x2F;编辑器模块 + 1个Gameplay扩展模块   资产类型 UStateTree（继承自...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/03_%E8%A3%85%E9%A5%B0%E5%99%A8%E4%B8%8E%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%A6%E8%A7%A3/" title="装饰器与条件判断详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">装饰器与条件判断详解</div></div><div class="info-2"><div class="info-item-1">装饰器与条件判断详解 基于 UE 5.7.4 源码，深入分析行为树的装饰器机制和条件判断系统。   一、装饰器概述装饰器（Decorator）是行为树中的条件判断节点，挂载在复合节点与子节点的连线上，用于控制子节点是否可以执行。装饰器不仅提供静态条件判断，还支持动态的流程中止（Flow Abort），是实现响应式 AI 的关键机制。 1.1 装饰器的角色Selector├── [装饰器: HasEnemy?] → Sequence: 战斗│     ├── [装饰器: InRange?] → Task: 攻击│     └── Task: 追击敌人├── [装饰器: HeardNoise?] → Task: 调查噪声└── Task: 巡逻  装饰器的作用：  条件守卫：决定子节点是否可执行 流程中止：条件变化时动态切换执行分支 状态通知：感知分支的激活&#x2F;失活事件  1.2 继承体系UBTNode└── UBTAuxiliaryNode    └── UBTDecorator        ├── UBTDecorator_BlackboardBase...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%BB%91%E6%9D%BF%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">黑板系统详解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%BB%91%E6%9D%BF%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">一、黑板系统概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 设计理念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%A0%B8%E5%BF%83%E7%B1%BB%E5%85%B3%E7%B3%BB"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 核心类关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%BB%91%E6%9D%BF%E6%95%B0%E6%8D%AE%E8%B5%84%E4%BA%A7%EF%BC%88UBlackboardData%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">二、黑板数据资产（UBlackboardData）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E7%B1%BB%E5%AE%9A%E4%B9%89"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 类定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 继承机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%AE%9E%E4%BE%8B%E5%90%8C%E6%AD%A5%EF%BC%88Instance-Synced%EF%BC%89"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 实例同步（Instance Synced）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%BB%91%E6%9D%BF%E7%BB%84%E4%BB%B6%EF%BC%88UBlackboardComponent%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">三、黑板组件（UBlackboardComponent）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 内存布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 初始化流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%80%BC%E8%AF%BB%E5%86%99%E6%9C%BA%E5%88%B6"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 值读写机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E5%8C%96%E7%9A%84%E7%B1%BB%E5%9E%8B%E5%AE%89%E5%85%A8%E8%AF%BB%E5%86%99"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">模板化的类型安全读写</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Blueprint-%E5%8F%AF%E8%B0%83%E7%94%A8%E7%9A%84%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">Blueprint 可调用的接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%AB%98%E6%80%A7%E8%83%BD%E7%BC%93%E5%AD%98%E8%AE%BF%E9%97%AE%E5%99%A8"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">高性能缓存访问器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%BB%91%E6%9D%BF%E9%94%AE%E7%B1%BB%E5%9E%8B%EF%BC%88UBlackboardKeyType%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">四、黑板键类型（UBlackboardKeyType）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E9%94%AE%E7%B1%BB%E5%9E%8B%E4%BD%93%E7%B3%BB"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 键类型体系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E9%94%AE%E7%B1%BB%E5%9E%8B%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 键类型接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E6%93%8D%E4%BD%9C%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 操作类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E9%94%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%93%8D%E4%BD%9C%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 键类型与操作对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%A7%82%E5%AF%9F%E8%80%85%E6%9C%BA%E5%88%B6"><span class="toc-number">1.5.</span> <span class="toc-text">五、观察者机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%B3%A8%E5%86%8C%E8%A7%82%E5%AF%9F%E8%80%85"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 注册观察者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E9%80%9A%E7%9F%A5%E6%B5%81%E7%A8%8B"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 通知流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E9%80%9A%E7%9F%A5%E6%9A%82%E5%81%9C%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 通知暂停与恢复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E8%A3%85%E9%A5%B0%E5%99%A8%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%A7%82%E5%AF%9F%E8%80%85"><span class="toc-number">1.5.4.</span> <span class="toc-text">5.4 装饰器如何使用观察者</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81FBlackboardKeySelector"><span class="toc-number">1.6.</span> <span class="toc-text">六、FBlackboardKeySelector</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.7.</span> <span class="toc-text">七、最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E9%BB%91%E6%9D%BF%E9%94%AE%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.7.1.</span> <span class="toc-text">7.1 黑板键设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">1.7.2.</span> <span class="toc-text">7.2 性能优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E5%AE%9E%E4%BE%8B%E5%90%8C%E6%AD%A5"><span class="toc-number">1.7.3.</span> <span class="toc-text">7.3 实例同步</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/06_%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="实战示例与最佳实践">实战示例与最佳实践</a><time datetime="2026-05-07T17:27:26.099Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/04_%E9%85%8D%E5%A5%97%E5%AD%90%E7%B3%BB%E7%BB%9F/" title="配套子系统">配套子系统</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/05_MassEntity%E4%B8%8EUnityECS%E5%AF%B9%E6%AF%94/" title="MassEntity 与 Unity DOTS/ECS 对比">MassEntity 与 Unity DOTS/ECS 对比</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/03_Processor%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="Processor 执行系统与多线程">Processor 执行系统与多线程</a><time datetime="2026-05-07T17:27:26.094Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/02_Entity%E7%AE%A1%E7%90%86%E5%99%A8%E4%B8%8EArchetype/" title="Entity 管理器与 Archetype">Entity 管理器与 Archetype</a><time datetime="2026-05-07T17:27:26.092Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '78fb58834ececa728dca9f7de254f90b'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://unpkg.com/gitalk/dist/gitalk.css')
+      await btf.getScript('https://unpkg.com/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script>var meting_api="https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r"</script><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script><script src="https://unpkg.com/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

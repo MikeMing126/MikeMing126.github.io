@@ -1,0 +1,357 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>装饰器与条件判断详解 | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="装饰器与条件判断详解 基于 UE 5.7.4 源码，深入分析行为树的装饰器机制和条件判断系统。   一、装饰器概述装饰器（Decorator）是行为树中的条件判断节点，挂载在复合节点与子节点的连线上，用于控制子节点是否可以执行。装饰器不仅提供静态条件判断，还支持动态的流程中止（Flow Abort），是实现响应式 AI 的关键机制。 1.1 装饰器的角色Selector├── [装饰器: HasE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="装饰器与条件判断详解">
+<meta property="og:url" content="https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/03_%E8%A3%85%E9%A5%B0%E5%99%A8%E4%B8%8E%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="装饰器与条件判断详解 基于 UE 5.7.4 源码，深入分析行为树的装饰器机制和条件判断系统。   一、装饰器概述装饰器（Decorator）是行为树中的条件判断节点，挂载在复合节点与子节点的连线上，用于控制子节点是否可以执行。装饰器不仅提供静态条件判断，还支持动态的流程中止（Flow Abort），是实现响应式 AI 的关键机制。 1.1 装饰器的角色Selector├── [装饰器: HasE">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2026-05-07T17:15:16.294Z">
+<meta property="article:modified_time" content="2026-05-07T17:17:04.863Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="AIGen">
+<meta property="article:tag" content="UE底层">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "装饰器与条件判断详解",
+  "url": "https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/03_%E8%A3%85%E9%A5%B0%E5%99%A8%E4%B8%8E%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%A6%E8%A7%A3/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2026-05-07T17:15:16.294Z",
+  "dateModified": "2026-05-07T17:17:04.863Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/03_%E8%A3%85%E9%A5%B0%E5%99%A8%E4%B8%8E%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%A6%E8%A7%A3/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '装饰器与条件判断详解',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">装饰器与条件判断详解</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">装饰器与条件判断详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-07T17:15:16.294Z" title="发表于 2026-05-08 01:15:16">2026-05-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-07T17:17:04.863Z" title="更新于 2026-05-08 01:17:04">2026-05-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="装饰器与条件判断详解"><a href="#装饰器与条件判断详解" class="headerlink" title="装饰器与条件判断详解"></a>装饰器与条件判断详解</h1><blockquote>
+<p>基于 UE 5.7.4 源码，深入分析行为树的装饰器机制和条件判断系统。</p>
+</blockquote>
+<hr>
+<h2 id="一、装饰器概述"><a href="#一、装饰器概述" class="headerlink" title="一、装饰器概述"></a>一、装饰器概述</h2><p>装饰器（Decorator）是行为树中的条件判断节点，挂载在复合节点与子节点的连线上，用于控制子节点是否可以执行。装饰器不仅提供静态条件判断，还支持动态的流程中止（Flow Abort），是实现响应式 AI 的关键机制。</p>
+<h3 id="1-1-装饰器的角色"><a href="#1-1-装饰器的角色" class="headerlink" title="1.1 装饰器的角色"></a>1.1 装饰器的角色</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Selector</span><br><span class="line">├── [装饰器: HasEnemy?] → Sequence: 战斗</span><br><span class="line">│     ├── [装饰器: InRange?] → Task: 攻击</span><br><span class="line">│     └── Task: 追击敌人</span><br><span class="line">├── [装饰器: HeardNoise?] → Task: 调查噪声</span><br><span class="line">└── Task: 巡逻</span><br></pre></td></tr></table></figure>
+
+<p>装饰器的作用：</p>
+<ol>
+<li><strong>条件守卫</strong>：决定子节点是否可执行</li>
+<li><strong>流程中止</strong>：条件变化时动态切换执行分支</li>
+<li><strong>状态通知</strong>：感知分支的激活&#x2F;失活事件</li>
+</ol>
+<h3 id="1-2-继承体系"><a href="#1-2-继承体系" class="headerlink" title="1.2 继承体系"></a>1.2 继承体系</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UBTNode</span><br><span class="line">└── UBTAuxiliaryNode</span><br><span class="line">    └── UBTDecorator</span><br><span class="line">        ├── UBTDecorator_BlackboardBase (黑板装饰器基类)</span><br><span class="line">        │   └── UBTDecorator_Blackboard (黑板条件装饰器)</span><br><span class="line">        ├── UBTDecorator_BlueprintBase (蓝图装饰器基类)</span><br><span class="line">        ├── UBTDecorator_Loop (循环装饰器)</span><br><span class="line">        ├── UBTDecorator_Cooldown (冷却装饰器)</span><br><span class="line">        ├── UBTDecorator_CompareBBEntries (比较黑板条目)</span><br><span class="line">        ├── UBTDecorator_TimeLimit (时间限制)</span><br><span class="line">        └── ...（19 种内置装饰器）</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="二、装饰器核心机制"><a href="#二、装饰器核心机制" class="headerlink" title="二、装饰器核心机制"></a>二、装饰器核心机制</h2><h3 id="2-1-条件计算"><a href="#2-1-条件计算" class="headerlink" title="2.1 条件计算"></a>2.1 条件计算</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBTDecorator</span> : <span class="keyword">public</span> UBTAuxiliaryNode</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 核心条件函数 - 子类必须重写</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">CalculateRawConditionValue</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        UBehaviorTreeComponent&amp; OwnerComp, uint8* NodeMemory)</span> <span class="type">const</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 条件取反</span></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(Category=Condition, EditAnywhere)</span><br><span class="line">    uint32 bInverseCondition : <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 流程中止模式</span></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(Category=FlowControl, EditAnywhere)</span><br><span class="line">    EBTFlowAbortMode::Type FlowAbortMode;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>条件计算流程：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">WrappedCanExecute(OwnerComp, NodeMemory)</span><br><span class="line">  ├── 如果 bCreateNodeInstance → 调用实例化节点的 CalculateRawConditionValue</span><br><span class="line">  └── 否则 → 直接调用 CalculateRawConditionValue</span><br><span class="line">        └── 结果与 bInverseCondition 异或 → 最终条件值</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-流程中止模式（FlowAbortMode）"><a href="#2-2-流程中止模式（FlowAbortMode）" class="headerlink" title="2.2 流程中止模式（FlowAbortMode）"></a>2.2 流程中止模式（FlowAbortMode）</h3><p>这是装饰器最强大也最容易混淆的特性：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> EBTFlowAbortMode</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">Type</span></span><br><span class="line">    &#123;</span><br><span class="line">        None,           <span class="comment">// 不中止任何分支</span></span><br><span class="line">        LowerPriority,  <span class="comment">// 中止低优先级分支</span></span><br><span class="line">        Self,           <span class="comment">// 中止自身所在分支</span></span><br><span class="line">        Both,           <span class="comment">// 根据情况自动选择 Self 或 LowerPriority</span></span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="各模式详解"><a href="#各模式详解" class="headerlink" title="各模式详解"></a>各模式详解</h4><p><strong>None（无中止）</strong>：</p>
+<ul>
+<li>装饰器仅在搜索时评估，不会响应条件变化</li>
+<li>适用于静态条件（如”是否有武器”）</li>
+</ul>
+<p><strong>LowerPriority（中止低优先级）</strong>：</p>
+<ul>
+<li>当条件从 false 变为 true 时，中止当前正在执行的低优先级分支，抢占执行</li>
+<li>典型场景：巡逻时发现敌人 → 中止巡逻，切换到战斗</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Selector</span><br><span class="line">├── [装饰器: HasEnemy? (LowerPriority)] → 战斗分支</span><br><span class="line">├── [其他分支...]</span><br><span class="line">└── 巡逻分支  ← 当前执行中，被抢占</span><br></pre></td></tr></table></figure>
+
+<p><strong>Self（中止自身）</strong>：</p>
+<ul>
+<li>当条件从 true 变为 false 时，中止自身所在分支的执行</li>
+<li>典型场景：追击敌人时敌人消失 → 中止追击</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Selector</span><br><span class="line">├── [装饰器: HasEnemy? (Self)] → 战斗分支  ← 当前执行中，被中止</span><br><span class="line">├── [其他分支...]</span><br><span class="line">└── 巡逻分支  ← 切换到这里</span><br></pre></td></tr></table></figure>
+
+<p><strong>Both（双向中止）</strong>：</p>
+<ul>
+<li>根据当前执行位置自动选择 Self 或 LowerPriority</li>
+<li>如果正在执行自身分支 → Self</li>
+<li>如果正在执行其他分支 → LowerPriority</li>
+<li>最灵活但性能开销最大</li>
+</ul>
+<h3 id="2-3-条件变化触发流程"><a href="#2-3-条件变化触发流程" class="headerlink" title="2.3 条件变化触发流程"></a>2.3 条件变化触发流程</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">黑板值变化 → NotifyObservers()</span><br><span class="line">  → UBTDecorator_Blackboard::OnBlackboardKeyValueChange()</span><br><span class="line">    → 根据 NotifyObserver 模式：</span><br><span class="line">      ├── ValueChange → 每次值变化都触发</span><br><span class="line">      └── ResultChange → 仅当条件结果翻转时触发</span><br><span class="line">    → ConditionalFlowAbort(OwnerComp, RequestMode)</span><br><span class="line">      → RequestExecution() / RequestBranchEvaluation()</span><br><span class="line">        → 设置 ExecutionRequest</span><br><span class="line">        → ScheduleExecutionUpdate() → 下一帧 ProcessExecutionRequest()</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-EvaluateBranch-详解"><a href="#2-4-EvaluateBranch-详解" class="headerlink" title="2.4 EvaluateBranch 详解"></a>2.4 EvaluateBranch 详解</h3><p>当装饰器请求流程中止时，<code>EvaluateBranch</code> 决定搜索范围：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UBehaviorTreeComponent::EvaluateBranch</span><span class="params">(<span class="type">const</span> UBTDecorator&amp; RequestedBy)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    EBTFlowAbortMode::Type AbortMode = RequestedBy.<span class="built_in">GetFlowAbortMode</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (AbortMode == EBTFlowAbortMode::Both)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 根据当前执行位置选择模式</span></span><br><span class="line">        <span class="type">bool</span> bIsExecutingChildNodes = <span class="built_in">IsExecutingBranch</span>(&amp;RequestedBy, RequestedBy.<span class="built_in">GetChildIndex</span>());</span><br><span class="line">        AbortMode = bIsExecutingChildNodes ? EBTFlowAbortMode::Self : EBTFlowAbortMode::LowerPriority;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Self: 当前分支失败，从装饰器节点重新搜索</span></span><br><span class="line">    <span class="comment">// LowerPriority: 从装饰器节点开始搜索，可抢占低优先级分支</span></span><br><span class="line">    EBTNodeResult::Type ContinueResult = (AbortMode == EBTFlowAbortMode::Self)</span><br><span class="line">        ? EBTNodeResult::Failed</span><br><span class="line">        : EBTNodeResult::Aborted;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">RequestExecution</span>(RequestedBy.<span class="built_in">GetParentNode</span>(), InstanceIdx,</span><br><span class="line">                     &amp;RequestedBy, RequestedBy.<span class="built_in">GetChildIndex</span>(), ContinueResult);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、装饰器逻辑组合"><a href="#三、装饰器逻辑组合" class="headerlink" title="三、装饰器逻辑组合"></a>三、装饰器逻辑组合</h2><h3 id="3-1-简单模式（隐式-AND）"><a href="#3-1-简单模式（隐式-AND）" class="headerlink" title="3.1 简单模式（隐式 AND）"></a>3.1 简单模式（隐式 AND）</h3><p>当没有设置 <code>DecoratorOps</code> 时，所有装饰器必须全部通过（隐式 AND）：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 简单模式：所有装饰器必须通过</span></span><br><span class="line"><span class="keyword">if</span> (ChildInfo.DecoratorOps.<span class="built_in">Num</span>() == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; ChildInfo.Decorators.<span class="built_in">Num</span>(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">bool</span> bIsAllowed = TestDecorator-&gt;<span class="built_in">WrappedCanExecute</span>(OwnerComp, NodeMemory);</span><br><span class="line">        <span class="keyword">if</span> (!bIsAllowed)</span><br><span class="line">        &#123;</span><br><span class="line">            bResult = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-高级模式（DecoratorOps）"><a href="#3-2-高级模式（DecoratorOps）" class="headerlink" title="3.2 高级模式（DecoratorOps）"></a>3.2 高级模式（DecoratorOps）</h3><p>通过 <code>FBTDecoratorLogic</code> 支持复杂的逻辑组合：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">USTRUCT</span>()</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FBTDecoratorLogic</span></span><br><span class="line">&#123;</span><br><span class="line">    TEnumAsByte&lt;EBTDecoratorLogic::Type&gt; Operation; <span class="comment">// 操作类型</span></span><br><span class="line">    uint16 Number;                                    <span class="comment">// 操作数</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> EBTDecoratorLogic</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">Type</span> &#123; Invalid, Test, And, Or, Not &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>后缀表达式求值</strong>：DecoratorOps 使用后缀表达式（逆波兰表示法）来组合装饰器条件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">示例：(DecoratorA AND DecoratorB) OR DecoratorC</span><br><span class="line">后缀表达式：Test(A) Test(B) And Test(C) Or</span><br><span class="line"></span><br><span class="line">DecoratorOps:</span><br><span class="line">  [0] Test(0)   → 评估 DecoratorA</span><br><span class="line">  [1] Test(1)   → 评估 DecoratorB</span><br><span class="line">  [2] And(2)    → 弹出栈顶2个值，AND后压栈</span><br><span class="line">  [3] Test(2)   → 评估 DecoratorC</span><br><span class="line">  [4] Or(2)     → 弹出栈顶2个值，OR后压栈</span><br></pre></td></tr></table></figure>
+
+<p>求值过程使用栈式求值器：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">初始栈: []</span><br><span class="line">Step 0: Test(0) → 评估A=true  → 栈: [true]</span><br><span class="line">Step 1: Test(1) → 评估B=false → 栈: [true, false]</span><br><span class="line">Step 2: And(2)  → 弹出2个，AND → 栈: [false]</span><br><span class="line">Step 3: Test(2) → 评估C=true  → 栈: [false, true]</span><br><span class="line">Step 4: Or(2)   → 弹出2个，OR  → 栈: [true]</span><br><span class="line">结果: true</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-在编辑器中使用"><a href="#3-3-在编辑器中使用" class="headerlink" title="3.3 在编辑器中使用"></a>3.3 在编辑器中使用</h3><p>在 UE 编辑器中，可以通过装饰器节点之间的连线来设置逻辑关系（AND&#x2F;OR&#x2F;NOT），编辑器会自动生成对应的 <code>DecoratorOps</code>。</p>
+<hr>
+<h2 id="四、内置装饰器详解"><a href="#四、内置装饰器详解" class="headerlink" title="四、内置装饰器详解"></a>四、内置装饰器详解</h2><h3 id="4-1-BTDecorator-Blackboard"><a href="#4-1-BTDecorator-Blackboard" class="headerlink" title="4.1 BTDecorator_Blackboard"></a>4.1 BTDecorator_Blackboard</h3><p>最常用的装饰器，基于黑板键值进行条件判断：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBTDecorator_Blackboard</span> : <span class="keyword">public</span> UBTDecorator_BlackboardBase</span><br><span class="line">&#123;</span><br><span class="line">    int32 IntValue;           <span class="comment">// 整数比较值</span></span><br><span class="line">    <span class="type">float</span> FloatValue;         <span class="comment">// 浮点比较值</span></span><br><span class="line">    FString StringValue;      <span class="comment">// 字符串比较值</span></span><br><span class="line">    uint8 OperationType;      <span class="comment">// 操作类型</span></span><br><span class="line">    EBTBlackboardRestart::Type NotifyObserver; <span class="comment">// 观察者重启模式</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>观察者重启模式</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> EBTBlackboardRestart</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">Type</span></span><br><span class="line">    &#123;</span><br><span class="line">        ValueChange,   <span class="comment">// 每次值变化都请求重评估</span></span><br><span class="line">        ResultChange,  <span class="comment">// 仅当条件结果翻转时才请求</span></span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>条件评估</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">UBTDecorator_Blackboard::EvaluateOnBlackboard</span><span class="params">(<span class="type">const</span> UBlackboardComponent&amp; BlackboardComp)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 根据键类型和操作类型进行评估</span></span><br><span class="line">    <span class="comment">// Basic 操作: IsSet / NotSet</span></span><br><span class="line">    <span class="comment">// Arithmetic 操作: Equal / NotEqual / Less / Greater / ...</span></span><br><span class="line">    <span class="comment">// Text 操作: Equal / NotEqual / Contain / NotContain</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-BTDecorator-CompareBBEntries"><a href="#4-2-BTDecorator-CompareBBEntries" class="headerlink" title="4.2 BTDecorator_CompareBBEntries"></a>4.2 BTDecorator_CompareBBEntries</h3><p>比较两个黑板条目的值：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBTDecorator_CompareBBEntries</span> : <span class="keyword">public</span> UBTDecorator</span><br><span class="line">&#123;</span><br><span class="line">    FBlackboardKeySelector BlackboardKeyA;  <span class="comment">// 键A</span></span><br><span class="line">    FBlackboardKeySelector BlackboardKeyB;  <span class="comment">// 键B</span></span><br><span class="line">    TEnumAsByte&lt;EArithmeticKeyOperation::Type&gt; Operation; <span class="comment">// 比较操作</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-BTDecorator-Loop"><a href="#4-3-BTDecorator-Loop" class="headerlink" title="4.3 BTDecorator_Loop"></a>4.3 BTDecorator_Loop</h3><p>循环执行子节点指定次数：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBTDecorator_Loop</span> : <span class="keyword">public</span> UBTDecorator</span><br><span class="line">&#123;</span><br><span class="line">    int32 NumLoops;           <span class="comment">// 循环次数</span></span><br><span class="line">    <span class="type">bool</span> bInfiniteLoop;       <span class="comment">// 无限循环</span></span><br><span class="line">    <span class="type">float</span> InfiniteLoopTimeoutMax; <span class="comment">// 无限循环超时</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-BTDecorator-Cooldown"><a href="#4-4-BTDecorator-Cooldown" class="headerlink" title="4.4 BTDecorator_Cooldown"></a>4.4 BTDecorator_Cooldown</h3><p>冷却计时器，防止频繁执行：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBTDecorator_Cooldown</span> : <span class="keyword">public</span> UBTDecorator</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">float</span> CooldownDuration;   <span class="comment">// 冷却时长</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-5-BTDecorator-TimeLimit"><a href="#4-5-BTDecorator-TimeLimit" class="headerlink" title="4.5 BTDecorator_TimeLimit"></a>4.5 BTDecorator_TimeLimit</h3><p>为子节点设置执行时间限制：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBTDecorator_TimeLimit</span> : <span class="keyword">public</span> UBTDecorator</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">float</span> TimeLimit;          <span class="comment">// 时间限制</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-6-BTDecorator-IsAtLocation"><a href="#4-6-BTDecorator-IsAtLocation" class="headerlink" title="4.6 BTDecorator_IsAtLocation"></a>4.6 BTDecorator_IsAtLocation</h3><p>检查 AI 是否到达指定位置：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBTDecorator_IsAtLocation</span> : <span class="keyword">public</span> UBTDecorator</span><br><span class="line">&#123;</span><br><span class="line">    FBlackboardKeySelector BlackboardKey; <span class="comment">// 目标位置键</span></span><br><span class="line">    <span class="type">float</span> AcceptableRadius;               <span class="comment">// 可接受半径</span></span><br><span class="line">    <span class="type">float</span> GeometricDistanceTolerance;     <span class="comment">// 几何距离容差</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-7-BTDecorator-DoesPathExist"><a href="#4-7-BTDecorator-DoesPathExist" class="headerlink" title="4.7 BTDecorator_DoesPathExist"></a>4.7 BTDecorator_DoesPathExist</h3><p>检查两个位置之间是否存在导航路径：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBTDecorator_DoesPathExist</span> : <span class="keyword">public</span> UBTDecorator</span><br><span class="line">&#123;</span><br><span class="line">    FBlackboardKeySelector BlackboardKeyA; <span class="comment">// 起始位置</span></span><br><span class="line">    FBlackboardKeySelector BlackboardKeyB; <span class="comment">// 目标位置</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-8-BTDecorator-TagCooldown"><a href="#4-8-BTDecorator-TagCooldown" class="headerlink" title="4.8 BTDecorator_TagCooldown"></a>4.8 BTDecorator_TagCooldown</h3><p>基于 GameplayTag 的冷却系统：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBTDecorator_TagCooldown</span> : <span class="keyword">public</span> UBTDecorator</span><br><span class="line">&#123;</span><br><span class="line">    FGameplayTag CooldownTag;    <span class="comment">// 冷却标签</span></span><br><span class="line">    <span class="type">float</span> CooldownDuration;      <span class="comment">// 冷却时长</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、装饰器作用域（Decorator-Scope）"><a href="#五、装饰器作用域（Decorator-Scope）" class="headerlink" title="五、装饰器作用域（Decorator Scope）"></a>五、装饰器作用域（Decorator Scope）</h2><h3 id="5-1-bApplyDecoratorScope"><a href="#5-1-bApplyDecoratorScope" class="headerlink" title="5.1 bApplyDecoratorScope"></a>5.1 bApplyDecoratorScope</h3><p>复合节点的 <code>bApplyDecoratorScope</code> 属性控制装饰器的作用域：</p>
+<ul>
+<li><strong>true</strong>：当执行流离开该复合节点时，自动注销其下所有分支的装饰器</li>
+<li><strong>false</strong>（默认）：装饰器保持注册状态</li>
+</ul>
+<p><code>BTComposite_SimpleParallel</code> 默认设置 <code>bApplyDecoratorScope = true</code>，因为并行节点需要在主任务完成时清理后台树的装饰器。</p>
+<h3 id="5-2-装饰器注册-注销时机"><a href="#5-2-装饰器注册-注销时机" class="headerlink" title="5.2 装饰器注册&#x2F;注销时机"></a>5.2 装饰器注册&#x2F;注销时机</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">搜索进入分支：</span><br><span class="line">  ├── NotifyDecoratorsOnActivation()</span><br><span class="line">  │     └── WrappedOnNodeActivation() → OnNodeActivation()</span><br><span class="line">  └── AddToActiveAuxNodes(Decorator)</span><br><span class="line"></span><br><span class="line">搜索离开分支：</span><br><span class="line">  ├── NotifyDecoratorsOnDeactivation()</span><br><span class="line">  │     └── WrappedOnNodeDeactivation() → OnNodeDeactivation()</span><br><span class="line">  └── RemoveFromActiveAuxNodes(Decorator)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、自定义装饰器"><a href="#六、自定义装饰器" class="headerlink" title="六、自定义装饰器"></a>六、自定义装饰器</h2><h3 id="6-1-C-自定义装饰器"><a href="#6-1-C-自定义装饰器" class="headerlink" title="6.1 C++ 自定义装饰器"></a>6.1 C++ 自定义装饰器</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UBTDecorator_HasEnoughHealth</span> : <span class="keyword">public</span> UBTDecorator</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">UBTDecorator_HasEnoughHealth</span>();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">CalculateRawConditionValue</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        UBehaviorTreeComponent&amp; OwnerComp, uint8* NodeMemory)</span> <span class="type">const</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        AAIController* AIController = OwnerComp.<span class="built_in">GetAIOwner</span>();</span><br><span class="line">        APawn* Pawn = AIController ? AIController-&gt;<span class="built_in">GetPawn</span>() : <span class="literal">nullptr</span>;</span><br><span class="line">        UHealthComponent* HealthComp = Pawn ?</span><br><span class="line">            Pawn-&gt;<span class="built_in">FindComponentByClass</span>&lt;UHealthComponent&gt;() : <span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> HealthComp &amp;&amp; HealthComp-&gt;<span class="built_in">GetHealthPercentage</span>() &gt;= MinHealthPercentage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> FString <span class="title">GetStaticDescription</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> FString::<span class="built_in">Printf</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;Health &gt;= %.0f%%&quot;</span>), MinHealthPercentage * <span class="number">100.0f</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, Category = Condition)</span><br><span class="line">    <span class="type">float</span> MinHealthPercentage = <span class="number">0.3f</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-装饰器通知标志"><a href="#6-2-装饰器通知标志" class="headerlink" title="6.2 装饰器通知标志"></a>6.2 装饰器通知标志</h3><p>使用 <code>INIT_DECORATOR_NODE_NOTIFY_FLAGS</code> 宏自动检测需要启用哪些通知：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">UBTDecorator_MyDecorator::<span class="built_in">UBTDecorator_MyDecorator</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">INIT_DECORATOR_NODE_NOTIFY_FLAGS</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 手动控制允许的中止模式</span></span><br><span class="line">    bAllowAbortNone = <span class="literal">false</span>;</span><br><span class="line">    bAllowAbortLowerPri = <span class="literal">true</span>;</span><br><span class="line">    bAllowAbortChildNodes = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果子类重写了以下函数，对应的标志会自动设为 true：</p>
+<ul>
+<li><code>TickNode</code> → <code>bNotifyTick</code></li>
+<li><code>OnBecomeRelevant</code> → <code>bNotifyBecomeRelevant</code></li>
+<li><code>OnCeaseRelevant</code> → <code>bNotifyCeaseRelevant</code></li>
+<li><code>OnNodeActivation</code> → <code>bNotifyActivation</code></li>
+<li><code>OnNodeDeactivation</code> → <code>bNotifyDeactivation</code></li>
+<li><code>OnNodeProcessed</code> → <code>bNotifyProcessed</code></li>
+</ul>
+<hr>
+<h2 id="七、装饰器执行流程总结"><a href="#七、装饰器执行流程总结" class="headerlink" title="七、装饰器执行流程总结"></a>七、装饰器执行流程总结</h2><h3 id="7-1-搜索时评估"><a href="#7-1-搜索时评估" class="headerlink" title="7.1 搜索时评估"></a>7.1 搜索时评估</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FindChildToExecute()</span><br><span class="line">  → 循环候选子节点</span><br><span class="line">    → DoDecoratorsAllowExecution(ChildIdx)</span><br><span class="line">      → 如果无 DecoratorOps：遍历所有装饰器 AND 求值</span><br><span class="line">      → 如果有 DecoratorOps：栈式后缀表达式求值</span><br><span class="line">        → 每个装饰器调用 WrappedCanExecute()</span><br><span class="line">          → CalculateRawConditionValue()</span><br><span class="line">          → 与 bInverseCondition 异或</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-运行时响应"><a href="#7-2-运行时响应" class="headerlink" title="7.2 运行时响应"></a>7.2 运行时响应</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">黑板值变化 / 定时器触发 / 外部事件</span><br><span class="line">  → ConditionalFlowAbort()</span><br><span class="line">    → 检查 FlowAbortMode != None</span><br><span class="line">    → EvaluateBranch()</span><br><span class="line">      → 根据 AbortMode 确定搜索范围</span><br><span class="line">      → RequestExecution()</span><br><span class="line">        → 下一帧 ProcessExecutionRequest()</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-3-性能注意事项"><a href="#7-3-性能注意事项" class="headerlink" title="7.3 性能注意事项"></a>7.3 性能注意事项</h3><ol>
+<li><strong>避免过度使用 Both 模式</strong>：Both 模式需要额外判断当前执行位置</li>
+<li><strong>使用 ResultChange 而非 ValueChange</strong>：减少不必要的搜索触发</li>
+<li><strong>简单条件用 Blackboard 装饰器</strong>：比自定义装饰器更高效</li>
+<li><strong>合理设置 FlowAbortMode</strong>：只在需要动态切换的装饰器上设置非 None 模式</li>
+<li><strong>装饰器数量控制</strong>：每个分支的装饰器数量影响搜索性能</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/03_%E8%A3%85%E9%A5%B0%E5%99%A8%E4%B8%8E%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%A6%E8%A7%A3/">https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/03_%E8%A3%85%E9%A5%B0%E5%99%A8%E4%B8%8E%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%A6%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/AIGen/">AIGen</a><a class="post-meta__tags" href="/tags/UE%E5%BA%95%E5%B1%82/">UE底层</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/02_%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/" title="节点类型与执行流程详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">节点类型与执行流程详解</div></div><div class="info-2"><div class="info-item-1">节点类型与执行流程详解 基于 UE 5.7.4 源码，深入分析行为树的节点类型和执行流程。   一、节点基类（UBTNode）1.1 核心属性class UBTNode : public UObject, public IGameplayTaskOwnerInterface&#123;    FString NodeName;                    // 节点名称    UBehaviorTree* TreeAsset;            // 所属行为树资产    UBTCompositeNode* ParentNode;        // 父复合节点    uint16 ExecutionIndex;               // 深度优先执行索引    uint16 MemoryOffset;                 // 实例内存偏移    uint8 TreeDepth;                     // 树深度    uint8 bCreateNodeInstance : 1;       // 是否需要实例化   ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/01_%E9%BB%91%E6%9D%BF%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/" title="黑板系统详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">黑板系统详解</div></div><div class="info-2"><div class="info-item-1">黑板系统详解 基于 UE 5.7.4 源码，深入分析行为树的黑板（Blackboard）系统实现。   一、黑板系统概述黑板（Blackboard）是 UE 行为树系统的数据存储层，充当 AI 的”世界知识库”。它以键值对的形式存储 AI 感知到的环境信息、决策中间状态和通信数据。 1.1 设计理念黑板系统遵循以下设计原则：  集中存储：所有 AI 相关数据集中在一个组件中管理 类型安全：通过 UBlackboardKeyType 体系实现编译期类型检查 观察者模式：值变化时自动通知注册的观察者 高效内存：使用连续内存块存储所有值，避免频繁内存分配 可继承：黑板数据支持父子继承链  1.2 核心类关系UBlackboardData (UDataAsset)         # 数据资产：定义键的结构  │  ├── FBlackboardEntry[]             # 键定义（名称、类型、同步标记）  │     └── UBlackboardKeyType       # 键类型对象  │  └── Parent (UBlackboardData*)      #...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/01_%E9%BB%91%E6%9D%BF%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/" title="黑板系统详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">黑板系统详解</div></div><div class="info-2"><div class="info-item-1">黑板系统详解 基于 UE 5.7.4 源码，深入分析行为树的黑板（Blackboard）系统实现。   一、黑板系统概述黑板（Blackboard）是 UE 行为树系统的数据存储层，充当 AI 的”世界知识库”。它以键值对的形式存储 AI 感知到的环境信息、决策中间状态和通信数据。 1.1 设计理念黑板系统遵循以下设计原则：  集中存储：所有 AI 相关数据集中在一个组件中管理 类型安全：通过 UBlackboardKeyType 体系实现编译期类型检查 观察者模式：值变化时自动通知注册的观察者 高效内存：使用连续内存块存储所有值，避免频繁内存分配 可继承：黑板数据支持父子继承链  1.2 核心类关系UBlackboardData (UDataAsset)         # 数据资产：定义键的结构  │  ├── FBlackboardEntry[]             # 键定义（名称、类型、同步标记）  │     └── UBlackboardKeyType       # 键类型对象  │  └── Parent (UBlackboardData*)      #...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/00_%E8%A1%8C%E4%B8%BA%E6%A0%91%E6%A6%82%E8%A7%88%E4%B8%8E%E6%9E%B6%E6%9E%84%E6%80%BB%E8%A7%88/" title="行为树系统概览与架构总览"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">行为树系统概览与架构总览</div></div><div class="info-2"><div class="info-item-1">虚幻引擎 5.7 行为树系统概览与架构总览 基于 UE 5.7.4 源码分析，面向游戏开发人员的技术文档。   一、什么是行为树行为树（Behavior Tree, BT）是一种用于控制 AI 行为的层次化决策模型。它以树形结构组织 AI 的决策逻辑，通过从根节点开始递归遍历子节点来决定 AI 应该执行什么动作。 与传统的状态机（FSM）相比，行为树具有以下优势：  模块化与可复用：每个节点是独立的功能单元，可以跨项目复用 可组合性：通过复合节点（Selector、Sequence）灵活组合简单行为形成复杂行为 可读性：树形结构直观，便于策划和程序员协作 可扩展性：通过继承 UBTTaskNode、UBTDecorator、UBTService 创建自定义节点   二、UE5 行为树系统架构2.1 模块结构行为树系统位于引擎的 AIModule 中，核心源码路径： Engine/Source/Runtime/AIModule/├── Classes/BehaviorTree/           # 公开头文件│   ├── BehaviorTree.h            ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/02_%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/" title="节点类型与执行流程详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">节点类型与执行流程详解</div></div><div class="info-2"><div class="info-item-1">节点类型与执行流程详解 基于 UE 5.7.4 源码，深入分析行为树的节点类型和执行流程。   一、节点基类（UBTNode）1.1 核心属性class UBTNode : public UObject, public IGameplayTaskOwnerInterface&#123;    FString NodeName;                    // 节点名称    UBehaviorTree* TreeAsset;            // 所属行为树资产    UBTCompositeNode* ParentNode;        // 父复合节点    uint16 ExecutionIndex;               // 深度优先执行索引    uint16 MemoryOffset;                 // 实例内存偏移    uint8 TreeDepth;                     // 树深度    uint8 bCreateNodeInstance : 1;       // 是否需要实例化   ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/04_%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B/" title="实际项目应用示例"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">实际项目应用示例</div></div><div class="info-2"><div class="info-item-1">实际项目应用示例 基于 UE 5.7 源码和官方文档，提供行为树在商业项目中的实际应用示例。   一、AI 控制器与行为树的集成1.1 基础 AI 控制器设置// MyAIController.h#pragma once#include &quot;CoreMinimal.h&quot;#include &quot;AIController.h&quot;#include &quot;MyAIController.generated.h&quot;UCLASS()class AMyAIController : public AAIController&#123;    GENERATED_BODY()public:    AMyAIController();    virtual void BeginPlay() override;    virtual void OnPossess(APawn* InPawn) override;    UPROPERTY(EditDefaultsOnly, Category = &quot;AI&quot;)   ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E5%88%86%E6%9E%90/01_%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E6%A6%82%E8%A7%88%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6/" title="异步编程概览与核心机制"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">异步编程概览与核心机制</div></div><div class="info-2"><div class="info-item-1">UE5 异步编程概览与核心机制 基于 UE 5.7.4 源码分析  目录 1. 为什么需要异步编程 2. UE5 异步编程全景图 3. 与 Unity 异步编程对比 4. 核心异步类总览 5. Async() 全局函数 6. FAsyncTask &#x2F; FAutoDeleteAsyncTask 7. 选择指南：何时用哪种方式 8. 线程安全注意事项   1. 为什么需要异步编程在游戏开发中，异步编程是解决以下问题的关键手段：    问题场景 同步方式的问题 异步解决方案    资源加载 大资源加载阻塞主线程，导致卡顿 后台线程加载，主线程继续渲染   网络请求 等待HTTP响应期间游戏冻结 异步回调，游戏正常运行   文件I&#x2F;O 读写存档文件阻塞帧 后台线程处理I&#x2F;O   AI计算 复杂寻路&#x2F;决策计算耗时 多线程并行计算   大规模运算 仅用单核，浪费多核CPU ParallelFor...</div></div></div></a><a class="pagination-related" href="/AIGen/%E7%8A%B6%E6%80%81%E6%A0%91%E5%88%86%E6%9E%90/00_%E7%8A%B6%E6%80%81%E6%A0%91%E6%80%BB%E8%A7%88/" title="状态树（StateTree）系统总览"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">状态树（StateTree）系统总览</div></div><div class="info-2"><div class="info-item-1">虚幻引擎 5.7 状态树（StateTree）系统总览 基于虚幻引擎 5.7.4 源码分析，面向游戏开发人员   一、什么是状态树（StateTree）StateTree 是虚幻引擎 5 引入的通用分层状态机与行为树混合系统。它结合了状态机的清晰状态管理和行为树的灵活性，专门用于构建游戏中的 AI 行为、游戏逻辑流程和决策系统。 核心定位   特性 说明    类型 分层状态机（HFSM）+ 行为树混合体   插件位置 Engine/Plugins/Runtime/StateTree/（核心）   扩展插件 Engine/Plugins/Runtime/GameplayStateTree/（AI集成）   模块数量 4个运行时&#x2F;编辑器模块 + 1个Gameplay扩展模块   资产类型 UStateTree（继承自...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E4%B8%8E%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">装饰器与条件判断详解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">一、装饰器概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E8%A7%92%E8%89%B2"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 装饰器的角色</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%BB%A7%E6%89%BF%E4%BD%93%E7%B3%BB"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 继承体系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6"><span class="toc-number">1.2.</span> <span class="toc-text">二、装饰器核心机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%9D%A1%E4%BB%B6%E8%AE%A1%E7%AE%97"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 条件计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%B5%81%E7%A8%8B%E4%B8%AD%E6%AD%A2%E6%A8%A1%E5%BC%8F%EF%BC%88FlowAbortMode%EF%BC%89"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 流程中止模式（FlowAbortMode）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%84%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">各模式详解</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%9D%A1%E4%BB%B6%E5%8F%98%E5%8C%96%E8%A7%A6%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 条件变化触发流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-EvaluateBranch-%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 EvaluateBranch 详解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E9%80%BB%E8%BE%91%E7%BB%84%E5%90%88"><span class="toc-number">1.3.</span> <span class="toc-text">三、装饰器逻辑组合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%AE%80%E5%8D%95%E6%A8%A1%E5%BC%8F%EF%BC%88%E9%9A%90%E5%BC%8F-AND%EF%BC%89"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 简单模式（隐式 AND）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E9%AB%98%E7%BA%A7%E6%A8%A1%E5%BC%8F%EF%BC%88DecoratorOps%EF%BC%89"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 高级模式（DecoratorOps）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%9C%A8%E7%BC%96%E8%BE%91%E5%99%A8%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 在编辑器中使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%86%85%E7%BD%AE%E8%A3%85%E9%A5%B0%E5%99%A8%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.4.</span> <span class="toc-text">四、内置装饰器详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-BTDecorator-Blackboard"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 BTDecorator_Blackboard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-BTDecorator-CompareBBEntries"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 BTDecorator_CompareBBEntries</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-BTDecorator-Loop"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 BTDecorator_Loop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-BTDecorator-Cooldown"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 BTDecorator_Cooldown</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-BTDecorator-TimeLimit"><span class="toc-number">1.4.5.</span> <span class="toc-text">4.5 BTDecorator_TimeLimit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-BTDecorator-IsAtLocation"><span class="toc-number">1.4.6.</span> <span class="toc-text">4.6 BTDecorator_IsAtLocation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-7-BTDecorator-DoesPathExist"><span class="toc-number">1.4.7.</span> <span class="toc-text">4.7 BTDecorator_DoesPathExist</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-8-BTDecorator-TagCooldown"><span class="toc-number">1.4.8.</span> <span class="toc-text">4.8 BTDecorator_TagCooldown</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E4%BD%9C%E7%94%A8%E5%9F%9F%EF%BC%88Decorator-Scope%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">五、装饰器作用域（Decorator Scope）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-bApplyDecoratorScope"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 bApplyDecoratorScope</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E8%A3%85%E9%A5%B0%E5%99%A8%E6%B3%A8%E5%86%8C-%E6%B3%A8%E9%94%80%E6%97%B6%E6%9C%BA"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 装饰器注册&#x2F;注销时机</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-number">1.6.</span> <span class="toc-text">六、自定义装饰器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-C-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-number">1.6.1.</span> <span class="toc-text">6.1 C++ 自定义装饰器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E8%A3%85%E9%A5%B0%E5%99%A8%E9%80%9A%E7%9F%A5%E6%A0%87%E5%BF%97"><span class="toc-number">1.6.2.</span> <span class="toc-text">6.2 装饰器通知标志</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E8%A3%85%E9%A5%B0%E5%99%A8%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E6%80%BB%E7%BB%93"><span class="toc-number">1.7.</span> <span class="toc-text">七、装饰器执行流程总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E6%90%9C%E7%B4%A2%E6%97%B6%E8%AF%84%E4%BC%B0"><span class="toc-number">1.7.1.</span> <span class="toc-text">7.1 搜索时评估</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E8%BF%90%E8%A1%8C%E6%97%B6%E5%93%8D%E5%BA%94"><span class="toc-number">1.7.2.</span> <span class="toc-text">7.2 运行时响应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E6%80%A7%E8%83%BD%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.7.3.</span> <span class="toc-text">7.3 性能注意事项</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/06_%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="实战示例与最佳实践">实战示例与最佳实践</a><time datetime="2026-05-07T17:27:26.099Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/04_%E9%85%8D%E5%A5%97%E5%AD%90%E7%B3%BB%E7%BB%9F/" title="配套子系统">配套子系统</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/05_MassEntity%E4%B8%8EUnityECS%E5%AF%B9%E6%AF%94/" title="MassEntity 与 Unity DOTS/ECS 对比">MassEntity 与 Unity DOTS/ECS 对比</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/03_Processor%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="Processor 执行系统与多线程">Processor 执行系统与多线程</a><time datetime="2026-05-07T17:27:26.094Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/02_Entity%E7%AE%A1%E7%90%86%E5%99%A8%E4%B8%8EArchetype/" title="Entity 管理器与 Archetype">Entity 管理器与 Archetype</a><time datetime="2026-05-07T17:27:26.092Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '650d45c1833042e7633f01ee210a29f3'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://unpkg.com/gitalk/dist/gitalk.css')
+      await btf.getScript('https://unpkg.com/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script>var meting_api="https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r"</script><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script><script src="https://unpkg.com/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

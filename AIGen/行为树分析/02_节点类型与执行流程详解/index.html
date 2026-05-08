@@ -1,0 +1,406 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>节点类型与执行流程详解 | Ming Blog</title><meta name="author" content="Ming"><meta name="copyright" content="Ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="节点类型与执行流程详解 基于 UE 5.7.4 源码，深入分析行为树的节点类型和执行流程。   一、节点基类（UBTNode）1.1 核心属性class UBTNode : public UObject, public IGameplayTaskOwnerInterface&#123;    FString NodeName;                    &#x2F;&#x2F; 节点名称    UBeha">
+<meta property="og:type" content="article">
+<meta property="og:title" content="节点类型与执行流程详解">
+<meta property="og:url" content="https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/02_%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Ming Blog">
+<meta property="og:description" content="节点类型与执行流程详解 基于 UE 5.7.4 源码，深入分析行为树的节点类型和执行流程。   一、节点基类（UBTNode）1.1 核心属性class UBTNode : public UObject, public IGameplayTaskOwnerInterface&#123;    FString NodeName;                    &#x2F;&#x2F; 节点名称    UBeha">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mikeming126.github.io/img/head.png">
+<meta property="article:published_time" content="2026-05-07T17:15:16.227Z">
+<meta property="article:modified_time" content="2026-05-07T17:15:16.260Z">
+<meta property="article:author" content="Ming">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="AIGen">
+<meta property="article:tag" content="UE底层">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mikeming126.github.io/img/head.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "节点类型与执行流程详解",
+  "url": "https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/02_%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/",
+  "image": "https://mikeming126.github.io/img/head.png",
+  "datePublished": "2026-05-07T17:15:16.227Z",
+  "dateModified": "2026-05-07T17:15:16.260Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ming",
+      "url": "https://mikeming126.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/02_%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":4,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '节点类型与执行流程详解',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/starBg2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/starBg2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ming Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">节点类型与执行流程详解</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">节点类型与执行流程详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-07T17:15:16.227Z" title="发表于 2026-05-08 01:15:16">2026-05-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-07T17:15:16.260Z" title="更新于 2026-05-08 01:15:16">2026-05-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE/">UE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="节点类型与执行流程详解"><a href="#节点类型与执行流程详解" class="headerlink" title="节点类型与执行流程详解"></a>节点类型与执行流程详解</h1><blockquote>
+<p>基于 UE 5.7.4 源码，深入分析行为树的节点类型和执行流程。</p>
+</blockquote>
+<hr>
+<h2 id="一、节点基类（UBTNode）"><a href="#一、节点基类（UBTNode）" class="headerlink" title="一、节点基类（UBTNode）"></a>一、节点基类（UBTNode）</h2><h3 id="1-1-核心属性"><a href="#1-1-核心属性" class="headerlink" title="1.1 核心属性"></a>1.1 核心属性</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBTNode</span> : <span class="keyword">public</span> UObject, <span class="keyword">public</span> IGameplayTaskOwnerInterface</span><br><span class="line">&#123;</span><br><span class="line">    FString NodeName;                    <span class="comment">// 节点名称</span></span><br><span class="line">    UBehaviorTree* TreeAsset;            <span class="comment">// 所属行为树资产</span></span><br><span class="line">    UBTCompositeNode* ParentNode;        <span class="comment">// 父复合节点</span></span><br><span class="line">    uint16 ExecutionIndex;               <span class="comment">// 深度优先执行索引</span></span><br><span class="line">    uint16 MemoryOffset;                 <span class="comment">// 实例内存偏移</span></span><br><span class="line">    uint8 TreeDepth;                     <span class="comment">// 树深度</span></span><br><span class="line">    uint8 bCreateNodeInstance : <span class="number">1</span>;       <span class="comment">// 是否需要实例化</span></span><br><span class="line">    uint8 bIsInstanced : <span class="number">1</span>;              <span class="comment">// 是否已实例化</span></span><br><span class="line">    uint8 bIsInjected : <span class="number">1</span>;               <span class="comment">// 是否被子树注入</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-执行索引（ExecutionIndex）"><a href="#1-2-执行索引（ExecutionIndex）" class="headerlink" title="1.2 执行索引（ExecutionIndex）"></a>1.2 执行索引（ExecutionIndex）</h3><p>执行索引是行为树中非常重要的概念，它决定了节点的优先级和搜索范围：</p>
+<ul>
+<li>使用深度优先遍历为每个节点分配唯一的 <code>ExecutionIndex</code></li>
+<li>执行索引用于：<ul>
+<li>确定搜索范围（<code>SearchStart</code> &#x2F; <code>SearchEnd</code>）</li>
+<li>计算节点优先级（<code>FBTNodeIndex::TakesPriorityOver</code>）</li>
+<li>注册和注销辅助节点</li>
+<li>调试器中追踪执行路径</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3-节点内存管理"><a href="#1-3-节点内存管理" class="headerlink" title="1.3 节点内存管理"></a>1.3 节点内存管理</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在节点的实例内存中分配类型化的状态</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function">T* <span class="title">GetNodeMemory</span><span class="params">(FBehaviorTreeInstance&amp; BTInstance)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (T*)(BTInstance.<span class="built_in">GetInstanceMemory</span>().<span class="built_in">GetData</span>() + MemoryOffset);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化节点内存</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function">T* <span class="title">InitializeNodeMemory</span><span class="params">(uint8* NodeMemory, EBTMemoryInit::Type InitType)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (InitType == EBTMemoryInit::Initialize)</span><br><span class="line">        <span class="keyword">new</span>(NodeMemory) <span class="built_in">T</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">CastInstanceNodeMemory</span>&lt;T&gt;(NodeMemory);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-节点实例化"><a href="#1-4-节点实例化" class="headerlink" title="1.4 节点实例化"></a>1.4 节点实例化</h3><p>默认情况下，所有使用同一行为树资产的 AI 共享节点模板对象。当 <code>bCreateNodeInstance = true</code> 时，每个 AI 实例会获得独立的节点对象副本：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">共享模式（默认）：</span><br><span class="line">  AI_A ──┐</span><br><span class="line">          ├── UBTTask_MoveTo (模板) ── NodeMemory_A ── NodeMemory_B</span><br><span class="line">  AI_B ──┘</span><br><span class="line"></span><br><span class="line">实例化模式：</span><br><span class="line">  AI_A ── UBTTask_MyCustomTask (实例A) ── NodeMemory_A</span><br><span class="line">  AI_B ── UBTTask_MyCustomTask (实例B) ── NodeMemory_B</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="二、复合节点（UBTCompositeNode）"><a href="#二、复合节点（UBTCompositeNode）" class="headerlink" title="二、复合节点（UBTCompositeNode）"></a>二、复合节点（UBTCompositeNode）</h2><h3 id="2-1-数据结构"><a href="#2-1-数据结构" class="headerlink" title="2.1 数据结构"></a>2.1 数据结构</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBTCompositeNode</span> : <span class="keyword">public</span> UBTNode</span><br><span class="line">&#123;</span><br><span class="line">    TArray&lt;FBTCompositeChild&gt; Children;  <span class="comment">// 子节点列表</span></span><br><span class="line">    TArray&lt;TObjectPtr&lt;UBTService&gt;&gt; Services; <span class="comment">// 服务节点列表</span></span><br><span class="line">    uint16 LastExecutionIndex;           <span class="comment">// 子树中最后一个执行索引</span></span><br><span class="line">    uint32 bApplyDecoratorScope : <span class="number">1</span>;     <span class="comment">// 装饰器作用域</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FBTCompositeChild</span></span><br><span class="line">&#123;</span><br><span class="line">    UBTCompositeNode* ChildComposite;    <span class="comment">// 子复合节点（如果有）</span></span><br><span class="line">    UBTTaskNode* ChildTask;              <span class="comment">// 子任务节点（如果有）</span></span><br><span class="line">    TArray&lt;UBTDecorator*&gt; Decorators;    <span class="comment">// 装饰器列表</span></span><br><span class="line">    TArray&lt;FBTDecoratorLogic&gt; DecoratorOps; <span class="comment">// 装饰器逻辑运算</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FBTCompositeMemory</span></span><br><span class="line">&#123;</span><br><span class="line">    int8 CurrentChild;    <span class="comment">// 当前活跃子节点索引</span></span><br><span class="line">    int8 OverrideChild;   <span class="comment">// 子节点覆盖（如 SimpleParallel 使用）</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-子节点搜索流程"><a href="#2-2-子节点搜索流程" class="headerlink" title="2.2 子节点搜索流程"></a>2.2 子节点搜索流程</h3><p>复合节点通过以下流程搜索下一个可执行的子节点：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FindChildToExecute(SearchData, LastResult)</span><br><span class="line">  │</span><br><span class="line">  ├── GetNextChild(SearchData, CurrentChild, LastResult)</span><br><span class="line">  │     ├── [分支1] 新激活节点 → GetMatchingChildIndex() 定位搜索分支</span><br><span class="line">  │     ├── [分支2] 有 OverrideChild → 使用覆盖值</span><br><span class="line">  │     └── [分支3] 调用 GetNextChildHandler() ← 子类实现</span><br><span class="line">  │</span><br><span class="line">  ├── DoDecoratorsAllowExecution() → 检查装饰器条件</span><br><span class="line">  │     ├── 通过 → OnChildActivation() → 返回子节点索引</span><br><span class="line">  │     └── 不通过 → 标记 Failed → NotifyDecoratorsOnFailedActivation()</span><br><span class="line">  │                   → 继续循环下一个子节点</span><br><span class="line">  │</span><br><span class="line">  └── 返回 BTSpecialChild::ReturnToParent（无可用子节点）</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-通知机制"><a href="#2-3-通知机制" class="headerlink" title="2.3 通知机制"></a>2.3 通知机制</h3><p>复合节点支持多种通知回调，通过 <code>INIT_COMPOSITE_NODE_NOTIFY_FLAGS</code> 宏自动检测子类是否重写了对应函数：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 自动检测机制：比较函数指针，如果子类重写了则自动启用标志</span></span><br><span class="line"><span class="built_in">INIT_COMPOSITE_NODE_NOTIFY_FLAGS</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可重写的通知函数：</span></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">NotifyChildExecution</span><span class="params">(OwnerComp, NodeMemory, ChildIdx, NodeResult)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">NotifyNodeActivation</span><span class="params">(SearchData)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">NotifyNodeDeactivation</span><span class="params">(SearchData, NodeResult)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">CanNotifyDecoratorsOnActivation</span><span class="params">(SearchData, ChildIdx)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">CanNotifyDecoratorsOnDeactivation</span><span class="params">(SearchData, ChildIdx, NodeResult)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">CanNotifyDecoratorsOnFailedActivation</span><span class="params">(SearchData, ChildIdx, NodeResult)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、三种复合节点实现"><a href="#三、三种复合节点实现" class="headerlink" title="三、三种复合节点实现"></a>三、三种复合节点实现</h2><h3 id="3-1-Sequence（顺序节点）"><a href="#3-1-Sequence（顺序节点）" class="headerlink" title="3.1 Sequence（顺序节点）"></a>3.1 Sequence（顺序节点）</h3><p><strong>策略：全部成功才成功，一个失败就终止</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">int32 <span class="title">UBTComposite_Sequence::GetNextChildHandler</span><span class="params">(SearchData, PrevChild, LastResult)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    int32 NextChildIdx = BTSpecialChild::ReturnToParent; <span class="comment">// 默认：返回父节点</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (PrevChild == BTSpecialChild::NotInitialized)</span><br><span class="line">    &#123;</span><br><span class="line">        NextChildIdx = <span class="number">0</span>;  <span class="comment">// 刚激活：从第一个子节点开始</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (LastResult == EBTNodeResult::Succeeded &amp;&amp; (PrevChild + <span class="number">1</span>) &lt; <span class="built_in">GetChildrenNum</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        NextChildIdx = PrevChild + <span class="number">1</span>;  <span class="comment">// 上一个成功：执行下一个</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> NextChildIdx;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>执行流程图</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Sequence</span><br><span class="line">├── [子节点A] Succeeded → 继续</span><br><span class="line">├── [子节点B] Succeeded → 继续</span><br><span class="line">├── [子节点C] Failed → 停止，Sequence 失败</span><br><span class="line">└── [子节点D] (未执行)</span><br></pre></td></tr></table></figure>
+
+<p><strong>特点</strong>：</p>
+<ul>
+<li><code>CanAbortLowerPriority() = false</code>：不允许中止低优先级分支</li>
+<li>因为 Sequence 的语义要求顺序执行，中止低优先级会破坏这个语义</li>
+</ul>
+<h3 id="3-2-Selector（选择节点）"><a href="#3-2-Selector（选择节点）" class="headerlink" title="3.2 Selector（选择节点）"></a>3.2 Selector（选择节点）</h3><p><strong>策略：一个成功就成功，全部失败才失败</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">int32 <span class="title">UBTComposite_Selector::GetNextChildHandler</span><span class="params">(SearchData, PrevChild, LastResult)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    int32 NextChildIdx = BTSpecialChild::ReturnToParent; <span class="comment">// 默认：返回父节点</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (PrevChild == BTSpecialChild::NotInitialized)</span><br><span class="line">    &#123;</span><br><span class="line">        NextChildIdx = <span class="number">0</span>;  <span class="comment">// 刚激活：从第一个子节点开始</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (LastResult == EBTNodeResult::Failed &amp;&amp; (PrevChild + <span class="number">1</span>) &lt; <span class="built_in">GetChildrenNum</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        NextChildIdx = PrevChild + <span class="number">1</span>;  <span class="comment">// 上一个失败：尝试下一个</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> NextChildIdx;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>执行流程图</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Selector</span><br><span class="line">├── [子节点A] Failed → 继续</span><br><span class="line">├── [子节点B] Succeeded → 停止，Selector 成功</span><br><span class="line">├── [子节点C] (未执行)</span><br><span class="line">└── [子节点D] (未执行)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-SimpleParallel（简单并行节点）"><a href="#3-3-SimpleParallel（简单并行节点）" class="headerlink" title="3.3 SimpleParallel（简单并行节点）"></a>3.3 SimpleParallel（简单并行节点）</h3><p><strong>策略：同时执行主任务和后台子树</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">int32 <span class="title">UBTComposite_SimpleParallel::GetNextChildHandler</span><span class="params">(SearchData, PrevChild, LastResult)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FBTParallelMemory* MyMemory = <span class="built_in">GetNodeMemory</span>&lt;FBTParallelMemory&gt;(SearchData);</span><br><span class="line">    int32 NextChildIdx = BTSpecialChild::ReturnToParent;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (PrevChild == BTSpecialChild::NotInitialized)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 1. 刚激活：先执行主任务</span></span><br><span class="line">        NextChildIdx = EBTParallelChild::MainTask;</span><br><span class="line">        MyMemory-&gt;MainTaskResult = EBTNodeResult::Failed;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (MyMemory-&gt;bMainTaskIsActive || MyMemory-&gt;bForceBackgroundTree)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 2. 主任务正在运行：同时执行后台树</span></span><br><span class="line">        NextChildIdx = EBTParallelChild::BackgroundTree;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (MyMemory-&gt;bRepeatMainTask)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 3. 需要重复主任务</span></span><br><span class="line">        NextChildIdx = EBTParallelChild::MainTask;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 无限循环保护</span></span><br><span class="line">    <span class="keyword">if</span> (PrevChild == NextChildIdx &amp;&amp; MyMemory-&gt;LastSearchId == SearchData.SearchId)</span><br><span class="line">    &#123;</span><br><span class="line">        SearchData.bPostponeSearch = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> NextChildIdx;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>完成模式</strong>（<code>EBTParallelMode</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>AbortBackground</code></td>
+<td>主任务完成时立即中止后台树</td>
+</tr>
+<tr>
+<td><code>WaitForBackground</code></td>
+<td>主任务完成时等待后台树完成</td>
+</tr>
+</tbody></table>
+<p><strong>内存结构</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">FBTParallelMemory</span> : <span class="keyword">public</span> FBTCompositeMemory</span><br><span class="line">&#123;</span><br><span class="line">    int32 LastSearchId;               <span class="comment">// 上次搜索ID（防无限循环）</span></span><br><span class="line">    EBTNodeResult::Type MainTaskResult; <span class="comment">// 主任务结果</span></span><br><span class="line">    uint8 bMainTaskIsActive : <span class="number">1</span>;      <span class="comment">// 主任务是否运行中</span></span><br><span class="line">    uint8 bForceBackgroundTree : <span class="number">1</span>;   <span class="comment">// 是否强制执行后台树</span></span><br><span class="line">    uint8 bRepeatMainTask : <span class="number">1</span>;        <span class="comment">// 是否需要重复主任务</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-三者对比"><a href="#3-4-三者对比" class="headerlink" title="3.4 三者对比"></a>3.4 三者对比</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Sequence</th>
+<th>Selector</th>
+<th>SimpleParallel</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>子节点数</td>
+<td>任意</td>
+<td>任意</td>
+<td>恰好 2 个</td>
+</tr>
+<tr>
+<td>执行策略</td>
+<td>顺序执行</td>
+<td>顺序尝试</td>
+<td>并行执行</td>
+</tr>
+<tr>
+<td>继续条件</td>
+<td>上一个 Succeeded</td>
+<td>上一个 Failed</td>
+<td>主任务运行中</td>
+</tr>
+<tr>
+<td>退出条件</td>
+<td>任一 Failed</td>
+<td>任一 Succeeded</td>
+<td>主任务完成</td>
+</tr>
+<tr>
+<td>可中止自身</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>可中止低优先级</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>使用节点内存</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="四、任务节点（UBTTaskNode）"><a href="#四、任务节点（UBTTaskNode）" class="headerlink" title="四、任务节点（UBTTaskNode）"></a>四、任务节点（UBTTaskNode）</h2><h3 id="4-1-核心接口"><a href="#4-1-核心接口" class="headerlink" title="4.1 核心接口"></a>4.1 核心接口</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UBTTaskNode</span> : <span class="keyword">public</span> UBTNode</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 子类必须重写</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> EBTNodeResult::Type <span class="title">ExecuteTask</span><span class="params">(UBehaviorTreeComponent&amp; OwnerComp, uint8* NodeMemory)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 子类可选重写</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> EBTNodeResult::Type <span class="title">AbortTask</span><span class="params">(UBehaviorTreeComponent&amp; OwnerComp, uint8* NodeMemory)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">TickTask</span><span class="params">(UBehaviorTreeComponent&amp; OwnerComp, uint8* NodeMemory, <span class="type">float</span> DeltaSeconds)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">OnTaskFinished</span><span class="params">(UBehaviorTreeComponent&amp; OwnerComp, uint8* NodeMemory, EBTNodeResult::Type TaskResult)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">OnMessage</span><span class="params">(UBehaviorTreeComponent&amp; OwnerComp, uint8* NodeMemory, ...)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-任务执行结果"><a href="#4-2-任务执行结果" class="headerlink" title="4.2 任务执行结果"></a>4.2 任务执行结果</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> EBTNodeResult</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">Type</span></span><br><span class="line">    &#123;</span><br><span class="line">        Succeeded,    <span class="comment">// 成功完成</span></span><br><span class="line">        Failed,       <span class="comment">// 失败</span></span><br><span class="line">        Aborted,      <span class="comment">// 被中止</span></span><br><span class="line">        InProgress,   <span class="comment">// 仍在执行（延迟任务）</span></span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-延迟任务（Latent-Task）"><a href="#4-3-延迟任务（Latent-Task）" class="headerlink" title="4.3 延迟任务（Latent Task）"></a>4.3 延迟任务（Latent Task）</h3><p>当任务不能立即完成时，<code>ExecuteTask</code> 返回 <code>InProgress</code>，后续通过 <code>FinishLatentTask</code> 通知完成：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">EBTNodeResult::Type <span class="title">UMyTask::ExecuteTask</span><span class="params">(UBehaviorTreeComponent&amp; OwnerComp, uint8* NodeMemory)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 启动异步操作（如移动、动画等）</span></span><br><span class="line">    <span class="built_in">StartAsyncOperation</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回 InProgress，表示任务仍在执行</span></span><br><span class="line">    <span class="keyword">return</span> EBTNodeResult::InProgress;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UMyTask::OnAsyncOperationComplete</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 通知行为树任务完成</span></span><br><span class="line">    <span class="built_in">FinishLatentTask</span>(OwnerComp, EBTNodeResult::Succeeded);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-任务中止"><a href="#4-4-任务中止" class="headerlink" title="4.4 任务中止"></a>4.4 任务中止</h3><p>当行为树决定切换到其他任务时，会调用 <code>AbortTask</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">EBTNodeResult::Type <span class="title">UMyTask::AbortTask</span><span class="params">(UBehaviorTreeComponent&amp; OwnerComp, uint8* NodeMemory)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 清理异步操作</span></span><br><span class="line">    <span class="built_in">CancelAsyncOperation</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回 Aborted 表示立即中止</span></span><br><span class="line">    <span class="keyword">return</span> EBTNodeResult::Aborted;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 或返回 InProgress 表示延迟中止</span></span><br><span class="line">    <span class="comment">// return EBTNodeResult::InProgress;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-5-消息观察者"><a href="#4-5-消息观察者" class="headerlink" title="4.5 消息观察者"></a>4.5 消息观察者</h3><p>任务可以注册消息观察者，在收到特定消息时触发回调：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UMyTask::ExecuteTask</span><span class="params">(...)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 注册消息观察者</span></span><br><span class="line">    <span class="built_in">WaitForMessage</span>(OwnerComp, AIMessage_MoveFinished);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UMyTask::OnMessage</span><span class="params">(UBehaviorTreeComponent&amp; OwnerComp, uint8* NodeMemory,</span></span></span><br><span class="line"><span class="params"><span class="function">                         FName Message, int32 RequestID, <span class="type">bool</span> bSuccess)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (Message == AIMessage_MoveFinished)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">FinishLatentTask</span>(OwnerComp, bSuccess ? EBTNodeResult::Succeeded : EBTNodeResult::Failed);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-6-任务的服务节点"><a href="#4-6-任务的服务节点" class="headerlink" title="4.6 任务的服务节点"></a>4.6 任务的服务节点</h3><p>任务节点可以拥有自己的 Service 列表：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">UPROPERTY</span>()</span><br><span class="line">TArray&lt;TObjectPtr&lt;UBTService&gt;&gt; Services;</span><br></pre></td></tr></table></figure>
+
+<p>这些 Service 在任务激活时启动，任务完成或中止时停止。</p>
+<hr>
+<h2 id="五、行为树执行流程"><a href="#五、行为树执行流程" class="headerlink" title="五、行为树执行流程"></a>五、行为树执行流程</h2><h3 id="5-1-整体调用链"><a href="#5-1-整体调用链" class="headerlink" title="5.1 整体调用链"></a>5.1 整体调用链</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AAIController</span><br><span class="line">  └── UBehaviorTreeComponent</span><br><span class="line">        ├── StartTree() → PushInstance() → 首次搜索</span><br><span class="line">        │</span><br><span class="line">        └── TickComponent() [每帧]</span><br><span class="line">              │</span><br><span class="line">              ├── 1. Tick 辅助节点（Services、Decorators）</span><br><span class="line">              │     └── WrappedTickNode() → TickNode()</span><br><span class="line">              │</span><br><span class="line">              ├── 2. TrackPendingLatentAborts()</span><br><span class="line">              │     └── 跟踪延迟中止完成</span><br><span class="line">              │</span><br><span class="line">              ├── 3. ProcessExecutionRequest() [如有挂起请求]</span><br><span class="line">              │     ├── DeactivateUpTo()            # 回退</span><br><span class="line">              │     ├── FindChildToExecute() 循环    # 搜索</span><br><span class="line">              │     ├── DoDecoratorsAllowExecution() # 条件检查</span><br><span class="line">              │     ├── AbortCurrentTask()           # 中止当前任务</span><br><span class="line">              │     └── ExecuteTask()                # 执行新任务</span><br><span class="line">              │           ├── 激活任务的 Services</span><br><span class="line">              │           ├── WrappedExecuteTask() → ExecuteTask()</span><br><span class="line">              │           └── OnTaskFinished()</span><br><span class="line">              │</span><br><span class="line">              ├── 4. Tick 并行任务</span><br><span class="line">              └── 5. Tick 活跃任务</span><br><span class="line">                    └── WrappedTickTask() → TickTask()</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-ProcessExecutionRequest-详解"><a href="#5-2-ProcessExecutionRequest-详解" class="headerlink" title="5.2 ProcessExecutionRequest 详解"></a>5.2 ProcessExecutionRequest 详解</h3><p>这是行为树最核心的执行流控制函数：</p>
+<p><strong>步骤 1：前置检查</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">检查组件是否注册 → 检查是否暂停 → 检查是否有延迟中止进行中</span><br></pre></td></tr></table></figure>
+
+<p><strong>步骤 2：回退到目标节点</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">DeactivateUpTo(ExecuteNode)</span><br><span class="line">  ├── 从当前活跃节点开始向上回退</span><br><span class="line">  ├── 逐层调用 OnNodeDeactivation / OnChildDeactivation</span><br><span class="line">  ├── 通知装饰器停止</span><br><span class="line">  └── 收集 PendingUpdates（辅助节点增删）</span><br></pre></td></tr></table></figure>
+
+<p><strong>步骤 3：搜索下一个任务</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">while (TestNode &amp;&amp; NextTask == NULL)</span><br><span class="line">&#123;</span><br><span class="line">    ChildBranchIdx = TestNode-&gt;FindChildToExecute(SearchData, NodeResult);</span><br><span class="line"></span><br><span class="line">    if (ChildBranchIdx == ReturnToParent)</span><br><span class="line">    &#123;</span><br><span class="line">        // 向上回退</span><br><span class="line">        TestNode = TestNode-&gt;GetParentNode();</span><br><span class="line">        TestNode-&gt;OnChildDeactivation(SearchData, ...);</span><br><span class="line">    &#125;</span><br><span class="line">    else if (有子节点)</span><br><span class="line">    &#123;</span><br><span class="line">        // 向下深入</span><br><span class="line">        NextTask = Children[ChildBranchIdx].ChildTask;  // 可能是任务</span><br><span class="line">        TestNode = Children[ChildBranchIdx].ChildComposite;  // 可能是复合节点</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>步骤 4：验证搜索结果</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">检查搜索范围有效性</span><br><span class="line">检查是否允许重启自身（ShouldIgnoreRestartSelf）</span><br><span class="line">如果无效 → RollbackSearchChanges()</span><br></pre></td></tr></table></figure>
+
+<p><strong>步骤 5：执行</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AbortCurrentTask()          // 中止当前任务</span><br><span class="line">ProcessPendingExecution()   // 应用搜索变更并执行新任务</span><br><span class="line">  ├── ApplySearchData()     // 应用辅助节点增删</span><br><span class="line">  └── ExecuteTask()         // 执行新任务</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-搜索范围控制"><a href="#5-3-搜索范围控制" class="headerlink" title="5.3 搜索范围控制"></a>5.3 搜索范围控制</h3><p>搜索范围由 <code>FBTNodeIndex</code> 精确控制：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">FBTNodeIndex</span></span><br><span class="line">&#123;</span><br><span class="line">    uint16 InstanceIndex;     <span class="comment">// 实例栈索引</span></span><br><span class="line">    uint16 ExecutionIndex;    <span class="comment">// 节点执行索引</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">TakesPriorityOver</span><span class="params">(<span class="type">const</span> FBTNodeIndex&amp; Other)</span> <span class="type">const</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>SearchStart</code>：搜索的起始位置</li>
+<li><code>SearchEnd</code>：搜索的终止位置</li>
+<li><code>TakesPriorityOver</code>：判断优先级（执行索引越小优先级越高）</li>
+</ul>
+<hr>
+<h2 id="六、实例栈与子树"><a href="#六、实例栈与子树" class="headerlink" title="六、实例栈与子树"></a>六、实例栈与子树</h2><h3 id="6-1-实例栈（InstanceStack）"><a href="#6-1-实例栈（InstanceStack）" class="headerlink" title="6.1 实例栈（InstanceStack）"></a>6.1 实例栈（InstanceStack）</h3><p>行为树使用实例栈管理子树嵌套：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">InstanceStack[0]: MainBehaviorTree    ← 根树</span><br><span class="line">InstanceStack[1]: CombatSubtree       ← 子树（由 BTTask_RunBehavior 推入）</span><br><span class="line">InstanceStack[2]: MeleeAttackSubtree  ← 更深的子树</span><br></pre></td></tr></table></figure>
+
+<p>每个实例包含：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">FBehaviorTreeInstance</span></span><br><span class="line">&#123;</span><br><span class="line">    UBTCompositeNode* RootNode;          <span class="comment">// 根节点</span></span><br><span class="line">    UBTNode* ActiveNode;                 <span class="comment">// 活跃节点</span></span><br><span class="line">    TArray&lt;UBTAuxiliaryNode*&gt; ActiveAuxNodes; <span class="comment">// 活跃辅助节点</span></span><br><span class="line">    TArray&lt;FBehaviorTreeParallelTask&gt; ParallelTasks; <span class="comment">// 并行任务</span></span><br><span class="line">    TArray&lt;uint8&gt; InstanceMemory;        <span class="comment">// 实例内存</span></span><br><span class="line">    uint8 InstanceIdIndex;               <span class="comment">// 实例ID索引</span></span><br><span class="line">    EBTActiveNode::Type ActiveNodeType;  <span class="comment">// 活跃节点类型</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-子树推入（PushInstance）"><a href="#6-2-子树推入（PushInstance）" class="headerlink" title="6.2 子树推入（PushInstance）"></a>6.2 子树推入（PushInstance）</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">UBehaviorTreeComponent::PushInstance</span><span class="params">(UBehaviorTree&amp; TreeAsset)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 1. 创建新实例</span></span><br><span class="line">    <span class="function">FBehaviorTreeInstance <span class="title">NewInstance</span><span class="params">(MemorySize)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 初始化内存和节点实例</span></span><br><span class="line">    NewInstance.<span class="built_in">Initialize</span>(*<span class="keyword">this</span>, *TreeAsset.RootNode, InstancedIndex, EBTMemoryInit::Initialize);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 推入实例栈</span></span><br><span class="line">    InstanceStack.<span class="built_in">Add</span>(<span class="built_in">MoveTemp</span>(NewInstance));</span><br><span class="line">    ActiveInstanceIdx = InstanceStack.<span class="built_in">Num</span>() - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 触发首次搜索</span></span><br><span class="line">    <span class="built_in">ScheduleExecutionUpdate</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-3-动态子树"><a href="#6-3-动态子树" class="headerlink" title="6.3 动态子树"></a>6.3 动态子树</h3><p><code>BTTask_RunBehaviorDynamic</code> 支持通过 GameplayTag 动态切换子树：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在运行时动态设置子树</span></span><br><span class="line">BehaviorTreeComp-&gt;<span class="built_in">SetDynamicSubtree</span>(FGameplayTag::<span class="built_in">RequestGameplayTag</span>(<span class="string">&quot;Combat.Melee&quot;</span>), MeleeBTAsset);</span><br><span class="line">BehaviorTreeComp-&gt;<span class="built_in">SetDynamicSubtree</span>(FGameplayTag::<span class="built_in">RequestGameplayTag</span>(<span class="string">&quot;Combat.Ranged&quot;</span>), RangedBTAsset);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、节点状态与生命周期"><a href="#七、节点状态与生命周期" class="headerlink" title="七、节点状态与生命周期"></a>七、节点状态与生命周期</h2><h3 id="7-1-节点状态枚举"><a href="#7-1-节点状态枚举" class="headerlink" title="7.1 节点状态枚举"></a>7.1 节点状态枚举</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> EBTActiveNode</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">Type</span> &#123; Composite, ActiveTask, AbortingTask, InactiveTask &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> EBTTaskStatus</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">Type</span> &#123; Active, Aborting, Inactive &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-节点生命周期回调"><a href="#7-2-节点生命周期回调" class="headerlink" title="7.2 节点生命周期回调"></a>7.2 节点生命周期回调</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[激活阶段]</span><br><span class="line">OnNodeActivation()        ← 复合节点被搜索进入时</span><br><span class="line">OnChildActivation()       ← 子节点被选中时</span><br><span class="line">NotifyDecoratorsOnActivation() ← 通知装饰器</span><br><span class="line">OnBecomeRelevant()        ← 辅助节点变为活跃</span><br><span class="line"></span><br><span class="line">[执行阶段]</span><br><span class="line">ExecuteTask()             ← 任务开始执行</span><br><span class="line">TickTask()                ← 任务每帧 Tick（如启用）</span><br><span class="line"></span><br><span class="line">[完成阶段]</span><br><span class="line">OnTaskFinished()          ← 任务完成</span><br><span class="line">OnChildDeactivation()     ← 子节点完成</span><br><span class="line">OnNodeDeactivation()      ← 复合节点退出</span><br><span class="line">NotifyDecoratorsOnDeactivation() ← 通知装饰器</span><br><span class="line">OnCeaseRelevant()         ← 辅助节点变为非活跃</span><br><span class="line"></span><br><span class="line">[重启阶段]</span><br><span class="line">OnNodeRestart()           ← 节点被重新搜索</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://MikeMing126.github.io">Ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/02_%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/">https://mikeming126.github.io/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/02_%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://MikeMing126.github.io" target="_blank">Ming Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UE/">UE</a><a class="post-meta__tags" href="/tags/AIGen/">AIGen</a><a class="post-meta__tags" href="/tags/UE%E5%BA%95%E5%B1%82/">UE底层</a></div><div class="post-share"><div class="social-share" data-image="/img/head.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/00_%E8%A1%8C%E4%B8%BA%E6%A0%91%E6%A6%82%E8%A7%88%E4%B8%8E%E6%9E%B6%E6%9E%84%E6%80%BB%E8%A7%88/" title="行为树系统概览与架构总览"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">行为树系统概览与架构总览</div></div><div class="info-2"><div class="info-item-1">虚幻引擎 5.7 行为树系统概览与架构总览 基于 UE 5.7.4 源码分析，面向游戏开发人员的技术文档。   一、什么是行为树行为树（Behavior Tree, BT）是一种用于控制 AI 行为的层次化决策模型。它以树形结构组织 AI 的决策逻辑，通过从根节点开始递归遍历子节点来决定 AI 应该执行什么动作。 与传统的状态机（FSM）相比，行为树具有以下优势：  模块化与可复用：每个节点是独立的功能单元，可以跨项目复用 可组合性：通过复合节点（Selector、Sequence）灵活组合简单行为形成复杂行为 可读性：树形结构直观，便于策划和程序员协作 可扩展性：通过继承 UBTTaskNode、UBTDecorator、UBTService 创建自定义节点   二、UE5 行为树系统架构2.1 模块结构行为树系统位于引擎的 AIModule 中，核心源码路径： Engine/Source/Runtime/AIModule/├── Classes/BehaviorTree/           # 公开头文件│   ├── BehaviorTree.h            ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/03_%E8%A3%85%E9%A5%B0%E5%99%A8%E4%B8%8E%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%A6%E8%A7%A3/" title="装饰器与条件判断详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">装饰器与条件判断详解</div></div><div class="info-2"><div class="info-item-1">装饰器与条件判断详解 基于 UE 5.7.4 源码，深入分析行为树的装饰器机制和条件判断系统。   一、装饰器概述装饰器（Decorator）是行为树中的条件判断节点，挂载在复合节点与子节点的连线上，用于控制子节点是否可以执行。装饰器不仅提供静态条件判断，还支持动态的流程中止（Flow Abort），是实现响应式 AI 的关键机制。 1.1 装饰器的角色Selector├── [装饰器: HasEnemy?] → Sequence: 战斗│     ├── [装饰器: InRange?] → Task: 攻击│     └── Task: 追击敌人├── [装饰器: HeardNoise?] → Task: 调查噪声└── Task: 巡逻  装饰器的作用：  条件守卫：决定子节点是否可执行 流程中止：条件变化时动态切换执行分支 状态通知：感知分支的激活&#x2F;失活事件  1.2 继承体系UBTNode└── UBTAuxiliaryNode    └── UBTDecorator        ├── UBTDecorator_BlackboardBase...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/01_%E9%BB%91%E6%9D%BF%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3/" title="黑板系统详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">黑板系统详解</div></div><div class="info-2"><div class="info-item-1">黑板系统详解 基于 UE 5.7.4 源码，深入分析行为树的黑板（Blackboard）系统实现。   一、黑板系统概述黑板（Blackboard）是 UE 行为树系统的数据存储层，充当 AI 的”世界知识库”。它以键值对的形式存储 AI 感知到的环境信息、决策中间状态和通信数据。 1.1 设计理念黑板系统遵循以下设计原则：  集中存储：所有 AI 相关数据集中在一个组件中管理 类型安全：通过 UBlackboardKeyType 体系实现编译期类型检查 观察者模式：值变化时自动通知注册的观察者 高效内存：使用连续内存块存储所有值，避免频繁内存分配 可继承：黑板数据支持父子继承链  1.2 核心类关系UBlackboardData (UDataAsset)         # 数据资产：定义键的结构  │  ├── FBlackboardEntry[]             # 键定义（名称、类型、同步标记）  │     └── UBlackboardKeyType       # 键类型对象  │  └── Parent (UBlackboardData*)      #...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/00_%E8%A1%8C%E4%B8%BA%E6%A0%91%E6%A6%82%E8%A7%88%E4%B8%8E%E6%9E%B6%E6%9E%84%E6%80%BB%E8%A7%88/" title="行为树系统概览与架构总览"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">行为树系统概览与架构总览</div></div><div class="info-2"><div class="info-item-1">虚幻引擎 5.7 行为树系统概览与架构总览 基于 UE 5.7.4 源码分析，面向游戏开发人员的技术文档。   一、什么是行为树行为树（Behavior Tree, BT）是一种用于控制 AI 行为的层次化决策模型。它以树形结构组织 AI 的决策逻辑，通过从根节点开始递归遍历子节点来决定 AI 应该执行什么动作。 与传统的状态机（FSM）相比，行为树具有以下优势：  模块化与可复用：每个节点是独立的功能单元，可以跨项目复用 可组合性：通过复合节点（Selector、Sequence）灵活组合简单行为形成复杂行为 可读性：树形结构直观，便于策划和程序员协作 可扩展性：通过继承 UBTTaskNode、UBTDecorator、UBTService 创建自定义节点   二、UE5 行为树系统架构2.1 模块结构行为树系统位于引擎的 AIModule 中，核心源码路径： Engine/Source/Runtime/AIModule/├── Classes/BehaviorTree/           # 公开头文件│   ├── BehaviorTree.h            ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/04_%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B/" title="实际项目应用示例"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">实际项目应用示例</div></div><div class="info-2"><div class="info-item-1">实际项目应用示例 基于 UE 5.7 源码和官方文档，提供行为树在商业项目中的实际应用示例。   一、AI 控制器与行为树的集成1.1 基础 AI 控制器设置// MyAIController.h#pragma once#include &quot;CoreMinimal.h&quot;#include &quot;AIController.h&quot;#include &quot;MyAIController.generated.h&quot;UCLASS()class AMyAIController : public AAIController&#123;    GENERATED_BODY()public:    AMyAIController();    virtual void BeginPlay() override;    virtual void OnPossess(APawn* InPawn) override;    UPROPERTY(EditDefaultsOnly, Category = &quot;AI&quot;)   ...</div></div></div></a><a class="pagination-related" href="/AIGen/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E5%88%86%E6%9E%90/01_%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E6%A6%82%E8%A7%88%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6/" title="异步编程概览与核心机制"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">异步编程概览与核心机制</div></div><div class="info-2"><div class="info-item-1">UE5 异步编程概览与核心机制 基于 UE 5.7.4 源码分析  目录 1. 为什么需要异步编程 2. UE5 异步编程全景图 3. 与 Unity 异步编程对比 4. 核心异步类总览 5. Async() 全局函数 6. FAsyncTask &#x2F; FAutoDeleteAsyncTask 7. 选择指南：何时用哪种方式 8. 线程安全注意事项   1. 为什么需要异步编程在游戏开发中，异步编程是解决以下问题的关键手段：    问题场景 同步方式的问题 异步解决方案    资源加载 大资源加载阻塞主线程，导致卡顿 后台线程加载，主线程继续渲染   网络请求 等待HTTP响应期间游戏冻结 异步回调，游戏正常运行   文件I&#x2F;O 读写存档文件阻塞帧 后台线程处理I&#x2F;O   AI计算 复杂寻路&#x2F;决策计算耗时 多线程并行计算   大规模运算 仅用单核，浪费多核CPU ParallelFor...</div></div></div></a><a class="pagination-related" href="/AIGen/%E7%8A%B6%E6%80%81%E6%A0%91%E5%88%86%E6%9E%90/00_%E7%8A%B6%E6%80%81%E6%A0%91%E6%80%BB%E8%A7%88/" title="状态树（StateTree）系统总览"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">状态树（StateTree）系统总览</div></div><div class="info-2"><div class="info-item-1">虚幻引擎 5.7 状态树（StateTree）系统总览 基于虚幻引擎 5.7.4 源码分析，面向游戏开发人员   一、什么是状态树（StateTree）StateTree 是虚幻引擎 5 引入的通用分层状态机与行为树混合系统。它结合了状态机的清晰状态管理和行为树的灵活性，专门用于构建游戏中的 AI 行为、游戏逻辑流程和决策系统。 核心定位   特性 说明    类型 分层状态机（HFSM）+ 行为树混合体   插件位置 Engine/Plugins/Runtime/StateTree/（核心）   扩展插件 Engine/Plugins/Runtime/GameplayStateTree/（AI集成）   模块数量 4个运行时&#x2F;编辑器模块 + 1个Gameplay扩展模块   资产类型 UStateTree（继承自...</div></div></div></a><a class="pagination-related" href="/AIGen/%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%88%86%E6%9E%90/03_%E8%A3%85%E9%A5%B0%E5%99%A8%E4%B8%8E%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E8%AF%A6%E8%A7%A3/" title="装饰器与条件判断详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-08</div><div class="info-item-2">装饰器与条件判断详解</div></div><div class="info-2"><div class="info-item-1">装饰器与条件判断详解 基于 UE 5.7.4 源码，深入分析行为树的装饰器机制和条件判断系统。   一、装饰器概述装饰器（Decorator）是行为树中的条件判断节点，挂载在复合节点与子节点的连线上，用于控制子节点是否可以执行。装饰器不仅提供静态条件判断，还支持动态的流程中止（Flow Abort），是实现响应式 AI 的关键机制。 1.1 装饰器的角色Selector├── [装饰器: HasEnemy?] → Sequence: 战斗│     ├── [装饰器: InRange?] → Task: 攻击│     └── Task: 追击敌人├── [装饰器: HeardNoise?] → Task: 调查噪声└── Task: 巡逻  装饰器的作用：  条件守卫：决定子节点是否可执行 流程中止：条件变化时动态切换执行分支 状态通知：感知分支的激活&#x2F;失活事件  1.2 继承体系UBTNode└── UBTAuxiliaryNode    └── UBTDecorator        ├── UBTDecorator_BlackboardBase...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/head.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ming</div><div class="author-info-description">我们都在奔赴各自的人生，但你依旧是你</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">104</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">节点类型与执行流程详解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%8A%82%E7%82%B9%E5%9F%BA%E7%B1%BB%EF%BC%88UBTNode%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">一、节点基类（UBTNode）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%A0%B8%E5%BF%83%E5%B1%9E%E6%80%A7"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 核心属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%89%A7%E8%A1%8C%E7%B4%A2%E5%BC%95%EF%BC%88ExecutionIndex%EF%BC%89"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 执行索引（ExecutionIndex）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E8%8A%82%E7%82%B9%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 节点内存管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E8%8A%82%E7%82%B9%E5%AE%9E%E4%BE%8B%E5%8C%96"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4 节点实例化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%A4%8D%E5%90%88%E8%8A%82%E7%82%B9%EF%BC%88UBTCompositeNode%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">二、复合节点（UBTCompositeNode）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%AD%90%E8%8A%82%E7%82%B9%E6%90%9C%E7%B4%A2%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 子节点搜索流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E9%80%9A%E7%9F%A5%E6%9C%BA%E5%88%B6"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 通知机制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%B8%89%E7%A7%8D%E5%A4%8D%E5%90%88%E8%8A%82%E7%82%B9%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.3.</span> <span class="toc-text">三、三种复合节点实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Sequence%EF%BC%88%E9%A1%BA%E5%BA%8F%E8%8A%82%E7%82%B9%EF%BC%89"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 Sequence（顺序节点）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Selector%EF%BC%88%E9%80%89%E6%8B%A9%E8%8A%82%E7%82%B9%EF%BC%89"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 Selector（选择节点）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-SimpleParallel%EF%BC%88%E7%AE%80%E5%8D%95%E5%B9%B6%E8%A1%8C%E8%8A%82%E7%82%B9%EF%BC%89"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 SimpleParallel（简单并行节点）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E4%B8%89%E8%80%85%E5%AF%B9%E6%AF%94"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 三者对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%BB%BB%E5%8A%A1%E8%8A%82%E7%82%B9%EF%BC%88UBTTaskNode%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">四、任务节点（UBTTaskNode）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 核心接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 任务执行结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%BB%B6%E8%BF%9F%E4%BB%BB%E5%8A%A1%EF%BC%88Latent-Task%EF%BC%89"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 延迟任务（Latent Task）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E4%BB%BB%E5%8A%A1%E4%B8%AD%E6%AD%A2"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 任务中止</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E6%B6%88%E6%81%AF%E8%A7%82%E5%AF%9F%E8%80%85"><span class="toc-number">1.4.5.</span> <span class="toc-text">4.5 消息观察者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%9C%8D%E5%8A%A1%E8%8A%82%E7%82%B9"><span class="toc-number">1.4.6.</span> <span class="toc-text">4.6 任务的服务节点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%A1%8C%E4%B8%BA%E6%A0%91%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text">五、行为树执行流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%95%B4%E4%BD%93%E8%B0%83%E7%94%A8%E9%93%BE"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 整体调用链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-ProcessExecutionRequest-%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 ProcessExecutionRequest 详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%90%9C%E7%B4%A2%E8%8C%83%E5%9B%B4%E6%8E%A7%E5%88%B6"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 搜索范围控制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%AE%9E%E4%BE%8B%E6%A0%88%E4%B8%8E%E5%AD%90%E6%A0%91"><span class="toc-number">1.6.</span> <span class="toc-text">六、实例栈与子树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%AE%9E%E4%BE%8B%E6%A0%88%EF%BC%88InstanceStack%EF%BC%89"><span class="toc-number">1.6.1.</span> <span class="toc-text">6.1 实例栈（InstanceStack）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E5%AD%90%E6%A0%91%E6%8E%A8%E5%85%A5%EF%BC%88PushInstance%EF%BC%89"><span class="toc-number">1.6.2.</span> <span class="toc-text">6.2 子树推入（PushInstance）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E5%8A%A8%E6%80%81%E5%AD%90%E6%A0%91"><span class="toc-number">1.6.3.</span> <span class="toc-text">6.3 动态子树</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E8%8A%82%E7%82%B9%E7%8A%B6%E6%80%81%E4%B8%8E%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.7.</span> <span class="toc-text">七、节点状态与生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E8%8A%82%E7%82%B9%E7%8A%B6%E6%80%81%E6%9E%9A%E4%B8%BE"><span class="toc-number">1.7.1.</span> <span class="toc-text">7.1 节点状态枚举</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E8%8A%82%E7%82%B9%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%9B%9E%E8%B0%83"><span class="toc-number">1.7.2.</span> <span class="toc-text">7.2 节点生命周期回调</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/06_%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="实战示例与最佳实践">实战示例与最佳实践</a><time datetime="2026-05-07T17:27:26.099Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/04_%E9%85%8D%E5%A5%97%E5%AD%90%E7%B3%BB%E7%BB%9F/" title="配套子系统">配套子系统</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/05_MassEntity%E4%B8%8EUnityECS%E5%AF%B9%E6%AF%94/" title="MassEntity 与 Unity DOTS/ECS 对比">MassEntity 与 Unity DOTS/ECS 对比</a><time datetime="2026-05-07T17:27:26.095Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/03_Processor%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="Processor 执行系统与多线程">Processor 执行系统与多线程</a><time datetime="2026-05-07T17:27:26.094Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/AIGen/MassEntity%E5%88%86%E6%9E%90/02_Entity%E7%AE%A1%E7%90%86%E5%99%A8%E4%B8%8EArchetype/" title="Entity 管理器与 Archetype">Entity 管理器与 Archetype</a><time datetime="2026-05-07T17:27:26.092Z" title="发表于 2026-05-08 01:27:26">2026-05-08</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/starBg2.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By Ming</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liMdTJDdBPikGC2F',
+      clientSecret: 'eed0ab3cb8494f9e22f7a8bb469c58cc7e6fbaea',
+      repo: 'BlogComment',
+      owner: 'MikeMing126',
+      admin: ['MikeMing126'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '9a62588f13fab34598eae910c5f7751a'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://unpkg.com/gitalk/dist/gitalk.css')
+      await btf.getScript('https://unpkg.com/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Gitalk' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Gitalk' === 'Gitalk' || !false) {
+    if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script>var meting_api="https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r"</script><script src="/script/APlayerHolder.js"></script><div class="aplayer" data-id="13402811242" data-server="netease" data-type="playlist" data-fixed="true" data-loop="all" data-autoplay="true" data-order="random" data-theme="#3F51B5"></div><link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script><script src="https://unpkg.com/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
